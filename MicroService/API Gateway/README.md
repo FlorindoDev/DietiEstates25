@@ -1,4 +1,7 @@
-# 1) crea il file di configurazione kong
+# DOC ufficiale
+- https://docs.konghq.com/gateway/latest/
+
+# 1) Crea il file di configurazione kong
 Il file kong.yml è una configurazione declarativa utilizzata da Kong Gateway per definire le configurazioni di servizi, route, plugin, consumatori e altro ancora, senza dover eseguire comandi HTTP o CLI manuali.
 
 ```yml
