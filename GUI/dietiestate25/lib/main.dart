@@ -1,46 +1,55 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:dietiestate25/LoginWindow.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  static const String fontApp = 'Goldbill-XLBold';
+  static const String titleApp = 'UninaEstate25';
+  
+  
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: MaterialApp(
-        title: 'Namer App',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+    return MaterialApp(
+      title: titleApp,
+      
+      darkTheme: ThemeData.dark(
+      
+      ),
+      theme: ThemeData(
+        //scaffoldBackgroundColor: const Color(0xff447A9C),
+        scaffoldBackgroundColor: const Color(0xfff1faee),
+        
+        fontFamily: fontApp,
+        
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0x00000000),
+          primary: const Color(0xff1D3558),
+          secondary:const  Color(0xffE63746),
+          tertiary: const Color(0xff447A9C),
+          
+        
         ),
-        home: MyHomePage(),
+
+        textTheme: TextTheme(
+          
+          bodyMedium: TextStyle(
+            fontFamily: fontApp,
+            
+            fontSize: 40,
+          ),
+        ), 
+        
+        useMaterial3: true,
+      
       ),
-    );
-  }
-}
-
-class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-}
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-
-    return Scaffold(
-      body: Column(
-        children: [
-          Text('my idea:'),
-          Text(appState.current.asLowerCase),
-        ],
-      ),
+      
+      home: LoginWindow(),
+    
     );
   }
 }
