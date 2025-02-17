@@ -32,6 +32,9 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+/android/app/
+pubspec.lock
+devtools_options.yaml
 
 # Symbolication related
 app.*.symbols
