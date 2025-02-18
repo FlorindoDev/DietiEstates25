@@ -1,46 +1,66 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:dietiestate25/AccessClass/LoginWindow.dart';
+import 'package:dietiestate25/AccessClass/AccessController.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  static const String fontApp = 'Goldbill-XLBold';
+  static const String titleApp = 'UninaEstate25';
+  
+  static const Color rosso = Color(0xffE63746);
+  static const Color blu = Color(0xff1D3558);
+  static const Color celeste = Color(0xff447A9C);
+  static const Color panna = Color(0xfff1faee);
+
+  static final TextStyle stile_testo_solo_nero = const TextStyle( color: Colors.black,);
+
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: MaterialApp(
-        title: 'Namer App',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+    
+  
+    return MaterialApp(
+      title: titleApp,
+      initialRoute: AccessController.loginWindow,
+      onGenerateRoute: AccessController.generateRoute,
+      darkTheme: ThemeData.dark(
+      
+      ),
+      theme: ThemeData(
+        //scaffoldBackgroundColor: const Color(0xff447A9C),
+        //scaffoldBackgroundColor: const Color(0xfff1faee),
+        scaffoldBackgroundColor: Colors.white,
+
+        fontFamily: fontApp,
+        
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.black,
+          primary: blu,
+          secondary: rosso,
+          tertiary: celeste,
+          
+        
         ),
-        home: MyHomePage(),
+
+        textTheme: TextTheme(
+          
+          bodyMedium: TextStyle(
+            fontFamily: fontApp,
+            
+            fontSize: 40,
+          ),
+        ), 
+        
+        useMaterial3: true,
+      
       ),
-    );
-  }
-}
-
-class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-}
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-
-    return Scaffold(
-      body: Column(
-        children: [
-          Text('my idea:'),
-          Text(appState.current.asLowerCase),
-        ],
-      ),
+      
+      home: LoginWindow(appbar : AccessController.appBarNotBackable),
+         
     );
   }
 }
