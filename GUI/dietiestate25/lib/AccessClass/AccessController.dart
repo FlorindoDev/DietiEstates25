@@ -1,3 +1,4 @@
+import 'package:dietiestate25/AccessClass/CreateAgencyWindow.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:dietiestate25/AccessClass/LoginWindow.dart';
@@ -6,6 +7,7 @@ import 'package:dietiestate25/AccessClass/SingUpWindow.dart';
 class AccessController {
   static const loginWindow = '/LoginWindow';
   static const singUpWindow = '/SingUpWindow';
+  static const createAgencyWindow = '/CreateAgencyWindow';
 
   static AppBar appBarNotBackable = AppBar(
         centerTitle: true,
@@ -52,6 +54,10 @@ class AccessController {
     return MaterialPageRoute(builder: (_) => LoginWindow(appbar: AccessController.appBarNotBackable));
   }
 
+  static MaterialPageRoute<dynamic> goToCreateAgency() {
+    return MaterialPageRoute(builder: (_) => CreateAgencyWindow(appbar: AccessController.appBarNotBackable));
+  }
+
 
   static Route<dynamic> generateRoute(RouteSettings settings){
     switch (settings.name){
@@ -59,6 +65,8 @@ class AccessController {
         return goToLogin();
       case AccessController.singUpWindow:
         return goToSignUp();
+      case AccessController.createAgencyWindow:
+        return goToCreateAgency();
     }
     
     return MaterialPageRoute(builder: (_) => LoginWindow(appbar: AccessController.appBarNotBackable));

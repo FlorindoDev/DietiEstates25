@@ -69,7 +69,10 @@ class _LoginWindowState extends State<LoginWindow> {
               spacing: 10,
               children: <Widget>[
                 ElevatedButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.of(context).pushNamed(AccessController.createAgencyWindow);
+
+                  },
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all(MyApp.blu),
                     foregroundColor: WidgetStateProperty.all(Colors.white),

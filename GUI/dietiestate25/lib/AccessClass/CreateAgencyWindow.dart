@@ -1,9 +1,9 @@
+import 'package:dietiestate25/AccessClass/AccessController.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/main.dart';
-import 'package:dietiestate25/AccessClass/AccessController.dart';
 
-class SingUpWindow extends StatefulWidget {
-  const SingUpWindow({
+class CreateAgencyWindow extends StatefulWidget {
+  const CreateAgencyWindow({
     super.key,
     required this.appbar
   });
@@ -13,12 +13,12 @@ class SingUpWindow extends StatefulWidget {
    
 
   @override
-  State<SingUpWindow> createState() => _SingUpWindowState();
+  State<CreateAgencyWindow> createState() => _CreateAgencyWindowState();
+
 
 }
 
-
-class _SingUpWindowState extends State<SingUpWindow> {
+class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
   bool isCampiCompilati = false;
   
 
@@ -41,12 +41,9 @@ class _SingUpWindowState extends State<SingUpWindow> {
               spacing: 10,
               children: <Widget>[
                 ElevatedButton(
-                  onPressed: (){
-                    Navigator.of(context).pushNamed(AccessController.createAgencyWindow);
-
-                  },
+                  onPressed: null,
                   style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.blu),
+                    backgroundColor: WidgetStateProperty.all(MyApp.celeste),
                     foregroundColor: WidgetStateProperty.all(Colors.white),
                   ),
                   child: Text('Crea Agenzia')
@@ -63,9 +60,12 @@ class _SingUpWindowState extends State<SingUpWindow> {
                   child: Text('Login')
                 ),
                 ElevatedButton(
-                  onPressed: null,
+                  onPressed: (){
+                    Navigator.of(context).pushNamed(AccessController.singUpWindow);
+
+                  },
                   style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.celeste),
+                    backgroundColor: WidgetStateProperty.all(MyApp.blu),
                     foregroundColor: WidgetStateProperty.all(Colors.white),
                   ),
                   child: Text('Sign Up',)
