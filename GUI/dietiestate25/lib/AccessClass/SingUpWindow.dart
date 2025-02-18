@@ -25,6 +25,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
   String _cognome = "";
   bool _obscureText = true;
   
+  
   String get nome => _nome;
 
   set nome(String value) {
