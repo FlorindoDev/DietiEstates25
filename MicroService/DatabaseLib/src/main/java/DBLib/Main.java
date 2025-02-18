@@ -9,6 +9,10 @@ public class Main {
 
         CommunicationWithPostgre comm = new CommunicationWithPostgre();
         comm.makeQuery("SELECT * FROM Acquirente;");
+        while (comm.hasNextRow()){
+            System.out.println(comm.extractString("email"));
+        }
+        //comm.close();
 
     }
 }
