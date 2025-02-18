@@ -19,8 +19,8 @@ public class JWTUtil {
     public static String generateToken(String username, List<String> roles) {
         JsonNode rootNode = null;
         try {
-            System.out.println(System.getProperty("user.dir"));
-            rootNode = new ObjectMapper().readTree(new File("src/main/java/org/ac/API/JWT/JWTspecifications.json"));
+            //System.out.println(System.getProperty("user.dir"));
+            rootNode = new ObjectMapper().readTree(new File("AccessService/src/main/resources/JWTspecifications.json"));
         } catch (IOException e) {
             logger.severe("[-] Errore lettura Json per TokenJWT");
             System.exit(-1);
