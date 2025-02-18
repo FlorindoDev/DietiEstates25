@@ -22,26 +22,41 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
     }
 
     @Override
-    public void makeQuery(String query) throws SQLException {
+    public void makeQuery(PreparedStatement stmt) {
 
         try {
-            this.stmt = this.managerConnection.getConnection().prepareStatement(query);
             this.result = stmt.executeQuery();
             logger.info("Query executed successfully " + result.getStatement());
         } catch (SQLException e){
             logger.severe("Error executing query: " + e.getMessage());
-            throw e;
         }
 
     }
 
     @Override
-    public boolean hasNextRow() throws SQLException {
+    public boolean hasNextRow(){
         if (this.result != null) {
-            return this.result.next();
+            try {
+                return this.result.next();
+            } catch (SQLException e) {
+                logger.severe("Error executing NextRow: " + e.getMessage());
+                return false;
+            }
         }
         return false;
     }
+
+    public PreparedStatement getStatment(String query){
+        try {
+            this.stmt = this.managerConnection.getConnection().prepareStatement(query);
+        } catch (SQLException e) {
+            logger.severe("Error executing query: " + e.getMessage());
+        }
+        return stmt;
+    }
+
+
+
 
 //    @Override
 //    public boolean getNextRow() {
