@@ -31,7 +31,18 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
       
       appBar: widget.appbar,
       
-      body: Center(
+      body: Container(
+         decoration: BoxDecoration(
+          color: MyApp.panna,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+              bottomLeft: Radius.circular(0),
+              bottomRight: Radius.circular(0),
+            ),
+          ),
+
+        child:Center(
         
         child : Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -73,7 +84,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                 ),
               ],
             ),
-            /* 
+            
             Container(
             margin: EdgeInsets.symmetric(horizontal: 40),
             
@@ -88,9 +99,9 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                   ),      
                   decoration: InputDecoration(
 
-                  icon : Icon(Icons.account_circle_rounded),
+                  icon : Icon(Icons.add_business_rounded),
                   iconColor : MyApp.blu ,
-                  label: Text('Email'),
+                  label: Text('Nome Agenzia'),
                   border: OutlineInputBorder(),
                   
 
@@ -98,14 +109,14 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                 ),
                 
                 TextField(
-                  obscureText : true,
+                  
                   style: TextStyle(
                     color: Colors.black,
                   ), 
                   decoration: InputDecoration(
-                    icon : Icon(Icons.key_sharp),
+                    icon : Icon(Icons.app_registration_rounded ),
                     iconColor : MyApp.blu ,
-                    label: Text('Password'),
+                    label: Text('Partita IVA'),
             
                     border: OutlineInputBorder(
                       
@@ -114,12 +125,41 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
             
                   ),
                 ),
-            
+
+                TextField(
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),      
+                  decoration: InputDecoration(
+
+                  icon : Icon(Icons.map_rounded),
+                  iconColor : MyApp.blu ,
+                  label: Text('Sede'),
+                  border: OutlineInputBorder(),
+                  
+
+                  ),
+                ),
+
+                TextField(
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),      
+                  decoration: InputDecoration(
+
+                  icon : Icon(Icons.account_circle_rounded),
+                  iconColor : MyApp.blu ,
+                  label: Text('Email'),
+                  border: OutlineInputBorder(),
+                  
+
+                  ),
+                ),
               
               ],
             ),
             ),
-            
+            /* 
             ElevatedButton(
                   onPressed: login,
                   style: ButtonStyle(
@@ -131,7 +171,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                 ),  */
           ],
         ),
-       
+        ),
       )
     );
   }

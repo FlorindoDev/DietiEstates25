@@ -31,7 +31,18 @@ class _SingUpWindowState extends State<SingUpWindow> {
       
       appBar: widget.appbar,
       
-      body: Center(
+      body: Container(
+         decoration: BoxDecoration(
+          color: MyApp.panna,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+              bottomLeft: Radius.circular(0),
+              bottomRight: Radius.circular(0),
+            ),
+          ),
+
+        child:Center(
         
         child : Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -131,7 +142,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
                 ),  */
           ],
         ),
-       
+        ),
       )
     );
   }
