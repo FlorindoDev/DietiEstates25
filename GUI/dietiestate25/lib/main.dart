@@ -15,6 +15,8 @@ class MyApp extends StatelessWidget {
   static const Color celeste = Color(0xff447A9C);
   static const Color panna = Color(0xfff1faee);
 
+  static final TextStyle stile_testo_solo_nero = const TextStyle( color: Colors.black,);
+
   const MyApp({super.key});
 
   @override

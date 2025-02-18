@@ -22,7 +22,8 @@ class _LoginWindowState extends State<LoginWindow> {
   String email = "";
   String password = "";
   bool isCampiCompilati = false;
-  
+  var coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
+
   void setIsCampiCompilati(bool b) {
     setState(() {
       isCampiCompilati = b;
@@ -36,13 +37,22 @@ class _LoginWindowState extends State<LoginWindow> {
       print(password != "");
       if(email != "" && password != ""){
         setIsCampiCompilati(true);
+        setState(() {
+          coloreBottoneAccedi = WidgetStateProperty.all<Color>(MyApp.rosso);
+        });
       }else{
         setIsCampiCompilati(false);
+        setState(() {
+          coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
+        });
       }
   }
 
   @override
   Widget build(BuildContext context) {
+
+    
+
 
     return Scaffold(
       
@@ -73,28 +83,19 @@ class _LoginWindowState extends State<LoginWindow> {
                     Navigator.of(context).pushNamed(AccessController.createAgencyWindow);
 
                   },
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.blu),
-                    foregroundColor: WidgetStateProperty.all(Colors.white),
-                  ),
+                  style: AccessController.clickable_style_button,
                   child: Text('Crea Agenzia')
                 ), 
                 ElevatedButton(
                   onPressed: null,
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.celeste),
-                    foregroundColor: WidgetStateProperty.all(Colors.white),
-                  ),
+                  style: AccessController.not_clickable_style_button,
                   child: Text('Login')
                 ),
                 ElevatedButton(
                   onPressed: (){
                     Navigator.of(context).pushNamed(AccessController.singUpWindow);
                   },
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.blu),
-                    foregroundColor: WidgetStateProperty.all(Colors.white),
-                  ),
+                  style: AccessController.clickable_style_button,
                   child: Text('Sign Up',)
             
                 ),
@@ -110,9 +111,7 @@ class _LoginWindowState extends State<LoginWindow> {
               children: [
                 
                 TextField(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),      
+                  style: MyApp.stile_testo_solo_nero,      
                   decoration: InputDecoration(
 
                   icon : Icon(Icons.account_circle_rounded),
@@ -132,9 +131,7 @@ class _LoginWindowState extends State<LoginWindow> {
                 
                 TextField(
                   obscureText : true,
-                  style: TextStyle(
-                    color: Colors.black,
-                  ), 
+                  style: MyApp.stile_testo_solo_nero, 
                   decoration: InputDecoration(
                     icon : Icon(Icons.key_sharp),
                     iconColor : MyApp.blu ,
@@ -162,7 +159,7 @@ class _LoginWindowState extends State<LoginWindow> {
             ElevatedButton(
                   onPressed: isCampiCompilati ? (){print("Premuto");} : null,
                   style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.rosso),
+                    backgroundColor: coloreBottoneAccedi,
                     foregroundColor: WidgetStateProperty.all(Colors.white),
                     
                   ),

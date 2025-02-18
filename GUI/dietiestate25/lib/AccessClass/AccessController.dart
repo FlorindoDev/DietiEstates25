@@ -46,6 +46,20 @@ class AccessController {
             
       );
 
+  static final ButtonStyle clickable_style_button = ButtonStyle(
+      backgroundColor: WidgetStateProperty.all(MyApp.blu),
+      foregroundColor: WidgetStateProperty.all(Colors.white),
+  );
+
+  static final ButtonStyle not_clickable_style_button = ButtonStyle(
+      backgroundColor: WidgetStateProperty.all(MyApp.celeste),
+      foregroundColor: WidgetStateProperty.all(Colors.white),
+  );
+
+
+  
+
+
   static MaterialPageRoute<dynamic> goToSignUp() {
     return MaterialPageRoute(builder: (_) => SingUpWindow(appbar: AccessController.appBarNotBackable));
   }

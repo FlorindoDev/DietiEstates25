@@ -22,6 +22,8 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
   bool isCampiCompilati = false;
   
 
+  
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +55,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: null,
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.celeste),
-                    foregroundColor: WidgetStateProperty.all(Colors.white),
-                  ),
+                  style: AccessController.not_clickable_style_button,
                   child: Text('Crea Agenzia')
                 ), 
                 ElevatedButton(
@@ -64,10 +63,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                     Navigator.of(context).pushNamed(AccessController.loginWindow);
 
                   },
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.blu),
-                    foregroundColor: WidgetStateProperty.all(Colors.white),
-                  ),
+                  style: AccessController.clickable_style_button,
                   child: Text('Login')
                 ),
                 ElevatedButton(
@@ -75,10 +71,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                     Navigator.of(context).pushNamed(AccessController.singUpWindow);
 
                   },
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.blu),
-                    foregroundColor: WidgetStateProperty.all(Colors.white),
-                  ),
+                  style: AccessController.clickable_style_button,
                   child: Text('Sign Up',)
             
                 ),
@@ -94,9 +87,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
               children: [
                 
                 TextField(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),      
+                  style: MyApp.stile_testo_solo_nero ,      
                   decoration: InputDecoration(
 
                   icon : Icon(Icons.add_business_rounded),
@@ -110,9 +101,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                 
                 TextField(
                   
-                  style: TextStyle(
-                    color: Colors.black,
-                  ), 
+                  style: MyApp.stile_testo_solo_nero, 
                   decoration: InputDecoration(
                     icon : Icon(Icons.app_registration_rounded ),
                     iconColor : MyApp.blu ,
@@ -127,9 +116,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                 ),
 
                 TextField(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),      
+                  style: MyApp.stile_testo_solo_nero,      
                   decoration: InputDecoration(
 
                   icon : Icon(Icons.map_rounded),
@@ -142,9 +129,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                 ),
 
                 TextField(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),      
+                  style: MyApp.stile_testo_solo_nero,      
                   decoration: InputDecoration(
 
                   icon : Icon(Icons.account_circle_rounded),

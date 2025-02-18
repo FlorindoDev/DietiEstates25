@@ -56,10 +56,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
                     Navigator.of(context).pushNamed(AccessController.createAgencyWindow);
 
                   },
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.blu),
-                    foregroundColor: WidgetStateProperty.all(Colors.white),
-                  ),
+                  style: AccessController.clickable_style_button,
                   child: Text('Crea Agenzia')
                 ), 
                 ElevatedButton(
@@ -67,18 +64,12 @@ class _SingUpWindowState extends State<SingUpWindow> {
                     Navigator.of(context).pushNamed(AccessController.loginWindow);
 
                   },
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.blu),
-                    foregroundColor: WidgetStateProperty.all(Colors.white),
-                  ),
+                  style: AccessController.clickable_style_button,
                   child: Text('Login')
                 ),
                 ElevatedButton(
                   onPressed: null,
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.celeste),
-                    foregroundColor: WidgetStateProperty.all(Colors.white),
-                  ),
+                  style: AccessController.not_clickable_style_button,
                   child: Text('Sign Up',)
             
                 ),
