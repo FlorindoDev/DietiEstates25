@@ -25,6 +25,7 @@ public class LoginRestFulAPI implements LoginAPI {
 
         String token = login_access.makeLogin(user);
 
+
         return token;
     }
 }

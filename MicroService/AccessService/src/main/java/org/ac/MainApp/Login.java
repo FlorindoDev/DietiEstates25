@@ -16,8 +16,6 @@ public class Login implements LoginService{
 
         List<String> roles = new ArrayList<>();
         roles.add(user.getClass().getSimpleName());
-        System.out.println(user.getNome());
-        System.out.println(JWTUtil.generateToken(user.getNome(),roles));
 
         return JWTUtil.generateToken(user.getNome(),roles);
     }
