@@ -19,7 +19,64 @@ class SingUpWindow extends StatefulWidget {
 
 
 class _SingUpWindowState extends State<SingUpWindow> {
+  String _email = "";
+  String _password = "";
+  String _nome = "";
+  String _cognome = "";
+  
+  String get nome => _nome;
+
+  set nome(String value) {
+    _nome = value;
+  }
+  
+
+  String get cognome => _cognome;
+
+  set cognome(String value) {
+    _cognome = value;
+  }
+
+
+  String get email => _email;
+
+  set email(String value) {
+    _email = value;
+  }
+
+  String get password => _password;
+
+  set password(String value) {
+    _password = value;
+  }
+
   bool isCampiCompilati = false;
+  var coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
+
+  void setIsCampiCompilati(bool b) {
+    setState(() {
+      isCampiCompilati = b;
+      if(b){
+        coloreBottoneAccedi = WidgetStateProperty.all<Color>(MyApp.rosso);
+      }else{
+        coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
+      }
+    });
+  }
+
+  bool isAllCompilato(){
+    return (email != "" && password != "" && nome != "" && cognome != "");
+  }
+
+  void campiCompilatiControl(){
+      if(isAllCompilato()){
+        setIsCampiCompilati(true);
+        
+      }else{
+        setIsCampiCompilati(false);
+        
+      }
+  }
   
 
 
@@ -53,6 +110,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: (){
+                    Navigator.pop(context);
                     Navigator.of(context).pushNamed(AccessController.createAgencyWindow);
 
                   },
@@ -61,6 +119,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
                 ), 
                 ElevatedButton(
                   onPressed: (){
+                    Navigator.pop(context);
                     Navigator.of(context).pushNamed(AccessController.loginWindow);
 
                   },
@@ -75,7 +134,6 @@ class _SingUpWindowState extends State<SingUpWindow> {
                 ),
               ],
             ),
-            /* 
             Container(
             margin: EdgeInsets.symmetric(horizontal: 40),
             
@@ -83,11 +141,46 @@ class _SingUpWindowState extends State<SingUpWindow> {
               spacing: 20,
               
               children: [
+                TextField(
+                  style: MyApp.stile_testo_solo_nero,      
+                  decoration: InputDecoration(
+
+                  icon : Icon(Icons.account_circle_rounded),
+                  iconColor : MyApp.blu ,
+                  label: Text('Nome'),
+                  border: OutlineInputBorder(),
+                  
+                  
+
+                  ),
+                  onChanged: (n){
+                    nome = n;
+                    campiCompilatiControl();
+
+                  },
+                ),
                 
                 TextField(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),      
+                  style: MyApp.stile_testo_solo_nero,      
+                  decoration: InputDecoration(
+
+                  icon : Icon(Icons.account_circle_rounded),
+                  iconColor : MyApp.blu ,
+                  label: Text('Cognome'),
+                  border: OutlineInputBorder(),
+                  
+                  
+
+                  ),
+                  onChanged: (c){
+                    cognome = c;
+                    campiCompilatiControl();
+
+                  },
+                ),
+
+                TextField(
+                  style: MyApp.stile_testo_solo_nero,      
                   decoration: InputDecoration(
 
                   icon : Icon(Icons.account_circle_rounded),
@@ -95,15 +188,19 @@ class _SingUpWindowState extends State<SingUpWindow> {
                   label: Text('Email'),
                   border: OutlineInputBorder(),
                   
+                  
 
                   ),
+                  onChanged: (e){
+                    email = e;
+                    campiCompilatiControl();
+
+                  },
                 ),
                 
                 TextField(
                   obscureText : true,
-                  style: TextStyle(
-                    color: Colors.black,
-                  ), 
+                  style: MyApp.stile_testo_solo_nero, 
                   decoration: InputDecoration(
                     icon : Icon(Icons.key_sharp),
                     iconColor : MyApp.blu ,
@@ -112,9 +209,15 @@ class _SingUpWindowState extends State<SingUpWindow> {
                     border: OutlineInputBorder(
                       
                     ),
-          
+                    
             
                   ),
+                  onChanged: (p){
+                    password = p;
+                    
+                    campiCompilatiControl();
+
+                  },
                 ),
             
               
@@ -123,14 +226,22 @@ class _SingUpWindowState extends State<SingUpWindow> {
             ),
             
             ElevatedButton(
-                  onPressed: login,
+                  onPressed: isCampiCompilati ? (){
+                      try{
+                        AccessController.toSignUp(email,password);
+                      }catch(e){
+                        AccessController.mostraPopUp(context,"Attenzione",e.toString());
+                      }
+                      
+                    }: null, 
+                
                   style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.rosso),
+                    backgroundColor: coloreBottoneAccedi,
                     foregroundColor: WidgetStateProperty.all(Colors.white),
                     
                   ),
-                  child: Text('Accedi',)
-                ),  */
+                  child: Text('Registrati',)
+                ),
           ],
         ),
         ),

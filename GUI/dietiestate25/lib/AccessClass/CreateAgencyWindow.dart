@@ -19,10 +19,61 @@ class CreateAgencyWindow extends StatefulWidget {
 }
 
 class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
+  
   bool isCampiCompilati = false;
+  var coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
+  String _email = "";
+  String _nome_agenzia = "";
+  String _sede = "";
+  String _partitaIVA = "";
   
+  String get email => _email;
 
-  
+  set email(String value) {
+    _email = value;
+  }
+
+  String get nome_agenzia => _nome_agenzia;
+
+  set nome_agenzia(String value) {
+    _nome_agenzia = value;
+  }
+
+  String get sede => _sede;
+
+  set sede(String value) {
+    _sede = value;
+  }
+
+  String get partitaIVA => _partitaIVA;
+
+  set partitaIVA(String value) {
+    _partitaIVA = value;
+  }
+
+  void setIsCampiCompilati(bool b) {
+    setState(() {
+      isCampiCompilati = b;
+      if(b){
+        coloreBottoneAccedi = WidgetStateProperty.all<Color>(MyApp.rosso);
+      }else{
+        coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
+      }
+    });
+  }
+
+  bool isAllCompilato(){
+    return (email != "" && nome_agenzia != "" && sede != "" && partitaIVA != "");
+  }
+
+  void campiCompilatiControl(){
+      if(isAllCompilato()){
+        setIsCampiCompilati(true);
+      }else{
+        setIsCampiCompilati(false);
+        
+      }
+  }
 
 
   @override
@@ -60,6 +111,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                 ), 
                 ElevatedButton(
                   onPressed: (){
+                    Navigator.pop(context);
                     Navigator.of(context).pushNamed(AccessController.loginWindow);
 
                   },
@@ -68,6 +120,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                 ),
                 ElevatedButton(
                   onPressed: (){
+                    Navigator.pop(context);
                     Navigator.of(context).pushNamed(AccessController.singUpWindow);
 
                   },
@@ -95,8 +148,14 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                   label: Text('Nome Agenzia'),
                   border: OutlineInputBorder(),
                   
+                  
 
                   ),
+                  onChanged: (n){
+                    nome_agenzia = n;
+                    campiCompilatiControl();
+
+                  }
                 ),
                 
                 TextField(
@@ -113,6 +172,10 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
           
             
                   ),
+                  onChanged: (iva){
+                    partitaIVA = iva;
+                    campiCompilatiControl();
+                  }
                 ),
 
                 TextField(
@@ -126,6 +189,10 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                   
 
                   ),
+                  onChanged: (s){
+                    sede = s;
+                    campiCompilatiControl();
+                  }
                 ),
 
                 TextField(
@@ -139,21 +206,32 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                   
 
                   ),
+                  onChanged: (e){
+                    email = e;
+                    campiCompilatiControl();
+                  }
                 ),
               
               ],
             ),
             ),
-            /* 
+            
             ElevatedButton(
-                  onPressed: login,
+                  onPressed: isCampiCompilati ? (){
+                      try{
+                        AccessController.toCreateAgency(email,nome_agenzia,sede,partitaIVA);
+                      }catch(e){
+                        AccessController.mostraPopUp(context,"Attenzione",e.toString());
+                      }
+                      
+                    }: null,
                   style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.rosso),
+                    backgroundColor: coloreBottoneAccedi,
                     foregroundColor: WidgetStateProperty.all(Colors.white),
                     
                   ),
-                  child: Text('Accedi',)
-                ),  */
+                  child: Text('Crea Agenzia',)
+                ), 
           ],
         ),
         ),
