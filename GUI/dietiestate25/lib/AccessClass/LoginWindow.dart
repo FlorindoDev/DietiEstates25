@@ -21,6 +21,7 @@ class LoginWindow extends StatefulWidget {
 class _LoginWindowState extends State<LoginWindow> {
   String _email = "";
   String _password = "";
+  bool _obscureText = true;
 
   String get email => _email;
 
@@ -132,7 +133,7 @@ class _LoginWindowState extends State<LoginWindow> {
                   style: MyApp.stile_testo_solo_nero,      
                   decoration: InputDecoration(
 
-                  icon : Icon(Icons.account_circle_rounded),
+                  icon : Icon(Icons.alternate_email_rounded),
                   iconColor : MyApp.blu ,
                   label: Text('Email'),
                   border: OutlineInputBorder(),
@@ -148,7 +149,7 @@ class _LoginWindowState extends State<LoginWindow> {
                 ),
                 
                 TextField(
-                  obscureText : true,
+                  obscureText : _obscureText,
                   style: MyApp.stile_testo_solo_nero, 
                   decoration: InputDecoration(
                     icon : Icon(Icons.key_sharp),
@@ -159,8 +160,19 @@ class _LoginWindowState extends State<LoginWindow> {
                       
                     ),
                     
-            
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                      ),
+                    
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
                   ),
+                  
                   onChanged: (p){
                     password = p;
                     

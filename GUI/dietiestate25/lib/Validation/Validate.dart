@@ -13,6 +13,7 @@ class Validate implements Validator {
     return _instance;
   }
 
+  @override
   bool validateEmail(String email) {
     if(!_isValidEmail(email)){
       throw Exception("Email non valida");
@@ -21,6 +22,7 @@ class Validate implements Validator {
     return true;
   }
 
+  @override
   bool validatePassword(String password) {
     if(password.length < 8){
       throw Exception("Password non valida, minimo 8 caratteri");
@@ -28,31 +30,43 @@ class Validate implements Validator {
     return true;
   }
 
+  @override
   bool validateAgencyName(String agencyName) {
     // TODO: implementa la logica di validazione
     return true;
   }
 
+  @override
   bool validatePartitalVA(String partialVA) {
     // TODO: implementa la logica di validazione
     return true;
   }
 
+  @override
   bool validateSede(String sede) {
     // TODO: implementa la logica di validazione
     return true;
   }
 
+  @override
   bool validateName(String name) {
-    // TODO: implementa la logica di validazione
+    if(!_isValidName(name)){
+      throw Exception("Nome non valida");
+    }
+
     return true;
+    
   }
 
+  @override
   bool validateSurname(String surname) {
-    // TODO: implementa la logica di validazione
+    if(!_isValidName(surname)){
+      throw Exception("Cognome non valida");
+    }
     return true;
   }
 
+  @override
   bool validateDate(DateTime start, DateTime end) {
     // TODO: implementa la logica di validazione
     return true;
@@ -65,6 +79,13 @@ class Validate implements Validator {
     );
     
     return emailRegex.hasMatch(email);
+  }
+
+  bool _isValidName(String nome) {
+  
+    final RegExp nomeRegex = RegExp(r"^[A-ZÀ-ÖØ-Ý][a-zà-öø-ý]+(?: [A-ZÀ-ÖØ-Ý][a-zà-öø-ý]+)*$");
+    
+    return nomeRegex.hasMatch(nome);
   }
 
 

@@ -71,9 +71,7 @@ class AccessController {
           title: Text(titolo),
           icon: Icon(Icons.warning_rounded),
           content: Text(messaggio),
-          contentTextStyle: TextStyle(
-
-          ),
+          
           actions: <Widget>[
             TextButton(
               child: Text("OK"),
@@ -96,13 +94,16 @@ class AccessController {
 
   }
 
-  static void toSignUp(String email, String password){
+  static void toSignUp(String email, String password,String nome, String cognome){
+    
+    valida.validateName(nome);
+    valida.validateSurname(cognome);
     valida.validateEmail(email);
     valida.validatePassword(password);
     
   }
 
-  static void toCreateAgency(String email, String nome_agenzia, String sede, String partitaIVA){
+  static void toCreateAgency(String email, String nomeAgenzia, String sede, String partitaIVA){
     valida.validateEmail(email);
     valida.validateSede(sede);
     valida.validatePartitalVA(partitaIVA);

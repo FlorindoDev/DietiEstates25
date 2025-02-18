@@ -199,7 +199,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                   style: MyApp.stile_testo_solo_nero,      
                   decoration: InputDecoration(
 
-                  icon : Icon(Icons.account_circle_rounded),
+                  icon : Icon(Icons.alternate_email_rounded),
                   iconColor : MyApp.blu ,
                   label: Text('Email'),
                   border: OutlineInputBorder(),

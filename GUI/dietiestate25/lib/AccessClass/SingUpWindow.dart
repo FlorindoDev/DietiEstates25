@@ -23,6 +23,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
   String _password = "";
   String _nome = "";
   String _cognome = "";
+  bool _obscureText = true;
   
   String get nome => _nome;
 
@@ -183,7 +184,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
                   style: MyApp.stile_testo_solo_nero,      
                   decoration: InputDecoration(
 
-                  icon : Icon(Icons.account_circle_rounded),
+                  icon : Icon(Icons.alternate_email_rounded),
                   iconColor : MyApp.blu ,
                   label: Text('Email'),
                   border: OutlineInputBorder(),
@@ -199,7 +200,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
                 ),
                 
                 TextField(
-                  obscureText : true,
+                  obscureText : _obscureText,
                   style: MyApp.stile_testo_solo_nero, 
                   decoration: InputDecoration(
                     icon : Icon(Icons.key_sharp),
@@ -209,7 +210,17 @@ class _SingUpWindowState extends State<SingUpWindow> {
                     border: OutlineInputBorder(
                       
                     ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                      ),
                     
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
             
                   ),
                   onChanged: (p){
@@ -228,7 +239,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
             ElevatedButton(
                   onPressed: isCampiCompilati ? (){
                       try{
-                        AccessController.toSignUp(email,password);
+                        AccessController.toSignUp(email,password,nome,cognome);
                       }catch(e){
                         AccessController.mostraPopUp(context,"Attenzione",e.toString());
                       }
