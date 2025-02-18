@@ -19,32 +19,49 @@ class LoginWindow extends StatefulWidget {
 }
 
 class _LoginWindowState extends State<LoginWindow> {
-  String email = "";
-  String password = "";
+  String _email = "";
+  String _password = "";
+  bool _obscureText = true;
+
+  String get email => _email;
+
+  set email(String value) {
+    _email = value;
+  }
+
+  String get password => _password;
+
+  set password(String value) {
+    _password = value;
+  }
+
   bool isCampiCompilati = false;
   var coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
 
   void setIsCampiCompilati(bool b) {
     setState(() {
       isCampiCompilati = b;
+      if(b){
+        coloreBottoneAccedi = WidgetStateProperty.all<Color>(MyApp.rosso);
+      }else{
+        coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
+      }
     });
   }
 
+  
+
+  bool isAllCompilato(){
+    return (email != "" && password != "");
+  }
+
   void campiCompilatiControl(){
-      print(email);
-      print(password);
-      print(email != "");
-      print(password != "");
-      if(email != "" && password != ""){
+      if(isAllCompilato()){
         setIsCampiCompilati(true);
-        setState(() {
-          coloreBottoneAccedi = WidgetStateProperty.all<Color>(MyApp.rosso);
-        });
+        
       }else{
         setIsCampiCompilati(false);
-        setState(() {
-          coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
-        });
+        
       }
   }
 
@@ -80,6 +97,7 @@ class _LoginWindowState extends State<LoginWindow> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: (){
+                    Navigator.pop(context);
                     Navigator.of(context).pushNamed(AccessController.createAgencyWindow);
 
                   },
@@ -93,6 +111,7 @@ class _LoginWindowState extends State<LoginWindow> {
                 ),
                 ElevatedButton(
                   onPressed: (){
+                    Navigator.pop(context);
                     Navigator.of(context).pushNamed(AccessController.singUpWindow);
                   },
                   style: AccessController.clickable_style_button,
@@ -114,7 +133,7 @@ class _LoginWindowState extends State<LoginWindow> {
                   style: MyApp.stile_testo_solo_nero,      
                   decoration: InputDecoration(
 
-                  icon : Icon(Icons.account_circle_rounded),
+                  icon : Icon(Icons.alternate_email_rounded),
                   iconColor : MyApp.blu ,
                   label: Text('Email'),
                   border: OutlineInputBorder(),
@@ -130,7 +149,7 @@ class _LoginWindowState extends State<LoginWindow> {
                 ),
                 
                 TextField(
-                  obscureText : true,
+                  obscureText : _obscureText,
                   style: MyApp.stile_testo_solo_nero, 
                   decoration: InputDecoration(
                     icon : Icon(Icons.key_sharp),
@@ -141,8 +160,19 @@ class _LoginWindowState extends State<LoginWindow> {
                       
                     ),
                     
-            
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                      ),
+                    
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
                   ),
+                  
                   onChanged: (p){
                     password = p;
                     
@@ -157,7 +187,15 @@ class _LoginWindowState extends State<LoginWindow> {
             ),
             
             ElevatedButton(
-                  onPressed: isCampiCompilati ? (){print("Premuto");} : null,
+                  onPressed: 
+                    isCampiCompilati ? (){
+                      try{
+                        AccessController.toLogin(email,password);
+                      }catch(e){
+                        AccessController.mostraPopUp(context,"Attenzione",e.toString());
+                      }
+                      
+                    }: null,
                   style: ButtonStyle(
                     backgroundColor: coloreBottoneAccedi,
                     foregroundColor: WidgetStateProperty.all(Colors.white),

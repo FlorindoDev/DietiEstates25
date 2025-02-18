@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
           bodyMedium: TextStyle(
             fontFamily: fontApp,
             
-            fontSize: 40,
+            
           ),
         ), 
         
