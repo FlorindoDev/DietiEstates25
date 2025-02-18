@@ -29,7 +29,7 @@ public class Agent extends Utente{
         ProfilePic = profilePic;
     }
 
-    public static class Builder extends Utente.Builder<Builder>{
+    public static class Builder extends Utente.Builder<Agent.Builder>{
         private String Biografia;
         private String ProfilePic;
 

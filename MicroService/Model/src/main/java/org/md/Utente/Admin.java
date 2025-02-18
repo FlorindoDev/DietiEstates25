@@ -18,7 +18,7 @@ public class Admin extends Utente{
         return isSupport;
     }
 
-    public static class Builder extends Utente.Builder<Builder>{
+    public static class Builder extends Utente.Builder<Admin.Builder>{
         private Boolean isSupport;
 
         public Builder(int id_user, String email) {
