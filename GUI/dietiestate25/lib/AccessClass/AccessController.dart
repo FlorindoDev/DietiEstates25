@@ -18,50 +18,47 @@ class AccessController {
   
 
   static AppBar appBarNotBackable = AppBar(
-        centerTitle: true,
-        toolbarHeight: 120, 
-        leadingWidth: 0,
-        automaticallyImplyLeading: false,
-        title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              
-              Image.asset(
-                'images/logo/logo_piccolo.jpg',
-                height: 100, 
-                width: 100,
-                
+    centerTitle: true,
+    toolbarHeight: 120,
+    leadingWidth: 0,
+    automaticallyImplyLeading: false,
+    title: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          'images/logo/logo_piccolo.jpg',
+          height: 100,
+          width: 100,
+        ),
+        Row(
+          children: [
+            Text(
+              'UninaEstates',
+              style: TextStyle(
+                fontSize: 25,
               ),
-              Row(
-                children: [
-                    Text('UninaEstates',
-                      style: TextStyle(
-                        fontSize: 25,
-                      ),
-                    ),
-                    Text('25',
-                      style: TextStyle(
-                      color: MyApp.rosso,
-                      fontSize: 25,
-                      ),
-                    )
-                ],
+            ),
+            Text(
+              '25',
+              style: TextStyle(
+                color: MyApp.rosso,
+                fontSize: 25,
               ),
-              
-
-            ],
-          ),
-            
-      );
+            )
+          ],
+        ),
+      ],
+    ),
+  );
 
   static final ButtonStyle clickable_style_button = ButtonStyle(
-      backgroundColor: WidgetStateProperty.all(MyApp.blu),
-      foregroundColor: WidgetStateProperty.all(Colors.white),
+    backgroundColor: WidgetStateProperty.all(MyApp.blu),
+    foregroundColor: WidgetStateProperty.all(Colors.white),
   );
 
   static final ButtonStyle not_clickable_style_button = ButtonStyle(
-      backgroundColor: WidgetStateProperty.all(MyApp.celeste),
-      foregroundColor: WidgetStateProperty.all(Colors.white),
+    backgroundColor: WidgetStateProperty.all(MyApp.celeste),
+    foregroundColor: WidgetStateProperty.all(Colors.white),
   );
 
 
@@ -142,11 +139,7 @@ class AccessController {
       case AccessController.createAgencyWindow:
         return goToCreateAgencyWindow();
     }
-    
+
     return MaterialPageRoute(builder: (_) => LoginWindow(appbar: AccessController.appBarNotBackable));
   }
-
-
-
-
 }

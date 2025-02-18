@@ -1,9 +1,7 @@
-package org.ac.API.Interfacce;
+package org.ac.MainApp.interfacce;
 
 import org.md.Utente.Utente;
 
-public interface LoginAPI {
-
+public interface LoginService {
     public String makeLogin(Utente user);
-
 }
