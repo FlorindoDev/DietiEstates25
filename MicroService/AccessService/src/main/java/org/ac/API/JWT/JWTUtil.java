@@ -19,7 +19,8 @@ public class JWTUtil {
     public static String generateToken(String username, List<String> roles) {
         JsonNode rootNode = null;
         try {
-            rootNode = new ObjectMapper().readTree(new File("data.json"));
+            System.out.println(System.getProperty("user.dir"));
+            rootNode = new ObjectMapper().readTree(new File("src/main/java/org/ac/API/JWT/JWTspecifications.json"));
         } catch (IOException e) {
             logger.severe("[-] Errore lettura Json per TokenJWT");
             System.exit(-1);
@@ -31,7 +32,7 @@ public class JWTUtil {
                 .setSubject(username)
                 .claim("roles", roles)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + rootNode.path("Exp").asText()))
+                .setExpiration(new Date(System.currentTimeMillis() + rootNode.path("Exp").asInt()))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
