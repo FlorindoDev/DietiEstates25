@@ -2,6 +2,7 @@ package org.md.Utente;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.exc.DietiEstateException;
 import org.md.Serializzazione.TranslationToJson;
 import org.md.Utente.interfacce.UserSeparators;
 
@@ -35,7 +36,7 @@ public class Utente extends TranslationToJson {
 
     }
 
-    public void Separator(UserSeparators split){
+    public void Separator(UserSeparators split) throws DietiEstateException {
         split.separator(this);
     }
 
