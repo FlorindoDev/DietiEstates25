@@ -1,0 +1,19 @@
+# Come sono formate DietiEstateException <br>
+Ogni Exception lancera un stringa in formato Json formata nel seguente modo:<br>
+- `code:` codice di errore<br>
+- `Error:` Speigazione errore <br>
+
+# Tipo di DietiEstateException <br>
+Abbiamo due grandi categori: <br>
+`DietiEstateDBexception` e `DietiEstateMicroSercviceException` ogni avra le sue sotto exception per i vai errori
+
+# Codici di errore <br>
+- `0:`Successo <br>
+- `1-100:` Errori DB <br>
+- `101-200:` Errori Mirco servizzi
+
+## Lista
+
+- `0:`Successo <br>
+- `1:` Utente non trovato nel DB <br>
+- `2:` Errore query non eseguita <br>
