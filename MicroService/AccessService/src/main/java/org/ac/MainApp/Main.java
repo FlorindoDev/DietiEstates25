@@ -1,9 +1,10 @@
-package org.ac.MainApp.Main;
+package org.ac.MainApp;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
+import org.md.Utente.Acquirente;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
 import org.md.Utente.Utente;
@@ -28,6 +29,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         final HttpServer server = startServer();
+        Utente acquirente = new Utente.Builder(1,"utente1@email.com")
+                .setPassword("ciao")
+                .build();
+        System.out.println(acquirente.Translate());
         System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
         System.in.read();
         server.stop();

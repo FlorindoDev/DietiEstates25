@@ -3,11 +3,13 @@ package org.md.Utente;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.md.Serializzazione.TranslationToJson;
+import org.md.Utente.interfacce.UserSeparators;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type") // Specifica il tipo nel JSON
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Agent.class, name = "Agent"), // Registra "agent" come sottotipo
-        @JsonSubTypes.Type(value = Admin.class, name = "Admin") // Registra "Admin" come sottotipo
+        @JsonSubTypes.Type(value = Admin.class, name = "Admin"), // Registra "Admin" come sottotipo
+        @JsonSubTypes.Type(value = Acquirente.class, name = "Acquirente") // Registra "Admin" come sottotipo
 })
 public class Utente extends TranslationToJson {
 
@@ -18,8 +20,6 @@ public class Utente extends TranslationToJson {
     protected String password;
     protected Boolean notify_appointment;
     protected String idPushNotify;
-    private Boolean notify_new_estate;
-    private Boolean change_price_notify;
 
     public Utente() {}
 
@@ -31,10 +31,12 @@ public class Utente extends TranslationToJson {
         this.password = builder.password;
         this.notify_appointment = builder.notify_appointment;
         this.idPushNotify = builder.idPushNotify;
-        this.notify_new_estate = builder.notify_new_estate;
-        this.change_price_notify = builder.change_price_notify;
 
 
+    }
+
+    public void Separator(UserSeparators split){
+        split.separator(this);
     }
 
     public int getId_user() {
@@ -65,14 +67,6 @@ public class Utente extends TranslationToJson {
         return idPushNotify;
     }
 
-    public Boolean getNotify_new_estate() {
-        return notify_new_estate;
-    }
-
-    public Boolean getChange_price_notify() {
-        return change_price_notify;
-    }
-
     public void setId_user(int id_user) {
         this.id_user = id_user;
     }
@@ -101,14 +95,6 @@ public class Utente extends TranslationToJson {
         this.idPushNotify = idPushNotify;
     }
 
-    public void setNotify_new_estate(Boolean notify_new_estate) {
-        this.notify_new_estate = notify_new_estate;
-    }
-
-    public void setChange_price_notify(Boolean change_price_notify) {
-        this.change_price_notify = change_price_notify;
-    }
-
     public static class Builder<typeBuilder extends Builder<typeBuilder>>{
 
         protected int id_user;
@@ -118,8 +104,6 @@ public class Utente extends TranslationToJson {
         protected String password = "";
         protected Boolean notify_appointment = null;
         protected String idPushNotify = "";
-        private Boolean notify_new_estate = null;
-        private Boolean change_price_notify = null;
 
 
         public Builder(int id_user, String email){
@@ -149,16 +133,6 @@ public class Utente extends TranslationToJson {
 
         public typeBuilder setNotifyAppointment(Boolean notify_appointment){
             this.notify_appointment = notify_appointment;
-            return self();
-        }
-
-        public typeBuilder setNotifyNewEstate(Boolean notify_new_estate){
-            this.notify_new_estate=notify_new_estate;
-            return self();
-        }
-
-        public typeBuilder setChangePriceNotify(Boolean change_price_notify){
-            this.change_price_notify = change_price_notify;
             return self();
         }
 

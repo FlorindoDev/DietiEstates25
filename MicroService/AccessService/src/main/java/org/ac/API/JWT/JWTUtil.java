@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class JWTUtil {
     private static final Logger logger = Logger.getLogger(JWTUtil.class.getName());
 
-    public static String generateToken(String username, List<String> roles) {
+    public static String generateToken(String email, List<String> roles) {
         JsonNode rootNode = null;
         try {
             //System.out.println(System.getProperty("user.dir"));
@@ -29,7 +29,7 @@ public class JWTUtil {
         Key key = Keys.hmacShaKeyFor(rootNode.path("SECRET_KEY").asText().getBytes());
 
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(email)
                 .claim("roles", roles)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + rootNode.path("Exp").asInt()))
