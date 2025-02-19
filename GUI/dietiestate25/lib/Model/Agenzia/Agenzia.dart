@@ -54,13 +54,13 @@ class AgenziaBuilder{
   String _sede = "";
   String _email = "";
 
-  AgenziaBuilder setId(String id_agency) {
-    this._id_agency = id_agency;
+  AgenziaBuilder setId(String idAgency) {
+    _id_agency = idAgency;
     return this;
   }
 
-  AgenziaBuilder setAgencyName(String nome_agenzia) {
-    this._nome_agenzia = nome_agenzia;
+  AgenziaBuilder setAgencyName(String nomeAgenzia) {
+    _nome_agenzia = nomeAgenzia;
     return this;
   }
 
@@ -70,12 +70,12 @@ class AgenziaBuilder{
   }
 
   AgenziaBuilder setPartitaIVA(String partitaIVA) {
-    this._partitaIVA = partitaIVA;
+    _partitaIVA = partitaIVA;
     return this;
   }
 
   AgenziaBuilder setSede(String sede) {
-    this._sede = sede;
+    _sede = sede;
     return this;
   }
 
