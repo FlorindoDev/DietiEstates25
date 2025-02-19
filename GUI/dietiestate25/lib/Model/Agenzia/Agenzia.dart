@@ -54,35 +54,32 @@ class AgenziaBuilder{
   String _sede = "";
   String _email = "";
 
-  AgenziaBuilder setId(String _id_agency) {
-    this._id_agency = _id_agency;
+  AgenziaBuilder setId(String idAgency) {
+    _id_agency = idAgency;
     return this;
   }
 
-  AgenziaBuilder setAgencyName(String _nome_agenzia) {
-    this._nome_agenzia = _nome_agenzia;
+  AgenziaBuilder setAgencyName(String nomeAgenzia) {
+    _nome_agenzia = nomeAgenzia;
     return this;
   }
 
   AgenziaBuilder setEmail(String email) {
-    this._email = email;
+    _email = email;
     return this;
   }
 
-  AgenziaBuilder setPartitaIVA(String _partitaIVA) {
-    this._partitaIVA = _partitaIVA;
+  AgenziaBuilder setPartitaIVA(String partitaIVA) {
+    _partitaIVA = partitaIVA;
     return this;
   }
 
-  AgenziaBuilder setSede(String _sede) {
-    this._sede = _sede;
+  AgenziaBuilder setSede(String sede) {
+    _sede = sede;
     return this;
   }
 
   Agenzia build() {
-    if (_email == null) {
-      throw Exception("email are required");
-    }
     return Agenzia._builder(this);
   }
 
