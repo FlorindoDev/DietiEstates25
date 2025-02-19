@@ -67,35 +67,32 @@ class UtenteBuilder{
   String _idPushNotify = "";
   String _nome = "";
 
-  UtenteBuilder setId(int id_user) {
-    this._id_user = id_user;
+  UtenteBuilder setId(int idUser) {
+    _id_user = idUser;
     return this;
   }
 
   UtenteBuilder setName(String nome) {
-    this._nome = nome;
+    _nome = nome;
     return this;
   }
 
   UtenteBuilder setEmail(String email) {
-    this._email = email;
+    _email = email;
     return this;
   }
 
   UtenteBuilder setPassword(String password) {
-    this._password = password;
+    _password = password;
     return this;
   }
 
   UtenteBuilder setNotify(String idPushNotify) {
-    this._idPushNotify = idPushNotify;
+    _idPushNotify = idPushNotify;
     return this;
   }
 
   Utente build() {
-    if (_email == null) {
-      throw Exception("email are required");
-    }
     return Utente._builder(this);
   }
     

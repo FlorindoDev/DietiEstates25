@@ -59,7 +59,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
 
   @override
   Widget build(BuildContext context) {
-    bool _obscureText = true;
+    bool obscureText = true;
     
     
 
@@ -178,7 +178,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
                 ),
                 
                 TextField(
-                  obscureText : _obscureText,
+                  obscureText : obscureText,
                   style: MyApp.stile_testo_solo_nero, 
                   decoration: InputDecoration(
                     icon : Icon(Icons.key_sharp),
@@ -190,12 +190,12 @@ class _SingUpWindowState extends State<SingUpWindow> {
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                        obscureText ? Icons.visibility_off : Icons.visibility,
                       ),
                     
                       onPressed: () {
                         setState(() {
-                          _obscureText = !_obscureText;
+                          obscureText = !obscureText;
                         });
                       },
                     ),
