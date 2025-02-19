@@ -85,7 +85,7 @@ public class UtentePostgreDAO implements UtenteDAO {
                 stmt.setString(i+1, password);
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             //TODO mettere nostra eccezzione
             logger.severe("Error executing query: " + e.getMessage());
             throw new ErrorCreateStatment();
