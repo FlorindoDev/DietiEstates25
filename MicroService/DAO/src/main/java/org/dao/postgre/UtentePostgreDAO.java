@@ -3,6 +3,7 @@ package org.dao.postgre;
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.UtenteDAO;
 import org.exc.DietiEstateException;
+import org.exc.ErrorCreateStatment;
 import org.exc.ErrorExecutingQuery;
 import org.exc.UserNotFoundException;
 import org.md.Utente.Acquirente;
@@ -19,19 +20,20 @@ public class UtentePostgreDAO implements UtenteDAO {
     private CommunicationWithPostgre connection = new CommunicationWithPostgre();
     private static final Logger logger = Logger.getLogger(CommunicationWithPostgre.class.getName());
 
-    protected void PrepareStatmentAndContactDB(Utente utente, String Query) throws ErrorExecutingQuery {
+    protected void PrepareStatmentAndContactDB(Utente utente, String Query) throws DietiEstateException {
         PreparedStatement stmt = connection.getStatment(Query);
 
         try {
             stmt.setString(1, utente.getEmail());
         } catch (SQLException e) {
             logger.severe("Error executing query: " + e.getMessage());
-            throw new ErrorExecutingQuery();
+            throw new ErrorCreateStatment();
         }
 
+        //TODO lanciare eccezzione per makeQuery
         connection.makeQuery(stmt);
 
-        //TODO mettere controllo per quando è vuoto
+
         connection.hasNextRow();
     }
 
@@ -63,7 +65,7 @@ public class UtentePostgreDAO implements UtenteDAO {
     @Override
     public Utente getUser(Utente utente) throws DietiEstateException {
 
-        String Query="SELECT idacquirente as id_user,email, 'Acquirente' AS user_type FROM acquirente WHERE ? like email and password like cryp( ? , '$abcdefghijklmopqrstuv.')" +
+        String Query="SELECT idacquirente as id_user,email, 'Acquirente' AS user_type FROM acquirente WHERE ? like email and password like crypt( ? , '$abcdefghijklmopqrstuv.')" +
                 " UNION " +
                 "SELECT idamministratore as id_user,email, 'Admin' AS user_type FROM amministratore WHERE crypt( ? , '$abcdefghijklmopqrstuv.') like email and password like crypt( ? , '$abcdefghijklmopqrstuv.')" +
                 " UNION " +
@@ -86,7 +88,7 @@ public class UtentePostgreDAO implements UtenteDAO {
         } catch (SQLException e) {
             //TODO mettere nostra eccezzione
             logger.severe("Error executing query: " + e.getMessage());
-            throw new ErrorExecutingQuery();
+            throw new ErrorCreateStatment();
 
         }
 

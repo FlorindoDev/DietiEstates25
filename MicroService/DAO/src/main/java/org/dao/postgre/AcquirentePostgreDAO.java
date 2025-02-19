@@ -2,6 +2,7 @@ package org.dao.postgre;
 
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AcquirenteDAO;
+import org.exc.DietiEstateException;
 import org.exc.ErrorExecutingQuery;
 import org.md.Utente.Acquirente;
 
@@ -14,7 +15,7 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
     public AcquirentePostgreDAO() {}
 
     @Override
-    public Acquirente getUser(Acquirente acquirente) throws ErrorExecutingQuery {
+    public Acquirente getUser(Acquirente acquirente) throws DietiEstateException {
 
         String Query="SELECT * FROM acquirente where ? = email";
 

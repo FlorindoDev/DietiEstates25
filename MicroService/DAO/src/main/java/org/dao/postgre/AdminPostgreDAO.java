@@ -2,6 +2,7 @@ package org.dao.postgre;
 
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AdminDAO;
+import org.exc.DietiEstateException;
 import org.exc.ErrorExecutingQuery;
 import org.md.Utente.Admin;
 import org.md.Utente.Utente;
@@ -18,7 +19,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     public AdminPostgreDAO() {}
 
     @Override
-    public Admin getUser(Admin admin) throws ErrorExecutingQuery {
+    public Admin getUser(Admin admin) throws DietiEstateException {
 
         String Query="SELECT * FROM amministratore where ? = email";
 

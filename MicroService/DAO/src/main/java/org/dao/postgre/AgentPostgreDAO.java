@@ -2,6 +2,7 @@ package org.dao.postgre;
 
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AgentDAO;
+import org.exc.DietiEstateException;
 import org.exc.ErrorExecutingQuery;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Admin;
@@ -18,7 +19,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
     }
 
     @Override
-    public Agent getUser(Agent agent) throws ErrorExecutingQuery {
+    public Agent getUser(Agent agent) throws DietiEstateException {
 
         String Query="SELECT * FROM agenteimmobiliare where ? = email";
 
