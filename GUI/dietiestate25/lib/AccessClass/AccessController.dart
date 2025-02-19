@@ -1,4 +1,6 @@
 import 'package:dietiestate25/AccessClass/CreateAgencyWindow.dart';
+import 'package:dietiestate25/Model/Agenzia/Agenzia.dart';
+import 'package:dietiestate25/Model/Utente/Utente.dart';
 import 'package:dietiestate25/Validation/Validate.dart';
 import 'package:dietiestate25/Validation/Validetor.dart';
 import 'package:flutter/material.dart';
@@ -17,39 +19,7 @@ class AccessController {
   static Validator valida = Validate();
   
 
-  static AppBar appBarNotBackable = AppBar(
-    centerTitle: true,
-    toolbarHeight: 120,
-    leadingWidth: 0,
-    automaticallyImplyLeading: false,
-    title: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset(
-          'images/logo/logo_piccolo.jpg',
-          height: 100,
-          width: 100,
-        ),
-        Row(
-          children: [
-            Text(
-              'UninaEstates',
-              style: TextStyle(
-                fontSize: 25,
-              ),
-            ),
-            Text(
-              '25',
-              style: TextStyle(
-                color: MyApp.rosso,
-                fontSize: 25,
-              ),
-            )
-          ],
-        ),
-      ],
-    ),
-  );
+
 
   static final ButtonStyle clickable_style_button = ButtonStyle(
     backgroundColor: WidgetStateProperty.all(MyApp.blu),
@@ -87,26 +57,26 @@ class AccessController {
   }
 
   
-  static void toLogin(String email, String password){
+  static void toLogin(Utente utente){
     
-    valida.validateEmail(email);
-    valida.validatePassword(password);
+    valida.validateEmail(utente.email);
+    valida.validatePassword(utente.password);
 
   }
 
-  static void toSignUp(String email, String password,String nome, String cognome){
+  static void toSignUp(Utente utente){
     
-    valida.validateName(nome);
-    valida.validateSurname(cognome);
-    valida.validateEmail(email);
-    valida.validatePassword(password);
+    valida.validateName(utente.nome);
+    valida.validateSurname(utente.cognome);
+    valida.validateEmail(utente.email);
+    valida.validatePassword(utente.password);
     
   }
 
-  static void toCreateAgency(String email, String nomeAgenzia, String sede, String partitaIVA){
-    valida.validateEmail(email);
-    valida.validateSede(sede);
-    valida.validatePartitalVA(partitaIVA);
+  static void toCreateAgency(Agenzia agenzia){
+    valida.validateEmail(agenzia.email);
+    valida.validateSede(agenzia.sede);
+    valida.validatePartitalVA(agenzia.partitaIVA);
    
 
     
@@ -117,15 +87,15 @@ class AccessController {
 
 
   static MaterialPageRoute<dynamic> goToSignUpWindow() {
-    return MaterialPageRoute(builder: (_) => SingUpWindow(appbar: AccessController.appBarNotBackable));
+    return MaterialPageRoute(builder: (_) => SingUpWindow(appbar: MyApp.appBarNotBackable));
   }
 
   static MaterialPageRoute<dynamic> goToLoginWindow() {
-    return MaterialPageRoute(builder: (_) => LoginWindow(appbar: AccessController.appBarNotBackable));
+    return MaterialPageRoute(builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
   }
 
   static MaterialPageRoute<dynamic> goToCreateAgencyWindow() {
-    return MaterialPageRoute(builder: (_) => CreateAgencyWindow(appbar: AccessController.appBarNotBackable));
+    return MaterialPageRoute(builder: (_) => CreateAgencyWindow(appbar: MyApp.appBarNotBackable));
   }
 
 
@@ -141,6 +111,6 @@ class AccessController {
         return goToCreateAgencyWindow();
     }
 
-    return MaterialPageRoute(builder: (_) => LoginWindow(appbar: AccessController.appBarNotBackable));
+    return MaterialPageRoute(builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
   }
 }

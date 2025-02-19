@@ -1,3 +1,4 @@
+import 'package:dietiestate25/Model/Utente/Utente.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:dietiestate25/AccessClass/AccessController.dart';
@@ -19,38 +20,12 @@ class SingUpWindow extends StatefulWidget {
 
 
 class _SingUpWindowState extends State<SingUpWindow> {
-  String _email = "";
-  String _password = "";
-  String _nome = "";
-  String _cognome = "";
-  bool _obscureText = true;
   
-  
-  String get nome => _nome;
+  Utente utente = Utente.builder
+    .setId(0)
+    .setEmail("")
+    .build();
 
-  set nome(String value) {
-    _nome = value;
-  }
-  
-
-  String get cognome => _cognome;
-
-  set cognome(String value) {
-    _cognome = value;
-  }
-
-
-  String get email => _email;
-
-  set email(String value) {
-    _email = value;
-  }
-
-  String get password => _password;
-
-  set password(String value) {
-    _password = value;
-  }
 
   bool isCampiCompilati = false;
   var coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
@@ -67,7 +42,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
   }
 
   bool isAllCompilato(){
-    return (email != "" && password != "" && nome != "" && cognome != "");
+    return (utente.email != "" && utente.password != "" && utente.nome != "" && utente.cognome != "");
   }
 
   void campiCompilatiControl(){
@@ -84,6 +59,8 @@ class _SingUpWindowState extends State<SingUpWindow> {
 
   @override
   Widget build(BuildContext context) {
+    bool _obscureText = true;
+    
     
 
     return Scaffold(
@@ -156,7 +133,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
 
                   ),
                   onChanged: (n){
-                    nome = n;
+                    utente.nome = n;
                     campiCompilatiControl();
 
                   },
@@ -175,7 +152,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
 
                   ),
                   onChanged: (c){
-                    cognome = c;
+                    utente.cognome = c;
                     campiCompilatiControl();
 
                   },
@@ -194,7 +171,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
 
                   ),
                   onChanged: (e){
-                    email = e;
+                    utente.email = e;
                     campiCompilatiControl();
 
                   },
@@ -225,7 +202,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
             
                   ),
                   onChanged: (p){
-                    password = p;
+                    utente.password = p;
                     
                     campiCompilatiControl();
 
@@ -240,7 +217,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
             ElevatedButton(
                   onPressed: isCampiCompilati ? (){
                       try{
-                        AccessController.toSignUp(email,password,nome,cognome);
+                        AccessController.toSignUp(utente);
                       }catch(e){
                         AccessController.mostraPopUp(context,"Attenzione",e.toString());
                       }

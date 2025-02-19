@@ -1,4 +1,5 @@
 import 'package:dietiestate25/AccessClass/AccessController.dart';
+import 'package:dietiestate25/Model/Utente/Utente.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/main.dart';
 
@@ -19,21 +20,13 @@ class LoginWindow extends StatefulWidget {
 }
 
 class _LoginWindowState extends State<LoginWindow> {
-  String _email = "";
-  String _password = "";
+  
+  Utente utente = Utente.builder
+    .setId(0)
+    .setEmail("")
+    .build();
+
   bool _obscureText = true;
-
-  String get email => _email;
-
-  set email(String value) {
-    _email = value;
-  }
-
-  String get password => _password;
-
-  set password(String value) {
-    _password = value;
-  }
 
   bool isCampiCompilati = false;
   var coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
@@ -52,7 +45,7 @@ class _LoginWindowState extends State<LoginWindow> {
   
 
   bool isAllCompilato(){
-    return (email != "" && password != "");
+    return (utente.email != "" && utente.password != "");
   }
 
   void campiCompilatiControl(){
@@ -142,7 +135,7 @@ class _LoginWindowState extends State<LoginWindow> {
 
                   ),
                   onChanged: (e){
-                    email = e;
+                    utente.email = e;
                     campiCompilatiControl();
 
                   },
@@ -174,7 +167,7 @@ class _LoginWindowState extends State<LoginWindow> {
                   ),
                   
                   onChanged: (p){
-                    password = p;
+                    utente.password = p;
                     
                     campiCompilatiControl();
 
@@ -190,7 +183,7 @@ class _LoginWindowState extends State<LoginWindow> {
                   onPressed: 
                     isCampiCompilati ? (){
                       try{
-                        AccessController.toLogin(email,password);
+                        AccessController.toLogin(utente);
                       }catch(e){
                         AccessController.mostraPopUp(context,"Attenzione",e.toString());
                       }
