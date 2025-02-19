@@ -1,4 +1,5 @@
 import 'package:dietiestate25/AccessClass/AccessController.dart';
+import 'package:dietiestate25/Model/Agenzia/Agenzia.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/main.dart';
 
@@ -22,34 +23,9 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
   
   bool isCampiCompilati = false;
   var coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
-  String _email = "";
-  String _nome_agenzia = "";
-  String _sede = "";
-  String _partitaIVA = "";
-  
-  String get email => _email;
-
-  set email(String value) {
-    _email = value;
-  }
-
-  String get nome_agenzia => _nome_agenzia;
-
-  set nome_agenzia(String value) {
-    _nome_agenzia = value;
-  }
-
-  String get sede => _sede;
-
-  set sede(String value) {
-    _sede = value;
-  }
-
-  String get partitaIVA => _partitaIVA;
-
-  set partitaIVA(String value) {
-    _partitaIVA = value;
-  }
+  Agenzia agenzia = Agenzia.builder
+    .setEmail("")
+    .build();
 
   void setIsCampiCompilati(bool b) {
     setState(() {
@@ -63,7 +39,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
   }
 
   bool isAllCompilato(){
-    return (email != "" && nome_agenzia != "" && sede != "" && partitaIVA != "");
+    return (agenzia.email != "" && agenzia.nome_agenzia != "" && agenzia.sede != "" && agenzia.partitaIVA != "");
   }
 
   void campiCompilatiControl(){
@@ -152,7 +128,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
 
                   ),
                   onChanged: (n){
-                    nome_agenzia = n;
+                    agenzia.nome_agenzia = n;
                     campiCompilatiControl();
 
                   }
@@ -173,7 +149,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
             
                   ),
                   onChanged: (iva){
-                    partitaIVA = iva;
+                    agenzia.partitaIVA = iva;
                     campiCompilatiControl();
                   }
                 ),
@@ -190,7 +166,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
 
                   ),
                   onChanged: (s){
-                    sede = s;
+                    agenzia.sede = s;
                     campiCompilatiControl();
                   }
                 ),
@@ -207,7 +183,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
 
                   ),
                   onChanged: (e){
-                    email = e;
+                    agenzia.email = e;
                     campiCompilatiControl();
                   }
                 ),
@@ -219,7 +195,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
             ElevatedButton(
                   onPressed: isCampiCompilati ? (){
                       try{
-                        AccessController.toCreateAgency(email,nome_agenzia,sede,partitaIVA);
+                        AccessController.toCreateAgency(agenzia);
                       }catch(e){
                         AccessController.mostraPopUp(context,"Attenzione",e.toString());
                       }
