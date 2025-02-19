@@ -4,15 +4,15 @@ import jakarta.ws.rs.core.MediaType;
 import org.ac.API.Interfacce.LoginAPI;
 import jakarta.ws.rs.*;
 
-import org.ac.API.JWT.JWTUtil;
 import org.ac.MainApp.Login;
 import org.ac.MainApp.interfacce.LoginService;
 
-import org.md.Utente.Agent;
+import org.dao.Interfacce.UtenteDAO;
+import org.dao.postgre.UtentePostgreDAO;
+
+import org.md.Utente.Admin;
 import org.md.Utente.Utente;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Path("makeLogin")
 public class LoginRestFulAPI implements LoginAPI {
@@ -24,7 +24,6 @@ public class LoginRestFulAPI implements LoginAPI {
     public String makeLogin(Utente user) {
 
         String token = login_access.makeLogin(user);
-
 
         return token;
     }

@@ -38,7 +38,8 @@ public class ManagementConnectionPostgre {
     private void readDataBaseAccessFile() {
 
         try {
-            String content = new String(Files.readAllBytes(Path.of("src/main/resources/credentialsPostgre.json")));
+            //System.out.println(System.getProperty("user.dir"));
+            String content = new String(Files.readAllBytes(Path.of("DatabaseLib/src/main/resources/credentialsPostgre.json")));
             JSONObject json = new JSONObject(content);
 
             this.host = json.getString("host");
@@ -49,6 +50,7 @@ public class ManagementConnectionPostgre {
 
         } catch (IOException e) {
             logger.severe("Error reading database access file: " + e.getMessage());
+            System.exit(-1);
         }
 
     }
