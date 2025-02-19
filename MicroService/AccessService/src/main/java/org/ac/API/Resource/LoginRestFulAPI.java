@@ -10,6 +10,7 @@ import org.ac.MainApp.interfacce.LoginService;
 import org.dao.Interfacce.UtenteDAO;
 import org.dao.postgre.UtentePostgreDAO;
 
+import org.md.Utente.Admin;
 import org.md.Utente.Utente;
 
 
@@ -17,7 +18,6 @@ import org.md.Utente.Utente;
 public class LoginRestFulAPI implements LoginAPI {
 
     LoginService login_access =  new Login();
-    UtenteDAO utenteDAO = new UtentePostgreDAO();
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
