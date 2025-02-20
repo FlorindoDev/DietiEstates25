@@ -54,7 +54,7 @@ class AccessController {
     );
   }
 
-  static Future<String> richiestaLogin(Utente utente) async {
+  static Future<dynamic> richiestaLogin(Utente utente) async {
     http.Response response;
 
     print(jsonEncode(utente.toJson()));
@@ -72,27 +72,27 @@ class AccessController {
       print(e.toString());
       // Se c'è un errore di connessione, rilancia con un messaggio specifico
       //throw Exception("Servizio non attualmente disponibile, prova tra qualche minuto");
-      return "Servizio non attualmente disponibile, prova tra qualche minuto";
+      return {"code": null, "message": "Servizio non attualmente disponibile, prova tra qualche minuto"};
     }
 
     // Controlla se lo statusCode non è 200 (OK)
-    print(response.statusCode);
-    var rispostajson = json.decode(response.body);
-    if (rispostajson['code'] == 1) {
-      print("10");
-      print(response.body);
-      return rispostajson["error"];
-    }
-
-    print("3"); // Questo viene eseguito solo se tutto va a buon fine
-    return "Successo";
+    return json.decode(response.body);
   }
 
-  static void toLogin(Utente utente) {
+  static void toLogin(Utente utente, dynamic context) {
     valida.validateEmail(utente.email);
     valida.validatePassword(utente.password);
     print("eseguo prova");
-    richiestaLogin(utente);
+    richiestaLogin(utente).then((risultato) {
+      //risultato = json.decode(risultato);
+      if (risultato == null)
+        AccessController.mostraPopUp(context, "Attenzione", "Servizio non attualmente disponibile, prova tra qualche minuto");
+      else if (risultato['code'] == 1) {
+        AccessController.mostraPopUp(context, "Attenzione", risultato['message']);
+      } else if (risultato['code'] == 0) {
+        AccessController.mostraPopUp(context, "Complimenti", "Login Effettuato!");
+      }
+    });
     print("finito prova");
   }
 
