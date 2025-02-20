@@ -1,4 +1,11 @@
 .idea/
 *.class
+<<<<<<< HEAD
 android/
 target/
+=======
+target/
+android/
+windows/
+out/
+>>>>>>> fdf99a3a8e109221898f8a8e453f5c7868b0cca0

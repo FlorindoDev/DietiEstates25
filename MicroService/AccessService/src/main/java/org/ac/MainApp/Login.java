@@ -2,7 +2,6 @@ package org.ac.MainApp;
 
 import org.ac.API.JWT.JWTUtil;
 import org.ac.MainApp.interfacce.LoginService;
-import org.ac.Validaitor.Validate;
 import org.dao.Interfacce.UtenteDAO;
 
 import org.dao.postgre.UtentePostgreDAO;
@@ -29,7 +28,7 @@ public class Login implements LoginService{
 
             List<String> roles = new ArrayList<>();
             roles.add(userFromDB.getClass().getSimpleName());
-            return JWTUtil.generateToken(emailFromDB,roles);
+            return "{\"code\":0 , \"message\":\"" + JWTUtil.generateToken(emailFromDB,roles) + "\"}";
 
 
         } catch (DietiEstateException e) {
