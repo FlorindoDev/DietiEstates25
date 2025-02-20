@@ -16,6 +16,7 @@ public class Utente extends TranslationToJson {
 
     protected int id_user;
     protected String nome;
+
     protected String email;
     protected String cognome;
     protected String password;
@@ -100,7 +101,8 @@ public class Utente extends TranslationToJson {
 
         protected int id_user;
         protected String nome = "";
-        protected String email;
+
+        protected String email = "";
         protected String cognome = "";
         protected String password = "";
         protected Boolean notify_appointment = null;

@@ -45,7 +45,7 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
     }
 
     @Override
-    public boolean hasNextRow() throws SQLException {
+    public boolean nextRow() throws SQLException {
         if (this.result == null) {throw new SQLException();}
         try {
             if(!this.result.next())throw new SQLException();
@@ -59,7 +59,7 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
 
     public PreparedStatement getStatment(String query){
         try {
-            this.stmt = this.managerConnection.getConnection().prepareStatement(query);
+            this.stmt = this.managerConnection.getConnection().prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         } catch (SQLException e) {
             logger.severe("Error executing query: " + e.getMessage());
         }
@@ -147,5 +147,11 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
 
     public String getKeyCrypt() {
         return managerConnection.getKeycrypt();
+    }
+
+    public boolean hasNextRow() throws SQLException {
+        boolean hasnext = !(result.next());
+        result.previous();
+        return hasnext;
     }
 }

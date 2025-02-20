@@ -20,7 +20,7 @@ public class UtentePostgreDAO implements UtenteDAO {
     private CommunicationWithPostgre connection = new CommunicationWithPostgre();
     private static final Logger logger = Logger.getLogger(CommunicationWithPostgre.class.getName());
 
-    protected void PrepareStatmentGetUserAndContactDB(Utente utente, String Query) throws DietiEstateException {
+    protected PreparedStatement PrepareStatementGetUser(Utente utente, String Query) throws DietiEstateException {
         PreparedStatement stmt = connection.getStatment(Query);
 
         try {
@@ -30,22 +30,27 @@ public class UtentePostgreDAO implements UtenteDAO {
             throw new ErrorCreateStatment();
         }
 
+        return stmt;
+
+    }
+
+    protected void ContactDB(PreparedStatement stmt) throws DietiEstateException {
 
         try {
             connection.makeQuery(stmt);
         } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
-
         try {
-            connection.hasNextRow();
+            connection.nextRow();
         } catch (SQLException e) {
             throw new UserNotFoundException();
         }
     }
 
-    private PreparedStatement PrepareStatmentGetForLogin(Utente utente,String Query) throws DietiEstateException {
+    private PreparedStatement PrepareStatementGetForLogin(Utente utente, String Query) throws DietiEstateException {
 
         PreparedStatement stmt = connection.getStatment(Query);
 
@@ -61,7 +66,7 @@ public class UtentePostgreDAO implements UtenteDAO {
             }
 
         } catch (Exception e) {
-            logger.severe("Error executing query: " + e.getMessage());
+            logger.severe("[-] Error executing query: " + e.getMessage());
             throw new ErrorCreateStatment();
 
         }
@@ -105,18 +110,20 @@ public class UtentePostgreDAO implements UtenteDAO {
                 "SELECT idagente as id_user,email, 'Agent' AS user_type FROM agenteimmobiliare WHERE ? like email and password like crypt( ? , '"+ keycrypt +"')";
 
 
-        PreparedStatement stmt = PrepareStatmentGetForLogin(utente, Query);
+        PreparedStatement stmt = PrepareStatementGetForLogin(utente, Query);
 
         try {
             connection.makeQuery(stmt);
         } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
         try {
-            connection.hasNextRow();
+            connection.nextRow();
             user = retrunEffectiveType(user);
         } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
             throw new UserNotFoundException();
         }
         return user;

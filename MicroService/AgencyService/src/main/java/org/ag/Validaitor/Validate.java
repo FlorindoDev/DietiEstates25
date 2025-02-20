@@ -1,10 +1,10 @@
-package org.ac.Validaitor;
+package org.ag.Validaitor;
 
-import org.ac.Validaitor.interfacce.Validaitor;
+import org.ag.Validaitor.Interfacce.Validaitor;
 import org.exc.DietiEstateException;
+import org.exc.DietiEstateMicroServiceException.AgencyNameNotValid;
 import org.exc.DietiEstateMicroServiceException.UserEmailNotValid;
 import org.exc.DietiEstateMicroServiceException.UserGeneralityNotValid;
-import org.exc.DietiEstateMicroServiceException.UserPassowordNotValid;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,7 +13,7 @@ public class Validate implements Validaitor {
 
     private static Validate validate = null;
     private final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-    private final String NAME_REGEX = "^[a-zA-ZÀ-ÖØ-öø-ÿ'’ -]+$";
+    private final String NAME_REGEX = "^[a-zA-ZÀ-ÖØ-öø-ÿ'’]+$";
     private Validate() {}
 
     public static Validate getInstance(){
@@ -39,27 +39,24 @@ public class Validate implements Validaitor {
     }
 
     @Override
-    public Boolean validatePassword(String password)throws DietiEstateException {
-
-        if(password == null) throw new UserEmailNotValid();
-
-        if(password.length() < 8){
-            throw new UserPassowordNotValid();
-        }
-        return true;
+    public Boolean validatePartitaIVA(String partiaIVA) throws DietiEstateException{
+        return false;
     }
 
     @Override
-    public Boolean validateGenerality(String name, String cognome)throws DietiEstateException {
+    public Boolean validateSede(String sede) throws DietiEstateException{
+        return false;
+    }
 
-        if(name == null || cognome == null) throw new UserGeneralityNotValid();
+    @Override
+    public Boolean validateAgencyName(String agencyName) throws DietiEstateException{
+        if(agencyName == null )throw new AgencyNameNotValid();
 
         Pattern pattern = Pattern.compile(NAME_REGEX);
-        Matcher nome = pattern.matcher(name);
-        Matcher surname = pattern.matcher(cognome);
+        Matcher nome = pattern.matcher(agencyName);
 
-        if(!nome.matches() || !surname.matches()){
-            throw new UserGeneralityNotValid();
+        if(!nome.matches()){
+            throw new AgencyNameNotValid();
         }
         return true;
     }

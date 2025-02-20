@@ -7,5 +7,5 @@ public class ErrorCreateStatment extends DietiEstateDBexception {
         super("{\"code\": 3 , \"error\": \" Error making statment\"}");
     }
 
-    public ErrorCreateStatment(String message){super("{\"code\": 2 , \"error\": \" Error execute query\", \"extraInfo\": \" " + message + "\"}");}
+
 }

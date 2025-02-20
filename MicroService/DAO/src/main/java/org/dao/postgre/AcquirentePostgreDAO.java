@@ -4,6 +4,7 @@ import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AcquirenteDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
+import org.exc.DataBaseException.UserElreadyExists;
 import org.exc.DietiEstateException;
 import org.md.Utente.Acquirente;
 
@@ -22,7 +23,9 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
 
         String Query="SELECT * FROM acquirente where ? = email";
 
-        PrepareStatmentGetUserAndContactDB(acquirente, Query);
+        PreparedStatement stmt = PrepareStatementGetUser(acquirente, Query);
+
+        ContactDB(stmt);
 
         //TODO MANCACO DEGLI ATTRIBUTI, si devo aggiugnere prima nel DB
         acquirente = new Acquirente.Builder(connection.extractInt("idagente"), connection.extractString("email"))
@@ -49,13 +52,14 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
             stmt.setString(3, acquirente.getCognome());
             stmt.setString(4, acquirente.getPassword());
         } catch (SQLException e) {
-            logger.severe("Error executing query: " + e.getMessage());
+            logger.severe("[-] Error executing query: " + e.getMessage());
             throw new ErrorCreateStatment();
         }
 
         try {
             connection.makeQueryUpdate(stmt);
         } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -64,6 +68,27 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
 
     @Override
     public void updateUser(Acquirente changes) {
+
+    }
+
+    @Override
+    public boolean isUserAbsent(Acquirente acquirente) throws DietiEstateException {
+
+        String Query="SELECT * FROM acquirente where email = ?";
+
+        //lancia eccezzione se non trova utente
+        PreparedStatement stmt = PrepareStatementGetUser(acquirente, Query);
+
+        try {
+            connection.makeQuery(stmt);
+            if(!connection.hasNextRow()) throw new UserElreadyExists();
+            return true;
+        } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
+
 
     }
 }
