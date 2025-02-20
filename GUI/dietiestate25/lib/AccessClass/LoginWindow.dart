@@ -22,7 +22,7 @@ class LoginWindow extends StatefulWidget {
 class _LoginWindowState extends State<LoginWindow> {
   
   Utente utente = Utente.builder
-    .setId(0)
+    .setId("")
     .setEmail("")
     .build();
 
@@ -69,13 +69,13 @@ class _LoginWindowState extends State<LoginWindow> {
       appBar: widget.appbar,
       
       body: Container(
-         decoration: BoxDecoration(
+         decoration: const BoxDecoration(
           color: MyApp.panna,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-              bottomLeft: Radius.circular(0),
-              bottomRight: Radius.circular(0),
+              topLeft: const Radius.circular(30),
+              topRight: const Radius.circular(30),
+              bottomLeft: const Radius.circular(0),
+              bottomRight: const Radius.circular(0),
             ),
           ),
 
@@ -95,12 +95,12 @@ class _LoginWindowState extends State<LoginWindow> {
 
                   },
                   style: AccessController.clickable_style_button,
-                  child: Text('Crea Agenzia')
+                  child: const Text('Crea Agenzia'),
                 ), 
                 ElevatedButton(
                   onPressed: null,
                   style: AccessController.not_clickable_style_button,
-                  child: Text('Login')
+                  child: const Text('Login'),
                 ),
                 ElevatedButton(
                   onPressed: (){
@@ -108,14 +108,14 @@ class _LoginWindowState extends State<LoginWindow> {
                     Navigator.of(context).pushNamed(AccessController.singUpWindow);
                   },
                   style: AccessController.clickable_style_button,
-                  child: Text('Sign Up',)
+                  child: const Text('Sign Up',),
             
                 ),
               ],
             ),
              
             Container(
-            margin: EdgeInsets.symmetric(horizontal: 40),
+            margin: const EdgeInsets.symmetric(horizontal: 40),
             
             child:Column(
               spacing: 20,
@@ -126,10 +126,10 @@ class _LoginWindowState extends State<LoginWindow> {
                   style: MyApp.stile_testo_solo_nero,      
                   decoration: InputDecoration(
 
-                  icon : Icon(Icons.alternate_email_rounded),
+                  icon : const Icon(Icons.alternate_email_rounded),
                   iconColor : MyApp.blu ,
-                  label: Text('Email'),
-                  border: OutlineInputBorder(),
+                  label: const Text('Email'),
+                  border: const OutlineInputBorder(),
                   
                   
 
@@ -145,11 +145,11 @@ class _LoginWindowState extends State<LoginWindow> {
                   obscureText : _obscureText,
                   style: MyApp.stile_testo_solo_nero, 
                   decoration: InputDecoration(
-                    icon : Icon(Icons.key_sharp),
+                    icon : const Icon(Icons.key_sharp),
                     iconColor : MyApp.blu ,
-                    label: Text('Password'),
+                    label: const Text('Password'),
             
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       
                     ),
                     
@@ -183,9 +183,13 @@ class _LoginWindowState extends State<LoginWindow> {
                   onPressed: 
                     isCampiCompilati ? (){
                       try{
+                        print("Prima");
                         AccessController.toLogin(utente);
+                        print("Dopo");
                       }catch(e){
+                        print("Entro");
                         AccessController.mostraPopUp(context,"Attenzione",e.toString());
+                        print("Esco");
                       }
                       
                     }: null,
@@ -194,7 +198,7 @@ class _LoginWindowState extends State<LoginWindow> {
                     foregroundColor: WidgetStateProperty.all(Colors.white),
                     
                   ),
-                  child: Text('Accedi',)
+                  child: const Text('Accedi',)
                 ), 
           ],
         ),

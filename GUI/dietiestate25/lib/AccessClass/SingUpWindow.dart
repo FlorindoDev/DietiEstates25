@@ -22,7 +22,7 @@ class SingUpWindow extends StatefulWidget {
 class _SingUpWindowState extends State<SingUpWindow> {
   
   Utente utente = Utente.builder
-    .setId(0)
+    .setId("")
     .setEmail("")
     .build();
 

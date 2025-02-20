@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dietiestate25/AccessClass/CreateAgencyWindow.dart';
 import 'package:dietiestate25/Model/Agenzia/Agenzia.dart';
 import 'package:dietiestate25/Model/Utente/Utente.dart';
@@ -8,9 +11,13 @@ import 'package:dietiestate25/main.dart';
 import 'package:dietiestate25/AccessClass/LoginWindow.dart';
 import 'package:dietiestate25/AccessClass/SingUpWindow.dart';
 
+import 'package:http/http.dart' as http;
+
 class AccessController {
   
-  
+  static final url = Uri.parse("http://localhost:7001/makeLogin");
+
+
   static const loginWindow = '/LoginWindow';
   static const singUpWindow = '/SingUpWindow';
   static const createAgencyWindow = '/CreateAgencyWindow';
@@ -56,11 +63,48 @@ class AccessController {
 
   }
 
-  
-  static void toLogin(Utente utente){
+
+  static void richiestaLogin(Utente utente) {
+    http.Response response;
+    
+    print(jsonEncode(utente.toJson()));
+
+    try {
+      // Fai la richiesta HTTP
+      response = http.post(
+        url, // URL valido
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(utente.toJson()),
+      ) as http.Response;
+
+      print("1");
+
+      
+    } catch (e) {
+      print(e.toString());
+      // Se c'è un errore di connessione, rilancia con un messaggio specifico
+      throw Exception("Servizio non attualmente disponibile, prova tra qualche minuto");
+      
+    } 
+
+    // Controlla se lo statusCode non è 200 (OK)
+    if (response.statusCode != 200) {
+      throw Exception("Email o password non corretti");
+    }
+
+    print("3"); // Questo viene eseguito solo se tutto va a buon fine
+  }
+
+
+
+
+  static void toLogin(Utente utente) {
     
     valida.validateEmail(utente.email);
     valida.validatePassword(utente.password);
+    print("eseguo prova");
+    richiestaLogin(utente);
+    print("finito prova");
 
   }
 

@@ -12,6 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
   
+  http: ^0.13.6  # Controlla se esiste una versione più recente
+
 
 dev_dependencies:
   flutter_test:

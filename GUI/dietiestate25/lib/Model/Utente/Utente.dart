@@ -1,5 +1,9 @@
-class Utente {
-  int _id_user = 0;
+import 'package:dietiestate25/Json/JSONConvertable.dart';
+
+import 'dart:convert';
+
+class Utente implements Jsonconvertable {
+  String _id_user = "";
   String _email = "";
   String _cognome = "";
   String _password = "";
@@ -17,9 +21,9 @@ class Utente {
   static UtenteBuilder get builder => UtenteBuilder();
 
   
-  int get id_user => _id_user;
+  String get id_user => _id_user;
 
-  set id_user(int value) {
+  set id_user(String value) {
     _id_user = value;
   }
 
@@ -52,7 +56,21 @@ class Utente {
   set email(String value) {
     _email = value;
   }
-
+  
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+    'type':'Utente',
+    'id_user': _id_user,
+    'nome': _nome,
+    'email': _email,
+    'cognome': _cognome,
+    'password':  _password,
+    "notify_appointment":null,
+    'idPushNotify':  _idPushNotify,
+    
+    };
+  }
 
 
 }
@@ -60,14 +78,14 @@ class Utente {
 
 class UtenteBuilder{
 
-  int _id_user = 0;
+  String _id_user = "";
   String _email = "";
   String _cognome = "";
   String _password = "";
   String _idPushNotify = "";
   String _nome = "";
 
-  UtenteBuilder setId(int idUser) {
+  UtenteBuilder setId(String idUser) {
     _id_user = idUser;
     return this;
   }
