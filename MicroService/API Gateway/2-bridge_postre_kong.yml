@@ -1,0 +1,30 @@
+services:
+  kong-migrations:
+    image: kong/kong-gateway:3.9.0.1
+    container_name: kong-migrations
+    networks:
+      - kong-net
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_PASSWORD: kongpass
+      KONG_PASSWORD: test
+    command: kong migrations bootstrap
+    depends_on:
+      - kong-database
+
+  kong-database:
+    image: postgres:13
+    container_name: kong-database
+    networks:
+      - kong-net
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: kong
+      POSTGRES_DB: kong
+      POSTGRES_PASSWORD: kongpass
+
+networks:
+  kong-net:
+    driver: bridge
