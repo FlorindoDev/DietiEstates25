@@ -20,7 +20,6 @@ class Utente implements Jsonconvertable {
 
   static UtenteBuilder get builder => UtenteBuilder();
 
-  
   String get id_user => _id_user;
 
   set id_user(String value) {
@@ -44,7 +43,7 @@ class Utente implements Jsonconvertable {
   set idPushNotify(String value) {
     _idPushNotify = value;
   }
-  
+
   String get nome => _nome;
 
   set nome(String value) {
@@ -56,28 +55,22 @@ class Utente implements Jsonconvertable {
   set email(String value) {
     _email = value;
   }
-  
+
   @override
   Map<String, dynamic> toJson() {
     return {
-    'type':'Utente',
-    'id_user': _id_user,
-    'nome': _nome,
-    'email': _email,
-    'cognome': _cognome,
-    'password':  _password,
-    "notify_appointment":null,
-    'idPushNotify':  _idPushNotify,
-    
+      'id_user': _id_user,
+      'nome': _nome,
+      'email': _email,
+      'cognome': _cognome,
+      'password': _password,
+      "notify_appointment": null,
+      'idPushNotify': _idPushNotify,
     };
   }
-
-
 }
 
-
-class UtenteBuilder{
-
+class UtenteBuilder {
   String _id_user = "";
   String _email = "";
   String _cognome = "";
@@ -113,5 +106,4 @@ class UtenteBuilder{
   Utente build() {
     return Utente._builder(this);
   }
-    
-  }
+}
