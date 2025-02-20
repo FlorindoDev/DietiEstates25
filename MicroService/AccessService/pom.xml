@@ -88,6 +88,15 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>JWTspecifications.json</include> <!-- Includi tutti i file nella cartella resources -->
+                    <include>META-INF/MANIFEST.MF</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -95,8 +104,8 @@
                 <version>3.8.1</version>
                 <inherited>true</inherited>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -110,8 +119,17 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
                 <configuration>
-                    <mainClass>org.ac.MainApp.Main</mainClass>
+                    <archive>
+                        <manifestEntries>
+                            <Main-Class>org.ac.MainApp.Main</Main-Class> <!-- Imposta qui la tua classe principale -->
+                        </manifestEntries>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>

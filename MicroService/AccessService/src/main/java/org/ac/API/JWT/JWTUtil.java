@@ -1,16 +1,24 @@
 package org.ac.API.JWT;
 
+import DBLib.Postgres.ManagementConnectionPostgre;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class JWTUtil {
@@ -19,8 +27,11 @@ public class JWTUtil {
     public static String generateToken(String email, List<String> roles) {
         JsonNode rootNode = null;
         try {
-            //System.out.println(System.getProperty("user.dir"));
-            rootNode = new ObjectMapper().readTree(new File("AccessService/src/main/resources/JWTspecifications.json"));
+
+            InputStream inputStream = ManagementConnectionPostgre.class.getResourceAsStream("/JWTspecifications.json");
+            String jsonString = new Scanner(inputStream, StandardCharsets.UTF_8).useDelimiter("\\A").next();
+
+            rootNode = new ObjectMapper().readTree(jsonString);
         } catch (IOException e) {
             logger.severe("[-] Errore lettura Json per TokenJWT");
             System.exit(-1);

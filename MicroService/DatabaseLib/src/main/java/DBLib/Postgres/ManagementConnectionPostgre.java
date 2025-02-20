@@ -1,12 +1,17 @@
 package DBLib.Postgres;
 
+import java.io.InputStream;
+import java.net.URISyntaxException;
+
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Scanner;
 import java.util.logging.Logger;
 import java.io.IOException;
 //file
 import org.json.JSONObject;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+
 //sql
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -39,22 +44,17 @@ public class ManagementConnectionPostgre {
 
     private void readDataBaseAccessFile() {
 
-        try {
-            //System.out.println(System.getProperty("user.dir"));
-            String content = new String(Files.readAllBytes(Path.of("DatabaseLib/src/main/resources/credentialsPostgre.json")));
-            JSONObject json = new JSONObject(content);
+        //System.out.println(System.getProperty("user.dir"));
+        InputStream inputStream = ManagementConnectionPostgre.class.getResourceAsStream("/credentialsPostgre.json");
+        String jsonString = new Scanner(inputStream, StandardCharsets.UTF_8).useDelimiter("\\A").next();
+        JSONObject json = new JSONObject(jsonString);
 
-            this.host = json.getString("host");
-            this.user = json.getString("user");
-            this.password = json.getString("password");
-            this.port = json.getString("port");
-            this.database = json.getString("database");
-            this.keycrypt = json.getString("keycrypt");
-
-        } catch (IOException e) {
-            logger.severe("Error reading database access file: " + e.getMessage());
-            System.exit(-1);
-        }
+        this.host = json.getString("host");
+        this.user = json.getString("user");
+        this.password = json.getString("password");
+        this.port = json.getString("port");
+        this.database = json.getString("database");
+        this.keycrypt = json.getString("keycrypt");
 
     }
 
