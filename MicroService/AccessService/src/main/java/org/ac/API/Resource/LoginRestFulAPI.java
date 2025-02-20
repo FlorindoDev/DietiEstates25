@@ -7,10 +7,6 @@ import jakarta.ws.rs.*;
 import org.ac.MainApp.Login;
 import org.ac.MainApp.interfacce.LoginService;
 
-import org.dao.Interfacce.UtenteDAO;
-import org.dao.postgre.UtentePostgreDAO;
-
-import org.md.Utente.Admin;
 import org.md.Utente.Utente;
 
 

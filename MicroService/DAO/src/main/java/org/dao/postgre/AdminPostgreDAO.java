@@ -3,12 +3,8 @@ package org.dao.postgre;
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AdminDAO;
 import org.exc.DietiEstateException;
-import org.exc.ErrorExecutingQuery;
 import org.md.Utente.Admin;
-import org.md.Utente.Utente;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
@@ -23,8 +19,8 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
         String Query="SELECT * FROM amministratore where ? = email";
 
-        PrepareStatmentAndContactDB(admin, Query);
-
+        PrepareStatmentGetUserAndContactDB(admin, Query);
+        //TODO MANCACO DEGLI ATTRIBUTI si devo aggiugnere prima nel DB
         admin = new Admin.Builder(connection.extractInt("idamministratore"), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))

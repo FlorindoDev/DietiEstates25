@@ -17,3 +17,5 @@ Abbiamo due grandi categori: <br>
 - `0:`Successo <br>
 - `1:` Utente non trovato nel DB <br>
 - `2:` Errore query non eseguita <br>
+- `101:` Email non valida <br>
+- `102:` Password non valida <br>
