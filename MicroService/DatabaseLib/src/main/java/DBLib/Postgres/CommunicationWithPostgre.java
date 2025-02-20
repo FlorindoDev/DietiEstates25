@@ -46,15 +46,15 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
 
     @Override
     public boolean hasNextRow() throws SQLException {
-        if (this.result != null) {
-            try {
-                return this.result.next();
-            } catch (SQLException e) {
-                logger.severe("Error executing NextRow: " + e.getMessage());
-                throw e;
-            }
+        if (this.result == null) {throw new SQLException();}
+        try {
+            if(!this.result.next())throw new SQLException();
+            return true;
+        } catch (SQLException e) {
+            logger.severe("Error executing NextRow: " + e.getMessage());
+            throw e;
         }
-        return false;
+
     }
 
     public PreparedStatement getStatment(String query){
