@@ -2,7 +2,6 @@ package org.ac.MainApp;
 
 import org.ac.API.JWT.JWTUtil;
 import org.ac.MainApp.interfacce.LoginService;
-import org.ac.Validaitor.Validate;
 import org.dao.Interfacce.UtenteDAO;
 
 import org.dao.postgre.UtentePostgreDAO;
