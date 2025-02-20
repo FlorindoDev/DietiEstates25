@@ -1,2 +1,6 @@
 .idea/
 *.class
+target/
+android/
+windows/
+out/
