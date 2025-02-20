@@ -4,7 +4,7 @@ import org.exc.DataBaseException.DietiEstateDBexception;
 
 public class ErrorCreateStatment extends DietiEstateDBexception {
     public ErrorCreateStatment() {
-        super("{\"code\": 3 , \"error\": \" Error making statment\"}");
+        super("{\"code\": 3 , \"message\": \" Error making statment\"}");
     }
 
 

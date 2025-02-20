@@ -29,7 +29,7 @@ public class Login implements LoginService{
 
             List<String> roles = new ArrayList<>();
             roles.add(userFromDB.getClass().getSimpleName());
-            return JWTUtil.generateToken(emailFromDB,roles);
+            return "{\"code\":0\"message\":\"JWTUtil.generateToken(emailFromDB,roles)\"}";
 
 
         } catch (DietiEstateException e) {
