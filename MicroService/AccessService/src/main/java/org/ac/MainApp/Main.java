@@ -29,10 +29,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         final HttpServer server = startServer();
-//        Utente acquirente = new Utente.Builder(1,"utente1@email.com")
-//                .setPassword("ciao")
-//                .build();
-//        System.out.println(acquirente.Translate());
+        Utente acquirente = new Acquirente.Builder(1,"utente1@email.com")
+                .setPassword("ciao")
+                .build();
+        System.out.println(acquirente.Translate());
         System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
         System.in.read();
         server.stop();

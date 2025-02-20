@@ -10,7 +10,7 @@ public class TranslationToJson implements Translation {
 
         ObjectNode jsonNode = objectMapper.valueToTree(this);
 
-        jsonNode.put("type", this.getClass().getSimpleName());
+        //jsonNode.put("type", this.getClass().getSimpleName());
 
         return jsonNode.toString();
     }

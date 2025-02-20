@@ -3,9 +3,6 @@ package org.dao.postgre;
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AgentDAO;
 import org.exc.DietiEstateException;
-import org.exc.ErrorExecutingQuery;
-import org.md.Utente.Acquirente;
-import org.md.Utente.Admin;
 import org.md.Utente.Agent;
 
 import java.util.logging.Logger;
@@ -23,8 +20,8 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
 
         String Query="SELECT * FROM agenteimmobiliare where ? = email";
 
-        PrepareStatmentAndContactDB(agent, Query);
-
+        PrepareStatmentGetUserAndContactDB(agent, Query);
+        //TODO MANCACO DEGLI ATTRIBUTI si devo aggiugnere prima nel DB
         agent = new Agent.Builder(connection.extractInt("idagente"), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))

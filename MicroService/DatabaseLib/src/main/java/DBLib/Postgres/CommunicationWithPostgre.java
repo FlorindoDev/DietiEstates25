@@ -22,28 +22,39 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
     }
 
     @Override
-    public void makeQuery(PreparedStatement stmt) {
+    public void makeQuery(PreparedStatement stmt) throws SQLException {
 
         try {
             this.result = stmt.executeQuery();
             logger.info("Query executed successfully " + result.getStatement());
         } catch (SQLException e){
             logger.severe("Error executing query: " + e.getMessage());
+            throw e;
         }
 
     }
 
-    @Override
-    public boolean hasNextRow(){
-        if (this.result != null) {
-            try {
-                return this.result.next();
-            } catch (SQLException e) {
-                logger.severe("Error executing NextRow: " + e.getMessage());
-                return false;
-            }
+    public void makeQueryUpdate(PreparedStatement stmt) throws SQLException {
+        try {
+            int rowsAffected = stmt.executeUpdate();
+            logger.info("Query executed successfully, rows affected: " + rowsAffected);
+        } catch (SQLException e) {
+            logger.severe("Error executing query: " + e.getMessage());
+            throw e;
         }
-        return false;
+    }
+
+    @Override
+    public boolean hasNextRow() throws SQLException {
+        if (this.result == null) {throw new SQLException();}
+        try {
+            if(!this.result.next())throw new SQLException();
+            return true;
+        } catch (SQLException e) {
+            logger.severe("Error executing NextRow: " + e.getMessage());
+            throw e;
+        }
+
     }
 
     public PreparedStatement getStatment(String query){
@@ -132,5 +143,9 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
             logger.info("Closing database connection");
             this.managerConnection.closeConnection();
         }
+    }
+
+    public String getKeyCrypt() {
+        return managerConnection.getKeycrypt();
     }
 }

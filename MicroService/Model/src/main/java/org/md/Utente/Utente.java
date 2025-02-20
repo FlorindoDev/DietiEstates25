@@ -6,12 +6,12 @@ import org.exc.DietiEstateException;
 import org.md.Serializzazione.TranslationToJson;
 import org.md.Utente.interfacce.UserSeparators;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type") // Specifica il tipo nel JSON
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Agent.class, name = "Agent"), // Registra "agent" come sottotipo
-        @JsonSubTypes.Type(value = Admin.class, name = "Admin"), // Registra "Admin" come sottotipo
-        @JsonSubTypes.Type(value = Acquirente.class, name = "Acquirente") // Registra "Admin" come sottotipo
-})
+//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type") // Specifica il tipo nel JSON
+//@JsonSubTypes({
+//        @JsonSubTypes.Type(value = Agent.class, name = "Agent"), // Registra "agent" come sottotipo
+//        @JsonSubTypes.Type(value = Admin.class, name = "Admin"), // Registra "Admin" come sottotipo
+//        @JsonSubTypes.Type(value = Acquirente.class, name = "Acquirente") // Registra "Admin" come sottotipo
+//})
 public class Utente extends TranslationToJson {
 
     protected int id_user;

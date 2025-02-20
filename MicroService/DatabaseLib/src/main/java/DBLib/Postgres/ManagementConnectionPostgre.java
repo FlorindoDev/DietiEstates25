@@ -19,16 +19,18 @@ public class ManagementConnectionPostgre {
     private String user;
     private String port;
     private String database;
+    private String keycrypt;
 
     private static final Logger logger = Logger.getLogger(ManagementConnectionPostgre.class.getName());
 
 
-    public ManagementConnectionPostgre(String host, String user, String password, String port, String database) {
+    public ManagementConnectionPostgre(String host, String user, String password, String port, String database, String keycrypt) {
         this.host = host;
         this.user = user;
         this.password = password;
         this.port = port;
         this.database = database;
+        this.keycrypt = keycrypt;
     }
 
     public ManagementConnectionPostgre() {
@@ -47,6 +49,7 @@ public class ManagementConnectionPostgre {
             this.password = json.getString("password");
             this.port = json.getString("port");
             this.database = json.getString("database");
+            this.keycrypt = json.getString("keycrypt");
 
         } catch (IOException e) {
             logger.severe("Error reading database access file: " + e.getMessage());
@@ -81,5 +84,9 @@ public class ManagementConnectionPostgre {
 
     public Connection getConnection() {
         return connection;
+    }
+
+    public String getKeycrypt() {
+        return keycrypt;
     }
 }
