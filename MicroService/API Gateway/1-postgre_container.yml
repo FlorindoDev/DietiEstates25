@@ -1,0 +1,16 @@
+services:
+  kong-database:
+    image: postgres:13
+    container_name: kong-database
+    networks:
+      - kong-net
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: kong
+      POSTGRES_DB: kong
+      POSTGRES_PASSWORD: kongpass
+
+networks:
+  kong-net:
+    driver: bridge
