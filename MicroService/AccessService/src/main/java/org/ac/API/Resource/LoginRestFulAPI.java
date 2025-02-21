@@ -10,11 +10,12 @@ import org.ac.MainApp.interfacce.LoginService;
 import org.md.Utente.Utente;
 
 
-@Path("makeLogin")
+@Path("login")
 public class LoginRestFulAPI implements LoginAPI {
 
     LoginService login_access =  new Login();
     @POST
+    @Path("makeLogin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String makeLogin(Utente user) {

@@ -1,14 +1,11 @@
 package org.ac.MainApp;
 
 import org.ac.MainApp.interfacce.SignUpService;
-import org.ac.Validaitor.Validate;
+import org.ac.Validator.Validate;
 import org.dao.Interfacce.AcquirenteDAO;
-import org.dao.Interfacce.UtenteDAO;
 import org.dao.postgre.AcquirentePostgreDAO;
-import org.dao.postgre.UtentePostgreDAO;
 import org.exc.DietiEstateException;
 import org.md.Utente.Acquirente;
-import org.md.Utente.Utente;
 
 public class SignUp implements SignUpService {
 
