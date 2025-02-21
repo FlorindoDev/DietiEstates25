@@ -3,17 +3,20 @@ package org.adm.MainApp;
 import org.adm.MainApp.Interfacce.ManagmentAdminService;
 import org.adm.Validetor.Validate;
 import org.dao.Interfacce.AdminDAO;
+import org.dao.Interfacce.AgencyDAO;
 import org.dao.postgre.AdminPostgreDAO;
+import org.dao.postgre.AgencyPostgreDAO;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.md.Utente.Admin;
-import org.md.Utente.Utente;
+
 import java.util.ArrayList;
 
 
 public class ManagementAdmin implements ManagmentAdminService {
 
     private AdminDAO adminDAO = new AdminPostgreDAO();
+    private AgencyDAO agencyDAO = new AgencyPostgreDAO();
 
     @Override
     public String addAdmin(Admin admin, Agency agency) {
@@ -85,9 +88,28 @@ public class ManagementAdmin implements ManagmentAdminService {
     }
 
     @Override
-    public ArrayList<Utente> getAdmins(Agency agency) {
-        //TODO implementa
-        return null;
+    public String getAdmins(Agency agency) {
+        try{
+            //adminDAO.isUserPresent(admin);
+
+            ArrayList<Admin> admins = agencyDAO.getAdmins(agency);
+            String json = "{\"code\": 0, \"message\": \"success of action admin upgraded\", \"admins\": [{";
+
+            for (Admin admin : admins){
+                json = json.concat(admin.Translate());
+                if(!admin.equals(admins.getLast()))
+                    json = json.concat(",");
+            }
+
+
+            json = json + "}]}";
+
+            System.out.println(json);
+            return json;
+        }catch (DietiEstateException e){
+            return e.getMessage();
+        }
+
     }
 
 }

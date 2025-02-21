@@ -1,6 +1,10 @@
 package org.adm.API.Interfacce;
 
+import org.md.Agency.Agency;
 import org.md.Utente.Admin;
+import org.md.Utente.Utente;
+
+import java.util.ArrayList;
 
 
 public interface ManagementAdminAPI {
@@ -13,7 +17,7 @@ public interface ManagementAdminAPI {
 
     public String downgradeSupport(Admin admin);
 
-    public String loadAdmin(Admin admin);
+    public String loadAdmin(Agency agency);
 
 
 }
