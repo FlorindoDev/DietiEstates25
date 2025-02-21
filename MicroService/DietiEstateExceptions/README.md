@@ -24,3 +24,5 @@ Abbiamo due grandi categori: <br>
 - `101:` Email non valida <br>
 - `102:` Password non valida <br>
 - `103:` nome agenzia non valido <br>
+- `104:` Partita iva non valida <br>
+- `105:` Sede non valida <br>
