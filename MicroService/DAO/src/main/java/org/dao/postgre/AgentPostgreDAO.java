@@ -4,6 +4,7 @@ import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AgentDAO;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DietiEstateException;
+import org.md.Utente.Admin;
 import org.md.Utente.Agent;
 
 import java.sql.PreparedStatement;
@@ -11,6 +12,8 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
+
+    private final String TABLE = "agenteimmobiliare";
 
     private CommunicationWithPostgre connection = new CommunicationWithPostgre();
     private static final Logger logger = Logger.getLogger(CommunicationWithPostgre.class.getName());
@@ -53,7 +56,22 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
     }
 
     @Override
-    public void updateUser(Agent changes) {
+    public void updateUser(Agent utente) throws DietiEstateException{
+        super.updateUser(utente, TABLE);
+    }
+
+    @Override
+    public boolean isUserAbsent(Agent user) throws DietiEstateException {
+
+        return super.isUserAbsent(user, TABLE);
 
     }
+
+    @Override
+    public boolean isUserPresent(Agent user) throws DietiEstateException {
+
+        return super.isUserPresent(user, TABLE);
+
+    }
+
 }

@@ -8,6 +8,7 @@ import org.exc.DataBaseException.UserAlreadyExists;
 import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
+import org.md.Utente.Acquirente;
 import org.md.Utente.Admin;
 
 import java.sql.PreparedStatement;
@@ -16,31 +17,12 @@ import java.util.logging.Logger;
 
 public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
+    private final String TABLE = "amministratore";
+
     private CommunicationWithPostgre connection = new CommunicationWithPostgre();
     private static final Logger logger = Logger.getLogger(CommunicationWithPostgre.class.getName());
 
     public AdminPostgreDAO() {}
-
-    @Override
-    public boolean isAdminAbsent(Admin admin) throws DietiEstateException {
-
-        String Query="SELECT * FROM amministratore where email = ?";
-
-        //lancia eccezzione se non trova utente
-        PreparedStatement stmt = PrepareStatementGetUser(admin, Query);
-
-        try {
-            connection.makeQuery(stmt);
-            if(connection.hasNextRow()) throw new UserAlreadyExists();
-            return true;
-        } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
-            throw new ErrorExecutingQuery();
-        }
-
-
-
-    }
 
     @Override
     public Admin getUser(Admin admin) throws DietiEstateException {
@@ -104,8 +86,8 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     }
 
     @Override
-    public void updateUser(Admin changes) {
-
+    public void updateUser(Admin utente) throws DietiEstateException {
+        super.updateUser(utente, TABLE);
     }
 
     @Override
@@ -135,7 +117,13 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
             throw new UserNotExists();
         }
 
+    }
 
+
+    @Override
+    public boolean isUserAbsent(Admin user) throws DietiEstateException {
+
+        return super.isUserAbsent(user, TABLE);
 
     }
 
@@ -156,4 +144,11 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
         }
 
     }
+    public boolean isUserPresent(Admin user) throws DietiEstateException {
+
+        return super.isUserPresent(user, TABLE);
+
+    }
+
+
 }
