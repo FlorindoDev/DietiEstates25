@@ -64,11 +64,7 @@ public class ManagementAdmin implements ManagmentAdminService {
     public String upgradeSupportAdmin(Admin admin) {
         try{
             adminDAO.isUserPresent(admin);
-        }catch (DietiEstateException e){
-            return e.getMessage();
-        }
 
-        try{
             adminDAO.upgradeSupportAdmin(admin);
             return "{\"code\": 0, \"message\": \"success of action admin upgraded\"}";
         }catch (DietiEstateException e){
