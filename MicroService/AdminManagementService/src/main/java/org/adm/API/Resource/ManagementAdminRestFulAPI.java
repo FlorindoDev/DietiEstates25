@@ -8,7 +8,6 @@ import jakarta.ws.rs.core.MediaType;
 import org.adm.API.Interfacce.ManagementAdminAPI;
 import org.adm.MainApp.Interfacce.ManagmentAdminService;
 import org.adm.MainApp.ManagementAdmin;
-import org.exc.DietiEstateException;
 import org.md.Utente.Admin;
 
 @Path("ManagementAdmin")
@@ -40,7 +39,7 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Override
-    public String upgradeSupportAdmin(ManagementAdminJSON json) {
+    public String upgradeSupportAdmin(Admin admin) {
         //TODO implementa
         return null;
     }
@@ -50,7 +49,7 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Override
-    public String downgradeSupport(ManagementAdminJSON json) {
+    public String downgradeSupport(Admin admin) {
         //TODO implementa
         return null;
     }
@@ -60,7 +59,7 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Override
-    public String loadAdmin(ManagementAdminJSON json) {
+    public String loadAdmin(Admin admin) {
 
         //TODO implementa
         return null;
