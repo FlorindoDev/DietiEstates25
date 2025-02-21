@@ -5,6 +5,7 @@ import org.dao.Interfacce.AdminDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DataBaseException.UserAlreadyExists;
+import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.md.Utente.Admin;
@@ -104,6 +105,37 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
     @Override
     public void updateUser(Admin changes) {
+
+    }
+
+    @Override
+    public void removeAdmin(Admin admin) throws DietiEstateException {
+
+        String Query= "DELETE FROM amministratore WHERE email = ?";
+        System.out.println(Query);
+        PreparedStatement stmt = connection.getStatment(Query);
+        System.out.println(Query);
+        try {
+            stmt.setString(1, admin.getEmail());
+            System.out.println(stmt.toString());
+        } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorCreateStatment();
+        }
+
+        int res = 0;
+        try {
+            res = connection.makeQueryUpdate(stmt);
+        } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
+        if(res == 0){
+            throw new UserNotExists();
+        }
+
+
 
     }
 }
