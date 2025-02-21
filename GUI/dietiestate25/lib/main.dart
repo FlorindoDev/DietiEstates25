@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/AccessClass/LoginWindow.dart';
+import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/AccessClass/AccessController.dart';
 
 // import 'package:dietiestate25/Home/HomeController.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
               'UninaEstates',
               style: TextStyle(
                 fontSize: 25,
+                color: Colors.black,
               ),
             ),
             Text(
@@ -59,22 +61,43 @@ class MyApp extends StatelessWidget {
     ),
   );
 
+  static void mostraPopUpInformativo(dynamic context, String titolo, String messaggio) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(titolo),
+          icon: Icon(Icons.warning_rounded),
+          content: Text(messaggio),
+          actions: <Widget>[
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Chiude il dialogo
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: titleApp,
-      // initialRoute: AccessController.loginWindow,
-      // onGenerateRoute: AccessController.generateRoute,
-      darkTheme: ThemeData.dark(),
+      initialRoute: RouteWindows.loginWindow,
+      onGenerateRoute: RouteWindows.generateRoute,
+      //darkTheme: ThemeData.dark(),
       theme: ThemeData(
         //scaffoldBackgroundColor: const Color(0xff447A9C),
         //scaffoldBackgroundColor: const Color(0xfff1faee),
         scaffoldBackgroundColor: Colors.white,
 
         fontFamily: fontApp,
-
+        
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.black,
+          seedColor: Colors.white,
           primary: blu,
           secondary: rosso,
           tertiary: celeste,
@@ -88,8 +111,8 @@ class MyApp extends StatelessWidget {
 
         useMaterial3: true,
       ),
-      home: LoginWindow(appbar: MyApp.appBarNotBackable),
-      // home: HomeWindow(appbar: MyApp.appBarNotBackable),
+      //home: LoginWindow(appbar: MyApp.appBarNotBackable),
+      home: HomeWindow(appbar: MyApp.appBarNotBackable),
     );
   }
 }
