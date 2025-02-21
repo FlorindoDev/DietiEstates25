@@ -34,14 +34,16 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
 
     }
 
-    public void makeQueryUpdate(PreparedStatement stmt) throws SQLException {
+    public int makeQueryUpdate(PreparedStatement stmt) throws SQLException {
+        int rowsAffected;
         try {
-            int rowsAffected = stmt.executeUpdate();
+            rowsAffected = stmt.executeUpdate();
             logger.info("Query executed successfully, rows affected: " + rowsAffected);
         } catch (SQLException e) {
             logger.severe("Error executing query: " + e.getMessage());
             throw e;
         }
+        return rowsAffected;
     }
 
     @Override
