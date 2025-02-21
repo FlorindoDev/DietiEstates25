@@ -88,6 +88,22 @@ public class AgencyPostgreDAO implements AgencyDAO {
         }
     }
 
+    public boolean isAgencyPresent(Agency agency) throws DietiEstateException {
+
+        String Query = "SELECT * FROM agenziaimmobiliare where partitaIVA = ?";
+
+        PreparedStatement stmt = PrepareStatementGetAgency(agency,Query);
+
+        try {
+            connection.makeQuery(stmt);
+            if(!connection.hasNextRow()) throw new AgencyNotExists();
+            return true;
+        }catch(SQLException e){
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+    }
+
     @Override
     public boolean isNameAgencyAbsent(Agency agency) throws DietiEstateException {
 
@@ -108,6 +124,8 @@ public class AgencyPostgreDAO implements AgencyDAO {
 
     @Override
     public ArrayList<Admin> getAdmins(Agency agency) throws DietiEstateException {
+
+        isAgencyPresent(agency);
 
         String Query = "SELECT amministratore.email, amministratore.nome, amministratore.cognome, amministratore.issupportoamministratore, amministratore.partitaiva" +
                 " FROM amministratore INNER JOIN agenziaimmobiliare ON amministratore.partitaiva = agenziaimmobiliare.partitaiva" +
