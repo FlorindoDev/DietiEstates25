@@ -5,7 +5,9 @@ import org.md.Utente.Admin;
 import org.md.Utente.Agent;
 
 public interface AgentDAO{
-    public Agent getUser(Agent agent) throws DietiEstateException;
-    public void createUser(Agent changes) throws DietiEstateException;
-    public void updateUser(Agent changes) throws DietiEstateException;
+    Agent getUser(Agent agent) throws DietiEstateException;
+    void createUser(Agent changes) throws DietiEstateException;
+    void updateUser(Agent changes) throws DietiEstateException;
+    boolean isUserAbsent(Agent acquirente) throws DietiEstateException;
+    boolean isUserPresent(Agent acquirente) throws DietiEstateException;
 }

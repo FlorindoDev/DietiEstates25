@@ -3,9 +3,9 @@ package org.dao.Interfacce;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.md.Utente.Admin;
+import org.md.Utente.Agent;
 
 public interface AdminDAO {
-    boolean isAdminAbsent(Admin admin) throws DietiEstateException;
 
     public Admin getUser(Admin admin) throws DietiEstateException;
 
@@ -14,4 +14,7 @@ public interface AdminDAO {
     public void updateUser(Admin changes) throws DietiEstateException;
 
     public void removeAdmin(Admin admin) throws DietiEstateException;
+
+    boolean isUserAbsent(Admin acquirente) throws DietiEstateException;
+    boolean isUserPresent(Admin acquirente) throws DietiEstateException;
 }

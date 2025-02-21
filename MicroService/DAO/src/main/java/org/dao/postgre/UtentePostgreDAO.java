@@ -2,10 +2,9 @@ package org.dao.postgre;
 
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.UtenteDAO;
-import org.exc.DataBaseException.ErrorExecutingQuery;
+import org.exc.DataBaseException.*;
 import org.exc.DietiEstateException;
-import org.exc.DataBaseException.ErrorCreateStatment;
-import org.exc.DataBaseException.UserNotFoundException;
+import org.json.JSONObject;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
@@ -13,6 +12,8 @@ import org.md.Utente.Utente;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class UtentePostgreDAO implements UtenteDAO {
@@ -113,7 +114,80 @@ public class UtentePostgreDAO implements UtenteDAO {
         return user;
     }
 
+    public void updateUser(Utente changes, String tabella) throws DietiEstateException {
 
+        JSONObject jsonObject = new JSONObject(changes.Translate());
+        if (!jsonObject.isEmpty()) { // per evitare di fare update a vuoto
+
+            StringBuilder query = new StringBuilder("UPDATE "+tabella+" SET ");
+            List<Object> parameters = new ArrayList<>();
+            for (String key : jsonObject.keySet()) {
+                Object value = jsonObject.get(key);
+
+                if (!"id_user".equals(key) && !"email".equals(key) && !"null".equals(value.toString())) {
+                    query.append(key).append(" = ?, ");
+                    parameters.add(value);
+                }
+
+            }
+
+            query.setLength(query.length() - 2);
+
+            query.append(" where email = ?");
+
+            PreparedStatement stmt = connection.getStatment(String.valueOf(query));
+            try {
+                int index = 1;
+                for (Object param : parameters) {
+                    stmt.setObject(index++, param); //parte da 1
+                }
+
+                stmt.setString(index, changes.getEmail());
+                System.out.println(stmt.toString());
+
+                connection.makeQueryUpdate(stmt);
+            }catch (SQLException e){
+                logger.severe("[-] Error executing query: " + e.getMessage());
+                throw new ErrorExecutingQuery();
+            }
+        }
+
+    }
+
+    public boolean isUserAbsent(Utente acquirente, String table) throws DietiEstateException {
+
+        String Query="SELECT * FROM "+table+" where email = ?";
+
+        //lancia eccezzione se non trova utente
+        PreparedStatement stmt = PrepareStatementGetUser(acquirente, Query);
+
+        try {
+            connection.makeQuery(stmt);
+            if(connection.hasNextRow()) throw new UserAlreadyExists();
+            return true;
+        } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
+    }
+
+    protected boolean isUserPresent(Utente utente, String table) throws DietiEstateException {
+
+        String Query="SELECT * FROM "+table+" where email = ?";
+
+        //lancia eccezzione se non trova utente
+        PreparedStatement stmt = PrepareStatementGetUser(utente, Query);
+
+        try {
+            connection.makeQuery(stmt);
+            if(!connection.hasNextRow()) throw new UserNotExists();
+            return true;
+        } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+    }
 
 
 }

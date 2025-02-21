@@ -3,9 +3,7 @@ package org.ma.MainApp;
 import org.dao.postgre.AcquirentePostgreDAO;
 import org.dao.postgre.AdminPostgreDAO;
 import org.dao.postgre.AgentPostgreDAO;
-import org.dao.postgre.UtentePostgreDAO;
-import org.exc.DataBaseException.DietiEstateDBexception;
-import org.exc.DataBaseException.UserAlreadyExists;
+
 import org.exc.DietiEstateException;
 import org.ma.MainApp.Interface.ManagementAccountService;
 import org.ma.Validator.Interface.Validator;
@@ -23,26 +21,29 @@ public class ManagementAccount implements ManagementAccountService {
         validator = Validate.getInstance();
     }
 
+    private void validateData(Utente utente) throws DietiEstateException {
+        if (!(utente.getPassword() == null)) {
+            validator.validatePassword(utente.getPassword());
+        }
+        if (!(utente.getCognome() == null)) {
+            validator.ValidateName(utente.getNome());
+        }
+        if (!(utente.getNome() == null)) {
+            validator.ValidateName(utente.getNome());
+        }
+    }
+
     @Override
     public String applyChangeAcquirente(Acquirente utente) {
 
         AcquirentePostgreDAO dao = new AcquirentePostgreDAO();
-//        System.out.println(utente.Translate());
+
         try {
             dao.isUserPresent(utente);
 
-            if (!(utente.getPassword() == null)) {
-                validator.validatePassword(utente.getPassword());
-            }
-            if (!(utente.getCognome() == null)) {
-                validator.ValidateName(utente.getNome());
-            }
-            if (!(utente.getNome() == null)) {
-                validator.ValidateName(utente.getNome());
-            }
+            validateData(utente);
 
-//            utente.getNotify_new_estate(); non devono essere controllati
-//            utente.getChange_price_notify()
+            //TODO contollare path immagine profilo & STOREGE delle stesse
 
             dao.updateUser(utente);
 
@@ -51,17 +52,43 @@ public class ManagementAccount implements ManagementAccountService {
             return e.getMessage();
         }
 
-
     }
 
     @Override
     public String applyChangeAgent(Agent utente) {
-        return null;
+
+        AgentPostgreDAO dao = new AgentPostgreDAO();
+
+        try {
+            dao.isUserPresent(utente);
+
+            validateData(utente);
+
+            dao.updateUser(utente);
+
+            return "{\"code\": 0, \"message\": \"success of update action ManagementAccount\"}";
+        } catch (DietiEstateException e) {
+            return e.getMessage();
+        }
+
     }
 
     @Override
     public String applyChangeAdmin(Admin utente) {
-        return null;
+
+        AdminPostgreDAO dao = new AdminPostgreDAO();
+
+        try {
+            dao.isUserPresent(utente);
+
+            validateData(utente);
+
+            dao.updateUser(utente);
+
+            return "{\"code\": 0, \"message\": \"success of update action ManagementAccount\"}";
+        } catch (DietiEstateException e) {
+            return e.getMessage();
+        }
     }
 
     @Override
