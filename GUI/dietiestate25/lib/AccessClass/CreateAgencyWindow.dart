@@ -58,7 +58,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
     
 
     return Scaffold(
-      
+      resizeToAvoidBottomInset: false,
       appBar: widget.appbar,
       
       body: Container(

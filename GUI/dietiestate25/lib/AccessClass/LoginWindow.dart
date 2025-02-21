@@ -47,6 +47,7 @@ class _LoginWindowState extends State<LoginWindow> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: widget.appbar,
       body: Container(
         decoration: const BoxDecoration(

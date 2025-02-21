@@ -86,7 +86,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: titleApp,
-      initialRoute: RouteWindows.loginWindow,
+      //initialRoute: RouteWindows.loginWindow,
+      
       onGenerateRoute: RouteWindows.generateRoute,
       //darkTheme: ThemeData.dark(),
       theme: ThemeData(

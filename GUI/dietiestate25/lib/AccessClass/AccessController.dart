@@ -14,8 +14,10 @@ import 'package:dietiestate25/AccessClass/SingUpWindow.dart';
 import 'package:http/http.dart' as http;
 
 class AccessController {
-  //static final url = Uri.parse("http://api.florindodev.site/makeLogin");
-  static final url = Uri.parse("http://localhost:7001/makeLogin");
+  static final url = Uri.parse("http://api.florindodev.site/makeLogin");
+  //static final url = Uri.parse("http://127.0.0.1:7001/makeLogin");
+  //static final url = Uri.parse("http://10.0.2.2:7001/makeLogin");
+  
 
   static String token = "";
   static Validator valida = Validate();

@@ -65,7 +65,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
     
 
     return Scaffold(
-      
+      resizeToAvoidBottomInset: false,
       appBar: widget.appbar,
       
       body: Container(
