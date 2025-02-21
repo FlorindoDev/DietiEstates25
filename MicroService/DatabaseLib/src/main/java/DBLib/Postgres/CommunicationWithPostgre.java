@@ -150,7 +150,7 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
     }
 
     public boolean hasNextRow() throws SQLException {
-        boolean hasnext = !(result.next());
+        boolean hasnext = result.next();
         result.previous();
         return hasnext;
     }
