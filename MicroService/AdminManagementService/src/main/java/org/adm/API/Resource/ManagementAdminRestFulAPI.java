@@ -32,8 +32,6 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String removeAdmin(Admin admin) {
-
-        //TODO implementa
         return managementAdmin.removeAdmin(admin);
     }
 
