@@ -6,11 +6,11 @@ import org.md.Utente.Agent;
 
 public interface ManagementAccountAPI {
 
-    void applyChangeAcquirente(Acquirente utente);
+    String applyChangeAcquirente(Acquirente utente);
 
-    void applyChangeAgent(Agent utente);
+    String applyChangeAgent(Agent utente);
 
-    void applyChangeAdmin(Admin utente);
+    String applyChangeAdmin(Admin utente);
 
     String getAccountAcquirente(Acquirente utente);
 

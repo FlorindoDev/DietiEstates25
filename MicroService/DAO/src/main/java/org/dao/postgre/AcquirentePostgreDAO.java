@@ -5,11 +5,16 @@ import org.dao.Interfacce.AcquirenteDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DataBaseException.UserAlreadyExists;
+import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
 import org.md.Utente.Acquirente;
 
+import org.json.JSONObject;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class AcquirentePostgreDAO extends UtentePostgreDAO implements AcquirenteDAO {
@@ -73,7 +78,43 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
     }
 
     @Override
-    public void updateUser(Acquirente changes) {
+    public void updateUser(Acquirente changes) throws DietiEstateException {
+
+        JSONObject jsonObject = new JSONObject(changes.Translate());
+        if (!jsonObject.isEmpty()) { // per evitare di fare update a vuoto
+
+            StringBuilder query = new StringBuilder("UPDATE acquirente SET ");
+            List<Object> parameters = new ArrayList<>();
+            for (String key : jsonObject.keySet()) {
+                Object value = jsonObject.get(key);
+
+                if (!"id_user".equals(key) && !"email".equals(key) && !"null".equals(value.toString())) {
+                    query.append(key).append(" = ?, ");
+                    parameters.add(value);
+                }
+
+            }
+
+            query.setLength(query.length() - 2);
+
+            query.append(" where email = ?");
+
+            PreparedStatement stmt = connection.getStatment(String.valueOf(query));
+            try {
+                int index = 1;
+                for (Object param : parameters) {
+                    stmt.setObject(index++, param); //parte da 1
+                }
+
+                stmt.setString(index, changes.getEmail());
+                System.out.println(stmt.toString());
+
+                connection.makeQueryUpdate(stmt);
+            }catch (SQLException e){
+                logger.severe("[-] Error executing query: " + e.getMessage());
+                throw new ErrorExecutingQuery();
+            }
+        }
 
     }
 
@@ -94,7 +135,24 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
             throw new ErrorExecutingQuery();
         }
 
+    }
 
+    @Override
+    public boolean isUserPresent(Acquirente acquirente) throws DietiEstateException {
+
+        String Query="SELECT * FROM acquirente where email = ?";
+
+        //lancia eccezzione se non trova utente
+        PreparedStatement stmt = PrepareStatementGetUser(acquirente, Query);
+
+        try {
+            connection.makeQuery(stmt);
+            if(!connection.hasNextRow()) throw new UserNotExists();
+            return true;
+        } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
 
     }
 }

@@ -11,4 +11,6 @@ public interface AcquirenteDAO{
     public void updateUser(Acquirente changes) throws DietiEstateException;
 
     public boolean isUserAbsent(Acquirente changes) throws DietiEstateException;
+
+    boolean isUserPresent(Acquirente acquirente) throws DietiEstateException;
 }
