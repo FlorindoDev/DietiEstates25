@@ -29,7 +29,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
         try {
             connection.makeQuery(stmt);
-            if(!connection.hasNextRow()) throw new UserAlreadyExists();
+            if(connection.hasNextRow()) throw new UserAlreadyExists();
             return true;
         } catch (SQLException e) {
             logger.severe("[-] Error executing query: " + e.getMessage());
@@ -71,9 +71,12 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     @Override
     public void createUser(Admin admin) throws DietiEstateException{
 
+        String Query=
+                "INSERT INTO amministratore(email, issupportoamministratore, nome, cognome, password) VALUES" +
+                        "(?,?,?,?,crypt(?,'" +
+                        connection.getKeyCrypt() +
+                        "'))";
 
-
-        String Query="INSERT INTO amministratore(email, issupportoamministratore, nome, cognome, password) VALUES(?,?,?,?,crypt(?,'$abcdefghijklmopqrstuv.'))";
         System.out.println(Query);
         PreparedStatement stmt = connection.getStatment(Query);
 
