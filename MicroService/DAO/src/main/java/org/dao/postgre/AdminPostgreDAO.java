@@ -55,7 +55,6 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
             throw new ErrorExecutingQuery();
         }
 
-        //TODO MANCACO DEGLI ATTRIBUTI si devo aggiugnere prima nel DB
         admin = new Admin.Builder(connection.extractInt("idamministratore"), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))

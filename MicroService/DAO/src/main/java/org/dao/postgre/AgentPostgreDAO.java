@@ -33,13 +33,15 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
             throw new ErrorExecutingQuery();
         }
 
-        //TODO MANCACO DEGLI ATTRIBUTI si devo aggiugnere prima nel DB
+
         agent = new Agent.Builder(connection.extractInt("idagente"), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))
                 .setBiografia(connection.extractString("biografia"))
                 .setBiografia(connection.extractString("ImmagineProfilo"))
+                .setIdPushNotify(connection.extractString("idPushNoitfy"))
+                .setNotifyAppointment(connection.extractBoolean("notify_appointment"))
                 .build();
 
         return agent;
