@@ -20,6 +20,7 @@ Abbiamo due grandi categori: <br>
 - `3:` Utente gia esiste <br>
 - `4:` Agnecy gia esiste <br>
 - `5:` nome Agnecy gia esiste <br>
+- `6:` Utente non esiste <br>
 - `101:` Email non valida <br>
 - `102:` Password non valida <br>
 - `103:` nome agenzia non valido <br>
