@@ -158,7 +158,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     }
 
     @Override
-    public void downgradeSupport(Admin admin) throws DietiEstateException {
+    public void downgradeSupport(Admin admin) throws  DietiEstateException{
 
         String Query= "UPDATE amministratore SET issupportoamministratore = 'FALSE' WHERE email = ? ";
 

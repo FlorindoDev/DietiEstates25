@@ -5,10 +5,12 @@ import org.dao.Interfacce.AgencyDAO;
 import org.exc.DataBaseException.*;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
+import org.md.Utente.Admin;
 import org.md.Utente.Utente;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class AgencyPostgreDAO implements AgencyDAO {
@@ -101,6 +103,51 @@ public class AgencyPostgreDAO implements AgencyDAO {
             logger.severe("[-] Error executing query: " + e.getMessage());
             throw new ErrorExecutingQuery();
         }
+
+    }
+
+    @Override
+    public ArrayList<Admin> getAdmins(Agency agency) throws DietiEstateException {
+
+        String Query = "SELECT amministratore.email, amministratore.nome, amministratore.cognome, amministratore.issupportoamministratore, amministratore.partitaiva" +
+                " FROM amministratore INNER JOIN agenziaimmobiliare ON amministratore.partitaiva = agenziaimmobiliare.partitaiva" +
+                " WHERE amministratore.partitaiva = ?";
+
+        PreparedStatement stmt = PrepareStatementGetAgency(agency,Query);
+
+
+
+        try {
+            connection.makeQuery(stmt);
+
+            if(!connection.hasNextRow()){
+                throw new Exception();
+            }
+            ArrayList<Admin> admins = new ArrayList<Admin>();
+
+            do{
+
+                connection.nextRow();
+                Admin admin = new Admin.Builder(1,connection.extractString("amministratore.email"))
+                        .setName(connection.extractString("amministratore.nome"))
+                        .setCognome(connection.extractString("amministratore.cognome"))
+                        .setIsSupport(connection.extractBoolean("amministratore.issupportoamministratore"))
+                        .setAgency(agency)
+                        .build();
+
+                admins.add(admin);
+
+
+            }while(connection.hasNextRow());
+
+            return admins;
+
+        }catch(Exception e){
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
+
 
     }
 
