@@ -34,18 +34,6 @@ public class UtentePostgreDAO implements UtenteDAO {
 
     }
 
-    protected void ContactDB(PreparedStatement stmt) throws DietiEstateException {
-
-        try {
-            connection.makeQuery(stmt);
-            connection.nextRow();
-        } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
-            throw new ErrorExecutingQuery();
-        }
-
-    }
-
     private PreparedStatement PrepareStatementGetForLogin(Utente utente, String Query) throws DietiEstateException {
 
         PreparedStatement stmt = connection.getStatment(Query);
