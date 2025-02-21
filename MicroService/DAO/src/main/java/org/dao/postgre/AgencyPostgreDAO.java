@@ -21,7 +21,7 @@ public class AgencyPostgreDAO implements AgencyDAO {
 
         try {
             stmt.setString(1, agency.getCodice_partitaIVA());
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.severe("Error executing query: " + e.getMessage());
             throw new ErrorCreateStatment();
         }

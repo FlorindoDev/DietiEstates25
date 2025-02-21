@@ -156,7 +156,7 @@ public class UtentePostgreDAO implements UtenteDAO {
 
     public boolean isUserAbsent(Utente acquirente, String table) throws DietiEstateException {
 
-        String Query="SELECT * FROM "+table+" where email = ?";
+        String Query="SELECT * FROM "+ table +" where email = ?";
 
         //lancia eccezzione se non trova utente
         PreparedStatement stmt = PrepareStatementGetUser(acquirente, Query);

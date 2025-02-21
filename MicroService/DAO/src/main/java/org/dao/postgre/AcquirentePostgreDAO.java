@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class AcquirentePostgreDAO extends UtentePostgreDAO implements AcquirenteDAO {
 
-    private final String TABLE = "aquirente";
+    private final String TABLE = "acquirente";
 
     private CommunicationWithPostgre connection = new CommunicationWithPostgre();
     private static final Logger logger = Logger.getLogger(CommunicationWithPostgre.class.getName());
