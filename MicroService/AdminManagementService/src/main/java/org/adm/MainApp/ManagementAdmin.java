@@ -9,7 +9,6 @@ import org.md.Agency.Agency;
 import org.md.Utente.Admin;
 import org.md.Utente.Utente;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class ManagementAdmin implements ManagmentAdminService {
@@ -62,8 +61,19 @@ public class ManagementAdmin implements ManagmentAdminService {
     }
 
     @Override
-    public void upgradeSupportAdmin(Admin admin) {
-        //TODO implementa
+    public String upgradeSupportAdmin(Admin admin) {
+        try{
+            adminDAO.;
+        }catch (DietiEstateException e){
+            return e.getMessage();
+        }
+
+        try{
+            adminDAO.upgradeSupportAdmin(admin);
+            return "{\"code\": 0, \"message\": \"success of action admin upgraded\"}";
+        }catch (DietiEstateException e){
+            return e.getMessage();
+        }
     }
 
     @Override

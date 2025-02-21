@@ -14,4 +14,6 @@ public interface AdminDAO {
     public void updateUser(Admin changes) throws DietiEstateException;
 
     public void removeAdmin(Admin admin) throws DietiEstateException;
+
+    public void upgradeSupportAdmin(Admin admin) throws DietiEstateException;
 }

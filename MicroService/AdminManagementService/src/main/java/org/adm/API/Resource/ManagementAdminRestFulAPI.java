@@ -40,8 +40,7 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String upgradeSupportAdmin(Admin admin) {
-        //TODO implementa
-        return null;
+        return managementAdmin.upgradeSupportAdmin(admin);
     }
 
     @POST
