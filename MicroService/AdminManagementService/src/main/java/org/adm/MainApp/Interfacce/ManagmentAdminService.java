@@ -1,5 +1,6 @@
 package org.adm.MainApp.Interfacce;
 
+import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.md.Utente.Admin;
 import org.md.Utente.Utente;

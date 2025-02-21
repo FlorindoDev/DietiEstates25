@@ -8,6 +8,7 @@ import jakarta.ws.rs.core.MediaType;
 import org.adm.API.Interfacce.ManagementAdminAPI;
 import org.adm.MainApp.Interfacce.ManagmentAdminService;
 import org.adm.MainApp.ManagementAdmin;
+import org.exc.DietiEstateException;
 import org.md.Utente.Admin;
 
 @Path("ManagementAdmin")
@@ -22,7 +23,7 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Override
     public String addAdmin(Admin admin) {
 
-        //TODO implementa
+
         return managementAdmin.addAdmin(admin);
     }
 
