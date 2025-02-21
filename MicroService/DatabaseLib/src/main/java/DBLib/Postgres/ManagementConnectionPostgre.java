@@ -1,16 +1,12 @@
 package DBLib.Postgres;
 
 import java.io.InputStream;
-import java.net.URISyntaxException;
 
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.logging.Logger;
-import java.io.IOException;
 //file
 import org.json.JSONObject;
-import java.nio.file.Files;
 
 //sql
 import java.sql.Connection;
