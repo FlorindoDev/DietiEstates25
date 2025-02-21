@@ -17,7 +17,7 @@ public class ManagementAdmin implements ManagmentAdminService {
     private AdminDAO adminDAO = new AdminPostgreDAO();
 
     @Override
-    public String addAdmin(Admin admin) {
+    public String addAdmin(Admin admin, Agency agency) {
 
         try{
             adminDAO.isAdminAbsent(admin);

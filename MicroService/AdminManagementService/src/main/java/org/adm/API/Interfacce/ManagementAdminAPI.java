@@ -2,6 +2,7 @@ package org.adm.API.Interfacce;
 
 import org.adm.API.Resource.ManagementAdminJSON;
 import org.md.Utente.Admin;
+import org.md.Agency.Agency;
 
 
 public interface ManagementAdminAPI {

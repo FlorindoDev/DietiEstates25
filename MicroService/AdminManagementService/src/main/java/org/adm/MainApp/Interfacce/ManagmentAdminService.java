@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public interface ManagmentAdminService {
 
-    public String addAdmin(Admin admin);
+    public String addAdmin(Admin admin, Agency agency);
 
     public void removeAdmin(Admin admin);
 

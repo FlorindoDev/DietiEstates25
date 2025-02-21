@@ -23,8 +23,7 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Override
     public String addAdmin(Admin admin) {
 
-
-        return managementAdmin.addAdmin(admin);
+        return managementAdmin.addAdmin(admin,admin.getAgency());
     }
 
     @POST

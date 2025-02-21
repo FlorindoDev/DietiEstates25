@@ -6,6 +6,7 @@ import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DataBaseException.UserAlreadyExists;
 import org.exc.DietiEstateException;
+import org.md.Agency.Agency;
 import org.md.Utente.Admin;
 
 import java.sql.PreparedStatement;
@@ -72,10 +73,10 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     public void createUser(Admin admin) throws DietiEstateException{
 
         String Query=
-                "INSERT INTO amministratore(email, issupportoamministratore, nome, cognome, password) VALUES" +
+                "INSERT INTO amministratore(email, issupportoamministratore, nome, cognome, password, partitaiva) VALUES" +
                         "(?,?,?,?,crypt(?,'" +
                         connection.getKeyCrypt() +
-                        "'))";
+                        "'),?)";
 
         System.out.println(Query);
         PreparedStatement stmt = connection.getStatment(Query);
@@ -86,6 +87,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
             stmt.setString(3, admin.getNome());
             stmt.setString(4, admin.getCognome());
             stmt.setString(5, admin.getPassword());
+            stmt.setString(6, admin.getAgency().getCodice_partitaIVA());
             System.out.println(stmt.toString());
         } catch (SQLException e) {
             logger.severe("[-] Error executing query: " + e.getMessage());

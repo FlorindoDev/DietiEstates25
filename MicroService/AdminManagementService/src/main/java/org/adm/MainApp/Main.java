@@ -6,6 +6,7 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
+import org.md.Agency.Agency;
 import org.md.Utente.Admin;
 
 
@@ -27,11 +28,17 @@ public class Main {
         final HttpServer server = startServer();
         //TODO serve per la prova dopo eliminare
 
-        Admin acquirente = new Admin.Builder(1,"utente3@email.com")
+        Agency agency = new Agency.Builder("11111111111")
+                .setEmail("pincopallina1@gmail.com")
+                .setNome("Pico Pallina")
+                .build();
+
+        Admin acquirente = new Admin.Builder(1,"utente1@email.com")
                 .setPassword("ciao")
                 .setName("Paolo")
                 .setCognome("Paoli")
                 .setIsSupport(false)
+                .setAgency(agency)
                 .build();
 
         System.out.println(acquirente.Translate());

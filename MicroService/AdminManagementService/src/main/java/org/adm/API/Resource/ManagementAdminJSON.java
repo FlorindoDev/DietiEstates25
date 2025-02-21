@@ -6,6 +6,6 @@ import java.util.ArrayList;
 
 public class ManagementAdminJSON {
 
-    ArrayList<Admin> admins;
+    Admin admin;
     Agency agency;
 }

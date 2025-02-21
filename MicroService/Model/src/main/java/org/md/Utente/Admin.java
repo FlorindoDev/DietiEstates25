@@ -12,6 +12,7 @@ public class Admin extends Utente{
     public Admin(Builder builder) {
         super(builder);
         this.isSupport = builder.isSupport;
+        this.agency = builder.agency;
     }
 
     @Override
