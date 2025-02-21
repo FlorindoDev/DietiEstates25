@@ -73,8 +73,15 @@ public class ManagementAdmin implements ManagmentAdminService {
     }
 
     @Override
-    public void downgradeSupport(Admin admin) {
-        //TODO implementa
+    public String downgradeSupport(Admin admin) {
+        try{
+            adminDAO.isUserPresent(admin);
+
+            adminDAO.downgradeSupport(admin);
+            return "{\"code\": 0, \"message\": \"success of action admin upgraded\"}";
+        }catch (DietiEstateException e){
+            return e.getMessage();
+        }
     }
 
     @Override

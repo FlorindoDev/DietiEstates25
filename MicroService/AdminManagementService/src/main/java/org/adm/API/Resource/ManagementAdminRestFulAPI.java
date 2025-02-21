@@ -49,8 +49,7 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String downgradeSupport(Admin admin) {
-        //TODO implementa
-        return null;
+        return managementAdmin.downgradeSupport(admin);
     }
 
     @POST

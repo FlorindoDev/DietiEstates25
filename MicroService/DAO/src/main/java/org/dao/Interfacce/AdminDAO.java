@@ -1,5 +1,6 @@
 package org.dao.Interfacce;
 
+import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.md.Utente.Admin;
@@ -18,4 +19,6 @@ public interface AdminDAO {
     public void upgradeSupportAdmin(Admin admin) throws DietiEstateException;
     boolean isUserAbsent(Admin acquirente) throws DietiEstateException;
     boolean isUserPresent(Admin acquirente) throws DietiEstateException;
+
+    public void downgradeSupport(Admin admin) throws DietiEstateException;
 }

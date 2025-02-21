@@ -15,7 +15,7 @@ public interface ManagmentAdminService {
 
     public String upgradeSupportAdmin(Admin admin);
 
-    public void downgradeSupport(Admin admin);
+    public String downgradeSupport(Admin admin);
 
     public ArrayList<Utente> getAdmins(Agency agency);
 
