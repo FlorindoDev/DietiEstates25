@@ -19,8 +19,8 @@ public class ManagementAccountRestFulAPI implements ManagementAccountAPI {
     @Path("applyChangeAcquirente")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public void applyChangeAcquirente(Acquirente utente) {
-
+    public String applyChangeAcquirente(Acquirente utente) {
+        return managementAccount.applyChangeAcquirente(utente);
     }
 
     @Override
@@ -28,8 +28,8 @@ public class ManagementAccountRestFulAPI implements ManagementAccountAPI {
     @Path("applyChangeAgent")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public void applyChangeAgent(Agent utente) {
-
+    public String applyChangeAgent(Agent utente) {
+        return managementAccount.applyChangeAgent(utente);
     }
 
     @Override
@@ -37,8 +37,8 @@ public class ManagementAccountRestFulAPI implements ManagementAccountAPI {
     @Path("applyChangeAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public void applyChangeAdmin(Admin utente) {
-
+    public String applyChangeAdmin(Admin utente) {
+        return managementAccount.applyChangeAdmin(utente);
     }
 
     @Override
@@ -47,7 +47,6 @@ public class ManagementAccountRestFulAPI implements ManagementAccountAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String getAccountAcquirente(Acquirente utente) {
-        System.out.println("[request]: "+utente.Translate());
         return managementAccount.getAccountAcquirente(utente);
     }
 

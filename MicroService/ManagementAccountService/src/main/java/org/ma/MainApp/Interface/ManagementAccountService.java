@@ -3,15 +3,14 @@ package org.ma.MainApp.Interface;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
-import org.md.Utente.Utente;
 
 public interface ManagementAccountService {
 
-    void applyChangeAcquirente(Acquirente utente);
+    String applyChangeAcquirente(Acquirente utente);
 
-    void applyChangeAgent(Agent utente);
+    String applyChangeAgent(Agent utente);
 
-    void applyChangeAdmin(Admin utente);
+    String applyChangeAdmin(Admin utente);
 
     String getAccountAcquirente(Acquirente utente);
 

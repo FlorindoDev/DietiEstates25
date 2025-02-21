@@ -24,16 +24,18 @@ public class CreateAgency implements CreateAgencyService {
 
         EmailSender sender = new EmailSenderForNewAgency();
 
-        //TODO  AGGIUNGERE EMAILSENDER
+
         try{
             if(create.isAgencyAbsent(agency) && create.isNameAgencyAbsent(agency)){
 
-                //TODO AGGIUNGERE controli sede e partita iva
+
                 validaitor.validateEmail(agency.getEmail());
                 validaitor.validateAgencyName(agency.getNome());
+                validaitor.validatePartitaIVA(agency.getCodice_partitaIVA());
+                validaitor.validateSede(agency.getSede());
 
                 create.createAgency(agency);
-                // TODO  AGGIUSATRE non funziona
+                // TODO  AGGIUNGERE EMAILSENDER
                 //sender.SendEmail(agency.getEmail());
 
                 // TODO  AGGIUSATRE RITORNO

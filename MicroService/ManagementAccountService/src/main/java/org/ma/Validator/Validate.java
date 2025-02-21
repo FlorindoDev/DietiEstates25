@@ -52,15 +52,14 @@ public class Validate implements Validator {
     }
 
     @Override
-    public Boolean ValidateName(String firstName, String lastName) throws DietiEstateException {
-        if(firstName == null || lastName == null) throw new UserGeneralityNotValid();
+    public Boolean ValidateName(String firstName) throws DietiEstateException {
+        if(firstName == null) throw new UserGeneralityNotValid();
 
         String NAME_REGEX = "^[a-zA-ZÀ-ÖØ-öø-ÿ'’]+$";
         Pattern pattern = Pattern.compile(NAME_REGEX);
         Matcher nome = pattern.matcher(firstName);
-        Matcher surname = pattern.matcher(lastName);
 
-        if(!nome.matches() || !surname.matches()){
+        if(!nome.matches()){
             throw new UserGeneralityNotValid();
         }
         return true;
