@@ -19,7 +19,7 @@ public class ManagementAdmin implements ManagmentAdminService {
     public String addAdmin(Admin admin, Agency agency) {
 
         try{
-            adminDAO.isAdminAbsent(admin);
+            adminDAO.isUserAbsent(admin);
         }catch (DietiEstateException e){
             return e.getMessage();
         }
@@ -63,7 +63,7 @@ public class ManagementAdmin implements ManagmentAdminService {
     @Override
     public String upgradeSupportAdmin(Admin admin) {
         try{
-            adminDAO.;
+            adminDAO.isUserPresent(admin);
         }catch (DietiEstateException e){
             return e.getMessage();
         }
