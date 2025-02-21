@@ -50,8 +50,15 @@ public class ManagementAdmin implements ManagmentAdminService {
 
 
     @Override
-    public void removeAdmin(Admin admin) {
-        //TODO implementa
+    public String removeAdmin(Admin admin) {
+        try{
+            adminDAO.removeAdmin(admin);
+            return "{\"code\": 0, \"message\": \"success of action admin remove\"}";
+        }catch (DietiEstateException e){
+            return e.getMessage();
+        }
+
+
     }
 
     @Override

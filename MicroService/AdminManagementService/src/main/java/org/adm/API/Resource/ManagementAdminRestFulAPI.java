@@ -31,10 +31,10 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Override
-    public String removeAdmin(ManagementAdminJSON json) {
+    public String removeAdmin(Admin admin) {
 
         //TODO implementa
-        return null;
+        return managementAdmin.removeAdmin(admin);
     }
 
     @POST

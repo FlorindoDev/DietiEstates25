@@ -12,7 +12,7 @@ public interface ManagmentAdminService {
 
     public String addAdmin(Admin admin, Agency agency);
 
-    public void removeAdmin(Admin admin);
+    public String removeAdmin(Admin admin);
 
     public void upgradeSupportAdmin(Admin admin);
 

@@ -9,7 +9,7 @@ public interface ManagementAdminAPI {
 
     public String addAdmin(Admin admin);
 
-    public String removeAdmin(ManagementAdminJSON json);
+    public String removeAdmin(Admin admin);
 
     public String upgradeSupportAdmin(ManagementAdminJSON json);
 
