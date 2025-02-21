@@ -9,12 +9,13 @@ import org.md.Utente.Acquirente;
 
 public class SignUp implements SignUpService {
 
-    AcquirenteDAO signup = new AcquirentePostgreDAO();
     public SignUp() {
     }
 
     @Override
     public String makeSignUp(Acquirente user) {
+
+        AcquirenteDAO signup = new AcquirentePostgreDAO();
 
         Validate validaitor = Validate.getInstance();
 

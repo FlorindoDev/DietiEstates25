@@ -9,12 +9,13 @@ import org.ag.API.Interfacce.CreateAgencyAPI;
 import org.ag.MainApp.CreateAgency;
 import org.ag.MainApp.Interfacce.CreateAgencyService;
 import org.md.Agency.Agency;
-@Path("createAgency")
+@Path("create")
 public class CreateAgencyRestFulAPI implements CreateAgencyAPI {
 
     private CreateAgencyService create_agnecy = new CreateAgency();
     @Override
     @POST
+    @Path("createAgency")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String createAgency(Agency agency) {
