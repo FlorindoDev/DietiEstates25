@@ -87,7 +87,7 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
 
         try {
             connection.makeQuery(stmt);
-            if(!connection.hasNextRow()) throw new UserAlreadyExists();
+            if(connection.hasNextRow()) throw new UserAlreadyExists();
             return true;
         } catch (SQLException e) {
             logger.severe("[-] Error executing query: " + e.getMessage());

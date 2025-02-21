@@ -44,23 +44,6 @@ public class AgencyPostgreDAO implements AgencyDAO {
 
     }
 
-    protected void ContactDB(PreparedStatement stmt) throws DietiEstateException {
-
-        try {
-            connection.makeQuery(stmt);
-        } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
-            throw new ErrorExecutingQuery();
-        }
-
-        try {
-            connection.nextRow();
-        } catch (SQLException e) {
-            throw new UserNotFoundException();
-        }
-    }
-
-
     @Override
     public void createAgency(Agency agency) throws DietiEstateException {
 
@@ -95,7 +78,7 @@ public class AgencyPostgreDAO implements AgencyDAO {
 
         try {
             connection.makeQuery(stmt);
-            if(!connection.hasNextRow()) throw new AgencyAlreadyExists();
+            if(connection.hasNextRow()) throw new AgencyAlreadyExists();
             return true;
         }catch(SQLException e){
             logger.severe("[-] Error executing query: " + e.getMessage());
@@ -112,7 +95,7 @@ public class AgencyPostgreDAO implements AgencyDAO {
 
         try {
             connection.makeQuery(stmt);
-            if(!connection.hasNextRow()) throw new AgencyNameAlreadyExists();
+            if(connection.hasNextRow()) throw new AgencyNameAlreadyExists();
             return true;
         }catch(SQLException e){
             logger.severe("[-] Error executing query: " + e.getMessage());
