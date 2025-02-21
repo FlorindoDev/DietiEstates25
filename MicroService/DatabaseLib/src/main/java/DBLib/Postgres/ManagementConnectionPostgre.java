@@ -45,6 +45,9 @@ public class ManagementConnectionPostgre {
     private void readDataBaseAccessFile() {
 
         //System.out.println(System.getProperty("user.dir"));
+        try {
+
+
         InputStream inputStream = ManagementConnectionPostgre.class.getResourceAsStream("/credentialsPostgre.json");
         String jsonString = new Scanner(inputStream, StandardCharsets.UTF_8).useDelimiter("\\A").next();
         JSONObject json = new JSONObject(jsonString);
@@ -55,7 +58,10 @@ public class ManagementConnectionPostgre {
         this.port = json.getString("port");
         this.database = json.getString("database");
         this.keycrypt = json.getString("keycrypt");
-
+        }catch (NullPointerException e){
+            logger.severe("[-] Errore nella lettura del file DB: " + e.getMessage());
+            System.exit(-1);
+        }
     }
 
     public void createConnection() {

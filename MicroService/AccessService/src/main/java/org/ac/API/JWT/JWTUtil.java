@@ -25,8 +25,8 @@ public class JWTUtil {
 
             InputStream inputStream = ManagementConnectionPostgre.class.getResourceAsStream("/JWTspecifications.json");
             String jsonString = new Scanner(inputStream, StandardCharsets.UTF_8).useDelimiter("\\A").next();
-
             rootNode = new ObjectMapper().readTree(jsonString);
+
         } catch (IOException e) {
             logger.severe("[-] Errore lettura Json per TokenJWT");
             System.exit(-1);

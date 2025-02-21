@@ -10,7 +10,7 @@ import org.ac.MainApp.SignUp;
 import org.ac.MainApp.interfacce.SignUpService;
 import org.md.Utente.Acquirente;
 
-@Path("makeSingup")
+@Path("makeSignup")
 public class SignUpRestFulAPI implements SignUpAPI {
 
     SignUpService singup_access =  new SignUp();

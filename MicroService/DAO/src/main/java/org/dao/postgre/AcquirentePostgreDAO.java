@@ -4,7 +4,7 @@ import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AcquirenteDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
-import org.exc.DataBaseException.UserElreadyExists;
+import org.exc.DataBaseException.UserAlreadyExists;
 import org.exc.DietiEstateException;
 import org.md.Utente.Acquirente;
 
@@ -81,7 +81,7 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
 
         try {
             connection.makeQuery(stmt);
-            if(!connection.hasNextRow()) throw new UserElreadyExists();
+            if(!connection.hasNextRow()) throw new UserAlreadyExists();
             return true;
         } catch (SQLException e) {
             logger.severe("[-] Error executing query: " + e.getMessage());

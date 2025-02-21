@@ -19,18 +19,21 @@ public class CreateAgency implements CreateAgencyService {
 
         Validate validaitor = Validate.getInstance();
 
+        //TODO  AGGIUNGERE EMAILSENDER
         try{
+            if(create.isAgencyAbsent(agency) && create.isNameAgencyAbsent(agency)){
 
-            validaitor.validateEmail(agency.getEmail());
-            validaitor.validateAgencyName(agency.getNome());
+                //TODO AGGIUNGERE controli sede e partita iva
+                validaitor.validateEmail(agency.getEmail());
+                validaitor.validateAgencyName(agency.getNome());
 
-            create.createAgency(agency);
-            // TODO  AGGIUSATRE RITORNO
-            return "{\"code\": 0, \"message\": \"success of action create agency\"}";
-
+                create.createAgency(agency);
+                // TODO  AGGIUSATRE RITORNO
+                return "{\"code\": 0, \"message\": \"Success of action create agency\"}";
+            }
         }catch (DietiEstateException e){
             return e.getMessage();
         }
-
+        return "";
     }
 }
