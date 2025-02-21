@@ -23,7 +23,7 @@ public class JWTUtil {
         JsonNode rootNode = null;
         try {
 
-            InputStream inputStream = ManagementConnectionPostgre.class.getResourceAsStream("/JWTspecifications.json");
+            InputStream inputStream = JWTUtil.class.getResourceAsStream("/JWTspecifications.json");
             String jsonString = new Scanner(inputStream, StandardCharsets.UTF_8).useDelimiter("\\A").next();
             rootNode = new ObjectMapper().readTree(jsonString);
 
