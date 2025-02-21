@@ -38,11 +38,14 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
             throw new ErrorExecutingQuery();
         }
 
-        //TODO MANCACO DEGLI ATTRIBUTI, si devo aggiugnere prima nel DB
         acquirente = new Acquirente.Builder(connection.extractInt("idacquirente"), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))
+                .setIdPushNotify(connection.extractString("idPushNoitfy"))
+                .setChangePriceNotify(connection.extractBoolean("notify_price_notify"))
+                .setNotifyNewEstate(connection.extractBoolean("notify_new_estate"))
+                .setNotifyAppointment(connection.extractBoolean("notify_appointment"))
                 .build();
 
         return acquirente;
@@ -51,7 +54,6 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
     @Override
     public void createUser(Acquirente acquirente) throws DietiEstateException {
 
-        //TODO MANCACO DEGLI ATTRIBUTI, si devo aggiugnere prima nel DB
 
         String Query="INSERT INTO acquirente(Email, Nome, Cognome, Password) VALUES(?,?,?,crypt( ? , '" +  connection.getKeyCrypt() +"'))";
 
