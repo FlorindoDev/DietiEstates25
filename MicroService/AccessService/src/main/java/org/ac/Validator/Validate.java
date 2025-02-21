@@ -1,6 +1,6 @@
-package org.ac.Validaitor;
+package org.ac.Validator;
 
-import org.ac.Validaitor.interfacce.Validaitor;
+import org.ac.Validator.interfacce.Validator;
 import org.exc.DietiEstateException;
 import org.exc.DietiEstateMicroServiceException.UserEmailNotValid;
 import org.exc.DietiEstateMicroServiceException.UserGeneralityNotValid;
@@ -9,7 +9,7 @@ import org.exc.DietiEstateMicroServiceException.UserPassowordNotValid;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Validate implements Validaitor {
+public class Validate implements Validator {
 
     private static Validate validate = null;
     private final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
