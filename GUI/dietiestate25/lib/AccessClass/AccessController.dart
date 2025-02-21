@@ -14,11 +14,8 @@ import 'package:dietiestate25/AccessClass/SingUpWindow.dart';
 import 'package:http/http.dart' as http;
 
 class AccessController {
-  static final url = Uri.parse("http://api.florindodev.site/makeLogin");
-
-  static const loginWindow = '/LoginWindow';
-  static const singUpWindow = '/SingUpWindow';
-  static const createAgencyWindow = '/CreateAgencyWindow';
+  //static final url = Uri.parse("http://api.florindodev.site/makeLogin");
+  static final url = Uri.parse("http://localhost:7001/makeLogin");
 
   static String token = "";
   static Validator valida = Validate();
@@ -32,27 +29,6 @@ class AccessController {
     backgroundColor: WidgetStateProperty.all(MyApp.celeste),
     foregroundColor: WidgetStateProperty.all(Colors.white),
   );
-
-  static void mostraPopUp(dynamic context, String titolo, String messaggio) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(titolo),
-          icon: Icon(Icons.warning_rounded),
-          content: Text(messaggio),
-          actions: <Widget>[
-            TextButton(
-              child: Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop(); // Chiude il dialogo
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   static Future<dynamic> richiestaLogin(Utente utente) async {
     http.Response response;
@@ -86,11 +62,11 @@ class AccessController {
     richiestaLogin(utente).then((risultato) {
       //risultato = json.decode(risultato);
       if (risultato == null)
-        AccessController.mostraPopUp(context, "Attenzione", "Servizio non attualmente disponibile, prova tra qualche minuto");
+        MyApp.mostraPopUpInformativo(context, "Attenzione", "Servizio non attualmente disponibile, prova tra qualche minuto");
       else if (risultato['code'] == 1) {
-        AccessController.mostraPopUp(context, "Attenzione", risultato['message']);
+        MyApp.mostraPopUpInformativo(context, "Attenzione", risultato['message']);
       } else if (risultato['code'] == 0) {
-        AccessController.mostraPopUp(context, "Complimenti", "Login Effettuato!");
+        MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
       }
     });
     print("finito prova");
@@ -121,16 +97,4 @@ class AccessController {
     return MaterialPageRoute(builder: (_) => CreateAgencyWindow(appbar: MyApp.appBarNotBackable));
   }
 
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case AccessController.loginWindow:
-        return goToLoginWindow();
-      case AccessController.singUpWindow:
-        return goToSignUpWindow();
-      case AccessController.createAgencyWindow:
-        return goToCreateAgencyWindow();
-    }
-
-    return MaterialPageRoute(builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
-  }
 }

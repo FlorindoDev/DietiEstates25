@@ -1,5 +1,6 @@
 import 'package:dietiestate25/AccessClass/AccessController.dart';
 import 'package:dietiestate25/Model/Utente/Utente.dart';
+import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/main.dart';
 
@@ -68,7 +69,7 @@ class _LoginWindowState extends State<LoginWindow> {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      Navigator.of(context).pushNamed(AccessController.createAgencyWindow);
+                      Navigator.of(context).pushNamed(RouteWindows.createAgencyWindow);
                     },
                     style: AccessController.clickable_style_button,
                     child: const Text('Crea Agenzia'),
@@ -81,7 +82,7 @@ class _LoginWindowState extends State<LoginWindow> {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      Navigator.of(context).pushNamed(AccessController.singUpWindow);
+                      Navigator.of(context).pushNamed(RouteWindows.singUpWindow);
                     },
                     style: AccessController.clickable_style_button,
                     child: const Text(
@@ -145,7 +146,7 @@ class _LoginWindowState extends State<LoginWindow> {
                             print("Dopo");
                           } catch (e) {
                             print("Entro");
-                            AccessController.mostraPopUp(context, "Attenzione", e.toString());
+                            MyApp.mostraPopUpInformativo(context, "Attenzione", e.toString());
                             print("Esco");
                           }
                         }

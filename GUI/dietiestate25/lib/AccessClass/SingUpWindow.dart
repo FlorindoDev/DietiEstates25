@@ -1,4 +1,5 @@
 import 'package:dietiestate25/Model/Utente/Utente.dart';
+import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:dietiestate25/AccessClass/AccessController.dart';
@@ -90,7 +91,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
                 ElevatedButton(
                   onPressed: (){
                     Navigator.pop(context);
-                    Navigator.of(context).pushNamed(AccessController.createAgencyWindow);
+                    Navigator.of(context).pushNamed(RouteWindows.createAgencyWindow);
 
                   },
                   style: AccessController.clickable_style_button,
@@ -99,7 +100,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
                 ElevatedButton(
                   onPressed: (){
                     Navigator.pop(context);
-                    Navigator.of(context).pushNamed(AccessController.loginWindow);
+                    Navigator.of(context).pushNamed(RouteWindows.loginWindow);
 
                   },
                   style: AccessController.clickable_style_button,
@@ -219,7 +220,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
                       try{
                         AccessController.toSignUp(utente);
                       }catch(e){
-                        AccessController.mostraPopUp(context,"Attenzione",e.toString());
+                        MyApp.mostraPopUpInformativo(context,"Attenzione",e.toString());
                       }
                       
                     }: null, 
