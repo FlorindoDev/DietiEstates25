@@ -43,11 +43,6 @@ public class UtentePostgreDAO implements UtenteDAO {
             throw new ErrorExecutingQuery();
         }
 
-        try {
-            connection.nextRow();
-        } catch (SQLException e) {
-            throw new UserNotFoundException();
-        }
     }
 
     private PreparedStatement PrepareStatementGetForLogin(Utente utente, String Query) throws DietiEstateException {
