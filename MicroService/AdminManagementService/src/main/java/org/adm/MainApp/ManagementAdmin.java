@@ -8,11 +8,15 @@ import java.util.ArrayList;
 
 
 public class ManagementAdmin implements ManagmentAdminService {
+
+
     @Override
-
-
-    public void addAdmin(Admin admin) {
+    public String addAdmin(Admin admin) {
         //TODO implementa
+        
+
+
+        return null;
     }
 
 

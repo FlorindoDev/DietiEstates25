@@ -1,11 +1,11 @@
 package org.adm.API.Resource;
 
 import org.md.Agency.Agency;
-import org.md.Utente.Utente;
+import org.md.Utente.Admin;
 import java.util.ArrayList;
 
 public class ManagementAdminJSON {
 
-    ArrayList<Utente> agents;
+    ArrayList<Admin> admins;
     Agency agency;
 }

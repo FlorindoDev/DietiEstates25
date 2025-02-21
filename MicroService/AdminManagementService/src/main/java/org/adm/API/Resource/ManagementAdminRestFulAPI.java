@@ -6,19 +6,24 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.adm.API.Interfacce.ManagementAdminAPI;
+import org.adm.MainApp.Interfacce.ManagmentAdminService;
+import org.adm.MainApp.ManagementAdmin;
+import org.md.Utente.Admin;
 
 @Path("ManagementAdmin")
 public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
+
+    ManagmentAdminService managementAdmin =  new ManagementAdmin();
 
     @POST
     @Path("addAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Override
-    public String addAdmin(ManagementAdminJSON json) {
+    public String addAdmin(Admin admin) {
 
         //TODO implementa
-        return null;
+        return managementAdmin.addAdmin(admin);
     }
 
     @POST
