@@ -17,19 +17,23 @@ import java.util.logging.Logger;
 
 public class EmailSenderJakarta implements EmailSender {
 
-    private String email;
-    private String password_email;
+    protected String email;
+    protected String password_email;
 
-    private Properties props;
+    protected Properties props;
 
-    private Session session;
+    protected Session session;
 
-    private static final Logger logger = Logger.getLogger(EmailSenderJakarta.class.getName());
+    protected static final Logger logger = Logger.getLogger(EmailSenderJakarta.class.getName());
 
+    //TODO AGGIUSTARE EMAIL SENDER
     public EmailSenderJakarta() {
+
+        // Indirizzo email del mittente
+
         readCredentials();
         this.props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.host", "smtp-mail.outlook.com");
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -62,6 +66,7 @@ public class EmailSenderJakarta implements EmailSender {
 
         this.email = rootNode.path("email").asText();
         this.password_email = rootNode.path("password").asText();
+        logger.info("[!] Username e passowrd email " + email + " " + password_email);
 
     }
 }

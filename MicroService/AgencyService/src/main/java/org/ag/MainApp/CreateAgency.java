@@ -12,13 +12,13 @@ import org.md.Agency.Agency;
 
 public class CreateAgency implements CreateAgencyService {
 
+    private AgencyDAO create = new AgencyPostgreDAO();
 
     public CreateAgency() {}
 
     @Override
     public String makeAgency(Agency agency) {
 
-        AgencyDAO create = new AgencyPostgreDAO();
 
         Validate validaitor = Validate.getInstance();
 
@@ -33,7 +33,8 @@ public class CreateAgency implements CreateAgencyService {
                 validaitor.validateAgencyName(agency.getNome());
 
                 create.createAgency(agency);
-                sender.SendEmail(agency.getEmail());
+                // TODO  AGGIUSATRE non funziona
+                //sender.SendEmail(agency.getEmail());
 
                 // TODO  AGGIUSATRE RITORNO
                 return "{\"code\": 0, \"message\": \"Success of action create agency\"}";

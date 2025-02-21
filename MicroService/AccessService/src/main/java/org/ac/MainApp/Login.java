@@ -14,12 +14,13 @@ import java.util.List;
 
 public class Login implements LoginService{
 
+    private UtenteDAO utenteDAO = new UtentePostgreDAO();
 
     public Login(){}
 
     public String makeLogin(Utente user){
 
-        UtenteDAO utenteDAO = new UtentePostgreDAO();
+
         try {
             Utente userFromDB = utenteDAO.getUser(user);
             String emailFromDB = userFromDB.getEmail();
