@@ -18,6 +18,13 @@ public class ManagementAdmin implements ManagmentAdminService {
 
     @Override
     public String addAdmin(Admin admin) {
+
+        try{
+            adminDAO.isAdminAbsent(admin);
+        }catch (DietiEstateException e){
+            return e.getMessage();
+        }
+
         //TODO implementa
         Validate validaitor = Validate.getInstance();
 
@@ -28,22 +35,15 @@ public class ManagementAdmin implements ManagmentAdminService {
             validaitor.validateEmail(admin.getEmail());
             validaitor.validatePassword(admin.getPassword());
 
-            /*
-            if(signup.isUserAbsent(user)){
-                validaitor.validateEmail(user.getEmail());
-                validaitor.validatePassword(user.getPassword());
-                validaitor.validateGenerality(user.getNome(), user.getCognome());
-                signup.createUser(user);
-                //TODO FARE un oggetto per messaggio di buon fine
-                return "{\"code\": 0, \"message\": \"success of action SignUp\"}";
-            }
-            */
+            adminDAO.createUser(admin);
+
+            //TODO FARE un oggetto per messaggio di buon fine
+            return "{\"code\": 0, \"message\": \"success of action admin create\"}";
+
 
         }catch(DietiEstateException e){
             return e.getMessage();
         }
-
-        return "";
 
 
     }
@@ -69,4 +69,5 @@ public class ManagementAdmin implements ManagmentAdminService {
         //TODO implementa
         return null;
     }
+
 }
