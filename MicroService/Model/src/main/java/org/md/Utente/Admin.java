@@ -1,9 +1,11 @@
 package org.md.Utente;
 
+import org.md.Agency.Agency;
 import org.md.Utente.interfacce.UserSeparators;
 
 public class Admin extends Utente{
     private Boolean isSupport;
+    private Agency agency;
 
     public Admin() {}
 
@@ -25,8 +27,18 @@ public class Admin extends Utente{
         return isSupport;
     }
 
+    public Agency getAgency() {
+        return agency;
+    }
+
+    public void setAgency(Agency agency) {
+        this.agency = agency;
+    }
+
+
     public static class Builder extends Utente.Builder<Admin.Builder>{
         private Boolean isSupport;
+        private Agency agency;
 
         public Builder(int id_user, String email) {
             super(id_user, email);
@@ -36,10 +48,17 @@ public class Admin extends Utente{
             this.isSupport=isSupport;
             return this;
         }
+
+        public Builder setAgency(Agency agency){
+            this.agency=agency;
+            return this;
+        }
         public Admin build(){
             return new Admin(this);
         }
 
 
     }
+
+
 }
