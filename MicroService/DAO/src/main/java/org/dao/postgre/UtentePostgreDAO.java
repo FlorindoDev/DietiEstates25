@@ -38,6 +38,7 @@ public class UtentePostgreDAO implements UtenteDAO {
 
         try {
             connection.makeQuery(stmt);
+            connection.nextRow();
         } catch (SQLException e) {
             logger.severe("[-] Error executing query: " + e.getMessage());
             throw new ErrorExecutingQuery();

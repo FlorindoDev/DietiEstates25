@@ -28,7 +28,7 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
         ContactDB(stmt);
 
         //TODO MANCACO DEGLI ATTRIBUTI, si devo aggiugnere prima nel DB
-        acquirente = new Acquirente.Builder(connection.extractInt("idagente"), connection.extractString("email"))
+        acquirente = new Acquirente.Builder(connection.extractInt("idacquirente"), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))
