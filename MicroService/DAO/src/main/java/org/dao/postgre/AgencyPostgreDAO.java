@@ -44,23 +44,6 @@ public class AgencyPostgreDAO implements AgencyDAO {
 
     }
 
-    protected void ContactDB(PreparedStatement stmt) throws DietiEstateException {
-
-        try {
-            connection.makeQuery(stmt);
-        } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
-            throw new ErrorExecutingQuery();
-        }
-
-        try {
-            connection.nextRow();
-        } catch (SQLException e) {
-            throw new UserNotFoundException();
-        }
-    }
-
-
     @Override
     public void createAgency(Agency agency) throws DietiEstateException {
 
