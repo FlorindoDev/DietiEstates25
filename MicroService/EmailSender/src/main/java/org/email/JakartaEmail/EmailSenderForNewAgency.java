@@ -6,5 +6,8 @@ public class EmailSenderForNewAgency extends EmailSenderJakarta{
     }
 
     @Override
-    public void SendEmail(String reciver_email) {}
+    public void SendEmail(String reciver_email) {
+
+
+    }
 }
