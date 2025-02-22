@@ -1,12 +1,13 @@
 package org.md.Utente;
 
+import org.md.Agency.Agency;
 import org.md.Utente.interfacce.UserSeparators;
 
 public class Agent extends Utente{
 
     private String Biografia = "";
     private String ProfilePic = "";
-
+    private Agency agency;
     public Agent() {}
 
     public Agent(Builder builder) {
@@ -36,9 +37,19 @@ public class Agent extends Utente{
         ProfilePic = profilePic;
     }
 
+    public Agency getAgency() {
+        return agency;
+    }
+
+    public void setAgency(Agency agency) {
+        this.agency = agency;
+    }
+
     public static class Builder extends Utente.Builder<Agent.Builder>{
         private String Biografia;
         private String ProfilePic;
+
+        private Agency agency;
 
         public Builder(int id_user, String email){
             super(id_user,email);
@@ -51,6 +62,11 @@ public class Agent extends Utente{
 
         public Builder setProfilePic(String ProfilePic){
             this.ProfilePic = ProfilePic;
+            return this;
+        }
+
+        public Agent.Builder setAgency(Agency agency){
+            this.agency=agency;
             return this;
         }
 
