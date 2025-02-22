@@ -116,7 +116,7 @@ public class UtentePostgreDAO implements UtenteDAO {
 
     public void updateUser(Utente changes, String tabella) throws DietiEstateException {
 
-        JSONObject jsonObject = new JSONObject(changes.Translate());
+        JSONObject jsonObject = new JSONObject(changes.TranslateToJson());
         if (!jsonObject.isEmpty()) { // per evitare di fare update a vuoto
 
             StringBuilder query = new StringBuilder("UPDATE "+tabella+" SET ");

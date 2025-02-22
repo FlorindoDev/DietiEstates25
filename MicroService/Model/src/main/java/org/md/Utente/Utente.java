@@ -1,9 +1,7 @@
 package org.md.Utente;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.exc.DietiEstateException;
-import org.md.Serializzazione.TranslationToJson;
+import org.md.Serializzazione.Translate;
 import org.md.Utente.interfacce.UserSeparators;
 
 //@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type") // Specifica il tipo nel JSON
@@ -12,7 +10,7 @@ import org.md.Utente.interfacce.UserSeparators;
 //        @JsonSubTypes.Type(value = Admin.class, name = "Admin"), // Registra "Admin" come sottotipo
 //        @JsonSubTypes.Type(value = Acquirente.class, name = "Acquirente") // Registra "Admin" come sottotipo
 //})
-public class Utente extends TranslationToJson {
+public class Utente extends Translate {
 
     protected int id_user;
     protected String nome;

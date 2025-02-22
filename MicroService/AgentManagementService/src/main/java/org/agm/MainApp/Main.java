@@ -7,7 +7,6 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.md.Agency.Agency;
-import org.md.Utente.Admin;
 import org.md.Utente.Agent;
 
 
@@ -45,7 +44,7 @@ public class Main {
                 .setNotifyAppointment(true)
                 .build();
 
-        System.out.println(acquirente.Translate());
+        System.out.println(acquirente.TranslateToJson());
 
         System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
         System.in.read();

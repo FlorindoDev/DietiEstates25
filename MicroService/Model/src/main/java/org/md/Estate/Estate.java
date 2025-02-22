@@ -4,11 +4,10 @@ import org.md.Estate.ClasseEnergetica.EnergeticClass;
 import org.md.Estate.Mode.Mode;
 import org.md.Agency.Agency;
 import org.md.Estate.Status.Status;
-import org.md.Serializzazione.TranslationToJson;
+import org.md.Serializzazione.Translate;
 import org.md.Utente.Agent;
-import org.md.Utente.Utente;
 
-public class Estate extends TranslationToJson {
+public class Estate extends Translate {
     private String id_estate = "";
     private Agent agente;
     private Indirizzo indirizzo;

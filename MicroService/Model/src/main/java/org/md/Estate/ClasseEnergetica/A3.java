@@ -1,8 +1,8 @@
 package org.md.Estate.ClasseEnergetica;
 
-import org.md.Serializzazione.TranslationToJson;
+import org.md.Serializzazione.Translate;
 
-class A3 extends TranslationToJson implements High {
+class A3 extends Translate implements High {
 
     private final String nome = "A3";
 

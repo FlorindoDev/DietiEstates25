@@ -1,8 +1,8 @@
 package org.md.Estate.ClasseEnergetica;
 
-import org.md.Serializzazione.TranslationToJson;
+import org.md.Serializzazione.Translate;
 
-class F extends TranslationToJson implements Low {
+class F extends Translate implements Low {
     private final String nome = "F";
     @Override
     public String getEnergeticClass() {

@@ -96,7 +96,7 @@ public class ManagementAdmin implements ManagmentAdminService {
             String json = "{\"code\": 0, \"message\": \"success of action admin upgraded\", \"admins\": [{";
 
             for (Admin admin : admins){
-                json = json.concat(admin.Translate());
+                json = json.concat(admin.TranslateToJson());
                 if(!admin.equals(admins.getLast()))
                     json = json.concat(",");
             }

@@ -1,6 +1,8 @@
 package org.md.Estate.Status;
 
-public class Status {
+import org.md.Serializzazione.Translate;
+
+public class Status extends Translate {
     private String name;
 
     public String getName() {

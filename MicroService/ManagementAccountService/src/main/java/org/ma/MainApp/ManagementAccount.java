@@ -94,7 +94,7 @@ public class ManagementAccount implements ManagementAccountService {
     @Override
     public String getAccountAcquirente(Acquirente utente) {
         try {
-            return new AcquirentePostgreDAO().getUser(utente).Translate();
+            return new AcquirentePostgreDAO().getUser(utente).TranslateToJson();
         } catch (DietiEstateException e){
             return e.getMessage();
         }
@@ -103,7 +103,7 @@ public class ManagementAccount implements ManagementAccountService {
     @Override
     public String getAccountAdmin(Admin utente) {
         try {
-            return new AdminPostgreDAO().getUser(utente).Translate();
+            return new AdminPostgreDAO().getUser(utente).TranslateToJson();
         } catch (DietiEstateException e){
             return e.getMessage();
         }
@@ -112,7 +112,7 @@ public class ManagementAccount implements ManagementAccountService {
     @Override
     public String getAccountAgent(Agent utente) {
         try {
-            return new AgentPostgreDAO().getUser(utente).Translate();
+            return new AgentPostgreDAO().getUser(utente).TranslateToJson();
         } catch (DietiEstateException e){
             return e.getMessage();
         }

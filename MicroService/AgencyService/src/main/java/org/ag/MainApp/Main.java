@@ -28,7 +28,7 @@ public class Main {
         final HttpServer server = startServer();
 
         Agency agency = new Agency.Builder("55").setNome("marco").build();
-        System.out.println(agency.Translate());
+        System.out.println(agency.TranslateToJson());
         System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
         System.in.read();
         server.stop();

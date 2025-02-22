@@ -3,8 +3,8 @@ package org.md.Serializzazione;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class TranslationToJson implements Translation {
-    public String Translate(){
+public class Translate {
+    public String TranslateToJson(){
 
         ObjectMapper objectMapper = new ObjectMapper();
 

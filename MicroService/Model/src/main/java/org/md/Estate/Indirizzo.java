@@ -1,4 +1,6 @@
 package org.md.Estate;
 
-public class Indirizzo {
+import org.md.Serializzazione.Translate;
+
+public class Indirizzo extends Translate {
 }
