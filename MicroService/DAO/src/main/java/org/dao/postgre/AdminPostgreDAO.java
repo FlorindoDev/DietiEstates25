@@ -135,7 +135,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
         PreparedStatement stmt = connection.getStatment(Query);
 
         try {
-            stmt.setString(2, admin.getEmail());
+            stmt.setString(1, admin.getEmail());
             System.out.println(stmt.toString());
         } catch (SQLException e) {
             logger.severe("[-] Error executing query: " + e.getMessage());
@@ -165,7 +165,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
         PreparedStatement stmt = connection.getStatment(Query);
 
         try {
-            stmt.setString(2, admin.getEmail());
+            stmt.setString(1, admin.getEmail());
             System.out.println(stmt.toString());
         } catch (SQLException e) {
             logger.severe("[-] Error executing query: " + e.getMessage());

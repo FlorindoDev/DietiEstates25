@@ -127,7 +127,7 @@ public class AgencyPostgreDAO implements AgencyDAO {
 
         isAgencyPresent(agency);
 
-        String Query = "SELECT amministratore.email, amministratore.nome, amministratore.cognome, amministratore.issupportoamministratore, amministratore.partitaiva" +
+        String Query = "SELECT *" +
                 " FROM amministratore INNER JOIN agenziaimmobiliare ON amministratore.partitaiva = agenziaimmobiliare.partitaiva" +
                 " WHERE amministratore.partitaiva = ?";
 
@@ -144,13 +144,20 @@ public class AgencyPostgreDAO implements AgencyDAO {
             ArrayList<Admin> admins = new ArrayList<Admin>();
 
             do{
-
+                System.out.println(connection.extractString("email"));
                 connection.nextRow();
-                Admin admin = new Admin.Builder(1,connection.extractString("amministratore.email"))
-                        .setName(connection.extractString("amministratore.nome"))
-                        .setCognome(connection.extractString("amministratore.cognome"))
-                        .setIsSupport(connection.extractBoolean("amministratore.issupportoamministratore"))
-                        .setAgency(agency)
+
+                Agency fullAgency = new Agency.Builder(connection.extractString("partitaiva"))
+                        .setNome(connection.extractString("nome"))
+                        .setSede(connection.extractString("sede"))
+                        .setEmail(agency.getEmail())
+                        .build();
+
+                Admin admin = new Admin.Builder(1,connection.extractString("email"))
+                        .setName(connection.extractString("nome"))
+                        .setCognome(connection.extractString("cognome"))
+                        .setIsSupport(connection.extractBoolean("issupportoamministratore"))
+                        .setAgency(fullAgency)
                         .build();
 
                 admins.add(admin);

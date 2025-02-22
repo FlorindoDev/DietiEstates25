@@ -4,6 +4,7 @@ import DBLib.Interfacce.CommunicationWithDataBase;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
@@ -32,6 +33,13 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
             throw e;
         }
 
+        /*
+        ResultSetMetaData metaData = result.getMetaData();
+        int columnCount = metaData.getColumnCount();
+        for (int i = 1; i <= columnCount; i++) {
+            System.out.println("Colonna disponibile: " + metaData.getColumnName(i));
+        }
+        */
     }
 
     public int makeQueryUpdate(PreparedStatement stmt) throws SQLException {
