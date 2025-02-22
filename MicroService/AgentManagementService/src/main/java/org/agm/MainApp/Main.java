@@ -8,6 +8,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.md.Agency.Agency;
 import org.md.Utente.Admin;
+import org.md.Utente.Agent;
 
 
 public class Main {
@@ -33,12 +34,15 @@ public class Main {
                 .setNome("Pico Pallina")
                 .build();
 
-        Admin acquirente = new Admin.Builder(1,"utente1@email.com")
+        Agent acquirente = new Agent.Builder(1,"utente1@email.com")
                 .setPassword("ciao")
                 .setName("Paolo")
                 .setCognome("Paoli")
-                .setIsSupport(false)
                 .setAgency(agency)
+                .setBiografia("Sono un figo")
+                .setProfilePic("foto.png")
+                .setIdPushNotify("TOKEN")
+                .setNotifyAppointment(true)
                 .build();
 
         System.out.println(acquirente.Translate());

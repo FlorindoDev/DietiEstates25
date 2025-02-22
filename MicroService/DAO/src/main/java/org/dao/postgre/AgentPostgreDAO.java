@@ -2,6 +2,7 @@ package org.dao.postgre;
 
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AgentDAO;
+import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DietiEstateException;
 import org.md.Utente.Admin;
@@ -51,7 +52,39 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
     }
 
     @Override
-    public void createUser(Agent changes) {
+    public void createUser(Agent agent) throws DietiEstateException{
+        String Query=
+                "INSERT INTO agenteimmobiliare(email, biografia, nome, cognome, password, partitaiva, immagineprofilo, idpushnotify, notify_appointment) VALUES" +
+                        "(?,?,?,?,crypt(?,'" +
+                        connection.getKeyCrypt() +
+                        "'),?,?,?,?)";
+
+        System.out.println(Query);
+        PreparedStatement stmt = connection.getStatment(Query);
+
+        try {
+            stmt.setString(1, agent.getEmail());
+            stmt.setString(2, agent.getBiografia());
+            stmt.setString(3, agent.getNome());
+            stmt.setString(4, agent.getCognome());
+            stmt.setString(5, agent.getPassword());
+            stmt.setString(6, agent.getAgency().getCodice_partitaIVA());
+            stmt.setString(7, agent.getProfilePic());
+            stmt.setString(8, agent.getIdPushNotify());
+            stmt.setBoolean(9, agent.getNotify_appointment());
+            System.out.println(stmt.toString());
+        } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorCreateStatment();
+        }
+
+
+        try {
+            connection.makeQueryUpdate(stmt);
+        } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
 
     }
 

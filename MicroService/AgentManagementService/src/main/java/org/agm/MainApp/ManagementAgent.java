@@ -29,7 +29,7 @@ public class ManagementAgent implements ManagmentAgentService {
             validaitor.validateEmail(agent.getEmail());
             validaitor.validatePassword(agent.getPassword());
 
-            agent.createUser(agent);
+            agentDAO.createUser(agent);
 
             //TODO FARE un oggetto per messaggio di buon fine
             return "{\"code\": 0, \"message\": \"success of action admin create\"}";
