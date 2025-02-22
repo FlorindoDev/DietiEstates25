@@ -43,4 +43,13 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     public String getAgents(Agency agency) {
         return managementAgent.getAgents(agency);
     }
+
+    @POST
+    @Path("getEstates")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Override
+    public String getEstates(Agency agency) {
+        return managementAgent.getEstates(agency);
+    }
 }

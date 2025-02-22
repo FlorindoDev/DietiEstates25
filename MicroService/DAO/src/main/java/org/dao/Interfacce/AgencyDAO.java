@@ -2,6 +2,7 @@ package org.dao.Interfacce;
 
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
+import org.md.Estate.Estate;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
 
@@ -17,4 +18,6 @@ public interface AgencyDAO {
     public ArrayList<Admin> getAdmins(Agency agency) throws DietiEstateException;
 
     public ArrayList<Agent> getAgents(org.md.Agency.Agency agency) throws DietiEstateException;
+
+    public ArrayList<Estate> getEstates(Agency agency) throws DietiEstateException;
 }

@@ -11,4 +11,6 @@ public interface ManagmentAgentService {
 
     public String getAgents(Agency agency);
 
+    public String getEstates(Agency agency);
+
 }

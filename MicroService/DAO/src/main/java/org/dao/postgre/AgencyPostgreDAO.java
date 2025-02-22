@@ -5,6 +5,7 @@ import org.dao.Interfacce.AgencyDAO;
 import org.exc.DataBaseException.*;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
+import org.md.Estate.Estate;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
 import org.md.Utente.Utente;
@@ -226,6 +227,67 @@ public class AgencyPostgreDAO implements AgencyDAO {
         }
 
 
+    }
+
+    @Override
+    public ArrayList<Estate> getEstates(Agency agency) throws DietiEstateException {
+        isAgencyPresent(agency);
+
+        String Query = "SELECT *" +
+                " FROM immobile INNER JOIN agenziaimmobiliare ON immobile.partitaiva = agenziaimmobiliare.partitaiva" +
+                " WHERE immobile.partitaiva = ?";
+
+        PreparedStatement stmt = PrepareStatementGetAgency(agency,Query);
+
+
+
+        try {
+            connection.makeQuery(stmt);
+
+            if(!connection.hasNextRow()){
+                throw new Exception();
+            }
+            ArrayList<Estate> estates = new ArrayList<Estate>();
+
+            do{
+                System.out.println(connection.extractString("email"));
+                connection.nextRow();
+
+                Agency fullAgency = new Agency.Builder(connection.extractString("partitaiva"))
+                        .setNome(connection.extractString("nome"))
+                        .setSede(connection.extractString("sede"))
+                        .setEmail(agency.getEmail())
+                        .build();
+
+                Estate agent = new Estate.Builder()
+                        .setElevator(connection.extractBoolean("ascensore"))
+                        .setAgente(null)
+                        .setClasseEnergetica(null)
+                        .setDescrizione(connection.extractString("descrizione"))
+                        .setFloor(connection.extractInt("piano"))
+                        .setFoto(connection.extractString("foto"))
+                        .setGarage(connection.extractInt("garage"))
+                        .setMode(null)
+                        .setIndirizzo(null)
+                        .setRooms(connection.extractInt("stanze"))
+                        .setPrice(connection.extractInt("prezzo"))
+                        .setWc(connection.extractInt("bagni"))
+                        .setSpace(connection.extractInt("dimensioni"))
+                        .setStato(null)
+                        .setAgenzia(fullAgency)
+                        .build();
+
+                estates.add(agent);
+
+
+            }while(connection.hasNextRow());
+
+            return estates;
+
+        }catch(Exception e){
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
     }
 
 

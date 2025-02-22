@@ -8,6 +8,7 @@ import org.dao.postgre.AgencyPostgreDAO;
 import org.dao.postgre.AgentPostgreDAO;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
+import org.md.Estate.Estate;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
 
@@ -70,6 +71,30 @@ public class ManagementAgent implements ManagmentAgentService {
             for (Agent agent : agents){
                 json = json.concat(agent.Translate());
                 if(!agent.equals(agents.getLast()))
+                    json = json.concat(",");
+            }
+
+
+            json = json + "}]}";
+
+            System.out.println(json);
+            return json;
+        }catch (DietiEstateException e){
+            return e.getMessage();
+        }
+    }
+
+    @Override
+    public String getEstates(Agency agency) {
+        try{
+            //adminDAO.isUserPresent(admin);
+
+            ArrayList<Estate> estates = agencyDAO.getEstates(agency);
+            String json = "{\"code\": 0, \"message\": \"success of action admin upgraded\", \"admins\": [{";
+
+            for (Estate estate : estates){
+                json = json.concat(estate.Translate());
+                if(!estate.equals(estates.getLast()))
                     json = json.concat(",");
             }
 
