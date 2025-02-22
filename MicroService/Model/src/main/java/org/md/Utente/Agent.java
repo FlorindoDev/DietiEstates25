@@ -14,6 +14,7 @@ public class Agent extends Utente{
         super(builder);
         this.Biografia = builder.Biografia;
         this.ProfilePic = builder.ProfilePic;
+        this.agency = builder.agency;
     }
 
     @Override
