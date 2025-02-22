@@ -9,6 +9,7 @@ import org.agm.API.Interfacce.ManagmementAgentAPI;
 import org.agm.MainApp.Interfacce.ManagmentAgentService;
 import org.agm.MainApp.ManagementAgent;
 import org.agm.MainApp.Interfacce.ManagmentAgentService;
+import org.md.Agency.Agency;
 import org.md.Utente.Agent;
 
 @Path("ManagementAgent")
@@ -32,5 +33,14 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @Override
     public String removeAgent(Agent agent) {
         return managementAgent.removeAgent(agent);
+    }
+
+    @POST
+    @Path("getAgents")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Override
+    public String getAgents(Agency agency) {
+        return managementAgent.getAgents(agency);
     }
 }

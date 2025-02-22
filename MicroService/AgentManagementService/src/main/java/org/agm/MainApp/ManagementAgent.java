@@ -2,14 +2,21 @@ package org.agm.MainApp;
 
 import org.agm.MainApp.Interfacce.ManagmentAgentService;
 import org.agm.Validetor.Validate;
+import org.dao.Interfacce.AgencyDAO;
 import org.dao.Interfacce.AgentDAO;
+import org.dao.postgre.AgencyPostgreDAO;
 import org.dao.postgre.AgentPostgreDAO;
 import org.exc.DietiEstateException;
+import org.md.Agency.Agency;
+import org.md.Utente.Admin;
 import org.md.Utente.Agent;
+
+import java.util.ArrayList;
 
 public class ManagementAgent implements ManagmentAgentService {
 
     private AgentDAO agentDAO = new AgentPostgreDAO();
+    private AgencyDAO agencyDAO = new AgencyPostgreDAO();
 
     @Override
     public String addAgent(Agent agent) {
@@ -50,5 +57,29 @@ public class ManagementAgent implements ManagmentAgentService {
             return e.getMessage();
         }
 
+    }
+
+    @Override
+    public String getAgents(Agency agency) {
+        try{
+            //adminDAO.isUserPresent(admin);
+
+            ArrayList<Agent> agents = agencyDAO.getAgents(agency);
+            String json = "{\"code\": 0, \"message\": \"success of action admin upgraded\", \"admins\": [{";
+
+            for (Agent agent : agents){
+                json = json.concat(agent.Translate());
+                if(!agent.equals(agents.getLast()))
+                    json = json.concat(",");
+            }
+
+
+            json = json + "}]}";
+
+            System.out.println(json);
+            return json;
+        }catch (DietiEstateException e){
+            return e.getMessage();
+        }
     }
 }

@@ -6,6 +6,7 @@ import org.exc.DataBaseException.*;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.md.Utente.Admin;
+import org.md.Utente.Agent;
 import org.md.Utente.Utente;
 
 import java.sql.PreparedStatement;
@@ -172,6 +173,57 @@ public class AgencyPostgreDAO implements AgencyDAO {
             throw new ErrorExecutingQuery();
         }
 
+
+
+    }
+
+    @Override
+    public ArrayList<Agent> getAgents(Agency agency) throws DietiEstateException {
+        isAgencyPresent(agency);
+
+        String Query = "SELECT *" +
+                " FROM agenteimmobiliare INNER JOIN agenziaimmobiliare ON agenteimmobiliare.partitaiva = agenziaimmobiliare.partitaiva" +
+                " WHERE agenteimmobiliare.partitaiva = ?";
+
+        PreparedStatement stmt = PrepareStatementGetAgency(agency,Query);
+
+
+
+        try {
+            connection.makeQuery(stmt);
+
+            if(!connection.hasNextRow()){
+                throw new Exception();
+            }
+            ArrayList<Agent> agents = new ArrayList<Agent>();
+
+            do{
+                System.out.println(connection.extractString("email"));
+                connection.nextRow();
+
+                Agency fullAgency = new Agency.Builder(connection.extractString("partitaiva"))
+                        .setNome(connection.extractString("nome"))
+                        .setSede(connection.extractString("sede"))
+                        .setEmail(agency.getEmail())
+                        .build();
+
+                Agent agent = new Agent.Builder(1,connection.extractString("email"))
+                        .setName(connection.extractString("nome"))
+                        .setCognome(connection.extractString("cognome"))
+                        .setAgency(fullAgency)
+                        .build();
+
+                agents.add(agent);
+
+
+            }while(connection.hasNextRow());
+
+            return agents;
+
+        }catch(Exception e){
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
 
 
     }
