@@ -42,6 +42,13 @@ public class ManagementAgent implements ManagmentAgentService {
 
     @Override
     public String removeAgent(Agent agent) {
-        return null;
+
+        try{
+            agentDAO.removeAdmin(agent);
+            return "{\"code\": 0, \"message\": \"success of action admin remove\"}";
+        }catch (DietiEstateException e){
+            return e.getMessage();
+        }
+
     }
 }

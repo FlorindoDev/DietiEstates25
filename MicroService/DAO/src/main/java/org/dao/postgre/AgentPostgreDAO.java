@@ -4,6 +4,7 @@ import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AgentDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
+import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
@@ -105,6 +106,33 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
 
         return super.isUserPresent(user, TABLE);
 
+    }
+
+    @Override
+    public void removeAdmin(Agent agent) throws DietiEstateException {
+        String Query= "DELETE FROM agenteimmobiliare WHERE email = ?";
+        System.out.println(Query);
+        PreparedStatement stmt = connection.getStatment(Query);
+        System.out.println(Query);
+        try {
+            stmt.setString(1, agent.getEmail());
+            System.out.println(stmt.toString());
+        } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorCreateStatment();
+        }
+
+        int res = 0;
+        try {
+            res = connection.makeQueryUpdate(stmt);
+        } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
+        if(res == 0){
+            throw new UserNotExists();
+        }
     }
 
 }

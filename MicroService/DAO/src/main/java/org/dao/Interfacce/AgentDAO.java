@@ -10,4 +10,6 @@ public interface AgentDAO{
     void updateUser(Agent changes) throws DietiEstateException;
     boolean isUserAbsent(Agent acquirente) throws DietiEstateException;
     boolean isUserPresent(Agent acquirente) throws DietiEstateException;
+
+    void removeAdmin(Agent agent) throws DietiEstateException;
 }
