@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.md.Agency.Agency;
@@ -17,7 +18,7 @@ public class Main {
 
     public static HttpServer startServer() {
 
-        final ResourceConfig rc = new ResourceConfig().packages(RESOURCE);
+        final ResourceConfig rc = new ResourceConfig().packages(RESOURCE).register(JacksonFeature.class);
         rc.property(ServerProperties.WADL_FEATURE_DISABLE, true);
 
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
