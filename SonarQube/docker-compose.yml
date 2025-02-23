@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   sonarqube:
-    image: sonarqube:lts
+    image: sonarqube:latest
     container_name: sonarqube_dietiestate
     depends_on:
       - db
@@ -18,7 +18,7 @@ services:
       - sonarqube_extensions:/opt/sonarqube/extensions
 
   db:
-    image: postgres:13
+    image: postgres:15
     container_name: sonarqube_db
     environment:
       POSTGRES_USER: sonar
