@@ -4,26 +4,32 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>MicroService</groupId>
+        <artifactId>root</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
     <groupId>org.dao</groupId>
     <artifactId>DAO</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <dependencies>
 
         <dependency>
             <groupId>org.md</groupId> <!-- groupId del progetto Model -->
             <artifactId>Model</artifactId> <!-- artifactId del progetto Model -->
-            <version>1.0-SNAPSHOT</version> <!-- version del progetto Model -->
+            <version>1.0.0</version> <!-- version del progetto Model -->
         </dependency>
 
         <dependency>
             <groupId>DBLib</groupId>
             <artifactId>DatabaseLib</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.exc</groupId>
             <artifactId>DietiEstateExceptions</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
 
     </dependencies>

@@ -3,11 +3,17 @@
 
 <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>MicroService</groupId>
+        <artifactId>root</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
     <groupId>org.adm</groupId>
     <artifactId>AdminManagementService</artifactId>
-<packaging>jar</packaging>
-<version>1.0-SNAPSHOT</version>
-<name>AdminManagementService</name>
+    <packaging>jar</packaging>
+    <version>1.0.0</version>
+    <name>AdminManagementService</name>
 
 
 <dependencyManagement>
