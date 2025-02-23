@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>MicroService</groupId>
+        <artifactId>root</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>Dependecy</groupId>
+    <artifactId>RootDependecy</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging> <!-- Packaging deve essere "pom" -->
+
+    <modules>
+        <module>DAO</module>
+        <module>DatabaseLib</module>
+        <module>DietiEstateExceptions</module>
+        <module>EmailSender</module>
+        <module> Model </module>
+    </modules>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+
+    </properties>
+</project>

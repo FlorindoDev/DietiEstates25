@@ -14,12 +14,8 @@
         <module>AgencyService</module>
         <module>AgentManagementService</module>
         <module>AppointmentService</module>
-        <module>DAO</module>
-        <module>DatabaseLib</module>
-        <module>DietiEstateExceptions</module>
-        <module>EmailSender</module>
         <module>ManagementAccountService</module>
-        <module>Model</module>
+        <module>Dependacy</module>
     </modules>
 
     <properties>
@@ -27,7 +23,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <sonar.host.url>http://localhost:9000</sonar.host.url>
-        <sonar.login>sqa_c7aeb5cf06c0933f7778da5e2d908535dd07d335</sonar.login>
+        <sonar.login>sqp_9285fb619b4b2db766fb214d2f285227d2abaab1</sonar.login>
         <sonar.projectKey>DietiEstate</sonar.projectKey>
         <sonar.projectName>DietiEstate</sonar.projectName>
 
