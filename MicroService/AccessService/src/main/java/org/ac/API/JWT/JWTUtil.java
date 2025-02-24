@@ -37,7 +37,7 @@ public class JWTUtil {
         return Jwts.builder()
                 .setSubject(email)
                 .claim("roles", roles)
-                .setIssuedAt(new Date())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + rootNode.path("Exp").asInt()))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
