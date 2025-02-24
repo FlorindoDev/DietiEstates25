@@ -35,8 +35,6 @@ public class AppointmentManagement implements AppointmentService {
 
     @Override
     public String makeAppointment(Appointment appointment) {
-        //TODO RICORDATI DI  METTERE CONTROLO PER LA DATA E IMMOBILE
-        // (non si puo avere due apptamenti per lo stesso immobile nello stesso giorno)
 
         try {
             Validator validate = new Validate();
