@@ -1,7 +1,7 @@
 package org.agm.MainApp;
 
 import org.agm.MainApp.Interfacce.ManagmentAgentService;
-import org.agm.Validetor.Validate;
+import org.agm.Validator.Validate;
 import org.dao.Interfacce.AgencyDAO;
 import org.dao.Interfacce.AgentDAO;
 import org.dao.postgre.AgencyPostgreDAO;

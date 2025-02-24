@@ -1,7 +1,7 @@
 package org.adm.MainApp;
 
 import org.adm.MainApp.Interfacce.ManagmentAdminService;
-import org.adm.Validetor.Validate;
+import org.adm.Validator.Validate;
 import org.dao.Interfacce.AdminDAO;
 import org.dao.Interfacce.AgencyDAO;
 import org.dao.postgre.AdminPostgreDAO;

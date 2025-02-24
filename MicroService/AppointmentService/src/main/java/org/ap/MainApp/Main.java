@@ -5,6 +5,8 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
+import org.md.Appointment.Appointment;
+import org.md.Estate.Estate;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Utente;
 
@@ -29,10 +31,16 @@ public class   Main {
     public static void main(String[] args) throws IOException {
         final HttpServer server = startServer();
         //TODO serve per la prova dopo eliminare
-        Utente acquirente = new Acquirente.Builder(1,"utente1@email.com")
-                .setPassword("ciao")
+        Acquirente acquirente = new Acquirente.Builder(0,"utente1@email.com").build();
+        Estate estate = new Estate.Builder(3).build();
+
+        Appointment appointment= new Appointment.Builder(0)
+                .setAcquirente(acquirente)
+                .setData("2025-11-11")
+                .setEstate(estate)
                 .build();
-        System.out.println(acquirente.TranslateToJson());
+
+        System.out.println(appointment.TranslateToJson());
         System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
         System.in.read();
         server.stop();

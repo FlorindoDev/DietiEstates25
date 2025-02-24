@@ -39,8 +39,8 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))
-                .setIdPushNotify(connection.extractString("idPushNoitfy"))
-                .setChangePriceNotify(connection.extractBoolean("notify_price_notify"))
+                .setIdPushNotify(connection.extractString("idPushNotify"))
+                .setChangePriceNotify(connection.extractBoolean("change_price_notify"))
                 .setNotifyNewEstate(connection.extractBoolean("notify_new_estate"))
                 .setNotifyAppointment(connection.extractBoolean("notify_appointment"))
                 .build();

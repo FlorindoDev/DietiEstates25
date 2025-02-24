@@ -2,7 +2,7 @@ package org.ag.MainApp;
 
 
 import org.ag.MainApp.Interfacce.CreateAgencyService;
-import org.ag.Validaitor.Validate;
+import org.ag.Validator.Validate;
 import org.dao.Interfacce.AgencyDAO;
 import org.dao.postgre.AgencyPostgreDAO;
 import org.email.Interfacce.EmailSender;
