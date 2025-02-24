@@ -1,23 +1,23 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:dietiestate25/main.dart';
 import 'package:dietiestate25/AccessClass/CreateAgencyWindow.dart';
 import 'package:dietiestate25/Model/Agenzia/Agenzia.dart';
 import 'package:dietiestate25/Model/Utente/Utente.dart';
 import 'package:dietiestate25/Validation/Validate.dart';
 import 'package:dietiestate25/Validation/Validetor.dart';
-import 'package:flutter/material.dart';
-import 'package:dietiestate25/main.dart';
 import 'package:dietiestate25/AccessClass/LoginWindow.dart';
 import 'package:dietiestate25/AccessClass/SingUpWindow.dart';
-
-import 'package:http/http.dart' as http;
 
 class AccessController {
   static final url = Uri.parse("http://api.florindodev.site/makeLogin");
   //static final url = Uri.parse("http://127.0.0.1:7001/makeLogin");
   //static final url = Uri.parse("http://10.0.2.2:7001/makeLogin");
-  
 
   static String token = "";
   static Validator valida = Validate();
@@ -50,7 +50,11 @@ class AccessController {
       print(e.toString());
       // Se c'è un errore di connessione, rilancia con un messaggio specifico
       //throw Exception("Servizio non attualmente disponibile, prova tra qualche minuto");
-      return {"code": null, "message": "Servizio non attualmente disponibile, prova tra qualche minuto"};
+      return {
+        "code": null,
+        "message":
+            "Servizio non attualmente disponibile, prova tra qualche minuto"
+      };
     }
 
     // Controlla se lo statusCode non è 200 (OK)
@@ -64,11 +68,14 @@ class AccessController {
     richiestaLogin(utente).then((risultato) {
       //risultato = json.decode(risultato);
       if (risultato == null)
-        MyApp.mostraPopUpInformativo(context, "Attenzione", "Servizio non attualmente disponibile, prova tra qualche minuto");
+        MyApp.mostraPopUpInformativo(context, "Attenzione",
+            "Servizio non attualmente disponibile, prova tra qualche minuto");
       else if (risultato['code'] == 1) {
-        MyApp.mostraPopUpInformativo(context, "Attenzione", risultato['message']);
+        MyApp.mostraPopUpInformativo(
+            context, "Attenzione", risultato['message']);
       } else if (risultato['code'] == 0) {
-        MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
+        MyApp.mostraPopUpInformativo(
+            context, "Complimenti", "Login Effettuato!");
       }
     });
     print("finito prova");
@@ -88,15 +95,35 @@ class AccessController {
   }
 
   static MaterialPageRoute<dynamic> goToSignUpWindow() {
-    return MaterialPageRoute(builder: (_) => SingUpWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(
+        builder: (_) => SingUpWindow(appbar: MyApp.appBarNotBackable));
   }
 
   static MaterialPageRoute<dynamic> goToLoginWindow() {
-    return MaterialPageRoute(builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(
+        builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
   }
 
   static MaterialPageRoute<dynamic> goToCreateAgencyWindow() {
-    return MaterialPageRoute(builder: (_) => CreateAgencyWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(
+        builder: (_) => CreateAgencyWindow(appbar: MyApp.appBarNotBackable));
   }
 
+  // Future<void> readAssetFile() async {
+  //   String content = await rootBundle.loadString('assets/myfile.txt');
+  //   print(content);
+  // }
+
+  static Future<bool> checkLogin() async {
+    try {
+      String content = await rootBundle.loadString('assets/storage.json');
+      Map<String, dynamic> jsonData = jsonDecode(content);
+      print(content);
+      //INVIO A KONG PER LA VALIDAZIONE DEL JWT
+      return true;
+    } catch (e) {
+      print("Errore: $e");
+      return false;
+    }
+  }
 }

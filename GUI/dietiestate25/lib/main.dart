@@ -6,11 +6,17 @@ import 'package:dietiestate25/AccessClass/AccessController.dart';
 // import 'package:dietiestate25/Home/HomeController.dart';
 import 'package:dietiestate25/Home/HomeWindow.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Assicura l'inizializzazione di Flutter
+  String initialRoute = await RouteWindows.checkLogin();
+  print("[var] " + initialRoute);
+  runApp(MyApp(initialRoute: initialRoute));
 }
 
 class MyApp extends StatelessWidget {
+
+  final String initialRoute;
+
   static const String fontApp = 'Goldbill-XLBold';
   static const String titleApp = 'UninaEstate25';
 
@@ -23,7 +29,7 @@ class MyApp extends StatelessWidget {
     color: Colors.black,
   );
 
-  const MyApp({super.key});
+  const MyApp({Key? key, required this.initialRoute}) : super(key: key);
 
   static AppBar appBarNotBackable = AppBar(
     centerTitle: true,
@@ -86,8 +92,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: titleApp,
-      //initialRoute: RouteWindows.loginWindow,
-      
+      initialRoute: RouteWindows.homeWindow,
       onGenerateRoute: RouteWindows.generateRoute,
       //darkTheme: ThemeData.dark(),
       theme: ThemeData(
@@ -112,8 +117,8 @@ class MyApp extends StatelessWidget {
 
         useMaterial3: true,
       ),
-      //home: LoginWindow(appbar: MyApp.appBarNotBackable),
-      home: HomeWindow(appbar: MyApp.appBarNotBackable),
+      // home: LoginWindow(appbar: MyApp.appBarNotBackable),
+      // home: HomeWindow(appbar: MyApp.appBarNotBackable),
     );
   }
 }

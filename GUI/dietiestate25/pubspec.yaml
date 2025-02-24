@@ -27,6 +27,7 @@ flutter:
   assets:
     - images/
     - images/logo/
+    - assets/
   
   fonts:
     - family: Goldbill-XLBold
