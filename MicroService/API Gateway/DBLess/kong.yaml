@@ -1,0 +1,29 @@
+_format_version: "1.1"  # La versione corretta del formato dichiarativo
+
+services:
+  - name: AccessService
+    url: http://api.florindodev.site/login/makeLogin
+    routes:
+      - name: login-route
+        paths:
+          - /login
+        methods:
+          - POST
+        strip_path: true
+
+  - name: ManagementAccountService
+    url: http://another-backend:7004
+    routes:
+      - name: path1
+        paths:
+          - /another-api
+        methods:
+          - POST
+        strip_path: false
+
+plugins:
+  - name: rate-limiting
+    service: AccessService  # Associa il plugin al servizio AccessService
+    config:
+      minute: 100
+      policy: local
