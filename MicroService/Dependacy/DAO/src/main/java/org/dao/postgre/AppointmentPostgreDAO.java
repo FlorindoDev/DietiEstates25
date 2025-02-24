@@ -5,6 +5,7 @@ import org.dao.Interfacce.AcquirenteDAO;
 import org.dao.Interfacce.AgentDAO;
 import org.dao.Interfacce.AppointmentDAO;
 import org.exc.DataBaseException.ErrorExecutingQuery;
+import org.exc.DataBaseException.UpdateAppointmentFail;
 import org.exc.DataBaseException.UserAppointmentAlreadyExists;
 import org.exc.DietiEstateException;
 import org.md.Appointment.Appointment;
@@ -37,7 +38,26 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
     }
 
     @Override
-    public void changeStatusAppointment(AppointmentPending appointment) throws DietiEstateException {
+    public void changeStatusAppointment(Appointment appointment) throws DietiEstateException {
+
+        Acquirente acquirente = getAcquirente(appointment);
+
+        String Query = "UPDATE appuntamento SET esito = ? where idimmobile = ? and idacquirente = ? and data = ?";
+
+        try{
+
+            PreparedStatement stmt = connection.getStatment(Query);
+            stmt.setString(1, appointment.getName());
+            stmt.setInt(2, appointment.getEstate().getId_estate());
+            stmt.setInt(3, acquirente.getId_user());
+            stmt.setDate(4, Date.valueOf(appointment.getData()));
+
+            if(connection.makeQueryUpdate(stmt) == 0) throw new UpdateAppointmentFail("Appointment not found or some thing else");
+
+        }catch (SQLException e){
+            logger.severe(errorQuery + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
 
     }
 
@@ -95,6 +115,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
     private Acquirente getAcquirente(Appointment appointment) throws DietiEstateException {
 
         AcquirenteDAO take_acquirente = new AcquirentePostgreDAO();
+
         String email_acquirente = appointment.getAcquirente().getEmail();
 
         Acquirente acquirente = new Acquirente.Builder(0,email_acquirente)
