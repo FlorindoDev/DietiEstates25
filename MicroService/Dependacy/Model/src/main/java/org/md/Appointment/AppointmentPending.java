@@ -1,11 +1,21 @@
 package org.md.Appointment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class AppointmentPending extends Appointment{
+
+    @JsonIgnore
+    public final String name = "Da decidere";
 
     public AppointmentPending() {}
 
     public AppointmentPending(Builder builder) {
         super(builder);
+    }
+
+    @JsonIgnore
+    public String getName() {
+        return name;
     }
 
     public static class Builder  extends Appointment.Builder<AppointmentPending.Builder>{

@@ -58,3 +58,7 @@ Password: admin
 - Clonare il repo, assicurarsi di avere Docker installato.
 - Lanciare il comando docker-compose up -d.
 - Tutti avranno accesso agli stessi progetti e alla cronologia grazie ai volumi condivisi, che mantengono i dati anche se i container vengono rimossi.
+
+# in caso di errore provare questo comando
+Aumento della memoria 
+'sudo sysctl -w vm.max_map_count=262144'

@@ -1,13 +1,22 @@
 package org.md.Appointment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class AppointmentReject extends Appointment{
+
+    @JsonIgnore
+    public final String name = "rifiutata";
 
     public AppointmentReject() {
     }
 
-
     public AppointmentReject(Builder builder) {
         super(builder);
+    }
+
+    @JsonIgnore
+    public String getName() {
+        return name;
     }
 
     public static class Builder  extends Appointment.Builder<AppointmentReject.Builder>{
