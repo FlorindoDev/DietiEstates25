@@ -26,7 +26,7 @@ public class UtentePostgreDAO implements UtenteDAO {
 
         try {
             stmt.setString(1, utente.getEmail());
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.severe("Error executing query: " + e.getMessage());
             throw new ErrorCreateStatment();
         }

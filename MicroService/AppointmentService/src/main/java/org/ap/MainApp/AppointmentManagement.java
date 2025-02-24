@@ -7,7 +7,9 @@ import org.dao.Interfacce.AppointmentDAO;
 import org.dao.postgre.AppointmentPostgreDAO;
 import org.exc.DietiEstateException;
 import org.md.Appointment.Appointment;
+import org.md.Appointment.AppointmentAccept;
 import org.md.Appointment.AppointmentPending;
+import org.md.Appointment.AppointmentReject;
 import org.md.Utente.Utente;
 
 import java.util.ArrayList;
@@ -24,19 +26,29 @@ public class AppointmentManagement implements AppointmentService {
     }
 
     @Override
-    public String acceptAppointment(AppointmentPending appointment) {
+    public String acceptAppointment(AppointmentAccept appointment) {
         return "";
     }
 
     @Override
-    public String declineAppointment(AppointmentPending appointment) {
-        return "";
+    public String declineAppointment(AppointmentReject appointment) {
+        //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
+
+        try {
+            appointmentDAO.changeStatusAppointment(appointment);
+            return "{\"code\": 0, \"message\": \"success of action decline appointment\"}";
+
+        } catch (DietiEstateException e) {
+            return e.getMessage();
+        }
+
     }
 
     @Override
     public String makeAppointment(Appointment appointment) {
 
         try {
+            //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
             Validator validate = new Validate();
             validate.validateDate(appointment.getData());
 

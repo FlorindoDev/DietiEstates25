@@ -5,7 +5,14 @@ import org.dao.Interfacce.AgencyDAO;
 import org.exc.DataBaseException.*;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
+import org.md.Estate.ClasseEnergetica.ConverterEnergeticClass;
+import org.md.Estate.ClasseEnergetica.EnergeticClass;
 import org.md.Estate.Estate;
+import org.md.Estate.Indirizzo;
+import org.md.Estate.Mode.ConverterMode;
+import org.md.Estate.Mode.Mode;
+import org.md.Estate.Status.ConverterStatus;
+import org.md.Estate.Status.Status;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
 
@@ -276,6 +283,19 @@ public class AgencyPostgreDAO implements AgencyDAO {
                         .setAgenzia(fullAgency)
                         .build();
 
+                Agent agente = getAgentFromId(connection.extractString("idagente"));
+                EnergeticClass classe = ConverterEnergeticClass.traslateFromString(connection.extractString("classeenergetica"));
+                Mode mode = ConverterMode.traslateFromString(connection.extractString("modalita"));
+                Status status = ConverterStatus.traslateFromString(connection.extractString("stato"));
+                Indirizzo indirizzo = new IndirizzoPostgreDAO().getIndirizzoFromId(connection.extractString("idindirizzo"));
+
+                estate.setAgente(agente);
+                estate.setClasseEnergetica(classe);
+                estate.setMode(mode);
+                estate.setStato(status);
+                estate.setIndirizzo(indirizzo);
+
+
                 estates.add(estate);
 
 
@@ -287,6 +307,10 @@ public class AgencyPostgreDAO implements AgencyDAO {
             logger.severe("[-] Error executing query: " + e.getMessage());
             throw new ErrorExecutingQuery();
         }
+    }
+
+    private Agent getAgentFromId(String idagente) {
+        return null;
     }
 
 

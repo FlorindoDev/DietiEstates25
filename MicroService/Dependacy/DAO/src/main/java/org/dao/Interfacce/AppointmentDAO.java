@@ -11,7 +11,7 @@ public interface AppointmentDAO {
 
     ArrayList<Appointment> getAppointment(Utente user) throws DietiEstateException;
 
-    void changeStatusAppointment(AppointmentPending appointment) throws DietiEstateException;
+    void changeStatusAppointment(Appointment appointment) throws DietiEstateException;
 
     void createAppointment(Appointment appointment) throws DietiEstateException;
 
