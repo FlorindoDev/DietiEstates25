@@ -86,8 +86,8 @@ public class Indirizzo extends Translate {
         private String numeroCivico = "";
         private int CAP = 0;
 
-        public Builder(int idIndirizzo) {
-            this.idIndirizzo = String.valueOf(idIndirizzo);
+        public Builder(String idIndirizzo) {
+            this.idIndirizzo = idIndirizzo;
         }
 
         protected typeBuilder self(){
