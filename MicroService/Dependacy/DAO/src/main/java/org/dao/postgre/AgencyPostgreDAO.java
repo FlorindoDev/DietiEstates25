@@ -258,7 +258,7 @@ public class AgencyPostgreDAO implements AgencyDAO {
                         .setEmail(agency.getEmail())
                         .build();
 
-                Estate agent = new Estate.Builder()
+                Estate estate = new Estate.Builder(connection.extractInt("idimmobile"))
                         .setElevator(connection.extractBoolean("ascensore"))
                         .setAgente(null)
                         .setClasseEnergetica(null)
@@ -276,7 +276,7 @@ public class AgencyPostgreDAO implements AgencyDAO {
                         .setAgenzia(fullAgency)
                         .build();
 
-                estates.add(agent);
+                estates.add(estate);
 
 
             }while(connection.hasNextRow());

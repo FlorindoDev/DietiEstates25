@@ -8,7 +8,7 @@ import org.md.Serializzazione.Translate;
 import org.md.Utente.Agent;
 
 public class Estate extends Translate {
-    private String id_estate = "";
+    private int id_estate = 0;
     private Agent agente;
     private Indirizzo indirizzo;
     private Agency agenzia;
@@ -46,11 +46,11 @@ public class Estate extends Translate {
         this.stato = builder.stato;
     }
 
-    public String getId_estate() {
+    public int getId_estate() {
         return id_estate;
     }
 
-    public void setId_estate(String id_estate) {
+    public void setId_estate(int id_estate) {
         this.id_estate = id_estate;
     }
 
@@ -176,7 +176,7 @@ public class Estate extends Translate {
 
 
     public static class Builder<typeBuilder extends Builder<typeBuilder>>{
-        private String id_estate = "";
+        private int id_estate = 0;
         private Agent agente;
         private Indirizzo indirizzo;
         private Agency agenzia;
@@ -193,11 +193,14 @@ public class Estate extends Translate {
         private Mode mode;
         private Status stato;
 
-
-        public typeBuilder setId_estate(String id_estate) {
+        public Builder(int id_estate) {
             this.id_estate = id_estate;
-            return self();
         }
+
+//        public typeBuilder setId_estate(int id_estate) {
+//            this.id_estate = id_estate;
+//            return self();
+//        }
 
         public typeBuilder setAgente(Agent agente) {
             this.agente = agente;
@@ -280,9 +283,6 @@ public class Estate extends Translate {
 
         public Estate build(){
             return new Estate(this);
-        }
-
-        public Builder() {
         }
 
 
