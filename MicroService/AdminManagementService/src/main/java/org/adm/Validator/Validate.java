@@ -1,6 +1,6 @@
-package org.agm.Validetor;
+package org.adm.Validator;
 
-import org.agm.Validetor.Interfacce.Validetor;
+import org.adm.Validator.Interfacce.Validator;
 import org.exc.DietiEstateMicroServiceException.UserEmailNotValid;
 import org.exc.DietiEstateMicroServiceException.UserGeneralityNotValid;
 import org.exc.DietiEstateMicroServiceException.UserPassowordNotValid;
@@ -8,7 +8,7 @@ import org.exc.DietiEstateMicroServiceException.UserPassowordNotValid;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Validate implements Validetor {
+public class Validate implements Validator {
 
     private static Validate validate = null;
 

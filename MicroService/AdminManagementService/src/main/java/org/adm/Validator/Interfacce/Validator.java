@@ -1,10 +1,12 @@
-package org.agm.Validetor.Interfacce;
+package org.adm.Validator.Interfacce;
 
 import org.exc.DietiEstateMicroServiceException.UserEmailNotValid;
 import org.exc.DietiEstateMicroServiceException.UserGeneralityNotValid;
 import org.exc.DietiEstateMicroServiceException.UserPassowordNotValid;
 
-public interface Validetor {
+public interface Validator {
+
+
     boolean validateName(String nome) throws UserGeneralityNotValid;
 
     boolean validateCognome(String cognome) throws UserGeneralityNotValid;

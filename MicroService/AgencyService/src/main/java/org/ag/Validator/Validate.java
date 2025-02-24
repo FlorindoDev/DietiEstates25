@@ -1,13 +1,13 @@
-package org.ag.Validaitor;
+package org.ag.Validator;
 
-import org.ag.Validaitor.Interfacce.Validaitor;
+import org.ag.Validator.Interfacce.Validator;
 import org.exc.DietiEstateException;
 import org.exc.DietiEstateMicroServiceException.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Validate implements Validaitor {
+public class Validate implements Validator {
 
     private static Validate validate = null;
     private final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
