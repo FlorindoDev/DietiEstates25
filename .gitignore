@@ -3,5 +3,6 @@
 android/
 target/
 windows/
+web/
 out/
 .metadata
