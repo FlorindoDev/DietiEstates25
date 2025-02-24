@@ -8,7 +8,7 @@ COPY . .
 COPY pom-noparent.xml pom.xml
 
 
-RUN mvn clean install -X
+RUN mvn clean install
 
 FROM eclipse-temurin:21-jdk-alpine
 
