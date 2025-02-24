@@ -1,6 +1,8 @@
 package org.ap.MainApp;
 
 import org.ap.MainApp.interfacce.AppointmentService;
+import org.ap.Validator.Interfacce.Validator;
+import org.ap.Validator.Validate;
 import org.dao.Interfacce.AppointmentDAO;
 import org.dao.postgre.AppointmentPostgreDAO;
 import org.exc.DietiEstateException;
@@ -34,11 +36,16 @@ public class AppointmentManagement implements AppointmentService {
     @Override
     public String makeAppointment(Appointment appointment) {
         //TODO RICORDATI DI  METTERE CONTROLO PER LA DATA E IMMOBILE
-        // (non si puo avere due apptamenti per lo stesso apartento nello stesso giorno)
+        // (non si puo avere due apptamenti per lo stesso immobile nello stesso giorno)
 
         try {
+            Validator validate = new Validate();
+            validate.validateDate(appointment.getData());
+
+            appointmentDAO.hasUserAppointment(appointment);
             appointmentDAO.createAppointment(appointment);
             return "{\"code\": 0, \"message\": \"success of action add appointment\"}";
+
         } catch (DietiEstateException e) {
             return e.getMessage();
         }

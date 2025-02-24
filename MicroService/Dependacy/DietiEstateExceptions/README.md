@@ -21,8 +21,10 @@ Abbiamo due grandi categori: <br>
 - `4:` Agnecy gia esiste <br>
 - `5:` nome Agnecy gia esiste <br>
 - `6:` Utente non esiste <br>
+- `7:` Appuntamento gia esiste <br>
 - `101:` Email non valida <br>
 - `102:` Password non valida <br>
 - `103:` nome agenzia non valido <br>
 - `104:` Partita iva non valida <br>
 - `105:` Sede non valida <br>
+- `106:` Data non valida <br>

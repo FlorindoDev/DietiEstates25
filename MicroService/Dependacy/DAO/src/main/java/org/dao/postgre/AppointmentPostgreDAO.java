@@ -5,6 +5,7 @@ import org.dao.Interfacce.AcquirenteDAO;
 import org.dao.Interfacce.AgentDAO;
 import org.dao.Interfacce.AppointmentDAO;
 import org.exc.DataBaseException.ErrorExecutingQuery;
+import org.exc.DataBaseException.UserAppointmentAlreadyExists;
 import org.exc.DietiEstateException;
 import org.md.Appointment.Appointment;
 import org.md.Appointment.AppointmentPending;
@@ -14,6 +15,7 @@ import org.md.Utente.Utente;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -46,9 +48,9 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
         String Query = "INSERT INTO appuntamento(esito,data,idacquirente,idimmobile) VALUES (?,?,?,?)";
 
-        PreparedStatement stmt = connection.getStatment(Query);
-
         try{
+
+            PreparedStatement stmt = connection.getStatment(Query);
             stmt.setString(1, "Da decidere");
             stmt.setDate(2, Date.valueOf(appointment.getData()));
             stmt.setInt(3, acquirente.getId_user());
@@ -57,6 +59,33 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
             connection.makeQueryUpdate(stmt);
 
         }catch (Exception e){
+            logger.severe(errorQuery + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
+    }
+
+    @Override
+    public boolean hasUserAppointment(Appointment appointment) throws DietiEstateException {
+
+        Acquirente acquirente = getAcquirente(appointment);
+
+        String Query = "SELECT idappuntamento FROM (appuntamento join immobile on immobile.idimmobile = appuntamento.idimmobile)" +
+                " WHERE idacquirente = ? and data = ?";
+
+        try{
+
+            PreparedStatement stmt = connection.getStatment(Query);
+            stmt.setInt(1,acquirente.getId_user());
+            stmt.setDate(2, Date.valueOf(appointment.getData()));
+
+            connection.makeQuery(stmt);
+
+            if(connection.hasNextRow()) throw new UserAppointmentAlreadyExists();
+
+            return true;
+
+        }catch (SQLException e){
             logger.severe(errorQuery + e.getMessage());
             throw new ErrorExecutingQuery();
         }

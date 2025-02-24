@@ -15,5 +15,7 @@ public interface AppointmentDAO {
 
     void createAppointment(Appointment appointment) throws DietiEstateException;
 
+    boolean hasUserAppointment(Appointment appointment) throws DietiEstateException;
+
 
 }
