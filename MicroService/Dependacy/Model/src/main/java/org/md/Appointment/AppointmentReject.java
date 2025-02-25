@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class AppointmentReject extends Appointment{
 
     @JsonIgnore
-    public final String name = "rifiutata";
+    private final String name = "rifiutata";
 
     public AppointmentReject() {
     }
@@ -15,6 +15,7 @@ public class AppointmentReject extends Appointment{
     }
 
     @JsonIgnore
+    @Override
     public String getName() {
         return name;
     }

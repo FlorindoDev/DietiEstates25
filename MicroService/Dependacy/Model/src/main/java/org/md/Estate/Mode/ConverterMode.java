@@ -1,6 +1,9 @@
 package org.md.Estate.Mode;
 
 public class ConverterMode {
+
+    private ConverterMode(){}
+
     public static Mode traslateFromString(String modalita) {
         switch (modalita){
             case "Affitto":

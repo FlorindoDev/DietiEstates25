@@ -5,11 +5,9 @@ import org.ap.MainApp.AppointmentManagement;
 import org.ap.MainApp.interfacce.AppointmentService;
 import org.md.Appointment.Appointment;
 import org.md.Appointment.AppointmentAccept;
-import org.md.Appointment.AppointmentPending;
 import org.md.Appointment.AppointmentReject;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Agent;
-import org.md.Utente.Utente;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
