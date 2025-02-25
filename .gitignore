@@ -6,3 +6,4 @@ windows/
 web/
 out/
 .metadata
+*.iml
