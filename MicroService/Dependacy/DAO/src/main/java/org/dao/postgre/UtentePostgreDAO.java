@@ -117,18 +117,18 @@ public class UtentePostgreDAO implements UtenteDAO {
 
         Utente user=null;
 
-        String Query="SELECT idacquirente as id_user,email, 'Acquirente' AS user_type FROM acquirente WHERE email like ? " +
+        String query="SELECT idacquirente as id_user,email, 'Acquirente' AS user_type FROM acquirente WHERE email like ? " +
                 " UNION " +
                 "SELECT idamministratore as id_user,email, 'Admin' AS user_type FROM amministratore WHERE  email like ? " +
                 " UNION " +
                 "SELECT idagente as id_user,email, 'Agent' AS user_type FROM agenteimmobiliare WHERE email like ? ";
 
-        String email_user = utente.getEmail();
+        String emailUser = utente.getEmail();
         try {
-            PreparedStatement stmt = connection.getStatment(Query);
-            stmt.setString(1,email_user);
-            stmt.setString(2,email_user);
-            stmt.setString(3,email_user);
+            PreparedStatement stmt = connection.getStatment(query);
+            stmt.setString(1,emailUser);
+            stmt.setString(2,emailUser);
+            stmt.setString(3,emailUser);
             connection.makeQuery(stmt);
 
             if(!connection.hasNextRow()) throw new UserNotExists();
@@ -223,18 +223,18 @@ public class UtentePostgreDAO implements UtenteDAO {
     public boolean isUserAbsentOverAll(Utente utente) throws DietiEstateException {
 
 
-        String Query="SELECT idacquirente as id_user,email, 'Acquirente' AS user_type FROM acquirente WHERE email like ? " +
+        String query="SELECT idacquirente as id_user,email, 'Acquirente' AS user_type FROM acquirente WHERE email like ? " +
                 " UNION " +
                 "SELECT idamministratore as id_user,email, 'Admin' AS user_type FROM amministratore WHERE  email like ? " +
                 " UNION " +
                 "SELECT idagente as id_user,email, 'Agent' AS user_type FROM agenteimmobiliare WHERE email like ? ";
 
-        String email_user = utente.getEmail();
+        String emailUser = utente.getEmail();
         try {
-            PreparedStatement stmt = connection.getStatment(Query);
-            stmt.setString(1,email_user);
-            stmt.setString(2,email_user);
-            stmt.setString(3,email_user);
+            PreparedStatement stmt = connection.getStatment(query);
+            stmt.setString(1,emailUser);
+            stmt.setString(2,emailUser);
+            stmt.setString(3,emailUser);
             connection.makeQuery(stmt);
 
             if(connection.hasNextRow()) throw new UserAlreadyExists();

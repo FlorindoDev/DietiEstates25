@@ -68,15 +68,15 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
                 connection.nextRow();
 
-                Estate estate = new Estate.Builder(connection.extractInt("idimmobile")).build();
+                Estate estate = new Estate.Builder<>(connection.extractInt("idimmobile")).build();
 
-                int id_acquirente = connection.extractInt("idacquirente");
-                String email_acquirente = connection.extractString("email_acquirente");
+                int idacquirente = connection.extractInt("idacquirente");
+                String emailacquirente = connection.extractString("email_acquirente");
 
-                Acquirente acquirente = new Acquirente.Builder(id_acquirente,email_acquirente)
+                Acquirente acquirente = new Acquirente.Builder(idacquirente,emailacquirente)
                         .build();
 
-                Appointment appointment = new Appointment.Builder(connection.extractInt("idappuntamento"))
+                Appointment appointment = new Appointment.Builder<>(connection.extractInt("idappuntamento"))
                         .setEstate(estate)
                         .setData(String.valueOf(connection.extractDate("data")))
                         .setAcquirente(acquirente)
@@ -100,11 +100,11 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
         Utente user  = utenteDAO.getUserFromEmail(acquirente);
 
-        String Query = "SELECT * FROM appuntamento where idacquirente = ? ";
+        String query = "SELECT * FROM appuntamento where idacquirente = ? ";
 
         try{
 
-            PreparedStatement stmt = connection.getStatment(Query);
+            PreparedStatement stmt = connection.getStatment(query);
             stmt.setInt(1,user.getId_user());
             connection.makeQuery(stmt);
             if(!connection.hasNextRow()) throw new UserNotHaveAppointment();
@@ -121,9 +121,9 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
                 connection.nextRow();
 
-                Estate estate = new Estate.Builder(connection.extractInt("idimmobile")).build();
+                Estate estate = new Estate.Builder<>(connection.extractInt("idimmobile")).build();
 
-                Appointment appointment = new Appointment.Builder(connection.extractInt("idappuntamento"))
+                Appointment appointment = new Appointment.Builder<>(connection.extractInt("idappuntamento"))
                         .setEstate(estate)
                         .setData(String.valueOf(connection.extractDate("data")))
                         .setAcquirente((Acquirente) user)
@@ -143,11 +143,11 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
         Acquirente acquirente = getAcquirente(appointment);
 
-        String Query = "UPDATE appuntamento SET esito = ? where idimmobile = ? and idacquirente = ? and data = ?";
+        String query = "UPDATE appuntamento SET esito = ? where idimmobile = ? and idacquirente = ? and data = ?";
 
         try{
 
-            PreparedStatement stmt = connection.getStatment(Query);
+            PreparedStatement stmt = connection.getStatment(query);
             stmt.setString(1, appointment.getName());
             stmt.setInt(2, appointment.getEstate().getId_estate());
             stmt.setInt(3, acquirente.getId_user());

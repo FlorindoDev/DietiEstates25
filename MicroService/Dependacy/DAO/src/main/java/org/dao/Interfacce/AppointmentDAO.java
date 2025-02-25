@@ -2,10 +2,8 @@ package org.dao.Interfacce;
 
 import org.exc.DietiEstateException;
 import org.md.Appointment.Appointment;
-import org.md.Appointment.AppointmentPending;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Agent;
-import org.md.Utente.Utente;
 
 import java.util.ArrayList;
 

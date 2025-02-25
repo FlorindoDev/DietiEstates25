@@ -1,8 +1,9 @@
 package org.md.Estate.Status;
 
-import org.md.Estate.ClasseEnergetica.*;
 
 public class ConverterStatus {
+
+    private ConverterStatus(){}
     public static Status traslateFromString(String stato) {
 
         switch (stato){

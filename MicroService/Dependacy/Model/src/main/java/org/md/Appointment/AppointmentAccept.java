@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class AppointmentAccept extends Appointment{
 
     @JsonIgnore
-    public final String name = "Accetata";
+    private final String name = "Accetata";
     public AppointmentAccept() {
     }
 
@@ -14,15 +14,15 @@ public class AppointmentAccept extends Appointment{
     }
 
     @JsonIgnore
-
+    @Override
     public String getName() {
         return name;
     }
 
 
     public static class Builder  extends Appointment.Builder<AppointmentAccept.Builder>{
-        public Builder(int id_appointment) {
-            super(id_appointment);
+        public Builder(int idAppointment) {
+            super(idAppointment);
         }
 
         @Override

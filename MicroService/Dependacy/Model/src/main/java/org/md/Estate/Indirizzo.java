@@ -1,20 +1,17 @@
 package org.md.Estate;
 
-import org.md.Agency.Agency;
-import org.md.Estate.ClasseEnergetica.EnergeticClass;
-import org.md.Estate.Mode.Mode;
-import org.md.Estate.Status.Status;
+
 import org.md.Serializzazione.Translate;
-import org.md.Utente.Agent;
+
 
 public class Indirizzo extends Translate {
 
     private String idIndirizzo = "";
     private String stato = "";
-    private String cittá = "";
+    private String citta = "";
     private String via = "";
     private String numeroCivico = "";
-    private int CAP = 0;
+    private int cap = 0;
 
 
     public String getIdIndirizzo() {
@@ -33,12 +30,12 @@ public class Indirizzo extends Translate {
         this.stato = stato;
     }
 
-    public String getCittá() {
-        return cittá;
+    public String getCitta() {
+        return citta;
     }
 
-    public void setCittá(String cittá) {
-        this.cittá = cittá;
+    public void setCitta(String citta) {
+        this.citta = citta;
     }
 
     public String getVia() {
@@ -57,20 +54,20 @@ public class Indirizzo extends Translate {
         this.numeroCivico = numeroCivico;
     }
 
-    public int getCAP() {
-        return CAP;
+    public int getCap() {
+        return cap;
     }
 
-    public void setCAP(int CAP) {
-        this.CAP = CAP;
+    public void setCap(int cap) {
+        this.cap = cap;
     }
 
     public Indirizzo() {}
 
     public Indirizzo(Indirizzo.Builder builder) {
         this.idIndirizzo = builder.idIndirizzo;
-        this.CAP = builder.CAP;
-        this.cittá = builder.cittá;
+        this.cap = builder.cap;
+        this.citta = builder.citta;
         this.stato = builder.stato;
         this.numeroCivico = builder.numeroCivico;
         this.via = builder.via;
@@ -81,10 +78,10 @@ public class Indirizzo extends Translate {
     public static class Builder<typeBuilder extends Indirizzo.Builder<typeBuilder>>{
         private String idIndirizzo = "";
         private String stato = "";
-        private String cittá = "";
+        private String citta = "";
         private String via = "";
         private String numeroCivico = "";
-        private int CAP = 0;
+        private int cap = 0;
 
         public Builder(String idIndirizzo) {
             this.idIndirizzo = idIndirizzo;
@@ -109,8 +106,8 @@ public class Indirizzo extends Translate {
             return self();
         }
 
-        public typeBuilder setCittá(String cittá) {
-            this.cittá = cittá;
+        public typeBuilder setCitta(String citta) {
+            this.citta = citta;
             return self();
         }
 
@@ -124,8 +121,8 @@ public class Indirizzo extends Translate {
             return self();
         }
 
-        public typeBuilder setCAP(int CAP) {
-            this.CAP = CAP;
+        public typeBuilder setCap(int cap) {
+            this.cap = cap;
             return self();
         }
     }

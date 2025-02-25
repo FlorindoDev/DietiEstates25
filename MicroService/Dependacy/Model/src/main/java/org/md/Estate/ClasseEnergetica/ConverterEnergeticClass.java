@@ -1,6 +1,9 @@
 package org.md.Estate.ClasseEnergetica;
 
+
 public class ConverterEnergeticClass {
+
+    private ConverterEnergeticClass(){}
     public static EnergeticClass traslateFromString(String classeenergetica) {
 
         switch (classeenergetica){
