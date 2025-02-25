@@ -14,25 +14,28 @@ import java.util.logging.Logger;
 
 public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
-    private final String TABLE = "amministratore";
+    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
+    private final String table = "amministratore";
 
-    private CommunicationWithPostgre connection = new CommunicationWithPostgre();
-    private static final Logger logger = Logger.getLogger(CommunicationWithPostgre.class.getName());
+    private final CommunicationWithPostgre connection;
+    private static final Logger logger = Logger.getLogger(AdminPostgreDAO.class.getName());
 
-    public AdminPostgreDAO() {}
+    public AdminPostgreDAO() {
+        connection = new CommunicationWithPostgre();
+    }
 
     @Override
     public Admin getUser(Admin admin) throws DietiEstateException {
 
-        String Query="SELECT * FROM amministratore where ? = email";
+        String query="SELECT * FROM amministratore where ? = email";
 
-        PreparedStatement stmt = PrepareStatementGetUser(admin, Query);
+        PreparedStatement stmt = PrepareStatementGetUser(admin, query);
 
         try {
             connection.makeQuery(stmt);
             connection.nextRow();
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -51,14 +54,13 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     @Override
     public void createUser(Admin admin) throws DietiEstateException{
 
-        String Query=
+        String query=
                 "INSERT INTO amministratore(email, issupportoamministratore, nome, cognome, password, partitaiva) VALUES" +
                         "(?,?,?,?,crypt(?,'" +
                         connection.getKeyCrypt() +
                         "'),?)";
 
-        System.out.println(Query);
-        PreparedStatement stmt = connection.getStatment(Query);
+        PreparedStatement stmt = connection.getStatment(query);
 
         try {
             stmt.setString(1, admin.getEmail());
@@ -66,10 +68,9 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
             stmt.setString(3, admin.getNome());
             stmt.setString(4, admin.getCognome());
             stmt.setString(5, admin.getPassword());
-            stmt.setString(6, admin.getAgency().getCodice_partitaIVA());
-            System.out.println(stmt.toString());
+            stmt.setString(6, admin.getAgency().getCodicePartitaIVA());
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
         }
 
@@ -77,28 +78,25 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
         try {
             connection.makeQueryUpdate(stmt);
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
     }
 
     @Override
     public void updateUser(Admin utente) throws DietiEstateException {
-        super.updateUser(utente, TABLE);
+        super.updateUser(utente, table);
     }
 
     @Override
     public void removeAdmin(Admin admin) throws DietiEstateException {
 
-        String Query= "DELETE FROM amministratore WHERE email = ?";
-        System.out.println(Query);
-        PreparedStatement stmt = connection.getStatment(Query);
-        System.out.println(Query);
+        String query= "DELETE FROM amministratore WHERE email = ?";
+        PreparedStatement stmt = connection.getStatment(query);
         try {
             stmt.setString(1, admin.getEmail());
-            System.out.println(stmt.toString());
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
         }
 
@@ -106,7 +104,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
         try {
             res = connection.makeQueryUpdate(stmt);
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -120,29 +118,28 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     @Override
     public boolean isUserAbsent(Admin user) throws DietiEstateException {
 
-        return super.isUserAbsent(user, TABLE);
+        return super.isUserAbsent(user, table);
 
     }
 
     @Override
     public void upgradeSupportAdmin(Admin admin) throws DietiEstateException {
 
-        String Query= "UPDATE amministratore SET issupportoamministratore = 'TRUE' WHERE email = ? ";
+        String query= "UPDATE amministratore SET issupportoamministratore = 'TRUE' WHERE email = ? ";
 
-        PreparedStatement stmt = connection.getStatment(Query);
+        PreparedStatement stmt = connection.getStatment(query);
 
         try {
             stmt.setString(1, admin.getEmail());
-            System.out.println(stmt.toString());
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
         }
 
         try {
             connection.makeQueryUpdate(stmt);
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -150,7 +147,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     }
     public boolean isUserPresent(Admin user) throws DietiEstateException {
 
-        return super.isUserPresent(user, TABLE);
+        return super.isUserPresent(user, table);
 
     }
 
@@ -163,22 +160,22 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     @Override
     public void downgradeSupport(Admin admin) throws  DietiEstateException{
 
-        String Query= "UPDATE amministratore SET issupportoamministratore = 'FALSE' WHERE email = ? ";
+        String query= "UPDATE amministratore SET issupportoamministratore = 'FALSE' WHERE email = ? ";
 
-        PreparedStatement stmt = connection.getStatment(Query);
+        PreparedStatement stmt = connection.getStatment(query);
 
         try {
             stmt.setString(1, admin.getEmail());
-            System.out.println(stmt.toString());
+
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
         }
 
         try {
             connection.makeQueryUpdate(stmt);
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 

@@ -31,7 +31,7 @@ public class CreateAgency implements CreateAgencyService {
 
                 validaitor.validateEmail(agency.getEmail());
                 validaitor.validateAgencyName(agency.getNome());
-                validaitor.validatePartitaIVA(agency.getCodice_partitaIVA());
+                validaitor.validatePartitaIVA(agency.getCodicePartitaIVA());
                 validaitor.validateSede(agency.getSede());
 
                 create.createAgency(agency);

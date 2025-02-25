@@ -1,7 +1,7 @@
 package org.dao.Interfacce;
 
 import org.exc.DietiEstateException;
-import org.md.Utente.Admin;
+
 import org.md.Utente.Agent;
 
 public interface AgentDAO{

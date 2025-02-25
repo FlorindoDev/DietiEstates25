@@ -3,56 +3,58 @@ package org.md.Utente;
 import org.md.Utente.interfacce.UserSeparators;
 
 public class Acquirente extends Utente{
-    private Boolean notify_new_estate;
-    private Boolean change_price_notify;
+    private Boolean notifyNewEstate;
+    private Boolean changePriceNotify;
 
     public Acquirente(){}
 
     public Acquirente(Builder builder) {
         super(builder);
-        this.notify_new_estate = builder.notify_new_estate;
-        this.change_price_notify = builder.change_price_notify;
+        this.notifyNewEstate = builder.notifyNewEstate;
+        this.changePriceNotify = builder.changePriceNotify;
     }
 
+    @Override
     public void Separator(UserSeparators split){
         split.separator(this);
     }
 
-    public Boolean getNotify_new_estate() {
-        return notify_new_estate;
+    public Boolean getNotifyNewEstate() {
+        return notifyNewEstate;
     }
 
-    public Boolean getChange_price_notify() {
-        return change_price_notify;
+    public Boolean getChangePriceNotify() {
+        return changePriceNotify;
     }
 
-    public void setNotify_new_estate(Boolean notify_new_estate) {
-        this.notify_new_estate = notify_new_estate;
+    public void setNotifyNewEstate(Boolean notifyNewEstate) {
+        this.notifyNewEstate = notifyNewEstate;
     }
 
-    public void setChange_price_notify(Boolean change_price_notify) {
-        this.change_price_notify = change_price_notify;
+    public void setChangePriceNotify(Boolean changePriceNotify) {
+        this.changePriceNotify = changePriceNotify;
     }
 
     public static class Builder extends Utente.Builder<Acquirente.Builder>{
 
-        private Boolean notify_new_estate = null;
-        private Boolean change_price_notify = null;
+        private Boolean notifyNewEstate = null;
+        private Boolean changePriceNotify = null;
 
-        public Builder(int id_user, String email) {
-            super(id_user, email);
+        public Builder(int iduser, String email) {
+            super(iduser, email);
         }
 
-        public Builder setNotifyNewEstate(Boolean notify_new_estate){
-            this.notify_new_estate=notify_new_estate;
+        public Builder setNotifyNewEstate(Boolean notifyNewEstate){
+            this.notifyNewEstate = notifyNewEstate;
             return this;
         }
 
-        public Builder setChangePriceNotify(Boolean change_price_notify){
-            this.change_price_notify = change_price_notify;
+        public Builder setChangePriceNotify(Boolean changePriceNotify){
+            this.changePriceNotify = changePriceNotify;
             return this;
         }
 
+        @Override
         public Acquirente build(){
             return new Acquirente(this);
         }

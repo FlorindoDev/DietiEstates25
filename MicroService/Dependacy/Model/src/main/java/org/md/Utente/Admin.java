@@ -41,8 +41,8 @@ public class Admin extends Utente{
         private Boolean isSupport;
         private Agency agency;
 
-        public Builder(int id_user, String email) {
-            super(id_user, email);
+        public Builder(int iduser, String email) {
+            super(iduser, email);
         }
 
         public Builder setIsSupport(Boolean isSupport){
@@ -54,6 +54,7 @@ public class Admin extends Utente{
             this.agency=agency;
             return this;
         }
+        @Override
         public Admin build(){
             return new Admin(this);
         }
