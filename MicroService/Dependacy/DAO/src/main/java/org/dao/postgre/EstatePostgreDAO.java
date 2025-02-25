@@ -2,16 +2,10 @@ package org.dao.postgre;
 
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.EstateDAO;
-import org.exc.DataBaseException.ErrorCreateStatment;
-import org.exc.DataBaseException.ErrorExecutingQuery;
-import org.exc.DietiEstateException;
-import org.md.Agency.Agency;
+
 import org.md.Estate.Estate;
 import org.md.Utente.Agent;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class EstatePostgreDAO implements EstateDAO {

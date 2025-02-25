@@ -174,6 +174,26 @@ public class Estate extends Translate {
         this.stato = stato;
     }
 
+    @Override
+    public String toString() {
+        return "Estate Details:\n" +
+                "ID Estate: " + idEstate + "\n" +
+                "Agente: " + (agente != null ? agente.toString() : "N/A") + "\n" +
+                "Indirizzo: " + (indirizzo != null ? indirizzo.toString() : "N/A") + "\n" +
+                "Agenzia: " + (agenzia != null ? agenzia.toString() : "N/A") + "\n" +
+                "Foto: " + foto + "\n" +
+                "Descrizione: " + descrizione + "\n" +
+                "Prezzo: " + price + "\n" +
+                "Spazio: " + space + "\n" +
+                "Stanze: " + rooms + "\n" +
+                "Piano: " + floor + "\n" +
+                "Bagni: " + wc + "\n" +
+                "Garage: " + garage + "\n" +
+                "Ascensore: " + (elevator ? "Sì" : "No") + "\n" +
+                "Classe Energetica: " + (classeEnergetica != null ? classeEnergetica.toString() : "N/A") + "\n" +
+                "Modalità: " + (mode != null ? mode.toString() : "N/A") + "\n" +
+                "Stato: " + (stato != null ? stato.toString() : "N/A");
+    }
 
     public static class Builder<typeBuilder extends Builder<typeBuilder>>{
         private int idEstate = 0;

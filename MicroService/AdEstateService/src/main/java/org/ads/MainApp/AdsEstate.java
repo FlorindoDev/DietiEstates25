@@ -4,8 +4,12 @@ import org.ads.MainApp.Interface.AdsEstateService;
 import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.AgencyPostgreDAO;
 import org.dao.postgre.EstatePostgreDAO;
+import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
+import org.md.Appointment.Appointment;
 import org.md.Estate.Estate;
+
+import java.util.ArrayList;
 // IMPORTARE MQ
 
 public class AdsEstate implements AdsEstateService {
@@ -30,11 +34,30 @@ public class AdsEstate implements AdsEstateService {
     @Override
     public String loadEstate(Agency agency) {
         AgencyPostgreDAO dao = new AgencyPostgreDAO();
-        try{
-            dao.getEstates(agency);
-        }catch (Exception e){
-            e.printStackTrace();
+
+        try {
+            ArrayList<Estate> estates = dao.getEstates(agency);
+            return convertToJson(estates);
+        }catch (DietiEstateException e){
+            return e.getMessage();
         }
-        return "";
+
     }
+
+
+    private String convertToJson(ArrayList<Estate> estates) {
+
+        String json = "{\"code\": 0, \"message\": \"success of action get estates\", \"AdsService\": [";
+
+        for(Estate estate : estates){
+            json = json.concat(estate.TranslateToJson());
+
+            if(!estate.equals(estates.getLast()))
+                json = json.concat(",");
+
+        }
+
+        return json + "]}";
+    }
+
 }
