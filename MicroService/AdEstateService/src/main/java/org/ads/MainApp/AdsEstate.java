@@ -19,9 +19,12 @@ public class AdsEstate implements AdsEstateService {
     // RIFERIMENTO A MQ
 
     @Override
-    public String createEsteate(Estate estate) {
+    public String createEstate(Estate estate) {
 
-//        EstateDAO dao = new EstatePostgreDAO();
+        System.out.println(estate.toString());
+
+        EstateDAO dao = new EstatePostgreDAO();
+        dao.createEstate(estate);
 //        dao.getEstate(null);
         return "";
     }

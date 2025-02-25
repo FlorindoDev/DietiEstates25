@@ -21,8 +21,8 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @Path("createEstate")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String createEsteate(Estate estate) {
-        return "";
+    public String createEstate(Estate estate) {
+        return ads.createEstate(estate);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String changeEstate(Estate estate) {
-        return "";
+        return ads.changeEstate(estate);
     }
 
     @Override
