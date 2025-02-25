@@ -13,25 +13,28 @@ import java.util.logging.Logger;
 
 public class AcquirentePostgreDAO extends UtentePostgreDAO implements AcquirenteDAO {
 
-    private final String TABLE = "acquirente";
+    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
+    private final String table = "acquirente";
 
     private CommunicationWithPostgre connection = new CommunicationWithPostgre();
-    private static final Logger logger = Logger.getLogger(CommunicationWithPostgre.class.getName());
+    private static final Logger logger = Logger.getLogger(AcquirentePostgreDAO.class.getName());
 
-    public AcquirentePostgreDAO() {}
+    public AcquirentePostgreDAO() {
+        //Serve per il framework di JAX-RS
+    }
 
     @Override
     public Acquirente getUser(Acquirente acquirente) throws DietiEstateException {
 
-        String Query="SELECT * FROM acquirente where ? = email";
+        String query="SELECT * FROM acquirente where ? = email";
 
-        PreparedStatement stmt = PrepareStatementGetUser(acquirente, Query);
+        PreparedStatement stmt = PrepareStatementGetUser(acquirente, query);
 
         try {
             connection.makeQuery(stmt);
             connection.nextRow();
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -52,9 +55,9 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
     public void createUser(Acquirente acquirente) throws DietiEstateException {
 
 
-        String Query="INSERT INTO acquirente(Email, Nome, Cognome, Password) VALUES(?,?,?,crypt( ? , '" +  connection.getKeyCrypt() +"'))";
+        String query="INSERT INTO acquirente(Email, Nome, Cognome, Password) VALUES(?,?,?,crypt( ? , '" +  connection.getKeyCrypt() +"'))";
 
-        PreparedStatement stmt = connection.getStatment(Query);
+        PreparedStatement stmt = connection.getStatment(query);
 
         try {
             stmt.setString(1, acquirente.getEmail());
@@ -62,14 +65,14 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
             stmt.setString(3, acquirente.getCognome());
             stmt.setString(4, acquirente.getPassword());
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
         }
 
         try {
             connection.makeQueryUpdate(stmt);
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -79,21 +82,21 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
     @Override
     public void updateUser(Acquirente utente) throws DietiEstateException {
 
-        super.updateUser(utente, TABLE);
+        super.updateUser(utente, table);
 
     }
 
     @Override
     public boolean isUserAbsent(Acquirente user) throws DietiEstateException {
 
-        return super.isUserAbsent(user, TABLE);
+        return super.isUserAbsent(user, table);
 
     }
 
     @Override
     public boolean isUserPresent(Acquirente user) throws DietiEstateException {
 
-        return super.isUserPresent(user, TABLE);
+        return super.isUserPresent(user, table);
 
     }
 

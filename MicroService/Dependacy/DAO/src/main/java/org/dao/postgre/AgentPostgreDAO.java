@@ -14,26 +14,28 @@ import java.util.logging.Logger;
 
 public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
 
-    private final String TABLE = "agenteimmobiliare";
+    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
+    private final String table = "agenteimmobiliare";
 
-    private CommunicationWithPostgre connection = new CommunicationWithPostgre();
-    private static final Logger logger = Logger.getLogger(CommunicationWithPostgre.class.getName());
+    private final CommunicationWithPostgre connection;
+    private static final Logger logger = Logger.getLogger(AgentPostgreDAO.class.getName());
 
     public AgentPostgreDAO() {
+        connection = new CommunicationWithPostgre();
     }
 
     @Override
     public Agent getUser(Agent agent) throws DietiEstateException {
 
-        String Query="SELECT * FROM agenteimmobiliare where ? = email";
+        String query="SELECT * FROM agenteimmobiliare where ? = email";
 
-        PreparedStatement stmt = PrepareStatementGetUser(agent, Query);
+        PreparedStatement stmt = PrepareStatementGetUser(agent, query);
 
         try {
             connection.makeQuery(stmt);
             connection.nextRow();
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -53,14 +55,13 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
 
     @Override
     public void createUser(Agent agent) throws DietiEstateException{
-        String Query=
+        String query=
                 "INSERT INTO agenteimmobiliare(email, biografia, nome, cognome, password, partitaiva, immagineprofilo, idpushnotify, notify_appointment) VALUES" +
                         "(?,?,?,?,crypt(?,'" +
                         connection.getKeyCrypt() +
                         "'),?,?,?,?)";
 
-        System.out.println(Query);
-        PreparedStatement stmt = connection.getStatment(Query);
+        PreparedStatement stmt = connection.getStatment(query);
 
         try {
             stmt.setString(1, agent.getEmail());
@@ -68,13 +69,12 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
             stmt.setString(3, agent.getNome());
             stmt.setString(4, agent.getCognome());
             stmt.setString(5, agent.getPassword());
-            stmt.setString(6, agent.getAgency().getCodice_partitaIVA());
+            stmt.setString(6, agent.getAgency().getCodicePartitaIVA());
             stmt.setString(7, agent.getProfilePic());
             stmt.setString(8, agent.getIdPushNotify());
             stmt.setBoolean(9, agent.getNotify_appointment());
-            System.out.println(stmt.toString());
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
         }
 
@@ -82,7 +82,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
         try {
             connection.makeQueryUpdate(stmt);
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -90,13 +90,13 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
 
     @Override
     public void updateUser(Agent utente) throws DietiEstateException{
-        super.updateUser(utente, TABLE);
+        super.updateUser(utente, table);
     }
 
     @Override
     public boolean isUserAbsent(Agent user) throws DietiEstateException {
 
-        return super.isUserAbsent(user, TABLE);
+        return super.isUserAbsent(user, table);
 
     }
 
@@ -109,21 +109,18 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
     @Override
     public boolean isUserPresent(Agent user) throws DietiEstateException {
 
-        return super.isUserPresent(user, TABLE);
+        return super.isUserPresent(user, table);
 
     }
 
     @Override
     public void removeAdmin(Agent agent) throws DietiEstateException {
-        String Query= "DELETE FROM agenteimmobiliare WHERE email = ?";
-        System.out.println(Query);
-        PreparedStatement stmt = connection.getStatment(Query);
-        System.out.println(Query);
+        String query= "DELETE FROM agenteimmobiliare WHERE email = ?";
+        PreparedStatement stmt = connection.getStatment(query);
         try {
             stmt.setString(1, agent.getEmail());
-            System.out.println(stmt.toString());
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
         }
 
@@ -131,7 +128,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
         try {
             res = connection.makeQueryUpdate(stmt);
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 

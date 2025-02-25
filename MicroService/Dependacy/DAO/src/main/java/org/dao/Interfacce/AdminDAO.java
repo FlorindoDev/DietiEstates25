@@ -1,10 +1,8 @@
 package org.dao.Interfacce;
 
-import org.exc.DataBaseException.ErrorCreateStatment;
+
 import org.exc.DietiEstateException;
-import org.md.Agency.Agency;
 import org.md.Utente.Admin;
-import org.md.Utente.Agent;
 
 public interface AdminDAO {
 

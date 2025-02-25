@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 
 public class Agency extends Translate {
-    protected String codice_partitaIVA;
+    protected String codicePartitaIVA;
     protected String nome;
     protected String sede;
     protected String email;
@@ -20,7 +20,7 @@ public class Agency extends Translate {
     public Agency() {}
 
     public Agency(Builder builder) {
-        this.codice_partitaIVA = builder.codice_partitaIVA;
+        this.codicePartitaIVA = builder.codicePartitaIVA;
         this.nome = builder.nome;
         this.sede = builder.sede;
         this.email = builder.email;
@@ -28,8 +28,8 @@ public class Agency extends Translate {
         this.agents = builder.agents;
     }
 
-    public void setCodice_partitaIVA(String codice_partitaIVA) {
-        this.codice_partitaIVA = codice_partitaIVA;
+    public void setCodicePartitaIVA(String codicePartitaIVA) {
+        this.codicePartitaIVA = codicePartitaIVA;
     }
 
     public void setNome(String nome) {
@@ -44,8 +44,8 @@ public class Agency extends Translate {
         this.email = email;
     }
 
-    public String getCodice_partitaIVA() {
-        return codice_partitaIVA;
+    public String getCodicePartitaIVA() {
+        return codicePartitaIVA;
     }
 
     public String getNome() {
@@ -78,7 +78,7 @@ public class Agency extends Translate {
 
     public static class Builder<typeBuilder extends Agency.Builder<typeBuilder>>{
 
-        String codice_partitaIVA;
+        String codicePartitaIVA;
         String nome = "";
         String sede = "";
         String email = "";
@@ -86,8 +86,8 @@ public class Agency extends Translate {
         ArrayList<Agent> agents = null;
 
 
-        public Builder(String codice_partitaIVA) {
-            this.codice_partitaIVA = codice_partitaIVA;
+        public Builder(String codicePartitaIVA) {
+            this.codicePartitaIVA = codicePartitaIVA;
         }
 
         public typeBuilder setNome(String name){

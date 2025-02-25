@@ -23,14 +23,15 @@ import java.util.logging.Logger;
 
 public class AgencyPostgreDAO implements AgencyDAO {
 
+    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private CommunicationWithPostgre connection = new CommunicationWithPostgre();
-    private static final Logger logger = Logger.getLogger(CommunicationWithPostgre.class.getName());
+    private static final Logger logger = Logger.getLogger(AgencyPostgreDAO.class.getName());
 
-    protected PreparedStatement PrepareStatementGetAgency(Agency agency, String Query) throws DietiEstateException {
-        PreparedStatement stmt = connection.getStatment(Query);
+    protected PreparedStatement prepareStatementGetAgency(Agency agency, String query) throws DietiEstateException {
+        PreparedStatement stmt = connection.getStatment(query);
 
         try {
-            stmt.setString(1, agency.getCodice_partitaIVA());
+            stmt.setString(1, agency.getCodicePartitaIVA());
         } catch (Exception e) {
             logger.severe("Error executing query: " + e.getMessage());
             throw new ErrorCreateStatment();
@@ -40,8 +41,8 @@ public class AgencyPostgreDAO implements AgencyDAO {
 
     }
 
-    protected PreparedStatement PrepareStatementGetAgencyForName(Agency agency, String Query) throws DietiEstateException {
-        PreparedStatement stmt = connection.getStatment(Query);
+    protected PreparedStatement prepareStatementGetAgencyForName(Agency agency, String query) throws DietiEstateException {
+        PreparedStatement stmt = connection.getStatment(query);
 
         try {
             stmt.setString(1, agency.getNome());
@@ -58,23 +59,23 @@ public class AgencyPostgreDAO implements AgencyDAO {
     public void createAgency(Agency agency) throws DietiEstateException {
 
 
-        String Query="INSERT INTO agenziaimmobiliare(PartitaIVA, Nome, Sede) VALUES(?,?,?)";
+        String query="INSERT INTO agenziaimmobiliare(PartitaIVA, Nome, Sede) VALUES(?,?,?)";
 
-        PreparedStatement stmt = connection.getStatment(Query);
+        PreparedStatement stmt = connection.getStatment(query);
 
         try {
-            stmt.setString(1, agency.getCodice_partitaIVA());
+            stmt.setString(1, agency.getCodicePartitaIVA());
             stmt.setString(2, agency.getNome());
             stmt.setString(3, agency.getSede());
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
         }
 
         try {
             connection.makeQueryUpdate(stmt);
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
     }
@@ -82,32 +83,32 @@ public class AgencyPostgreDAO implements AgencyDAO {
     @Override
     public boolean isAgencyAbsent(Agency agency) throws DietiEstateException {
 
-        String Query = "SELECT * FROM agenziaimmobiliare where partitaIVA = ?";
+        String query = "SELECT * FROM agenziaimmobiliare where partitaIVA = ?";
 
-        PreparedStatement stmt = PrepareStatementGetAgency(agency,Query);
+        PreparedStatement stmt = prepareStatementGetAgency(agency,query);
 
         try {
             connection.makeQuery(stmt);
             if(connection.hasNextRow()) throw new AgencyAlreadyExists();
             return true;
         }catch(SQLException e){
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
     }
 
     public boolean isAgencyPresent(Agency agency) throws DietiEstateException {
 
-        String Query = "SELECT * FROM agenziaimmobiliare where partitaIVA = ?";
+        String query = "SELECT * FROM agenziaimmobiliare where partitaIVA = ?";
 
-        PreparedStatement stmt = PrepareStatementGetAgency(agency,Query);
+        PreparedStatement stmt = prepareStatementGetAgency(agency,query);
 
         try {
             connection.makeQuery(stmt);
             if(!connection.hasNextRow()) throw new AgencyNotExists();
             return true;
         }catch(SQLException e){
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
     }
@@ -115,16 +116,16 @@ public class AgencyPostgreDAO implements AgencyDAO {
     @Override
     public boolean isNameAgencyAbsent(Agency agency) throws DietiEstateException {
 
-        String Query = "SELECT * FROM agenziaimmobiliare where nome = ?";
+        String query = "SELECT * FROM agenziaimmobiliare where nome = ?";
 
-        PreparedStatement stmt = PrepareStatementGetAgencyForName(agency,Query);
+        PreparedStatement stmt = prepareStatementGetAgencyForName(agency,query);
 
         try {
             connection.makeQuery(stmt);
             if(connection.hasNextRow()) throw new AgencyNameAlreadyExists();
             return true;
         }catch(SQLException e){
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -135,11 +136,11 @@ public class AgencyPostgreDAO implements AgencyDAO {
 
         isAgencyPresent(agency);
 
-        String Query = "SELECT *" +
+        String query = "SELECT *" +
                 " FROM amministratore INNER JOIN agenziaimmobiliare ON amministratore.partitaiva = agenziaimmobiliare.partitaiva" +
                 " WHERE amministratore.partitaiva = ?";
 
-        PreparedStatement stmt = PrepareStatementGetAgency(agency,Query);
+        PreparedStatement stmt = prepareStatementGetAgency(agency,query);
 
 
 
@@ -149,13 +150,12 @@ public class AgencyPostgreDAO implements AgencyDAO {
             if(!connection.hasNextRow()){
                 throw new Exception();
             }
-            ArrayList<Admin> admins = new ArrayList<Admin>();
+            ArrayList<Admin> admins = new ArrayList<>();
 
             do{
-                System.out.println(connection.extractString("email"));
                 connection.nextRow();
 
-                Agency fullAgency = new Agency.Builder(connection.extractString("partitaiva"))
+                Agency fullAgency = new Agency.Builder<>(connection.extractString("partitaiva"))
                         .setNome(connection.extractString("nome"))
                         .setSede(connection.extractString("sede"))
                         .setEmail(agency.getEmail())
@@ -176,7 +176,7 @@ public class AgencyPostgreDAO implements AgencyDAO {
             return admins;
 
         }catch(Exception e){
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -188,11 +188,11 @@ public class AgencyPostgreDAO implements AgencyDAO {
     public ArrayList<Agent> getAgents(Agency agency) throws DietiEstateException {
         isAgencyPresent(agency);
 
-        String Query = "SELECT *" +
+        String query = "SELECT *" +
                 " FROM agenteimmobiliare INNER JOIN agenziaimmobiliare ON agenteimmobiliare.partitaiva = agenziaimmobiliare.partitaiva" +
                 " WHERE agenteimmobiliare.partitaiva = ?";
 
-        PreparedStatement stmt = PrepareStatementGetAgency(agency,Query);
+        PreparedStatement stmt = prepareStatementGetAgency(agency,query);
 
 
 
@@ -202,13 +202,12 @@ public class AgencyPostgreDAO implements AgencyDAO {
             if(!connection.hasNextRow()){
                 throw new Exception();
             }
-            ArrayList<Agent> agents = new ArrayList<Agent>();
+            ArrayList<Agent> agents = new ArrayList<>();
 
             do{
-                System.out.println(connection.extractString("email"));
                 connection.nextRow();
 
-                Agency fullAgency = new Agency.Builder(connection.extractString("partitaiva"))
+                Agency fullAgency = new Agency.Builder<>(connection.extractString("partitaiva"))
                         .setNome(connection.extractString("nome"))
                         .setSede(connection.extractString("sede"))
                         .setEmail(agency.getEmail())
@@ -228,7 +227,7 @@ public class AgencyPostgreDAO implements AgencyDAO {
             return agents;
 
         }catch(Exception e){
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -239,11 +238,11 @@ public class AgencyPostgreDAO implements AgencyDAO {
     public ArrayList<Estate> getEstates(Agency agency) throws DietiEstateException {
         isAgencyPresent(agency);
 
-        String Query = "SELECT *" +
+        String query = "SELECT *" +
                 " FROM immobile INNER JOIN agenziaimmobiliare ON immobile.partitaiva = agenziaimmobiliare.partitaiva" +
                 " WHERE immobile.partitaiva = ?";
 
-        PreparedStatement stmt = PrepareStatementGetAgency(agency,Query);
+        PreparedStatement stmt = prepareStatementGetAgency(agency,query);
 
 
 
@@ -253,19 +252,18 @@ public class AgencyPostgreDAO implements AgencyDAO {
             if(!connection.hasNextRow()){
                 throw new Exception();
             }
-            ArrayList<Estate> estates = new ArrayList<Estate>();
+            ArrayList<Estate> estates = new ArrayList<>();
 
             do{
-                System.out.println(connection.extractString("email"));
                 connection.nextRow();
 
-                Agency fullAgency = new Agency.Builder(connection.extractString("partitaiva"))
+                Agency fullAgency = new Agency.Builder<>(connection.extractString("partitaiva"))
                         .setNome(connection.extractString("nome"))
                         .setSede(connection.extractString("sede"))
                         .setEmail(agency.getEmail())
                         .build();
 
-                Estate estate = new Estate.Builder(connection.extractInt("idimmobile"))
+                Estate estate = new Estate.Builder<>(connection.extractInt("idimmobile"))
                         .setElevator(connection.extractBoolean("ascensore"))
                         .setAgente(null)
                         .setClasseEnergetica(null)
@@ -304,7 +302,7 @@ public class AgencyPostgreDAO implements AgencyDAO {
             return estates;
 
         }catch(Exception e){
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
     }
