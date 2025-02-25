@@ -39,7 +39,7 @@ public class CreateAgency implements CreateAgencyService {
 
                 create.createAgency(agency);
                 // TODO  AGGIUNGERE EMAILSENDER
-                sender.sendEmail(agency.getEmail());
+                //sender.sendEmail(agency.getEmail());
 
                 // TODO  AGGIUSATRE RITORNO
                 return "{\"code\": 0, \"message\": \"Success of action create agency\"}";

@@ -9,6 +9,7 @@ COPY EmailSender ./EmailSender
 COPY DietiEstateExceptions ./DietiEstateExceptions
 COPY DatabaseLib ./DatabaseLib
 COPY DAO ./DAO
+COPY Validator ./Validator
 COPY pom-noparent.xml pom.xml
 
 
@@ -24,6 +25,7 @@ COPY --from=builder app/DatabaseLib/target/*.jar /lib/DatabaseLib/
 COPY --from=builder app/DietiEstateExceptions/target/*.jar /lib/DietiEstateExceptions/
 COPY --from=builder app/EmailSender/target/*.jar /lib/EmailSender/
 COPY --from=builder app/Model/target/*.jar /lib/Model/
+COPY --from=builder app/Validator/target/*.jar /lib/Validator/
 
 USER nonroot
 
