@@ -24,7 +24,11 @@ public class AdsEstate implements AdsEstateService {
         System.out.println(estate.toString());
 
         EstateDAO dao = new EstatePostgreDAO();
-        dao.createEstate(estate);
+        try {
+            dao.createEstate(estate);
+        }catch (DietiEstateException e) {
+            return e.getMessage();
+        }
 //        dao.getEstate(null);
         return "";
     }

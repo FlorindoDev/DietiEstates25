@@ -3,9 +3,14 @@ package org.dao.postgre;
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.EstateDAO;
 
+import org.exc.DataBaseException.ErrorExecutingQuery;
+import org.exc.DietiEstateException;
+import org.json.JSONObject;
 import org.md.Estate.Estate;
 import org.md.Utente.Agent;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class EstatePostgreDAO implements EstateDAO {
@@ -21,56 +26,56 @@ public class EstatePostgreDAO implements EstateDAO {
     }
 
     @Override
-    public String createEstate(Estate newEstate) {
+    public String createEstate(Estate newEstate) throws DietiEstateException {
 
-        """
-            {   
-            "idEstate":3,
-            "agente":{"idUser":1,"nome":"marcofradddd","email":"utente154545@email.com","cognome":"Paoli","password":"","notifyAppointment":true,"idPushNotify":"TOKEN","biografia":"Sono un figo","profilePic":"foto.png",
-            "agency":{"codicePartitaIVA":"11111111111","nome":"marcofradddd","sede":"via","email":null,"admins":null,"agents":null}
-            },
-            "indirizzo":{"idIndirizzo":1,"stato":"1","citta":"1","via":"1","numeroCivico":"1","cap":1},"agenzia":{"codicePartitaIVA":"11111111111","nome":"marcofradddd","sede":"via","email":null,"admins":null,"agents":null},"foto":"1","descrizione":"1","price":1.0,"space":1.0,"rooms":1,"floor":1,"wc":1,"garage":1,"elevator":true,"classeEnergetica":{"nome":"A","energeticClass":"A","energeticRangeClass":"Medium"},"mode":null,"stato":{"name":"New"}
-        """
+//        """
+//            {
+//            "idEstate":3,
+//            "agente":{"idUser":1,"nome":"marcofradddd","email":"utente154545@email.com","cognome":"Paoli","password":"","notifyAppointment":true,"idPushNotify":"TOKEN","biografia":"Sono un figo","profilePic":"foto.png",
+//            "agency":{"codicePartitaIVA":"11111111111","nome":"marcofradddd","sede":"via","email":null,"admins":null,"agents":null}
+//            },
+//            "indirizzo":{"idIndirizzo":1,"stato":"1","citta":"1","via":"1","numeroCivico":"1","cap":1},"agenzia":{"codicePartitaIVA":"11111111111","nome":"marcofradddd","sede":"via","email":null,"admins":null,"agents":null},"foto":"1","descrizione":"1","price":1.0,"space":1.0,"rooms":1,"floor":1,"wc":1,"garage":1,"elevator":true,"classeEnergetica":{"nome":"A","energeticClass":"A","energeticRangeClass":"Medium"},"mode":null,"stato":{"name":"New"}
+//        """
 
-        """
-                INSERT INTO Immobile (
-                    idAgente,\s
-                    idIndirizzo,\s
-                    partitaiva,\s
-                    Foto,\s
-                    Descrizione,\s
-                    Prezzo,\s
-                    Dimensioni,\s
-                    Stanze,\s
-                    Piano,\s
-                    Bagni,\s
-                    Garage,\s
-                    Ascensore,\s
-                    ClasseEnergetica,\s
-                    Modalita,\s
-                    Stato
-                )
-                VALUES (
-                    1, -- idAgente (deve esistere nella tabella AgenteImmobiliare)
-                    1, -- idIndirizzo (deve esistere nella tabella Indirizzo)
-                    '11111111111', -- partitaiva (valore VARCHAR)
-                    'foto.jpg', -- Foto (valore TEXT)
-                    'Una bella casa in centro', -- Descrizione (valore TEXT)
-                    250000.00, -- Prezzo (valore DECIMAL)
-                    120, -- Dimensioni (valore INT)
-                    3, -- Stanze (valore INT)
-                    2, -- Piano (valore INT)
-                    2, -- Bagni (valore INT)
-                    1, -- Garage (valore INT)
-                    TRUE, -- Ascensore (valore BOOLEAN)
-                    'A+', -- ClasseEnergetica (valore VARCHAR)
-                    'Vendita', -- Modalita (valore VARCHAR)
-                    'Nuovo' -- Stato (valore Stato)
-                );
-                """
+        StringBuilder query = new StringBuilder("INSERT INTO " + TABLE + " (");
 
-        String query = "INSERT INTO "+TABLE+""" VALUES 
-                """;
+
+        JSONObject jsonObject = new JSONObject(newEstate.TranslateToJson());
+        if (!jsonObject.isEmpty()) {
+
+            for (String key : jsonObject.keySet()) {
+                query.append("'"+key+"'"+ ", ");
+            }
+
+            query.setLength(query.length() - 2);
+            query.append(") VALUES (");
+
+            for (String key : jsonObject.keySet()) {
+                query.append("?, ");
+//              query.append(jsonObject.get(key)+ ", ");
+            }
+
+            query.setLength(query.length() - 2);
+            query.append(")");
+
+        }
+
+        System.out.println(query);
+
+        PreparedStatement stmt = connection.getStatment(String.valueOf(query));
+        try {
+            int index = 1;
+            for (String key : jsonObject.keySet()) {
+                stmt.setObject(index++, jsonObject.get(key)); //parte da 1
+            }
+
+            System.out.println(query);
+
+            connection.makeQueryUpdate(stmt);
+        }catch (SQLException e){
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
 
         return "";
     }
@@ -84,6 +89,7 @@ public class EstatePostgreDAO implements EstateDAO {
     public Agent getAgent(Estate agency) {
         return null;
     }
+
 
 
 
