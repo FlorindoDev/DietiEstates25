@@ -22,7 +22,7 @@ public class ManagementAdmin implements ManagmentAdminService {
     public String addAdmin(Admin admin, Agency agency) {
 
         try{
-            adminDAO.isUserAbsent(admin);
+            adminDAO.isUserAbsentOverAll(admin);
         }catch (DietiEstateException e){
             return e.getMessage();
         }
@@ -90,7 +90,7 @@ public class ManagementAdmin implements ManagmentAdminService {
     @Override
     public String getAdmins(Agency agency) {
         try{
-            //adminDAO.isUserPresent(admin);
+            //TODO agencyDAO.isAgencyPresent(admin);
 
             ArrayList<Admin> admins = agencyDAO.getAdmins(agency);
             String json = "{\"code\": 0, \"message\": \"success of action admin upgraded\", \"admins\": [";

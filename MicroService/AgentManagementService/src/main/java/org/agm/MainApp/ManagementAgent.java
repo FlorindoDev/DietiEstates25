@@ -21,7 +21,7 @@ public class ManagementAgent implements ManagmentAgentService {
     @Override
     public String addAgent(Agent agent) {
         try{
-            agentDAO.isUserAbsent(agent);
+            agentDAO.isUserAbsentOverAll(agent);
         }catch (DietiEstateException e){
             return e.getMessage();
         }
@@ -62,7 +62,7 @@ public class ManagementAgent implements ManagmentAgentService {
     @Override
     public String getAgents(Agency agency) {
         try{
-            //adminDAO.isUserPresent(admin);
+            //TODO agencyDAO.isAgencyPresent(admin);
 
             ArrayList<Agent> agents = agencyDAO.getAgents(agency);
             String json = "{\"code\": 0, \"message\": \"success of action get agent\", \"Agent\": [";
@@ -85,7 +85,7 @@ public class ManagementAgent implements ManagmentAgentService {
     @Override
     public String getEstates(Agency agency) {
         try{
-            //adminDAO.isUserPresent(admin);
+            //TODO agencyDAO.isAgencyPresent(admin);
 
             ArrayList<Estate> estates = agencyDAO.getEstates(agency);
             String json = "{\"code\": 0, \"message\": \"success of action get estate\", \"Estate\": [";
