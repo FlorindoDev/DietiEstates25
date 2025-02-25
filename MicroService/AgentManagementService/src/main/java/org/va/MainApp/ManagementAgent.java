@@ -26,8 +26,7 @@ public class ManagementAgent implements ManagmentAgentService {
         }catch (DietiEstateException e){
             return e.getMessage();
         }
-
-        //TODO implementa
+        
         Validator validaitor = Validate.getInstance();
 
 

@@ -29,7 +29,6 @@ public class ManagementAdmin implements ManagmentAdminService {
             return e.getMessage();
         }
 
-        //TODO implementa
         Validator validaitor = Validate.getInstance();
 
 
