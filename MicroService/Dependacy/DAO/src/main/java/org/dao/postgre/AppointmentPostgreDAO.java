@@ -34,8 +34,61 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
     }
 
     @Override
-    public ArrayList<Appointment> getAllAppointment(Agent user) throws DietiEstateException {
-        return null;
+    public ArrayList<Appointment> getAllAppointment(Agent agent) throws DietiEstateException {
+
+        ArrayList<Appointment> appointments = new ArrayList<>();
+
+        UtenteDAO utenteDAO = new UtentePostgreDAO();
+
+        Utente user  = utenteDAO.getUserFromEmail(agent);
+
+        String Query = "SELECT email as email_acquirente,idappuntamento,esito,data,idacquirente,idimmobile \n" +
+                "FROM \n" +
+                "\t(SELECT idacquirente as tmp_idacquirente,idappuntamento,esito,data,idimmobile \n" +
+                " \tFROM \n" +
+                " \t\t(SELECT idimmobile as tmp_idimmobile \n" +
+                "\t\t FROM immobile join agenteimmobiliare ON immobile.idagente = agenteimmobiliare.idagente \n" +
+                "\t\t\twhere agenteimmobiliare.idagente = ?) as tmp join appuntamento \n" +
+                "\t ON tmp.tmp_idimmobile = appuntamento.idimmobile) as tmp join acquirente\n" +
+                "ON tmp.tmp_idacquirente = acquirente.idacquirente";
+
+        try{
+
+            PreparedStatement stmt = connection.getStatment(Query);
+            stmt.setInt(1,user.getId_user());
+            connection.makeQuery(stmt);
+
+        }catch (SQLException e){
+            logger.severe(errorQuery + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
+        try {
+            while (connection.hasNextRow()) {
+
+                connection.nextRow();
+
+                Estate estate = new Estate.Builder(connection.extractInt("idimmobile")).build();
+
+                int id_acquirente = connection.extractInt("idacquirente");
+                String email_acquirente = connection.extractString("email_acquirente");
+
+                Acquirente acquirente = new Acquirente.Builder(id_acquirente,email_acquirente)
+                        .build();
+
+                Appointment appointment = new Appointment.Builder(connection.extractInt("idappuntamento"))
+                        .setEstate(estate)
+                        .setData(String.valueOf(connection.extractDate("data")))
+                        .setAcquirente(acquirente)
+                        .build();
+
+                appointments.add(appointment);
+            }
+        }catch (SQLException e){
+            logger.severe(errorQuery + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+        return appointments;
     }
 
     @Override

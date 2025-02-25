@@ -23,7 +23,7 @@ public class AppointmentManagement implements AppointmentService {
     AppointmentDAO appointmentDAO = new AppointmentPostgreDAO();
 
     private String ConvertToJson(ArrayList<Appointment> appointments) {
-        String json = "{\"code\": 0, \"message\": \"success of action get appointment\", \"Appointments\": [{";
+        String json = "{\"code\": 0, \"message\": \"success of action get appointment\", \"Appointments\": [";
 
         for(Appointment appointment : appointments){
             json = json.concat(appointment.TranslateToJson());
@@ -32,7 +32,7 @@ public class AppointmentManagement implements AppointmentService {
 
         }
 
-        return json + "}]}";
+        return json + "]}";
     }
 
 
@@ -64,6 +64,7 @@ public class AppointmentManagement implements AppointmentService {
 
     @Override
     public String acceptAppointment(AppointmentAccept appointment) {
+        //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
         try {
             appointmentDAO.changeStatusAppointment(appointment);
             return "{\"code\": 0, \"message\": \"success of action accept appointment\"}";

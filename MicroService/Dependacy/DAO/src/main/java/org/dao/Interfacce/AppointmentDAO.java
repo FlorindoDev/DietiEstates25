@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public interface AppointmentDAO {
 
-    ArrayList<Appointment> getAllAppointment(Agent user) throws DietiEstateException;
+    ArrayList<Appointment> getAllAppointment(Agent agent) throws DietiEstateException;
 
     ArrayList<Appointment> getAllAppointment(Acquirente acquirente) throws DietiEstateException;
 

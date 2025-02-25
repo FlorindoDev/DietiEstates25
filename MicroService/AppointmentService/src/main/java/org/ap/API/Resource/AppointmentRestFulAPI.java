@@ -28,7 +28,7 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String loadAppointment(Agent agent) {
-        return null;
+        return appointmentmanagement.loadAppointment(agent);
     }
 
     @Override
