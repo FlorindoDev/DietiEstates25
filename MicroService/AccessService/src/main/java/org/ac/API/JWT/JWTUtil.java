@@ -1,16 +1,17 @@
 package org.ac.API.JWT;
 
-import DBLib.Postgres.ManagementConnectionPostgre;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -32,14 +33,15 @@ public class JWTUtil {
             System.exit(-1);
         }
 
-        Key key = Keys.hmacShaKeyFor(rootNode.path("SECRET_KEY").asText().getBytes());
+        byte[] keyBytes = Decoders.BASE64.decode(rootNode.path("SECRET_KEY").asText());
+        SecretKey key = Keys.hmacShaKeyFor(keyBytes);
 
         return Jwts.builder()
-                .setSubject(email)
+                .claim("sub",email)
                 .claim("roles", roles)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + rootNode.path("Exp").asInt()))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .issuedAt(Date.from(Instant.now()))
+                .expiration(Date.from(Instant.now().plusMillis(rootNode.path("Exp").asInt())))
+                .signWith(key)
                 .compact();
     }
 }
