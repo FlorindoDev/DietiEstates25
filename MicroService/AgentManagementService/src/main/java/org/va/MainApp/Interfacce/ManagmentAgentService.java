@@ -1,9 +1,9 @@
-package org.agm.API.Interfacce;
+package org.va.MainApp.Interfacce;
 
 import org.md.Agency.Agency;
 import org.md.Utente.Agent;
 
-public interface ManagmementAgentAPI {
+public interface ManagmentAgentService {
 
     public String addAgent(Agent agent);
 
@@ -12,6 +12,5 @@ public interface ManagmementAgentAPI {
     public String getAgents(Agency agency);
 
     public String getEstates(Agency agency);
-
 
 }

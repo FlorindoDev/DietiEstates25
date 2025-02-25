@@ -1,7 +1,7 @@
-package org.agm.MainApp;
+package org.va.MainApp;
 
-import org.agm.MainApp.Interfacce.ManagmentAgentService;
-import org.agm.Validator.Validate;
+import org.va.MainApp.Interfacce.ManagmentAgentService;
+import org.va.Validate;
 import org.dao.Interfacce.AgencyDAO;
 import org.dao.Interfacce.AgentDAO;
 import org.dao.postgre.AgencyPostgreDAO;
@@ -11,7 +11,6 @@ import org.md.Agency.Agency;
 import org.md.Estate.Estate;
 import org.md.Utente.Agent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManagementAgent implements ManagmentAgentService {

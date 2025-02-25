@@ -89,6 +89,11 @@
             <artifactId>DAO</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.va</groupId>
+            <artifactId>Validator</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
     </dependencies>
 

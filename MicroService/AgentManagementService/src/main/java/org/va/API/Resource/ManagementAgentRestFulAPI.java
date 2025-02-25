@@ -1,13 +1,13 @@
-package org.agm.API.Resource;
+package org.va.API.Resource;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-import org.agm.API.Interfacce.ManagmementAgentAPI;
-import org.agm.MainApp.Interfacce.ManagmentAgentService;
-import org.agm.MainApp.ManagementAgent;
+import org.va.API.Interfacce.ManagmementAgentAPI;
+import org.va.MainApp.Interfacce.ManagmentAgentService;
+import org.va.MainApp.ManagementAgent;
 import org.md.Agency.Agency;
 import org.md.Utente.Agent;
 
