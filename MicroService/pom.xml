@@ -24,7 +24,6 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <sonar.host.url>http://4.232.70.79:9000/</sonar.host.url>
-        <!--<sonar.login>sqa_21e2ac96cc1d294b1f04ed62b3b88f21517545b6</sonar.login>-->
         <sonar.login>sqp_cf0ed765a2e826ebafbd505d6b7cd41e8fbb27e0</sonar.login>
         <sonar.projectKey>DietiEstate</sonar.projectKey>
         <sonar.projectName>DietiEstate</sonar.projectName>
