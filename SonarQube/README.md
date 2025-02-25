@@ -60,5 +60,5 @@ Password: admin
 - Tutti avranno accesso agli stessi progetti e alla cronologia grazie ai volumi condivisi, che mantengono i dati anche se i container vengono rimossi.
 
 # in caso di errore provare questo comando
-Aumento della memoria 
-'sudo sysctl -w vm.max_map_count=262144'
+Aumento della memoria <br>
+`sudo sysctl -w vm.max_map_count=262144`
