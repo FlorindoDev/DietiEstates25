@@ -1,5 +1,5 @@
 package org.email.Interfacce;
 
 public interface EmailSender {
-    public void SendEmail(String reciver_email);
+    public void sendEmail(String reciver_email);
 }

@@ -9,8 +9,9 @@ import org.dao.postgre.AgencyPostgreDAO;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.md.Utente.Admin;
+import org.va.Validator;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -29,7 +30,7 @@ public class ManagementAdmin implements ManagmentAdminService {
         }
 
         //TODO implementa
-        Validate validaitor = Validate.getInstance();
+        Validator validaitor = Validate.getInstance();
 
 
         try{

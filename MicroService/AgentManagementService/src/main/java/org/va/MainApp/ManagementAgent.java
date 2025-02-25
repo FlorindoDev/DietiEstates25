@@ -10,6 +10,7 @@ import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.md.Estate.Estate;
 import org.md.Utente.Agent;
+import org.va.Validator;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class ManagementAgent implements ManagmentAgentService {
         }
 
         //TODO implementa
-        Validate validaitor = Validate.getInstance();
+        Validator validaitor = Validate.getInstance();
 
 
         try{

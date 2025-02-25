@@ -6,16 +6,20 @@ import org.exc.DietiEstateMicroServiceException.UserGeneralityNotValid;
 
 public interface Validator {
 
-    public Boolean validateEmail(String email) throws DietiEstateException;
-    public  Boolean validatePassword(String password)throws DietiEstateException;
-    public Boolean validateGenerality(String name,String cognome)throws DietiEstateException;
+    Boolean validateEmail(String email) throws DietiEstateException;
+    Boolean validatePassword(String password)throws DietiEstateException;
+    Boolean validateGenerality(String name,String cognome)throws DietiEstateException;
 
-    public boolean validateName(String nome) throws UserGeneralityNotValid;
+    boolean validateName(String nome) throws UserGeneralityNotValid;
 
-    public boolean validateCognome(String cognome) throws UserGeneralityNotValid;
+    boolean validateCognome(String cognome) throws UserGeneralityNotValid;
 
-    public boolean validateDate(String date) throws DietiEstateException;
+    boolean validateDate(String date) throws DietiEstateException;
 
+    Boolean validatePartitaIVA(String partiaIVA) throws DietiEstateException;
 
+    Boolean validateSede(String sede) throws DietiEstateException;
+
+    Boolean validateAgencyName(String agencyName) throws DietiEstateException;
 
 }
