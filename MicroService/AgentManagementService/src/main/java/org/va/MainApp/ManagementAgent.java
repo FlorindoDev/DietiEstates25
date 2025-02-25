@@ -26,7 +26,7 @@ public class ManagementAgent implements ManagmentAgentService {
         }catch (DietiEstateException e){
             return e.getMessage();
         }
-        
+
         Validator validaitor = Validate.getInstance();
 
 
@@ -103,5 +103,10 @@ public class ManagementAgent implements ManagmentAgentService {
         }catch (DietiEstateException e){
             return e.getMessage();
         }
+    }
+
+    @Override
+    public String addEstateAgent(Estate estate, Agent agent) {
+        return null;
     }
 }
