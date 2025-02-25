@@ -9,10 +9,10 @@ import java.time.LocalDate;
 public class Validate implements Validator {
     
     @Override
-    public boolean validateDate(String Date) throws DietiEstateException {
+    public boolean validateDate(String date) throws DietiEstateException {
 
         try{
-            LocalDate.parse(Date);
+            LocalDate.parse(date);
             return true;
         }catch (Exception e){
             throw new AppointmentDateIsNotValid();

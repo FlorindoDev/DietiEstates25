@@ -25,7 +25,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
     CommunicationWithPostgre connection;
 
-    private final String errorQuery = "[-] Error executing query: ";
+    private static final String errorQuery = "[-] Error executing query: ";
 
     private static final Logger logger = Logger.getLogger(AppointmentPostgreDAO.class.getName());
 
@@ -55,7 +55,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
         try{
 
             PreparedStatement stmt = connection.getStatment(Query);
-            stmt.setInt(1,user.getId_user());
+            stmt.setInt(1,user.getIdUser());
             connection.makeQuery(stmt);
 
         }catch (SQLException e){
@@ -105,7 +105,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
         try{
 
             PreparedStatement stmt = connection.getStatment(query);
-            stmt.setInt(1,user.getId_user());
+            stmt.setInt(1,user.getIdUser());
             connection.makeQuery(stmt);
             if(!connection.hasNextRow()) throw new UserNotHaveAppointment();
 
@@ -149,8 +149,8 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
             PreparedStatement stmt = connection.getStatment(query);
             stmt.setString(1, appointment.getName());
-            stmt.setInt(2, appointment.getEstate().getId_estate());
-            stmt.setInt(3, acquirente.getId_user());
+            stmt.setInt(2, appointment.getEstate().getIdEstate());
+            stmt.setInt(3, acquirente.getIdUser());
             stmt.setDate(4, Date.valueOf(appointment.getData()));
 
             if(connection.makeQueryUpdate(stmt) == 0) throw new UpdateAppointmentFail("Appointment not found or some thing else");
@@ -167,15 +167,15 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
         Acquirente acquirente = getAcquirente(appointment);
 
-        String Query = "INSERT INTO appuntamento(esito,data,idacquirente,idimmobile) VALUES (?,?,?,?)";
+        String query = "INSERT INTO appuntamento(esito,data,idacquirente,idimmobile) VALUES (?,?,?,?)";
 
         try{
 
-            PreparedStatement stmt = connection.getStatment(Query);
+            PreparedStatement stmt = connection.getStatment(query);
             stmt.setString(1, "Da decidere");
             stmt.setDate(2, Date.valueOf(appointment.getData()));
-            stmt.setInt(3, acquirente.getId_user());
-            stmt.setInt(4, appointment.getEstate().getId_estate());
+            stmt.setInt(3, acquirente.getIdUser());
+            stmt.setInt(4, appointment.getEstate().getIdEstate());
 
             connection.makeQueryUpdate(stmt);
 
@@ -191,13 +191,13 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
         Acquirente acquirente = getAcquirente(appointment);
 
-        String Query = "SELECT idappuntamento FROM (appuntamento join immobile on immobile.idimmobile = appuntamento.idimmobile)" +
+        String query = "SELECT idappuntamento FROM (appuntamento join immobile on immobile.idimmobile = appuntamento.idimmobile)" +
                 " WHERE idacquirente = ? and data = ?";
 
         try{
 
-            PreparedStatement stmt = connection.getStatment(Query);
-            stmt.setInt(1,acquirente.getId_user());
+            PreparedStatement stmt = connection.getStatment(query);
+            stmt.setInt(1,acquirente.getIdUser());
             stmt.setDate(2, Date.valueOf(appointment.getData()));
 
             connection.makeQuery(stmt);
@@ -215,14 +215,14 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
     private Acquirente getAcquirente(Appointment appointment) throws DietiEstateException {
 
-        AcquirenteDAO take_acquirente = new AcquirentePostgreDAO();
+        AcquirenteDAO takeAcquirente = new AcquirentePostgreDAO();
 
-        String email_acquirente = appointment.getAcquirente().getEmail();
+        String emailAcquirente = appointment.getAcquirente().getEmail();
 
-        Acquirente acquirente = new Acquirente.Builder(0,email_acquirente)
+        Acquirente acquirente = new Acquirente.Builder(0,emailAcquirente)
                 .build();
 
-        acquirente = take_acquirente.getUser(acquirente);
+        acquirente = takeAcquirente.getUser(acquirente);
         return acquirente;
     }
 

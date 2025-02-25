@@ -4,5 +4,5 @@ import org.exc.DietiEstateException;
 
 public interface Validator {
 
-    boolean validateDate(String Date) throws DietiEstateException;
+    boolean validateDate(String date) throws DietiEstateException;
 }

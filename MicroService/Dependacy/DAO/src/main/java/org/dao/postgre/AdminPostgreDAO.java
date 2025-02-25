@@ -29,7 +29,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
         String query="SELECT * FROM amministratore where ? = email";
 
-        PreparedStatement stmt = PrepareStatementGetUser(admin, query);
+        PreparedStatement stmt = prepareStatementGetUser(admin, query);
 
         try {
             connection.makeQuery(stmt);

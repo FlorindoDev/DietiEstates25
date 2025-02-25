@@ -6,11 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CommunicationWithPostgre implements CommunicationWithDataBase, AutoCloseable{
 
+    public static final String ERROR_EXECUTING_QUERY = "Error executing query: ";
     private ResultSet result;
     private PreparedStatement stmt;
     private final ManagementConnectionPostgre managerConnection;
@@ -30,17 +30,10 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
             this.result = stmt.executeQuery();
             logger.info("Query executed successfully " + result.getStatement());
         } catch (SQLException e){
-            logger.severe("Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw e;
         }
 
-        /*
-        ResultSetMetaData metaData = result.getMetaData();
-        int columnCount = metaData.getColumnCount();
-        for (int i = 1; i <= columnCount; i++) {
-            System.out.println("Colonna disponibile: " + metaData.getColumnName(i));
-        }
-        */
     }
 
     public int makeQueryUpdate(PreparedStatement stmt) throws SQLException {
@@ -50,7 +43,7 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
             rowsAffected = stmt.executeUpdate();
             logger.info("Query executed successfully, rows affected: " + rowsAffected);
         } catch (SQLException e) {
-            logger.severe("Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw e;
         }
         return rowsAffected;
@@ -73,27 +66,11 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
         try {
             this.stmt = this.managerConnection.getConnection().prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         } catch (Exception e) {
-            logger.severe("Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
         }
         return stmt;
     }
 
-
-
-
-//    @Override
-//    public boolean getNextRow() {
-//        try {
-//            if (this.result != null) {
-//                logger.info("Next row fetched successfully.");
-//                return true;
-//            }
-//            logger.warning("No more rows available.");
-//        } catch (SQLException e) {
-//            logger.severe("Error fetching next row: " + e.getMessage());
-//        }
-//        return false;
-//    }
 
     @Override
     public int extractInt(String column) {

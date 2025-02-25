@@ -20,8 +20,8 @@ public class AppointmentPending extends Appointment{
     }
 
     public static class Builder  extends Appointment.Builder<AppointmentPending.Builder>{
-        public Builder(int id_appointment) {
-            super(id_appointment);
+        public Builder(int idAppointment) {
+            super(idAppointment);
         }
 
         @Override

@@ -9,8 +9,9 @@ import org.md.Utente.Acquirente;
 
 public class SignUp implements SignUpService {
 
-    AcquirenteDAO signup = new AcquirentePostgreDAO();
+    private final AcquirenteDAO signup;
     public SignUp() {
+        signup = new AcquirentePostgreDAO();
     }
 
     @Override

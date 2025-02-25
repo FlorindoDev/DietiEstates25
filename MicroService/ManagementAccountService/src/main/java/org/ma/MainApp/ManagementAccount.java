@@ -15,6 +15,7 @@ import org.md.Utente.Utente;
 
 public class ManagementAccount implements ManagementAccountService {
 
+    public static final String SUCCESS = "{\"code\": 0, \"message\": \"success of update action ManagementAccount\"}";
     private Validator validator;
 
     public ManagementAccount(){
@@ -47,7 +48,7 @@ public class ManagementAccount implements ManagementAccountService {
 
             dao.updateUser(utente);
 
-            return "{\"code\": 0, \"message\": \"success of update action ManagementAccount\"}";
+            return SUCCESS;
         } catch (DietiEstateException e) {
             return e.getMessage();
         }
@@ -66,7 +67,7 @@ public class ManagementAccount implements ManagementAccountService {
 
             dao.updateUser(utente);
 
-            return "{\"code\": 0, \"message\": \"success of update action ManagementAccount\"}";
+            return SUCCESS;
         } catch (DietiEstateException e) {
             return e.getMessage();
         }
@@ -85,7 +86,7 @@ public class ManagementAccount implements ManagementAccountService {
 
             dao.updateUser(utente);
 
-            return "{\"code\": 0, \"message\": \"success of update action ManagementAccount\"}";
+            return SUCCESS;
         } catch (DietiEstateException e) {
             return e.getMessage();
         }

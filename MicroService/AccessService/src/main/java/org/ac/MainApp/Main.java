@@ -7,7 +7,6 @@ import org.glassfish.jersey.server.ServerProperties;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Utente;
 import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.net.URI;

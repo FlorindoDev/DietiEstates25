@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class EmailSenderJakarta implements EmailSender {
 
     protected String email;
-    protected String password_email;
+    protected String passwordEmail;
 
     protected Properties props;
 
@@ -41,7 +41,7 @@ public class EmailSenderJakarta implements EmailSender {
         this.session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(email, password_email);
+                return new PasswordAuthentication(email, passwordEmail);
             }
         });
 
@@ -64,8 +64,8 @@ public class EmailSenderJakarta implements EmailSender {
         }
 
         this.email = rootNode.path("email").asText();
-        this.password_email = rootNode.path("password").asText();
-        logger.info("[!] Username e passowrd email " + email + " " + password_email);
+        this.passwordEmail = rootNode.path("password").asText();
+        logger.info("[!] Username e passowrd email " + email + " " + passwordEmail);
 
     }
 }
