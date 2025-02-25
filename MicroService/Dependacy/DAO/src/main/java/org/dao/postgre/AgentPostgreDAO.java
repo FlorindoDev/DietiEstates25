@@ -6,6 +6,7 @@ import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
+import org.md.Utente.Admin;
 import org.md.Utente.Agent;
 
 import java.sql.PreparedStatement;
@@ -97,6 +98,12 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
     public boolean isUserAbsent(Agent user) throws DietiEstateException {
 
         return super.isUserAbsent(user, TABLE);
+
+    }
+
+    public boolean isUserAbsentOverAll(Agent user) throws DietiEstateException {
+
+        return super.isUserAbsentOverAll(user);
 
     }
 

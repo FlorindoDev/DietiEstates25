@@ -65,7 +65,7 @@ public class ManagementAgent implements ManagmentAgentService {
             //adminDAO.isUserPresent(admin);
 
             ArrayList<Agent> agents = agencyDAO.getAgents(agency);
-            String json = "{\"code\": 0, \"message\": \"success of action admin upgraded\", \"admins\": [{";
+            String json = "{\"code\": 0, \"message\": \"success of action get agent\", \"Agent\": [{";
 
             for (Agent agent : agents){
                 json = json.concat(agent.TranslateToJson());
@@ -89,7 +89,7 @@ public class ManagementAgent implements ManagmentAgentService {
             //adminDAO.isUserPresent(admin);
 
             ArrayList<Estate> estates = agencyDAO.getEstates(agency);
-            String json = "{\"code\": 0, \"message\": \"success of action admin upgraded\", \"admins\": [{";
+            String json = "{\"code\": 0, \"message\": \"success of action get estate\", \"Estate\": [{";
 
             for (Estate estate : estates){
                 json = json.concat(estate.TranslateToJson());

@@ -19,7 +19,7 @@ public class SignUp implements SignUpService {
         Validate validaitor = Validate.getInstance();
 
         try{
-            if(signup.isUserAbsent(user)){
+            if(signup.isUserAbsentOverAll(user)){
                 validaitor.validateEmail(user.getEmail());
                 validaitor.validatePassword(user.getPassword());
                 validaitor.validateGenerality(user.getNome(), user.getCognome());

@@ -154,6 +154,12 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
     }
 
+    public boolean isUserAbsentOverAll(Admin user) throws DietiEstateException {
+
+        return super.isUserAbsentOverAll(user);
+
+    }
+
     @Override
     public void downgradeSupport(Admin admin) throws  DietiEstateException{
 

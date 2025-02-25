@@ -97,4 +97,8 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
 
     }
 
+    @Override
+    public boolean isUserAbsentOverAll(Acquirente acquirente) throws DietiEstateException {
+        return super.isUserAbsentOverAll(acquirente);
+    }
 }

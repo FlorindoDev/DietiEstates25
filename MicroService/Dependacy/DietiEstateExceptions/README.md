@@ -23,6 +23,7 @@ Abbiamo due grandi categori: <br>
 - `6:` Utente non esiste <br>
 - `7:` Appuntamento gia esiste <br>
 - `8:` Errore aggiornamento appuntamento <br>
+- `9:` L'utente non ha appuntamenti <br>
 - `101:` Email non valida <br>
 - `102:` Password non valida <br>
 - `103:` nome agenzia non valido <br>

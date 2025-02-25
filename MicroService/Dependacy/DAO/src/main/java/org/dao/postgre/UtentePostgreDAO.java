@@ -88,31 +88,62 @@ public class UtentePostgreDAO implements UtenteDAO {
 
         Utente user=null;
         String keycrypt = connection.getKeyCrypt();
-        String Query="SELECT idacquirente as id_user,email, 'Acquirente' AS user_type FROM acquirente WHERE ? like email and password like crypt( ? , '"+ keycrypt +"')" +
+        String Query="SELECT idacquirente as id_user,email, 'Acquirente' AS user_type FROM acquirente WHERE email like ? and password like crypt( ? , '"+ keycrypt +"')" +
                 " UNION " +
-                "SELECT idamministratore as id_user,email, 'Admin' AS user_type FROM amministratore WHERE crypt( ? , '$abcdefghijklmopqrstuv.') like email and password like crypt( ? , '"+ keycrypt +"')" +
+                "SELECT idamministratore as id_user,email, 'Admin' AS user_type FROM amministratore WHERE email like ? and password like crypt( ? , '"+ keycrypt +"')" +
                 " UNION " +
-                "SELECT idagente as id_user,email, 'Agent' AS user_type FROM agenteimmobiliare WHERE ? like email and password like crypt( ? , '"+ keycrypt +"')";
+                "SELECT idagente as id_user,email, 'Agent' AS user_type FROM agenteimmobiliare WHERE email like ? and password like crypt( ? , '"+ keycrypt +"')";
 
 
         PreparedStatement stmt = PrepareStatementGetForLogin(utente, Query);
 
         try {
             connection.makeQuery(stmt);
+
+            if(!connection.hasNextRow()) throw new UserNotFoundException();
+
+            connection.nextRow();
+            user = retrunEffectiveType(user);
+
         } catch (SQLException e) {
             logger.severe("[-] Error executing query: " + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
-        try {
-            connection.nextRow();
-            user = retrunEffectiveType(user);
-        } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
-            throw new UserNotFoundException();
-        }
         return user;
     }
+
+    public Utente getUserFromEmail(Utente utente) throws DietiEstateException {
+
+        Utente user=null;
+
+        String Query="SELECT idacquirente as id_user,email, 'Acquirente' AS user_type FROM acquirente WHERE email like ? " +
+                " UNION " +
+                "SELECT idamministratore as id_user,email, 'Admin' AS user_type FROM amministratore WHERE  email like ? " +
+                " UNION " +
+                "SELECT idagente as id_user,email, 'Agent' AS user_type FROM agenteimmobiliare WHERE email like ? ";
+
+        String email_user = utente.getEmail();
+        try {
+            PreparedStatement stmt = connection.getStatment(Query);
+            stmt.setString(1,email_user);
+            stmt.setString(2,email_user);
+            stmt.setString(3,email_user);
+            connection.makeQuery(stmt);
+
+            if(!connection.hasNextRow()) throw new UserNotExists();
+
+            connection.nextRow();
+            user = retrunEffectiveType(user);
+
+        } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
+        return user;
+    }
+
 
     public void updateUser(Utente changes, String tabella) throws DietiEstateException {
 
@@ -172,7 +203,7 @@ public class UtentePostgreDAO implements UtenteDAO {
 
     }
 
-    protected boolean isUserPresent(Utente utente, String table) throws DietiEstateException {
+    public boolean isUserPresent(Utente utente, String table) throws DietiEstateException {
 
         String Query="SELECT * FROM "+table+" where email = ?";
 
@@ -187,6 +218,32 @@ public class UtentePostgreDAO implements UtenteDAO {
             logger.severe("[-] Error executing query: " + e.getMessage());
             throw new ErrorExecutingQuery();
         }
+    }
+
+    public boolean isUserAbsentOverAll(Utente utente) throws DietiEstateException {
+
+
+        String Query="SELECT idacquirente as id_user,email, 'Acquirente' AS user_type FROM acquirente WHERE email like ? " +
+                " UNION " +
+                "SELECT idamministratore as id_user,email, 'Admin' AS user_type FROM amministratore WHERE  email like ? " +
+                " UNION " +
+                "SELECT idagente as id_user,email, 'Agent' AS user_type FROM agenteimmobiliare WHERE email like ? ";
+
+        String email_user = utente.getEmail();
+        try {
+            PreparedStatement stmt = connection.getStatment(Query);
+            stmt.setString(1,email_user);
+            stmt.setString(2,email_user);
+            stmt.setString(3,email_user);
+            connection.makeQuery(stmt);
+
+            if(connection.hasNextRow()) throw new UserAlreadyExists();
+            return true;
+        } catch (SQLException e) {
+            logger.severe("[-] Error executing query: " + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
     }
 
 

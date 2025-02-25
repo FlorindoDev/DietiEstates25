@@ -7,6 +7,8 @@ import org.md.Appointment.Appointment;
 import org.md.Appointment.AppointmentAccept;
 import org.md.Appointment.AppointmentPending;
 import org.md.Appointment.AppointmentReject;
+import org.md.Utente.Acquirente;
+import org.md.Utente.Agent;
 import org.md.Utente.Utente;
 
 import jakarta.ws.rs.Consumes;
@@ -22,11 +24,20 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
 
     @Override
     @POST
-    @Path("loadAppointment")
+    @Path("loadAppointmentAgent")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String loadAppointment(Utente user) {
+    public String loadAppointment(Agent agent) {
         return null;
+    }
+
+    @Override
+    @POST
+    @Path("loadAppointmentAcquirente")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String loadAppointment(Acquirente acquirente) {
+        return appointmentmanagement.loadAppointment(acquirente);
     }
 
     @Override
@@ -35,7 +46,7 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String acceptAppointment(AppointmentAccept appointment) {
-        return null;
+        return appointmentmanagement.acceptAppointment(appointment);
     }
 
     @Override

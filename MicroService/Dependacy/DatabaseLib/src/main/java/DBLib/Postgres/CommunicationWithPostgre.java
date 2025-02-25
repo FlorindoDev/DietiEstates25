@@ -5,6 +5,7 @@ import DBLib.Interfacce.CommunicationWithDataBase;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.logging.Logger;
 
 public class CommunicationWithPostgre implements CommunicationWithDataBase, AutoCloseable{
@@ -112,6 +113,19 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
         try {
             if (this.result != null) {
                 String value = this.result.getString(column);
+                logger.info("Extracted string value: " + value);
+                return value;
+            }
+        } catch (SQLException e) {
+            logger.severe("Error extracting string from column " + column + ": " + e.getMessage());
+        }
+        return null;
+    }
+
+    public Date extractDate(String column) {
+        try {
+            if (this.result != null) {
+                Date value = this.result.getDate(column);
                 logger.info("Extracted string value: " + value);
                 return value;
             }

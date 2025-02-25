@@ -10,6 +10,8 @@ import org.md.Appointment.Appointment;
 import org.md.Appointment.AppointmentAccept;
 import org.md.Appointment.AppointmentPending;
 import org.md.Appointment.AppointmentReject;
+import org.md.Utente.Acquirente;
+import org.md.Utente.Agent;
 import org.md.Utente.Utente;
 
 import java.util.ArrayList;
@@ -20,14 +22,55 @@ public class AppointmentManagement implements AppointmentService {
 
     AppointmentDAO appointmentDAO = new AppointmentPostgreDAO();
 
+    private String ConvertToJson(ArrayList<Appointment> appointments) {
+        String json = "{\"code\": 0, \"message\": \"success of action get appointment\", \"Appointments\": [{";
+
+        for(Appointment appointment : appointments){
+            json = json.concat(appointment.TranslateToJson());
+            if(!appointment.equals(appointments.getLast()))
+                json = json.concat(",");
+
+        }
+
+        return json + "}]}";
+    }
+
+
     @Override
-    public ArrayList<Appointment> loadAppointment(Utente user) {
-        return null;
+    public String loadAppointment(Acquirente user) {
+        try {
+
+            ArrayList<Appointment> appointments = appointmentDAO.getAllAppointment(user);
+
+            return ConvertToJson(appointments);
+
+        } catch (DietiEstateException e) {
+            return e.getMessage();
+        }
+
+    }
+
+    public String loadAppointment(Agent user) {
+        try {
+
+            ArrayList<Appointment> appointments = appointmentDAO.getAllAppointment(user);
+
+            return ConvertToJson(appointments);
+
+        } catch (DietiEstateException e) {
+            return e.getMessage();
+        }
     }
 
     @Override
     public String acceptAppointment(AppointmentAccept appointment) {
-        return "";
+        try {
+            appointmentDAO.changeStatusAppointment(appointment);
+            return "{\"code\": 0, \"message\": \"success of action accept appointment\"}";
+
+        } catch (DietiEstateException e) {
+            return e.getMessage();
+        }
     }
 
     @Override

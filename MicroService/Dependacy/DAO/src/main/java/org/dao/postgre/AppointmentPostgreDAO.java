@@ -2,14 +2,15 @@ package org.dao.postgre;
 
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AcquirenteDAO;
-import org.dao.Interfacce.AgentDAO;
 import org.dao.Interfacce.AppointmentDAO;
+import org.dao.Interfacce.UtenteDAO;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DataBaseException.UpdateAppointmentFail;
 import org.exc.DataBaseException.UserAppointmentAlreadyExists;
+import org.exc.DataBaseException.UserNotHaveAppointment;
 import org.exc.DietiEstateException;
 import org.md.Appointment.Appointment;
-import org.md.Appointment.AppointmentPending;
+import org.md.Estate.Estate;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Agent;
 import org.md.Utente.Utente;
@@ -33,8 +34,55 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
     }
 
     @Override
-    public ArrayList<Appointment> getAppointment(Utente user) throws DietiEstateException {
+    public ArrayList<Appointment> getAllAppointment(Agent user) throws DietiEstateException {
         return null;
+    }
+
+    @Override
+    public ArrayList<Appointment> getAllAppointment(Acquirente acquirente) throws DietiEstateException {
+
+        ArrayList<Appointment> appointments = new ArrayList<>();
+
+        UtenteDAO utenteDAO = new UtentePostgreDAO();
+
+        Utente user  = utenteDAO.getUserFromEmail(acquirente);
+
+        String Query = "SELECT * FROM appuntamento where idacquirente = ? ";
+
+        try{
+
+            PreparedStatement stmt = connection.getStatment(Query);
+            stmt.setInt(1,user.getId_user());
+            connection.makeQuery(stmt);
+            if(!connection.hasNextRow()) throw new UserNotHaveAppointment();
+
+        }catch (SQLException e){
+            logger.severe(errorQuery + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
+        try {
+
+
+            while (connection.hasNextRow()) {
+
+                connection.nextRow();
+
+                Estate estate = new Estate.Builder(connection.extractInt("idimmobile")).build();
+
+                Appointment appointment = new Appointment.Builder(connection.extractInt("idappuntamento"))
+                        .setEstate(estate)
+                        .setData(String.valueOf(connection.extractDate("data")))
+                        .setAcquirente((Acquirente) user)
+                        .build();
+
+                appointments.add(appointment);
+            }
+        }catch (SQLException e){
+            logger.severe(errorQuery + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+        return appointments;
     }
 
     @Override
