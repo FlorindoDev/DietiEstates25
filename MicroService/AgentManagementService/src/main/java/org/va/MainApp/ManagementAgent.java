@@ -1,5 +1,7 @@
 package org.va.MainApp;
 
+import org.dao.Interfacce.EstateDAO;
+import org.dao.postgre.EstatePostgreDAO;
 import org.va.MainApp.Interfacce.ManagmentAgentService;
 import org.va.Validate;
 import org.dao.Interfacce.AgencyDAO;
@@ -18,6 +20,8 @@ public class ManagementAgent implements ManagmentAgentService {
 
     private AgentDAO agentDAO = new AgentPostgreDAO();
     private AgencyDAO agencyDAO = new AgencyPostgreDAO();
+
+    private EstateDAO estateDAO = new EstatePostgreDAO();
 
     @Override
     public String addAgent(Agent agent) {
@@ -107,6 +111,13 @@ public class ManagementAgent implements ManagmentAgentService {
 
     @Override
     public String addEstateAgent(Estate estate, Agent agent) {
-        return null;
+        try{
+            estateDAO.addEstateAgent(estate,agent);
+
+            return "{\"code\": 0, \"message\": \"success of action add agent to estate\"}";
+        }catch (DietiEstateException e){
+            return e.getMessage();
+        }
+
     }
 }

@@ -3,6 +3,7 @@ package org.dao.postgre;
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.EstateDAO;
 
+import org.exc.DietiEstateException;
 import org.md.Estate.Estate;
 import org.md.Utente.Agent;
 
@@ -85,6 +86,10 @@ public class EstatePostgreDAO implements EstateDAO {
         return null;
     }
 
+    @Override
+    public void addEstateAgent(Estate estate, Agent agent) throws DietiEstateException {
+        
+    }
 
 
     //    @Override
