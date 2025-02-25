@@ -11,8 +11,8 @@ import java.net.URI;
 
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://localhost:7003/";
-    public static final String RESOURCE = "org.ma.API.Resource";
+    public static final String BASE_URI = "http://localhost:7005/";
+    public static final String RESOURCE = "org.ads.API.Resource";
 
     public static HttpServer startServer() {
 

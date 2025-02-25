@@ -2,6 +2,7 @@ package org.ads.API.Resource;
 
 import org.ads.API.Interface.AdsEstateAPI;
 import org.ads.MainApp.AdsEstate;
+import org.md.Agency.Agency;
 import org.md.Estate.Estate;
 
 import jakarta.ws.rs.Consumes;
@@ -38,7 +39,7 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @Path("loadEstate")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String loadEstate(Estate estate) {
-        return "";
+    public String loadEstate(Agency agency) {
+        return ads.loadEstate(agency);
     }
 }

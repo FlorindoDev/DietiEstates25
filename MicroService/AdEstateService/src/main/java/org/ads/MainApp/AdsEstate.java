@@ -2,6 +2,7 @@ package org.ads.MainApp;
 
 import org.ads.MainApp.Interface.AdsEstateService;
 import org.dao.Interfacce.EstateDAO;
+import org.dao.postgre.EstatePostgreDAO;
 import org.md.Agency.Agency;
 import org.md.Estate.Estate;
 // IMPORTARE MQ
@@ -14,6 +15,9 @@ public class AdsEstate implements AdsEstateService {
 
     @Override
     public String createEsteate(Estate estate) {
+
+//        EstateDAO dao = new EstatePostgreDAO();
+//        dao.getEstate(null);
         return "";
     }
 
@@ -23,7 +27,13 @@ public class AdsEstate implements AdsEstateService {
     }
 
     @Override
-    public String loadEstate(Agency estate) {
+    public String loadEstate(Agency agency) {
+        EstateDAO dao = new EstatePostgreDAO();
+        try{
+            dao.getEstate(agency);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return "";
     }
 }
