@@ -112,6 +112,8 @@ public class ManagementAgent implements ManagmentAgentService {
     @Override
     public String addEstateAgent(Estate estate, Agent agent) {
         try{
+            estateDAO.IsEstatePresent(estate);
+            agentDAO.isUserPresent(agent);
             estateDAO.addEstateAgent(estate,agent);
 
             return "{\"code\": 0, \"message\": \"success of action add agent to estate\"}";
@@ -119,5 +121,10 @@ public class ManagementAgent implements ManagmentAgentService {
             return e.getMessage();
         }
 
+    }
+
+    @Override
+    public String removeEstateAgent(Estate estate, Agent agent) {
+        return addEstateAgent(estate,agent);
     }
 }

@@ -11,4 +11,6 @@ public interface EstateDAO {
     Agent getAgent(Estate agency);
 
     void addEstateAgent(Estate estate, Agent agent) throws DietiEstateException;
+
+    boolean IsEstatePresent(Estate estate) throws DietiEstateException;
 }
