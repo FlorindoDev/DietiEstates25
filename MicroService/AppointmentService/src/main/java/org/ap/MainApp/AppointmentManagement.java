@@ -1,8 +1,7 @@
 package org.ap.MainApp;
 
 import org.ap.MainApp.interfacce.AppointmentService;
-import org.ap.Validator.Interfacce.Validator;
-import org.ap.Validator.Validate;
+import org.va.Validate;
 import org.dao.Interfacce.AppointmentDAO;
 import org.dao.postgre.AppointmentPostgreDAO;
 import org.exc.DietiEstateException;
@@ -11,6 +10,7 @@ import org.md.Appointment.AppointmentAccept;
 import org.md.Appointment.AppointmentReject;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Agent;
+import org.va.Validator;
 
 import java.util.ArrayList;
 
@@ -91,7 +91,8 @@ public class AppointmentManagement implements AppointmentService {
 
         try {
             //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
-            Validator validate = new Validate();
+            Validator validate = Validate.getInstance();
+
             validate.validateDate(appointment.getData());
 
             appointmentDAO.hasUserAppointment(appointment);

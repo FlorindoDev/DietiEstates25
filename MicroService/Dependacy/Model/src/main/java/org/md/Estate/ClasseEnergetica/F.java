@@ -3,7 +3,7 @@ package org.md.Estate.ClasseEnergetica;
 import org.md.Serializzazione.Translate;
 
 class F extends Translate implements Low {
-    private final String nome = "F";
+    private static final String NOME = "F";
     @Override
     public String getEnergeticClass() {
         return "F";
@@ -15,6 +15,6 @@ class F extends Translate implements Low {
     }
 
     public String getNome() {
-        return nome;
+        return NOME;
     }
 }

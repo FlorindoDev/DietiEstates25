@@ -6,6 +6,11 @@ import org.dao.Interfacce.EstateDAO;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DietiEstateException;
 import org.json.JSONObject;
+import org.exc.DataBaseException.ErrorCreateStatment;
+import org.exc.DataBaseException.ErrorExecutingQuery;
+import org.exc.DataBaseException.EstateNotExists;
+import org.exc.DataBaseException.UserNotExists;
+import org.exc.DietiEstateException;
 import org.md.Estate.Estate;
 import org.md.Utente.Agent;
 
@@ -16,6 +21,7 @@ import java.util.logging.Logger;
 public class EstatePostgreDAO implements EstateDAO {
 
     private static final String TABLE = "immobile";
+    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
 
     private CommunicationWithPostgre connection;
 
@@ -90,6 +96,58 @@ public class EstatePostgreDAO implements EstateDAO {
         return null;
     }
 
+    @Override
+    public void addEstateAgent(Estate estate, Agent agent) throws DietiEstateException {
+        String query= "UPDATE immobile SET idagent = ? WHERE idimmobile = ? ";
+
+        PreparedStatement stmt;
+        try {
+            stmt = connection.getStatment(query);
+            stmt.setInt(1, agent.getIdUser());
+            stmt.setInt(2, estate.getIdEstate());
+        } catch (SQLException e) {
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorCreateStatment();
+        }
+
+        makeEstateUpdate(stmt);
+
+    }
+
+
+    private int makeEstateUpdate(PreparedStatement stmt) throws ErrorExecutingQuery {
+        int res = 0;
+        try {
+            res = connection.makeQueryUpdate(stmt);
+        } catch (SQLException e) {
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+        return res;
+    }
+
+    @Override
+    public boolean IsEstatePresent(Estate estate) throws DietiEstateException {
+        String query="SELECT * FROM immobile where idimmobile = ?";
+        PreparedStatement stmt;
+        try {
+            stmt = connection.getStatment(query);
+
+            stmt.setInt(1, estate.getIdEstate());
+        } catch (SQLException e) {
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorCreateStatment();
+        }
+
+        try {
+            connection.makeQuery(stmt);
+            if(!connection.hasNextRow()) throw new EstateNotExists();
+            return true;
+        } catch (SQLException e) {
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+    }
 
 
 

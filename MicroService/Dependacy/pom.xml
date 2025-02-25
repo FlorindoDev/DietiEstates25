@@ -20,6 +20,7 @@
         <module>DietiEstateExceptions</module>
         <module>EmailSender</module>
         <module> Model </module>
+        <module>Validator</module>
     </modules>
 
 

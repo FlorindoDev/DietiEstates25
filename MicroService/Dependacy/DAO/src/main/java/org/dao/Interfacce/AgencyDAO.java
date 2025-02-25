@@ -7,6 +7,7 @@ import org.md.Utente.Admin;
 import org.md.Utente.Agent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface AgencyDAO {
     public void createAgency(Agency agency) throws DietiEstateException;
@@ -15,9 +16,9 @@ public interface AgencyDAO {
 
     public boolean isNameAgencyAbsent(Agency agency) throws DietiEstateException;
 
-    public ArrayList<Admin> getAdmins(Agency agency) throws DietiEstateException;
+    public List<Admin> getAdmins(Agency agency) throws DietiEstateException;
 
-    public ArrayList<Agent> getAgents(org.md.Agency.Agency agency) throws DietiEstateException;
+    public List<Agent> getAgents(org.md.Agency.Agency agency) throws DietiEstateException;
 
-    public ArrayList<Estate> getEstates(Agency agency) throws DietiEstateException;
+    public List<Estate> getEstates(Agency agency) throws DietiEstateException;
 }

@@ -1,7 +1,9 @@
-package org.agm.MainApp;
+package org.va.MainApp;
 
-import org.agm.MainApp.Interfacce.ManagmentAgentService;
-import org.agm.Validator.Validate;
+import org.dao.Interfacce.EstateDAO;
+import org.dao.postgre.EstatePostgreDAO;
+import org.va.MainApp.Interfacce.ManagmentAgentService;
+import org.va.Validate;
 import org.dao.Interfacce.AgencyDAO;
 import org.dao.Interfacce.AgentDAO;
 import org.dao.postgre.AgencyPostgreDAO;
@@ -10,13 +12,16 @@ import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.md.Estate.Estate;
 import org.md.Utente.Agent;
+import org.va.Validator;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ManagementAgent implements ManagmentAgentService {
 
     private AgentDAO agentDAO = new AgentPostgreDAO();
     private AgencyDAO agencyDAO = new AgencyPostgreDAO();
+
+    private EstateDAO estateDAO = new EstatePostgreDAO();
 
     @Override
     public String addAgent(Agent agent) {
@@ -26,8 +31,7 @@ public class ManagementAgent implements ManagmentAgentService {
             return e.getMessage();
         }
 
-        //TODO implementa
-        Validate validaitor = Validate.getInstance();
+        Validator validaitor = Validate.getInstance();
 
 
         try{
@@ -64,7 +68,7 @@ public class ManagementAgent implements ManagmentAgentService {
         try{
             //TODO agencyDAO.isAgencyPresent(admin);
 
-            ArrayList<Agent> agents = agencyDAO.getAgents(agency);
+            List<Agent> agents = agencyDAO.getAgents(agency);
             String json = "{\"code\": 0, \"message\": \"success of action get agent\", \"Agent\": [";
 
             for (Agent agent : agents){
@@ -87,7 +91,7 @@ public class ManagementAgent implements ManagmentAgentService {
         try{
             //TODO agencyDAO.isAgencyPresent(admin);
 
-            ArrayList<Estate> estates = agencyDAO.getEstates(agency);
+            List<Estate> estates = agencyDAO.getEstates(agency);
             String json = "{\"code\": 0, \"message\": \"success of action get estate\", \"Estate\": [";
 
             for (Estate estate : estates){
@@ -103,5 +107,24 @@ public class ManagementAgent implements ManagmentAgentService {
         }catch (DietiEstateException e){
             return e.getMessage();
         }
+    }
+
+    @Override
+    public String addEstateAgent(Estate estate, Agent agent) {
+        try{
+            estateDAO.IsEstatePresent(estate);
+            agentDAO.isUserPresent(agent);
+            estateDAO.addEstateAgent(estate,agent);
+
+            return "{\"code\": 0, \"message\": \"success of action add agent to estate\"}";
+        }catch (DietiEstateException e){
+            return e.getMessage();
+        }
+
+    }
+
+    @Override
+    public String removeEstateAgent(Estate estate, Agent agent) {
+        return addEstateAgent(estate,agent);
     }
 }

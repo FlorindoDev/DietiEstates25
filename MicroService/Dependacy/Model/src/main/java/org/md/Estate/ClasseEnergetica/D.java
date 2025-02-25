@@ -4,7 +4,7 @@ import org.md.Serializzazione.Translate;
 
 class D extends Translate implements Low {
 
-    private final String nome = "D";
+    private static final String NOME = "D";
 
     @Override
     public String getEnergeticClass() {
@@ -17,6 +17,6 @@ class D extends Translate implements Low {
     }
 
     public String getNome() {
-        return nome;
+        return NOME;
     }
 }

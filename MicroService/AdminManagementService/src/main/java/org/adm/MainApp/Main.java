@@ -45,6 +45,6 @@ public class Main {
         System.out.println(acquirente.TranslateToJson());
         System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
         System.in.read();
-        server.stop();
+        server.shutdownNow();
     }
 }

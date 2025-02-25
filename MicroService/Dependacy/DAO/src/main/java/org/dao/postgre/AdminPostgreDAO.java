@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
     public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
-    private final String table = "amministratore";
+    private static final String TABLE = "amministratore";
 
     private final CommunicationWithPostgre connection;
     private static final Logger logger = Logger.getLogger(AdminPostgreDAO.class.getName());
@@ -74,39 +74,21 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
             throw new ErrorCreateStatment();
         }
 
-
-        try {
-            connection.makeQueryUpdate(stmt);
-        } catch (SQLException e) {
-            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
-            throw new ErrorExecutingQuery();
-        }
+        makeAdminUpdate(stmt);
     }
 
     @Override
     public void updateUser(Admin utente) throws DietiEstateException {
-        super.updateUser(utente, table);
+        super.updateUser(utente, TABLE);
     }
 
     @Override
     public void removeAdmin(Admin admin) throws DietiEstateException {
 
         String query= "DELETE FROM amministratore WHERE email = ?";
-        PreparedStatement stmt = connection.getStatment(query);
-        try {
-            stmt.setString(1, admin.getEmail());
-        } catch (SQLException e) {
-            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
-            throw new ErrorCreateStatment();
-        }
+        PreparedStatement stmt = makeAdminQuery(admin, query);
 
-        int res = 0;
-        try {
-            res = connection.makeQueryUpdate(stmt);
-        } catch (SQLException e) {
-            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
-            throw new ErrorExecutingQuery();
-        }
+        int res = makeAdminUpdate(stmt);
 
         if(res == 0){
             throw new UserNotExists();
@@ -118,7 +100,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     @Override
     public boolean isUserAbsent(Admin user) throws DietiEstateException {
 
-        return super.isUserAbsent(user, table);
+        return super.isUserAbsent(user, TABLE);
 
     }
 
@@ -127,27 +109,15 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
         String query= "UPDATE amministratore SET issupportoamministratore = 'TRUE' WHERE email = ? ";
 
-        PreparedStatement stmt = connection.getStatment(query);
+        PreparedStatement stmt = makeAdminQuery(admin, query);
 
-        try {
-            stmt.setString(1, admin.getEmail());
-        } catch (SQLException e) {
-            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
-            throw new ErrorCreateStatment();
-        }
-
-        try {
-            connection.makeQueryUpdate(stmt);
-        } catch (SQLException e) {
-            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
-            throw new ErrorExecutingQuery();
-        }
+        makeAdminUpdate(stmt);
 
 
     }
     public boolean isUserPresent(Admin user) throws DietiEstateException {
 
-        return super.isUserPresent(user, table);
+        return super.isUserPresent(user, TABLE);
 
     }
 
@@ -162,6 +132,13 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
         String query= "UPDATE amministratore SET issupportoamministratore = 'FALSE' WHERE email = ? ";
 
+        PreparedStatement stmt = makeAdminQuery(admin, query);
+
+        makeAdminUpdate(stmt);
+
+    }
+
+    private PreparedStatement makeAdminQuery(Admin admin, String query) throws ErrorCreateStatment {
         PreparedStatement stmt = connection.getStatment(query);
 
         try {
@@ -171,14 +148,18 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
         }
+        return stmt;
+    }
 
+    private int makeAdminUpdate(PreparedStatement stmt) throws ErrorExecutingQuery {
+        int res = 0;
         try {
-            connection.makeQueryUpdate(stmt);
+            res = connection.makeQueryUpdate(stmt);
         } catch (SQLException e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
-
+        return res;
     }
 
 

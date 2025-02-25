@@ -31,24 +31,31 @@ public class EmailSenderJakarta implements EmailSender {
         // Indirizzo email del mittente
 
         readCredentials();
-        this.props = new Properties();
-        props.put("mail.smtp.host", "smtp-mail.outlook.com");
-        props.put("mail.smtp.port", "587");
+        props = new Properties();
+        props.put("mail.smtp.host", "smtp.mail.yahoo.com");
+        props.put("mail.smtp.port", "465");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.ssl.enable", "true");
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.ssl.checkserveridentity", "true");
+        props.put("mail.smtp.socketFactory.fallback", "false");                     // Porta TLS
 
         // Creazione della sessione con autenticazione
-        this.session = Session.getInstance(props, new Authenticator() {
+        session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(email, passwordEmail);
             }
         });
 
+        session.setDebug(true);
+
     }
 
     @Override
-    public void SendEmail(String reciver_email) {}
+    public void sendEmail(String reciverEmail) { // è vuoto perche saranno i figli ad inviare email
+    }
 
     private void readCredentials(){
         JsonNode rootNode = null;

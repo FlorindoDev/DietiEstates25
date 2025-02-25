@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
 
     public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
-    private final String table = "agenteimmobiliare";
+    private static final String TABLE = "agenteimmobiliare";
 
     private final CommunicationWithPostgre connection;
     private static final Logger logger = Logger.getLogger(AgentPostgreDAO.class.getName());
@@ -90,13 +90,13 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
 
     @Override
     public void updateUser(Agent utente) throws DietiEstateException{
-        super.updateUser(utente, table);
+        super.updateUser(utente, TABLE);
     }
 
     @Override
     public boolean isUserAbsent(Agent user) throws DietiEstateException {
 
-        return super.isUserAbsent(user, table);
+        return super.isUserAbsent(user, TABLE);
 
     }
 
@@ -109,7 +109,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
     @Override
     public boolean isUserPresent(Agent user) throws DietiEstateException {
 
-        return super.isUserPresent(user, table);
+        return super.isUserPresent(user, TABLE);
 
     }
 

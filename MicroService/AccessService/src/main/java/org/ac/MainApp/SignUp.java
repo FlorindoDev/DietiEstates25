@@ -1,11 +1,12 @@
 package org.ac.MainApp;
 
 import org.ac.MainApp.interfacce.SignUpService;
-import org.ac.Validator.Validate;
+import org.va.Validate;
 import org.dao.Interfacce.AcquirenteDAO;
 import org.dao.postgre.AcquirentePostgreDAO;
 import org.exc.DietiEstateException;
 import org.md.Utente.Acquirente;
+import org.va.Validator;
 
 public class SignUp implements SignUpService {
 
@@ -17,7 +18,7 @@ public class SignUp implements SignUpService {
     @Override
     public String makeSignUp(Acquirente user) {
 
-        Validate validaitor = Validate.getInstance();
+        Validator validaitor = Validate.getInstance();
 
         try{
             if(signup.isUserAbsentOverAll(user)){

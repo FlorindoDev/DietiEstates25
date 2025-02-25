@@ -1,7 +1,7 @@
 package org.adm.MainApp;
 
 import org.adm.MainApp.Interfacce.ManagmentAdminService;
-import org.adm.Validator.Validate;
+import org.va.Validate;
 import org.dao.Interfacce.AdminDAO;
 import org.dao.Interfacce.AgencyDAO;
 import org.dao.postgre.AdminPostgreDAO;
@@ -9,8 +9,10 @@ import org.dao.postgre.AgencyPostgreDAO;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.md.Utente.Admin;
+import org.va.Validator;
 
-import java.util.ArrayList;
+
+import java.util.List;
 
 
 public class ManagementAdmin implements ManagmentAdminService {
@@ -27,8 +29,7 @@ public class ManagementAdmin implements ManagmentAdminService {
             return e.getMessage();
         }
 
-        //TODO implementa
-        Validate validaitor = Validate.getInstance();
+        Validator validaitor = Validate.getInstance();
 
 
         try{
@@ -92,7 +93,7 @@ public class ManagementAdmin implements ManagmentAdminService {
         try{
             //TODO agencyDAO.isAgencyPresent(admin);
 
-            ArrayList<Admin> admins = agencyDAO.getAdmins(agency);
+            List<Admin> admins = agencyDAO.getAdmins(agency);
             String json = "{\"code\": 0, \"message\": \"success of action admin upgraded\", \"admins\": [";
 
             for (Admin admin : admins){

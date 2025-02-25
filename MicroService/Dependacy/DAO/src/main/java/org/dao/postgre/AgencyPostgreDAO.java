@@ -24,6 +24,9 @@ import java.util.logging.Logger;
 public class AgencyPostgreDAO implements AgencyDAO {
 
     public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
+    public static final String COGNOME_COLUMN = "cognome";
+    public static final String PARTITAIVA_COLUMN = "partitaiva";
+    public static final String EMAIL_COLUMN = "email";
     private CommunicationWithPostgre connection = new CommunicationWithPostgre();
     private static final Logger logger = Logger.getLogger(AgencyPostgreDAO.class.getName());
 
@@ -136,7 +139,7 @@ public class AgencyPostgreDAO implements AgencyDAO {
 
         isAgencyPresent(agency);
 
-        String query = "SELECT *" +
+        String query = "SELECT *, agenziaimmobiliare.nome AS nomeagenzia" +
                 " FROM amministratore INNER JOIN agenziaimmobiliare ON amministratore.partitaiva = agenziaimmobiliare.partitaiva" +
                 " WHERE amministratore.partitaiva = ?";
 
@@ -148,22 +151,21 @@ public class AgencyPostgreDAO implements AgencyDAO {
             connection.makeQuery(stmt);
 
             if(!connection.hasNextRow()){
-                throw new Exception();
+                throw new AgencyAdminsNotExists();
             }
             ArrayList<Admin> admins = new ArrayList<>();
 
             do{
                 connection.nextRow();
 
-                Agency fullAgency = new Agency.Builder<>(connection.extractString("partitaiva"))
-                        .setNome(connection.extractString("nome"))
+                Agency fullAgency = new Agency.Builder<>(connection.extractString(PARTITAIVA_COLUMN))
+                        .setNome(connection.extractString("nomeagenzia"))
                         .setSede(connection.extractString("sede"))
-                        .setEmail(agency.getEmail())
                         .build();
 
-                Admin admin = new Admin.Builder(1,connection.extractString("email"))
+                Admin admin = new Admin.Builder(1,connection.extractString(EMAIL_COLUMN))
                         .setName(connection.extractString("nome"))
-                        .setCognome(connection.extractString("cognome"))
+                        .setCognome(connection.extractString(COGNOME_COLUMN))
                         .setIsSupport(connection.extractBoolean("issupportoamministratore"))
                         .setAgency(fullAgency)
                         .build();
@@ -200,22 +202,22 @@ public class AgencyPostgreDAO implements AgencyDAO {
             connection.makeQuery(stmt);
 
             if(!connection.hasNextRow()){
-                throw new Exception();
+                throw new AgencyAgentsNotExists();
             }
             ArrayList<Agent> agents = new ArrayList<>();
 
             do{
                 connection.nextRow();
 
-                Agency fullAgency = new Agency.Builder<>(connection.extractString("partitaiva"))
+                Agency fullAgency = new Agency.Builder<>(connection.extractString(PARTITAIVA_COLUMN))
                         .setNome(connection.extractString("nome"))
                         .setSede(connection.extractString("sede"))
                         .setEmail(agency.getEmail())
                         .build();
 
-                Agent agent = new Agent.Builder(1,connection.extractString("email"))
+                Agent agent = new Agent.Builder(1,connection.extractString(EMAIL_COLUMN))
                         .setName(connection.extractString("nome"))
-                        .setCognome(connection.extractString("cognome"))
+                        .setCognome(connection.extractString(COGNOME_COLUMN))
                         .setAgency(fullAgency)
                         .build();
 
@@ -251,24 +253,24 @@ public class AgencyPostgreDAO implements AgencyDAO {
             connection.makeQuery(stmt);
 
             if(!connection.hasNextRow()){
-                throw new Exception();
+                throw new AgencyEstatesNotExists();
             }
             ArrayList<Estate> estates = new ArrayList<>();
 
             do{
                 connection.nextRow();
 
-                Agency fullAgency = new Agency.Builder<>(connection.extractString("partitaiva"))
+                Agency fullAgency = new Agency.Builder<>(connection.extractString(PARTITAIVA_COLUMN))
                         .setNome(connection.extractString("nome"))
                         .setSede(connection.extractString("sede"))
                         .setEmail(agency.getEmail())
                         .build();
 
-                Agent agente = new Agent.Builder(connection.extractInt("idagente"),connection.extractString("email"))
+                Agent agente = new Agent.Builder(connection.extractInt("idagente"),connection.extractString(EMAIL_COLUMN))
                         .setBiografia(connection.extractString("biografia"))
                         .setProfilePic(connection.extractString("immagineprofilo"))
                         .setName(connection.extractString("nome"))
-                        .setCognome(connection.extractString("cognome"))
+                        .setCognome(connection.extractString(COGNOME_COLUMN))
                         .setIdPushNotify(connection.extractString("idpushnotify"))
                         .setNotifyAppointment(connection.extractBoolean("notify_appointment"))
                         .setAgency(fullAgency)

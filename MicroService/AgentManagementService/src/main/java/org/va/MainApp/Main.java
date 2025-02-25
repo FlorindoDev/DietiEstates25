@@ -1,4 +1,4 @@
-package org.agm.MainApp;
+package org.va.MainApp;
 
 import java.io.IOException;
 import java.net.URI;
@@ -49,6 +49,6 @@ public class Main {
 
         System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
         System.in.read();
-        server.stop();
+        server.shutdownNow();
     }
 }
