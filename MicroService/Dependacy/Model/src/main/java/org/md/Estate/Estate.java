@@ -1,8 +1,9 @@
 package org.md.Estate;
 
 import org.md.Estate.ClasseEnergetica.EnergeticClass;
-import org.md.Estate.ClasseEnergetica.Mode.Mode;
+
 import org.md.Agency.Agency;
+import org.md.Estate.ClasseEnergetica.Mode.Mode;
 import org.md.Estate.Status.Status;
 import org.md.Serializzazione.Translate;
 import org.md.Utente.Agent;
@@ -136,6 +137,10 @@ public class Estate extends Translate {
 
     public int getGarage() {
         return garage;
+    }
+
+    public boolean getElevator(){
+        return elevator;
     }
 
     public void setGarage(int garage) {

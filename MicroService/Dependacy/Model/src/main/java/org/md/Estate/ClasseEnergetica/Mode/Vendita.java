@@ -4,10 +4,11 @@ import org.md.Serializzazione.Translate;
 
 public class Vendita extends Translate implements Mode{
 
-    private String name = "Affitto";
+    private static final String NAME = "Affitto";
 
+    @Override
     public String getName() {
-        return name;
+        return NAME;
     }
 
 }

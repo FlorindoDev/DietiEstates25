@@ -16,12 +16,11 @@ public class AdsEstate implements AdsEstateService {
 
     private EstateDAO ad_estate;
 
+    public static final String SUCCESS = "{\"code\": 0, \"message\": \"success of update action ManagementAccount\"}";
     // RIFERIMENTO A MQ
 
     @Override
     public String createEstate(Estate estate) {
-
-        System.out.println(estate.toString());
 
         EstateDAO dao = new EstatePostgreDAO();
         try {
@@ -29,8 +28,8 @@ public class AdsEstate implements AdsEstateService {
         }catch (DietiEstateException e) {
             return e.getMessage();
         }
-//        dao.getEstate(null);
-        return "";
+
+        return SUCCESS;
     }
 
     @Override

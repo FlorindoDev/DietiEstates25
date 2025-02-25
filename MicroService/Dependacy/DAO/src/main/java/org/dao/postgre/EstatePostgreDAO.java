@@ -16,6 +16,7 @@ import org.md.Utente.Agent;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.logging.Logger;
 
 public class EstatePostgreDAO implements EstateDAO {
@@ -32,58 +33,38 @@ public class EstatePostgreDAO implements EstateDAO {
     }
 
     @Override
-    public String createEstate(Estate newEstate) throws DietiEstateException {
+    public void createEstate(Estate newEstate) throws DietiEstateException {
 
-//        """
-//            {
-//            "idEstate":3,
-//            "agente":{"idUser":1,"nome":"marcofradddd","email":"utente154545@email.com","cognome":"Paoli","password":"","notifyAppointment":true,"idPushNotify":"TOKEN","biografia":"Sono un figo","profilePic":"foto.png",
-//            "agency":{"codicePartitaIVA":"11111111111","nome":"marcofradddd","sede":"via","email":null,"admins":null,"agents":null}
-//            },
-//            "indirizzo":{"idIndirizzo":1,"stato":"1","citta":"1","via":"1","numeroCivico":"1","cap":1},"agenzia":{"codicePartitaIVA":"11111111111","nome":"marcofradddd","sede":"via","email":null,"admins":null,"agents":null},"foto":"1","descrizione":"1","price":1.0,"space":1.0,"rooms":1,"floor":1,"wc":1,"garage":1,"elevator":true,"classeEnergetica":{"nome":"A","energeticClass":"A","energeticRangeClass":"Medium"},"mode":null,"stato":{"name":"New"}
-//        """
+        String query = "INSERT INTO " + TABLE + " (" +
+                "idagente, idindirizzo, partitaIVA, foto, descrizione, prezzo, dimensioni, stanze, piano, bagni, garage, ascensore, classeenergetica, modalita, stato) VALUES (" +
+                "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        StringBuilder query = new StringBuilder("INSERT INTO " + TABLE + " (");
-
-
-        JSONObject jsonObject = new JSONObject(newEstate.TranslateToJson());
-        if (!jsonObject.isEmpty()) {
-
-            for (String key : jsonObject.keySet()) {
-                query.append("'"+key+"'"+ ", ");
-            }
-
-            query.setLength(query.length() - 2);
-            query.append(") VALUES (");
-
-            for (String key : jsonObject.keySet()) {
-                query.append("?, ");
-//              query.append(jsonObject.get(key)+ ", ");
-            }
-
-            query.setLength(query.length() - 2);
-            query.append(")");
-
-        }
-
-        System.out.println(query);
-
-        PreparedStatement stmt = connection.getStatment(String.valueOf(query));
-        try {
+        try (PreparedStatement stmt = connection.getStatment(query)) {
             int index = 1;
-            for (String key : jsonObject.keySet()) {
-                stmt.setObject(index++, jsonObject.get(key)); //parte da 1
-            }
 
-            System.out.println(query);
+            stmt.setInt(index++, newEstate.getAgente().getIdUser());
+            stmt.setInt(index++, newEstate.getIndirizzo().getIdIndirizzo());
+            stmt.setString(index++, newEstate.getAgenzia().getCodicePartitaIVA());
+            stmt.setString(index++, newEstate.getFoto());
+            stmt.setString(index++, newEstate.getDescrizione());
+            stmt.setDouble(index++, newEstate.getPrice());
+            stmt.setDouble(index++, newEstate.getSpace());
+            stmt.setInt(index++, newEstate.getRooms());
+            stmt.setInt(index++, newEstate.getFloor());
+            stmt.setInt(index++, newEstate.getWc());
+            stmt.setInt(index++, newEstate.getGarage());
+            stmt.setBoolean(index++, newEstate.getElevator());
+            stmt.setString(index++, newEstate.getClasseEnergetica().getEnergeticClass());
+            stmt.setObject(index++, newEstate.getMode().getName(), Types.OTHER);
+            stmt.setObject(index++, newEstate.getStato().getName(), Types.OTHER);
 
             connection.makeQueryUpdate(stmt);
-        }catch (SQLException e){
+
+        } catch (SQLException e) {
             logger.severe("[-] Error executing query: " + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
-        return "";
     }
 
     @Override
