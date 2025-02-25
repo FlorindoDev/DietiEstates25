@@ -1,4 +1,4 @@
-package org.md.Estate.Mode;
+package org.md.Estate.ClasseEnergetica.Mode;
 
 public class ConverterMode {
 
