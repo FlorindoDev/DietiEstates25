@@ -6,7 +6,7 @@ import org.md.Serializzazione.Translate;
 
 public class Indirizzo extends Translate {
 
-    private String idIndirizzo = "";
+    private int idIndirizzo = 0;
     private String stato = "";
     private String citta = "";
     private String via = "";
@@ -14,11 +14,11 @@ public class Indirizzo extends Translate {
     private int cap = 0;
 
 
-    public String getIdIndirizzo() {
+    public int getIdIndirizzo() {
         return idIndirizzo;
     }
 
-    public void setIdIndirizzo(String idIndirizzo) {
+    public void setIdIndirizzo(int idIndirizzo) {
         this.idIndirizzo = idIndirizzo;
     }
 
@@ -76,14 +76,14 @@ public class Indirizzo extends Translate {
     }
 
     public static class Builder<typeBuilder extends Indirizzo.Builder<typeBuilder>>{
-        private String idIndirizzo = "";
+        private int idIndirizzo = 0;
         private String stato = "";
         private String citta = "";
         private String via = "";
         private String numeroCivico = "";
         private int cap = 0;
 
-        public Builder(String idIndirizzo) {
+        public Builder(int idIndirizzo) {
             this.idIndirizzo = idIndirizzo;
         }
 
@@ -96,7 +96,7 @@ public class Indirizzo extends Translate {
         }
 
 
-        public typeBuilder setIdIndirizzo(String idIndirizzo) {
+        public typeBuilder setIdIndirizzo(int idIndirizzo) {
             this.idIndirizzo = idIndirizzo;
             return self();
         }

@@ -2,6 +2,7 @@ package org.ads.MainApp;
 
 import org.ads.MainApp.Interface.AdsEstateService;
 import org.dao.Interfacce.EstateDAO;
+import org.dao.postgre.AgencyPostgreDAO;
 import org.dao.postgre.EstatePostgreDAO;
 import org.md.Agency.Agency;
 import org.md.Estate.Estate;
@@ -28,9 +29,9 @@ public class AdsEstate implements AdsEstateService {
 
     @Override
     public String loadEstate(Agency agency) {
-        EstateDAO dao = new EstatePostgreDAO();
+        AgencyPostgreDAO dao = new AgencyPostgreDAO();
         try{
-            dao.getEstate(agency);
+            dao.getEstates(agency);
         }catch (Exception e){
             e.printStackTrace();
         }

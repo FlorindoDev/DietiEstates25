@@ -17,14 +17,14 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
 
 
     @Override
-    public Indirizzo getIndirizzoFromId(String idindirizzo) throws DietiEstateException {
+    public Indirizzo getIndirizzoFromId(int idindirizzo) throws DietiEstateException {
 
         String query = "SELECT * FROM indirizzo WHERE idindirizzo = ?";
 
         PreparedStatement stmt = connection.getStatment(query);
 
         try {
-            stmt.setString(1,idindirizzo);
+            stmt.setInt(1,idindirizzo);
         } catch (Exception e) {
             logger.severe("Error executing query: " + e.getMessage());
             throw new ErrorCreateStatment();
@@ -35,7 +35,7 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
             if(!connection.hasNextRow()) throw new AddressNotExists();
             connection.nextRow();
 
-            return new Indirizzo.Builder<>(connection.extractString("idindirizzo"))
+            return new Indirizzo.Builder<>(connection.extractInt("idindirizzo"))
                     .setCap(connection.extractInt("cap"))
                     .setCitta(connection.extractString("citta"))
                     .setVia(connection.extractString("via"))

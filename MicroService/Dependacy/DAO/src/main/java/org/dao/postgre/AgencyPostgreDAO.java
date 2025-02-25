@@ -285,7 +285,8 @@ public class AgencyPostgreDAO implements AgencyDAO {
                 EnergeticClass classe = ConverterEnergeticClass.traslateFromString(connection.extractString("classeenergetica"));
                 Mode mode = ConverterMode.traslateFromString(connection.extractString("modalita"));
                 Status status = ConverterStatus.traslateFromString(connection.extractString("stato"));
-                Indirizzo indirizzo = new IndirizzoPostgreDAO().getIndirizzoFromId(connection.extractString("idindirizzo"));
+
+                Indirizzo indirizzo = new IndirizzoPostgreDAO().getIndirizzoFromId(connection.extractInt("idindirizzo"));
 
                 estate.setAgente(agente);
                 estate.setClasseEnergetica(classe);
