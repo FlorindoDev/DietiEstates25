@@ -22,13 +22,13 @@ public class ManagementAccount implements ManagementAccountService {
     }
 
     private void validateData(Utente utente) throws DietiEstateException {
-        if (!(utente.getPassword() == null)) {
+        if (utente.getPassword() != null) {
             validator.validatePassword(utente.getPassword());
         }
-        if (!(utente.getCognome() == null)) {
+        if (utente.getCognome() != null) {
             validator.ValidateName(utente.getNome());
         }
-        if (!(utente.getNome() == null)) {
+        if (utente.getNome() != null) {
             validator.ValidateName(utente.getNome());
         }
     }

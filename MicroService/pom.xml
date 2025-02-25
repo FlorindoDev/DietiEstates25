@@ -16,6 +16,7 @@
         <module>AppointmentService</module>
         <module>ManagementAccountService</module>
         <module>Dependacy</module>
+        <module>AdEstateService</module>
     </modules>
 
     <properties>
