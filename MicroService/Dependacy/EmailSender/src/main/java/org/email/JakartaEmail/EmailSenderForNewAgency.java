@@ -12,12 +12,12 @@ public class EmailSenderForNewAgency extends EmailSenderJakarta{
     }
 
     @Override
-    public void SendEmail(String reciver_email) {
+    public void SendEmail(String reciverEmail) {
         try {
             // Creazione del messaggio
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(email));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(reciver_email));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(reciverEmail));
             message.setSubject("Crezione Agenzia effettuata!!");
             message.setText("bravo");
 

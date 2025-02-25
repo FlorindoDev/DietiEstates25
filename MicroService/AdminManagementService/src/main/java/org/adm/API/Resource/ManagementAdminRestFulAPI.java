@@ -10,9 +10,7 @@ import org.adm.MainApp.Interfacce.ManagmentAdminService;
 import org.adm.MainApp.ManagementAdmin;
 import org.md.Agency.Agency;
 import org.md.Utente.Admin;
-import org.md.Utente.Utente;
 
-import java.util.ArrayList;
 
 @Path("ManagementAdmin")
 public class ManagementAdminRestFulAPI implements ManagementAdminAPI {

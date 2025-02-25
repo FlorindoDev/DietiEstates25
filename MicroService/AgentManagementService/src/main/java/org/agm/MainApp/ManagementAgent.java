@@ -76,7 +76,6 @@ public class ManagementAgent implements ManagmentAgentService {
 
             json = json + "]}";
 
-            System.out.println(json);
             return json;
         }catch (DietiEstateException e){
             return e.getMessage();
@@ -100,7 +99,6 @@ public class ManagementAgent implements ManagmentAgentService {
 
             json = json + "]}";
 
-            System.out.println(json);
             return json;
         }catch (DietiEstateException e){
             return e.getMessage();

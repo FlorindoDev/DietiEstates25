@@ -18,6 +18,8 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class JWTUtil {
+
+    private JWTUtil(){}
     private static final Logger logger = Logger.getLogger(JWTUtil.class.getName());
 
     public static String generateToken(String email, List<String> roles) {

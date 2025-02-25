@@ -12,35 +12,36 @@ import org.md.Utente.interfacce.UserSeparators;
 //})
 public class Utente extends Translate {
 
-    protected int id_user;
+    protected int idUser;
     protected String nome;
 
     protected String email;
     protected String cognome;
     protected String password;
-    protected Boolean notify_appointment;
+    protected Boolean notifyAppointment;
     protected String idPushNotify;
 
     public Utente() {}
 
     public Utente(Builder builder){
-        this.id_user = builder.id_user;
+        this.idUser = builder.idUser;
         this.nome = builder.nome;
         this.email = builder.email;
         this.cognome = builder.cognome;
         this.password = builder.password;
-        this.notify_appointment = builder.notify_appointment;
+        this.notifyAppointment = builder.notifyAppointment;
         this.idPushNotify = builder.idPushNotify;
 
 
     }
 
+
     public void Separator(UserSeparators split) throws DietiEstateException {
         split.separator(this);
     }
 
-    public int getId_user() {
-        return id_user;
+    public int getIdUser() {
+        return idUser;
     }
 
     public String getNome() {
@@ -59,16 +60,16 @@ public class Utente extends Translate {
         return password;
     }
 
-    public Boolean getNotify_appointment() {
-        return notify_appointment;
+    public Boolean getNotifyAppointment() {
+        return notifyAppointment;
     }
 
     public String getIdPushNotify() {
         return idPushNotify;
     }
 
-    public void setId_user(int id_user) {
-        this.id_user = id_user;
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public void setNome(String nome) {
@@ -87,8 +88,8 @@ public class Utente extends Translate {
         this.password = password;
     }
 
-    public void setNotify_appointment(Boolean notify_appointment) {
-        this.notify_appointment = notify_appointment;
+    public void setNotifyAppointment(Boolean notifyAppointment) {
+        this.notifyAppointment = notifyAppointment;
     }
 
     public void setIdPushNotify(String idPushNotify) {
@@ -97,18 +98,18 @@ public class Utente extends Translate {
 
     public static class Builder<typeBuilder extends Builder<typeBuilder>>{
 
-        protected int id_user;
+        protected int idUser;
         protected String nome = "";
 
         protected String email = "";
         protected String cognome = "";
         protected String password = "";
-        protected Boolean notify_appointment = null;
+        protected Boolean notifyAppointment = null;
         protected String idPushNotify = "";
 
 
-        public Builder(int id_user, String email){
-            this.id_user = id_user;
+        public Builder(int idUser, String email){
+            this.idUser = idUser;
             this.email = email;
         }
 
@@ -132,8 +133,8 @@ public class Utente extends Translate {
             return self();
         }
 
-        public typeBuilder setNotifyAppointment(Boolean notify_appointment){
-            this.notify_appointment = notify_appointment;
+        public typeBuilder setNotifyAppointment(Boolean notifyAppointment){
+            this.notifyAppointment = notifyAppointment;
             return self();
         }
 

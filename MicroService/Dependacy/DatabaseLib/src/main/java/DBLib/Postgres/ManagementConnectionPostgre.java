@@ -40,7 +40,6 @@ public class ManagementConnectionPostgre {
 
     private void readDataBaseAccessFile() {
 
-        //System.out.println(System.getProperty("user.dir"));
         try {
 
 

@@ -1,11 +1,8 @@
 package org.adm.API.Interfacce;
 
-import jakarta.ws.rs.Path;
 import org.md.Agency.Agency;
 import org.md.Utente.Admin;
-import org.md.Utente.Utente;
 
-import java.util.ArrayList;
 
 
 public interface ManagementAdminAPI {

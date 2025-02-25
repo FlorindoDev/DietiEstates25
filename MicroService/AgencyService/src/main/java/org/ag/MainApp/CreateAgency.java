@@ -12,9 +12,11 @@ import org.md.Agency.Agency;
 
 public class CreateAgency implements CreateAgencyService {
 
-    private AgencyDAO create = new AgencyPostgreDAO();
+    private final AgencyDAO create;
 
-    public CreateAgency() {}
+    public CreateAgency() {
+        create = new AgencyPostgreDAO();
+    }
 
     @Override
     public String makeAgency(Agency agency) {

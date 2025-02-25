@@ -104,7 +104,6 @@ public class ManagementAdmin implements ManagmentAdminService {
 
             json = json + "]}";
 
-            System.out.println(json);
             return json;
         }catch (DietiEstateException e){
             return e.getMessage();

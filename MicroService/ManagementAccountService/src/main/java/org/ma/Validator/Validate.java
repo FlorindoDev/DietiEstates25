@@ -13,6 +13,9 @@ public class Validate implements Validator {
 
     private static Validate validate = null;
 
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    private static final String NAME_REGEX = "^[a-zA-ZÀ-ÖØ-öø-ÿ'’]+$";
+
     private Validate() {} // costruttore privato
 
     public static Validate getInstance(){
@@ -29,7 +32,7 @@ public class Validate implements Validator {
 
         if(email == null) throw new UserEmailNotValid();
 
-        String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
         Matcher matcher = pattern.matcher(email);
 
@@ -55,7 +58,7 @@ public class Validate implements Validator {
     public Boolean ValidateName(String firstName) throws DietiEstateException {
         if(firstName == null) throw new UserGeneralityNotValid();
 
-        String NAME_REGEX = "^[a-zA-ZÀ-ÖØ-öø-ÿ'’]+$";
+
         Pattern pattern = Pattern.compile(NAME_REGEX);
         Matcher nome = pattern.matcher(firstName);
 

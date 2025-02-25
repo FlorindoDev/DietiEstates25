@@ -8,7 +8,6 @@ import org.glassfish.jersey.server.ServerProperties;
 import org.md.Appointment.Appointment;
 import org.md.Estate.Estate;
 import org.md.Utente.Acquirente;
-import org.md.Utente.Utente;
 
 import java.io.IOException;
 import java.net.URI;

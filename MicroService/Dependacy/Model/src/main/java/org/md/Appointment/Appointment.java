@@ -7,7 +7,7 @@ import org.md.Utente.Acquirente;
 
 public class Appointment extends Translate {
 
-    protected int id_appointment;
+    protected int idAppointment;
     protected String data;
     protected Acquirente acquirente;
     protected Estate estate;
@@ -16,14 +16,14 @@ public class Appointment extends Translate {
     public Appointment() {}
 
     public Appointment(Builder builder) {
-        this.id_appointment = builder.id_appointment;
+        this.idAppointment = builder.idAppointment;
         this.data = builder.data;
         this.acquirente = builder.acquirente;
         this.estate = builder.estate;
     }
 
-    public void setId_appointment(int id_appointment) {
-        this.id_appointment = id_appointment;
+    public void setIdAppointment(int idAppointment) {
+        this.idAppointment = idAppointment;
     }
 
     public void setData(String data) {
@@ -38,8 +38,8 @@ public class Appointment extends Translate {
         this.estate = estate;
     }
 
-    public int getId_appointment() {
-        return id_appointment;
+    public int getIdAppointment() {
+        return idAppointment;
     }
 
     public String getData() {
@@ -59,13 +59,13 @@ public class Appointment extends Translate {
 
     public static class Builder<TypeBuilder extends Builder<TypeBuilder>>{
 
-        protected int id_appointment;
+        protected int idAppointment;
         protected String data = "";
         protected Acquirente acquirente = null;
         protected Estate estate = null;
 
-        public Builder(int id_appointment){
-            this.id_appointment = id_appointment;
+        public Builder(int idAppointment){
+            this.idAppointment = idAppointment;
         }
 
         public TypeBuilder setData(String data){

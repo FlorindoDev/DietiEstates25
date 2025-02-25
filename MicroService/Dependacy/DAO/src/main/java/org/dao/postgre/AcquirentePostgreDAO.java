@@ -28,7 +28,7 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
 
         String query="SELECT * FROM acquirente where ? = email";
 
-        PreparedStatement stmt = PrepareStatementGetUser(acquirente, query);
+        PreparedStatement stmt = prepareStatementGetUser(acquirente, query);
 
         try {
             connection.makeQuery(stmt);

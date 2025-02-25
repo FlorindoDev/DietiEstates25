@@ -14,9 +14,11 @@ import java.util.List;
 
 public class Login implements LoginService{
 
-    private UtenteDAO utenteDAO = new UtentePostgreDAO();
+    private final UtenteDAO utenteDAO;
 
-    public Login(){}
+    public Login(){
+        utenteDAO = new UtentePostgreDAO();
+    }
 
     public String makeLogin(Utente user){
 

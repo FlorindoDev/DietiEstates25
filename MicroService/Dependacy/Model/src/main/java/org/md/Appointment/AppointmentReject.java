@@ -21,8 +21,8 @@ public class AppointmentReject extends Appointment{
     }
 
     public static class Builder  extends Appointment.Builder<AppointmentReject.Builder>{
-        public Builder(int id_appointment) {
-            super(id_appointment);
+        public Builder(int idAppointment) {
+            super(idAppointment);
         }
 
         @Override

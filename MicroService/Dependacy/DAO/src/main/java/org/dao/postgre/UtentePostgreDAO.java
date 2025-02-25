@@ -18,11 +18,14 @@ import java.util.logging.Logger;
 
 public class UtentePostgreDAO implements UtenteDAO {
 
+    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
+    public static final String ID_USER_COLUMN = "id_user";
+    public static final String EMAIL_COLUMN = "email";
     private CommunicationWithPostgre connection = new CommunicationWithPostgre();
-    private static final Logger logger = Logger.getLogger(CommunicationWithPostgre.class.getName());
+    private static final Logger logger = Logger.getLogger(UtentePostgreDAO.class.getName());
 
-    protected PreparedStatement PrepareStatementGetUser(Utente utente, String Query) throws DietiEstateException {
-        PreparedStatement stmt = connection.getStatment(Query);
+    protected PreparedStatement prepareStatementGetUser(Utente utente, String query) throws DietiEstateException {
+        PreparedStatement stmt = connection.getStatment(query);
 
         try {
             stmt.setString(1, utente.getEmail());
@@ -35,23 +38,23 @@ public class UtentePostgreDAO implements UtenteDAO {
 
     }
 
-    private PreparedStatement PrepareStatementGetForLogin(Utente utente, String Query) throws DietiEstateException {
+    private PreparedStatement prepareStatementGetForLogin(Utente utente, String query) throws DietiEstateException {
 
-        PreparedStatement stmt = connection.getStatment(Query);
+        PreparedStatement stmt = connection.getStatment(query);
 
         try {
 
-            int numero_di_parametri_query=6;
+            int numeroDiParametriQuery=6;
             String email = utente.getEmail();
             String password = utente.getPassword();
 
-            for(int i=1;i<numero_di_parametri_query;i+=2){
+            for(int i=1;i<numeroDiParametriQuery;i+=2){
                 stmt.setString(i, email);
                 stmt.setString(i+1, password);
             }
 
         } catch (Exception e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
 
         }
@@ -67,17 +70,17 @@ public class UtentePostgreDAO implements UtenteDAO {
 
         if(type_user.equals(Acquirente_type)){
 
-            user = new Acquirente.Builder(connection.extractInt("id_user"), connection.extractString("email"))
+            user = new Acquirente.Builder(connection.extractInt(ID_USER_COLUMN), connection.extractString(EMAIL_COLUMN))
                     .build();
 
         } else if (type_user.equals(Admin_type)) {
 
-            user = new Admin.Builder(connection.extractInt("id_user"), connection.extractString("email"))
+            user = new Admin.Builder(connection.extractInt(ID_USER_COLUMN), connection.extractString(EMAIL_COLUMN))
                     .build();
 
         } else if (type_user.equals(Agent_type)) {
 
-            user = new Agent.Builder(connection.extractInt("id_user"), connection.extractString("email"))
+            user = new Agent.Builder(connection.extractInt(ID_USER_COLUMN), connection.extractString(EMAIL_COLUMN))
                     .build();
         }
         return user;
@@ -88,14 +91,14 @@ public class UtentePostgreDAO implements UtenteDAO {
 
         Utente user=null;
         String keycrypt = connection.getKeyCrypt();
-        String Query="SELECT idacquirente as id_user,email, 'Acquirente' AS user_type FROM acquirente WHERE email like ? and password like crypt( ? , '"+ keycrypt +"')" +
+        String query="SELECT idacquirente as id_user,email, 'Acquirente' AS user_type FROM acquirente WHERE email like ? and password like crypt( ? , '"+ keycrypt +"')" +
                 " UNION " +
                 "SELECT idamministratore as id_user,email, 'Admin' AS user_type FROM amministratore WHERE email like ? and password like crypt( ? , '"+ keycrypt +"')" +
                 " UNION " +
                 "SELECT idagente as id_user,email, 'Agent' AS user_type FROM agenteimmobiliare WHERE email like ? and password like crypt( ? , '"+ keycrypt +"')";
 
 
-        PreparedStatement stmt = PrepareStatementGetForLogin(utente, Query);
+        PreparedStatement stmt = prepareStatementGetForLogin(utente, query);
 
         try {
             connection.makeQuery(stmt);
@@ -106,7 +109,7 @@ public class UtentePostgreDAO implements UtenteDAO {
             user = retrunEffectiveType(user);
 
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -137,7 +140,7 @@ public class UtentePostgreDAO implements UtenteDAO {
             user = retrunEffectiveType(user);
 
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -155,7 +158,7 @@ public class UtentePostgreDAO implements UtenteDAO {
             for (String key : jsonObject.keySet()) {
                 Object value = jsonObject.get(key);
 
-                if (!"id_user".equals(key) && !"email".equals(key) && !"null".equals(value.toString())) {
+                if (!ID_USER_COLUMN.equals(key) && !EMAIL_COLUMN.equals(key) && !"null".equals(value.toString())) {
                     query.append(key).append(" = ?, ");
                     parameters.add(value);
                 }
@@ -174,11 +177,10 @@ public class UtentePostgreDAO implements UtenteDAO {
                 }
 
                 stmt.setString(index, changes.getEmail());
-                System.out.println(stmt.toString());
 
                 connection.makeQueryUpdate(stmt);
             }catch (SQLException e){
-                logger.severe("[-] Error executing query: " + e.getMessage());
+                logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
                 throw new ErrorExecutingQuery();
             }
         }
@@ -187,17 +189,17 @@ public class UtentePostgreDAO implements UtenteDAO {
 
     public boolean isUserAbsent(Utente acquirente, String table) throws DietiEstateException {
 
-        String Query="SELECT * FROM "+ table +" where email = ?";
+        String query="SELECT * FROM "+ table +" where email = ?";
 
         //lancia eccezzione se non trova utente
-        PreparedStatement stmt = PrepareStatementGetUser(acquirente, Query);
+        PreparedStatement stmt = prepareStatementGetUser(acquirente, query);
 
         try {
             connection.makeQuery(stmt);
             if(connection.hasNextRow()) throw new UserAlreadyExists();
             return true;
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -205,17 +207,17 @@ public class UtentePostgreDAO implements UtenteDAO {
 
     public boolean isUserPresent(Utente utente, String table) throws DietiEstateException {
 
-        String Query="SELECT * FROM "+table+" where email = ?";
+        String query="SELECT * FROM "+table+" where email = ?";
 
         //lancia eccezzione se non trova utente
-        PreparedStatement stmt = PrepareStatementGetUser(utente, Query);
+        PreparedStatement stmt = prepareStatementGetUser(utente, query);
 
         try {
             connection.makeQuery(stmt);
             if(!connection.hasNextRow()) throw new UserNotExists();
             return true;
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
     }
@@ -240,7 +242,7 @@ public class UtentePostgreDAO implements UtenteDAO {
             if(connection.hasNextRow()) throw new UserAlreadyExists();
             return true;
         } catch (SQLException e) {
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 

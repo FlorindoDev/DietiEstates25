@@ -8,7 +8,6 @@ import jakarta.ws.rs.core.MediaType;
 import org.agm.API.Interfacce.ManagmementAgentAPI;
 import org.agm.MainApp.Interfacce.ManagmentAgentService;
 import org.agm.MainApp.ManagementAgent;
-import org.agm.MainApp.Interfacce.ManagmentAgentService;
 import org.md.Agency.Agency;
 import org.md.Utente.Agent;
 

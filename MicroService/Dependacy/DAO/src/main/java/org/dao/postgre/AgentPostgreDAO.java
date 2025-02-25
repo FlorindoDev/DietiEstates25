@@ -29,7 +29,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
 
         String query="SELECT * FROM agenteimmobiliare where ? = email";
 
-        PreparedStatement stmt = PrepareStatementGetUser(agent, query);
+        PreparedStatement stmt = prepareStatementGetUser(agent, query);
 
         try {
             connection.makeQuery(stmt);
@@ -72,7 +72,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
             stmt.setString(6, agent.getAgency().getCodicePartitaIVA());
             stmt.setString(7, agent.getProfilePic());
             stmt.setString(8, agent.getIdPushNotify());
-            stmt.setBoolean(9, agent.getNotify_appointment());
+            stmt.setBoolean(9, agent.getNotifyAppointment());
         } catch (SQLException e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
