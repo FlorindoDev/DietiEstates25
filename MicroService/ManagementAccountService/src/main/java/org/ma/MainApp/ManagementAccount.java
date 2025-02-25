@@ -6,8 +6,8 @@ import org.dao.postgre.AgentPostgreDAO;
 
 import org.exc.DietiEstateException;
 import org.ma.MainApp.Interface.ManagementAccountService;
-import org.ma.Validator.Interface.Validator;
-import org.ma.Validator.Validate;
+import org.va.Validator;
+import org.va.Validate;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
