@@ -55,7 +55,7 @@ public class Validate implements Validator {
     }
 
     @Override
-    public Boolean ValidateName(String firstName) throws DietiEstateException {
+    public Boolean validateName(String firstName) throws DietiEstateException {
         if(firstName == null) throw new UserGeneralityNotValid();
 
 

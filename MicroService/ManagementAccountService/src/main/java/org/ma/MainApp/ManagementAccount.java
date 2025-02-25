@@ -27,10 +27,10 @@ public class ManagementAccount implements ManagementAccountService {
             validator.validatePassword(utente.getPassword());
         }
         if (utente.getCognome() != null) {
-            validator.ValidateName(utente.getNome());
+            validator.validateName(utente.getNome());
         }
         if (utente.getNome() != null) {
-            validator.ValidateName(utente.getNome());
+            validator.validateName(utente.getNome());
         }
     }
 

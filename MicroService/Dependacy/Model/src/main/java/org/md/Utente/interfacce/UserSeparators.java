@@ -1,6 +1,5 @@
 package org.md.Utente.interfacce;
 
-import org.exc.DietiEstateException;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;

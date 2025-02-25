@@ -11,6 +11,7 @@ import org.md.Agency.Agency;
 import org.md.Utente.Admin;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ManagementAdmin implements ManagmentAdminService {
@@ -92,7 +93,7 @@ public class ManagementAdmin implements ManagmentAdminService {
         try{
             //TODO agencyDAO.isAgencyPresent(admin);
 
-            ArrayList<Admin> admins = agencyDAO.getAdmins(agency);
+            List<Admin> admins = agencyDAO.getAdmins(agency);
             String json = "{\"code\": 0, \"message\": \"success of action admin upgraded\", \"admins\": [";
 
             for (Admin admin : admins){

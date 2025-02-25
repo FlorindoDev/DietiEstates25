@@ -12,6 +12,7 @@ import org.md.Estate.Estate;
 import org.md.Utente.Agent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ManagementAgent implements ManagmentAgentService {
 
@@ -64,7 +65,7 @@ public class ManagementAgent implements ManagmentAgentService {
         try{
             //TODO agencyDAO.isAgencyPresent(admin);
 
-            ArrayList<Agent> agents = agencyDAO.getAgents(agency);
+            List<Agent> agents = agencyDAO.getAgents(agency);
             String json = "{\"code\": 0, \"message\": \"success of action get agent\", \"Agent\": [";
 
             for (Agent agent : agents){
@@ -87,7 +88,7 @@ public class ManagementAgent implements ManagmentAgentService {
         try{
             //TODO agencyDAO.isAgencyPresent(admin);
 
-            ArrayList<Estate> estates = agencyDAO.getEstates(agency);
+            List<Estate> estates = agencyDAO.getEstates(agency);
             String json = "{\"code\": 0, \"message\": \"success of action get estate\", \"Estate\": [";
 
             for (Estate estate : estates){

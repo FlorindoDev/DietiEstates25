@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
     public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
-    private final String table = "amministratore";
+    private static final String TABLE = "amministratore";
 
     private final CommunicationWithPostgre connection;
     private static final Logger logger = Logger.getLogger(AdminPostgreDAO.class.getName());
@@ -85,7 +85,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
     @Override
     public void updateUser(Admin utente) throws DietiEstateException {
-        super.updateUser(utente, table);
+        super.updateUser(utente, TABLE);
     }
 
     @Override
@@ -118,7 +118,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     @Override
     public boolean isUserAbsent(Admin user) throws DietiEstateException {
 
-        return super.isUserAbsent(user, table);
+        return super.isUserAbsent(user, TABLE);
 
     }
 
@@ -147,7 +147,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     }
     public boolean isUserPresent(Admin user) throws DietiEstateException {
 
-        return super.isUserPresent(user, table);
+        return super.isUserPresent(user, TABLE);
 
     }
 
