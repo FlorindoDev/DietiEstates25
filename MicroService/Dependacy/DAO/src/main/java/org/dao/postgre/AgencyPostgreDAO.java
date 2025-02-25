@@ -239,7 +239,8 @@ public class AgencyPostgreDAO implements AgencyDAO {
         isAgencyPresent(agency);
 
         String query = "SELECT *" +
-                " FROM immobile INNER JOIN agenziaimmobiliare ON immobile.partitaiva = agenziaimmobiliare.partitaiva" +
+                " FROM (immobile INNER JOIN agenziaimmobiliare ON immobile.partitaiva = agenziaimmobiliare.partitaiva)" +
+                "INNER JOIN agenteimmobiliare on agenteimmobiliare.idagente = immobile.idagente" +
                 " WHERE immobile.partitaiva = ?";
 
         PreparedStatement stmt = prepareStatementGetAgency(agency,query);
@@ -263,9 +264,20 @@ public class AgencyPostgreDAO implements AgencyDAO {
                         .setEmail(agency.getEmail())
                         .build();
 
+                Agent agente = new Agent.Builder(connection.extractInt("idagente"),connection.extractString("email"))
+                        .setBiografia(connection.extractString("biografia"))
+                        .setProfilePic(connection.extractString("immagineprofilo"))
+                        .setName(connection.extractString("nome"))
+                        .setCognome(connection.extractString("cognome"))
+                        .setIdPushNotify(connection.extractString("idpushnotify"))
+                        .setNotifyAppointment(connection.extractBoolean("notify_appointment"))
+                        .setAgency(fullAgency)
+                        .build();
+
+
                 Estate estate = new Estate.Builder<>(connection.extractInt("idimmobile"))
                         .setElevator(connection.extractBoolean("ascensore"))
-                        .setAgente(null)
+                        .setAgente(agente)
                         .setClasseEnergetica(null)
                         .setDescrizione(connection.extractString("descrizione"))
                         .setFloor(connection.extractInt("piano"))
@@ -281,14 +293,14 @@ public class AgencyPostgreDAO implements AgencyDAO {
                         .setAgenzia(fullAgency)
                         .build();
 
-                Agent agente = getAgentFromId(connection.extractString("idagente"));
+
                 EnergeticClass classe = ConverterEnergeticClass.traslateFromString(connection.extractString("classeenergetica"));
                 Mode mode = ConverterMode.traslateFromString(connection.extractString("modalita"));
                 Status status = ConverterStatus.traslateFromString(connection.extractString("stato"));
 
                 Indirizzo indirizzo = new IndirizzoPostgreDAO().getIndirizzoFromId(connection.extractInt("idindirizzo"));
 
-                estate.setAgente(agente);
+
                 estate.setClasseEnergetica(classe);
                 estate.setMode(mode);
                 estate.setStato(status);
@@ -308,9 +320,6 @@ public class AgencyPostgreDAO implements AgencyDAO {
         }
     }
 
-    private Agent getAgentFromId(String idagente) {
-        return null;
-    }
 
 
 }
