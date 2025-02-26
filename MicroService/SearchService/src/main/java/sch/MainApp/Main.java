@@ -16,10 +16,11 @@ public class Main {
 
     public static HttpServer startServer() {
 
-        final ResourceConfig rc = new ResourceConfig().packages(RESOURCE).register(JacksonFeature.class);
-        rc.property(ServerProperties.WADL_FEATURE_DISABLE, true);
+        final ResourceConfig resourceConfig = new ResourceConfig().packages(RESOURCE).register(JacksonFeature.class);
 
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        resourceConfig.property(ServerProperties.WADL_FEATURE_DISABLE, true);
+
+        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), resourceConfig);
     }
 
 
