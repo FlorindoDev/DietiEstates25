@@ -28,22 +28,22 @@ public class EstateFilter extends Translate {
     public EstateFilter() {}
 
     public EstateFilter(Builder builder) {
-        this.idEstate = builder.idEstate;
-        this.descrizione = builder.descrizione;
-        this.minPrice = builder.minPrice;
-        this.maxPrice = builder.maxPrice;
-        this.minSpace = builder.minSpace;
-        this.maxSpace = builder.maxSpace;
-        this.minRooms = builder.minRooms;
-        this.maxRooms = builder.maxRooms;
-        this.ascensore = builder.ascensore;
-        this.garages = builder.garages;
-        this.piano = builder.piano;
-        this.stato = builder.stato;
-        this.wc = builder.wc;
-        this.energeticClass = builder.energeticClass;
-        this.mode = builder.mode;
         this.circumference = builder.circumference;
+        this.mode = builder.mode;
+        this.energeticClass = builder.energeticClass;
+        this.wc = builder.wc;
+        this.stato = builder.stato;
+        this.piano = builder.piano;
+        this.garages = builder.garages;
+        this.ascensore = builder.ascensore;
+        this.maxRooms = builder.maxRooms;
+        this.minRooms = builder.minRooms;
+        this.maxSpace = builder.maxSpace;
+        this.minSpace = builder.minSpace;
+        this.maxPrice = builder.maxPrice;
+        this.minPrice = builder.minPrice;
+        this.descrizione = builder.descrizione;
+        this.idEstate = builder.idEstate;
 
     }
 
