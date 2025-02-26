@@ -4,7 +4,7 @@ public class Circumference {
     private int latitude = 0;
     private int longitude = 0;
     private int Radius = 0;
-    private String cittá = "";
+
 
     public int getLatitude() {
         return latitude;
@@ -30,11 +30,5 @@ public class Circumference {
         Radius = radius;
     }
 
-    public String getCittá() {
-        return cittá;
-    }
 
-    public void setCittá(String cittá) {
-        this.cittá = cittá;
-    }
 }

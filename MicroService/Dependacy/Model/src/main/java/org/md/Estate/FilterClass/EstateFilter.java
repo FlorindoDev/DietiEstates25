@@ -24,6 +24,7 @@ public class EstateFilter extends Translate {
     private EnergeticClass energeticClass = null;
     private Mode mode = null;
     private Circumference circumference= null;
+    private String citta = "";
 
     public EstateFilter() {}
 
@@ -44,6 +45,7 @@ public class EstateFilter extends Translate {
         this.minPrice = builder.minPriceBuilder;
         this.descrizione = builder.descrizioneBuilder;
         this.idEstate = builder.idEstateBuilder;
+        this.citta = builder.cittaBuilder;
 
     }
 
@@ -175,6 +177,14 @@ public class EstateFilter extends Translate {
         this.circumference = circumference;
     }
 
+    public String getCitta() {
+        return citta;
+    }
+
+    public void setCitta(String citta) {
+        this.citta = citta;
+    }
+
     public static class Builder<typeBuilder extends EstateFilter.Builder<typeBuilder>>{
         private int idEstateBuilder = 0;
         private String descrizioneBuilder = "";
@@ -192,6 +202,7 @@ public class EstateFilter extends Translate {
         private EnergeticClass energeticClassBuilder = null;
         private Mode modeBuilder = null;
         private Circumference circumferenceBuilder = null;
+        private String cittaBuilder = "";
 
         public Builder(int idEstate) {
             this.idEstateBuilder = idEstate;
@@ -218,6 +229,11 @@ public class EstateFilter extends Translate {
 
         public typeBuilder setDescrizioneBuilder(String descrizioneBuilder) {
             this.descrizioneBuilder = descrizioneBuilder;
+            return self();
+        }
+
+        public typeBuilder setCittaBuilder(String cittaBuilder) {
+            this.cittaBuilder = cittaBuilder;
             return self();
         }
 
