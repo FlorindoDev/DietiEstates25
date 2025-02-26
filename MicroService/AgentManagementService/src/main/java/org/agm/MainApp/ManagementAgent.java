@@ -66,7 +66,7 @@ public class ManagementAgent implements ManagmentAgentService {
     @Override
     public String getAgents(Agency agency) {
         try{
-            //TODO agencyDAO.isAgencyPresent(admin);
+            agencyDAO.isAgencyPresent(agency);
 
             List<Agent> agents = agencyDAO.getAgents(agency);
             String json = "{\"code\": 0, \"message\": \"success of action get agent\", \"Agent\": [";
