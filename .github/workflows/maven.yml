@@ -37,7 +37,7 @@ jobs:
 
       - name: SonarQube Scan
         run: |
-          mvn sonar:sonar \
+          mvn clean verify -X sonar:sonar \
             -Dsonar.projectKey=DietiEstate \
             -Dsonar.projectName='DietiEstate' \
             --file $SONAR_PROJECT_DIR/pom.xml \
