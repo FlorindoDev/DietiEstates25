@@ -32,14 +32,11 @@ public class EmailSenderJakarta implements EmailSender {
 
         readCredentials();
         props = new Properties();
-        props.put("mail.smtp.host", "smtp.mail.yahoo.com");
-        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.host", "live.smtp.mailtrap.io");
+        props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.ssl.enable", "true");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.ssl.checkserveridentity", "true");
-        props.put("mail.smtp.socketFactory.fallback", "false");                     // Porta TLS
+        props.put("mail.smtp.ssl.enable", "false");
+        props.put("mail.smtp.starttls.enable", "true");
 
         // Creazione della sessione con autenticazione
         session = Session.getInstance(props, new Authenticator() {
