@@ -12,13 +12,13 @@ import org.md.Agency.Agency;
 @Path("create")
 public class CreateAgencyRestFulAPI implements CreateAgencyAPI {
 
-    private CreateAgencyService create_agnecy = new CreateAgency();
+    private final CreateAgencyService createAgnecy = new CreateAgency();
     @Override
     @POST
     @Path("createAgency")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String createAgency(Agency agency) {
-        return create_agnecy.makeAgency(agency);
+        return createAgnecy.makeAgency(agency);
     }
 }

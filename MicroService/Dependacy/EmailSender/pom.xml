@@ -37,6 +37,7 @@
             <directory>src/main/resources</directory>
             <includes>
                 <include>credenzialiEmail.json</include> <!-- Includi tutti i file nella cartella resources -->
+                <include>creazioneAgenzia.html</include>
             </includes>
         </resource>
     </resources>

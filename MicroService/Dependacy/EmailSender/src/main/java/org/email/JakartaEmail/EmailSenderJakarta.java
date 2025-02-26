@@ -10,6 +10,7 @@ import org.email.Interfacce.EmailSender;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.logging.Logger;
@@ -17,22 +18,21 @@ import java.util.logging.Logger;
 public class EmailSenderJakarta implements EmailSender {
 
     protected String email;
+
+    protected String username;
     protected String passwordEmail;
-
     protected Properties props;
-
     protected Session session;
 
     protected static final Logger logger = Logger.getLogger(EmailSenderJakarta.class.getName());
 
-    //TODO AGGIUSTARE EMAIL SENDER
     public EmailSenderJakarta() {
 
         // Indirizzo email del mittente
 
         readCredentials();
         props = new Properties();
-        props.put("mail.smtp.host", "live.smtp.mailtrap.io");
+        props.put("mail.smtp.host", "smtp.sendgrid.net");
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.ssl.enable", "false");
@@ -42,16 +42,16 @@ public class EmailSenderJakarta implements EmailSender {
         session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(email, passwordEmail);
+                return new PasswordAuthentication(username, passwordEmail);
             }
         });
 
-        session.setDebug(true);
 
     }
 
     @Override
-    public void sendEmail(String reciverEmail) { // è vuoto perche saranno i figli ad inviare email
+    public void sendEmail(String reciverEmail) {
+        // è vuoto perche saranno i figli ad inviare email
     }
 
     private void readCredentials(){
@@ -59,7 +59,7 @@ public class EmailSenderJakarta implements EmailSender {
         try {
 
             InputStream inputStream = EmailSenderJakarta.class.getResourceAsStream("/credenzialiEmail.json");
-            String jsonString = new Scanner(inputStream, StandardCharsets.UTF_8).useDelimiter("\\A").next();
+            String jsonString = new Scanner(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8).useDelimiter("\\A").next();
             rootNode = new ObjectMapper().readTree(jsonString);
 
         } catch (IOException e) {
@@ -69,7 +69,9 @@ public class EmailSenderJakarta implements EmailSender {
 
         this.email = rootNode.path("email").asText();
         this.passwordEmail = rootNode.path("password").asText();
-        logger.info("[!] Username e passowrd email " + email + " " + passwordEmail);
+        this.username = rootNode.path("username").asText();
+
+        logger.info("[!] Username e passowrd email " + email + " " + passwordEmail + " " + username);
 
     }
 }
