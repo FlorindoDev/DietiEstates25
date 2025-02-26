@@ -6,17 +6,18 @@ import org.dao.postgre.AgencyPostgreDAO;
 import org.dao.postgre.EstatePostgreDAO;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
+
 import org.md.Estate.Estate;
 
 import java.util.ArrayList;
-// IMPORTARE MQ
+
+//TODO IMPORTARE MQ
 
 public class AdsEstate implements AdsEstateService {
 
     private EstateDAO adEstate;
 
-    public static final String SUCCESS = "{\"code\": 0, \"message\": \"success of update action ManagementAccount\"}";
-    // RIFERIMENTO A MQ
+    //TODO RIFERIMENTO A MQ
 
     @Override
     public String createEstate(Estate estate) {
@@ -28,12 +29,23 @@ public class AdsEstate implements AdsEstateService {
             return e.getMessage();
         }
 
-        return SUCCESS;
+        return "{\"code\": 0, \"message\": \"success of create action (ManagementAccountService)\"}";
     }
 
     @Override
     public String changeEstate(Estate estate) {
-        return "";
+
+        //TODO PUSH TO RBMQ QUEUE
+
+        EstateDAO dao = new EstatePostgreDAO();
+        try {
+            dao.changeEstate(estate);
+        }catch (DietiEstateException e) {
+            return e.getMessage();
+        }
+
+        return "{\"code\": 0, \"message\": \"success of update estate action (ManagementAccountService)\"}";
+
     }
 
     @Override
