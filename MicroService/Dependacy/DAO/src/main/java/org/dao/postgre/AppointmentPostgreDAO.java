@@ -25,7 +25,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
     CommunicationWithPostgre connection;
 
-    private static final String errorQuery = "[-] Error executing query: ";
+    private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
 
     private static final Logger logger = Logger.getLogger(AppointmentPostgreDAO.class.getName());
 
@@ -42,7 +42,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
         Utente user  = utenteDAO.getUserFromEmail(agent);
 
-        String Query = "SELECT email as email_acquirente,idappuntamento,esito,data,idacquirente,idimmobile \n" +
+        String query = "SELECT email as email_acquirente,idappuntamento,esito,data,idacquirente,idimmobile \n" +
                 "FROM \n" +
                 "\t(SELECT idacquirente as tmp_idacquirente,idappuntamento,esito,data,idimmobile \n" +
                 " \tFROM \n" +
@@ -54,12 +54,12 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
         try{
 
-            PreparedStatement stmt = connection.getStatment(Query);
+            PreparedStatement stmt = connection.getStatment(query);
             stmt.setInt(1,user.getIdUser());
             connection.makeQuery(stmt);
 
         }catch (SQLException e){
-            logger.severe(errorQuery + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -85,7 +85,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
                 appointments.add(appointment);
             }
         }catch (SQLException e){
-            logger.severe(errorQuery + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
         return appointments;
@@ -110,7 +110,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
             if(!connection.hasNextRow()) throw new UserNotHaveAppointment();
 
         }catch (SQLException e){
-            logger.severe(errorQuery + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -132,7 +132,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
                 appointments.add(appointment);
             }
         }catch (SQLException e){
-            logger.severe(errorQuery + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
         return appointments;
@@ -156,7 +156,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
             if(connection.makeQueryUpdate(stmt) == 0) throw new UpdateAppointmentFail("Appointment not found or some thing else");
 
         }catch (SQLException e){
-            logger.severe(errorQuery + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -180,7 +180,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
             connection.makeQueryUpdate(stmt);
 
         }catch (Exception e){
-            logger.severe(errorQuery + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -207,7 +207,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
             return true;
 
         }catch (SQLException e){
-            logger.severe(errorQuery + e.getMessage());
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 

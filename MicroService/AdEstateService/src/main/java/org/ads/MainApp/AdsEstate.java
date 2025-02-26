@@ -6,7 +6,6 @@ import org.dao.postgre.AgencyPostgreDAO;
 import org.dao.postgre.EstatePostgreDAO;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
-import org.md.Appointment.Appointment;
 import org.md.Estate.Estate;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 
 public class AdsEstate implements AdsEstateService {
 
-    private EstateDAO ad_estate;
+    private EstateDAO adEstate;
 
     public static final String SUCCESS = "{\"code\": 0, \"message\": \"success of update action ManagementAccount\"}";
     // RIFERIMENTO A MQ
