@@ -33,6 +33,8 @@ public class   Main {
                 .setPassword("ciao")
                 .build();
 
+        //CRAZY
+        System.out.println("ISUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
         System.in.read();
 
