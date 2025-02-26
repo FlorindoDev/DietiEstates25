@@ -13,6 +13,8 @@ import org.md.Utente.Agent;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class EstatePostgreDAO implements EstateDAO {
@@ -64,8 +66,68 @@ public class EstatePostgreDAO implements EstateDAO {
     }
 
     @Override
-    public String changeEstate(Estate changEstate) {
-        return "";
+    public void changeEstate(Estate estate) throws DietiEstateException{
+
+        StringBuilder query = new StringBuilder(String.format("UPDATE %s SET ", TABLE));
+        List<Object> params = new ArrayList<>();
+
+        if (estate.getAgente() != null) {
+            query.append("idagente = ?, ");
+            params.add(estate.getAgente().getIdUser());
+        }
+        if (estate.getIndirizzo() != null) {
+            query.append("idindirizzo = ?, ");
+            params.add(estate.getIndirizzo().getIdIndirizzo());
+        }
+        if (estate.getAgenzia() != null) {
+            query.append("partitaiva = ?, ");
+            params.add(estate.getAgenzia().getCodicePartitaIVA());
+        }
+        if (!estate.getFoto().isEmpty()) {
+            query.append("foto = ?, ");
+            params.add(estate.getFoto());
+        }
+        if (!estate.getDescrizione().isEmpty()) {
+            query.append("descrizione = ?, ");
+            params.add(estate.getDescrizione());
+        }
+        if (estate.getPrice() != 0) {
+            query.append("prezzo = ?, ");
+            params.add(estate.getPrice());
+        }
+        if (estate.getSpace() != 0) {
+            query.append("dimensioni = ?, ");
+            params.add(estate.getSpace());
+        }
+        if (estate.getRooms() != 0) {
+            query.append("stanze = ?, ");
+            params.add(estate.getRooms());
+        }
+
+        if (params.isEmpty()) {
+            return; // Nessun aggiornamento necessario
+        }
+
+        query.setLength(query.length() - 2); // Rimuove l'ultima virgola
+        query.append(" WHERE idimmobile = ?");
+        params.add(estate.getIdEstate());
+
+
+        try {
+
+            PreparedStatement stmt = connection.getStatment(String.valueOf(query));
+
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setObject(i + 1, params.get(i));
+            }
+
+            connection.makeQueryUpdate(stmt);
+
+        }catch (SQLException e){
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
     }
 
     @Override
