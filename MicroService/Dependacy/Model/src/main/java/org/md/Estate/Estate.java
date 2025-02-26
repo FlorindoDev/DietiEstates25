@@ -30,22 +30,22 @@ public class Estate extends Translate {
     public Estate() {}
 
     public Estate(Estate.Builder builder) {
-        this.idEstate = builder.idEstate;
-        this.agente = builder.agente;
-        this.indirizzo = builder.indirizzo;
-        this.agenzia = builder.agenzia;
-        this.foto = builder.foto;
-        this.descrizione = builder.descrizione;
-        this.price = builder.price;
-        this.space = builder.space;
-        this.rooms = builder.rooms;
-        this.floor = builder.floor;
-        this.wc = builder.wc;
-        this.garage = builder.garage;
-        this.elevator = builder.elevator;
-        this.classeEnergetica = builder.classeEnergetica;
-        this.mode = builder.mode;
-        this.stato = builder.stato;
+        this.idEstate = builder.idEstateBuilder;
+        this.agente = builder.agenteBuilder;
+        this.indirizzo = builder.indirizzoBuilder;
+        this.agenzia = builder.agenziaBuilder;
+        this.foto = builder.fotoBuilder;
+        this.descrizione = builder.descrizioneBuilder;
+        this.price = builder.priceBuilder;
+        this.space = builder.spaceBuilder;
+        this.rooms = builder.roomsBuilder;
+        this.floor = builder.floorBuilder;
+        this.wc = builder.wcBuilder;
+        this.garage = builder.garageBuilder;
+        this.elevator = builder.elevatorBuilder;
+        this.classeEnergetica = builder.classeEnergeticaBuilder;
+        this.mode = builder.modeBuilder;
+        this.stato = builder.statoBuilder;
     }
 
     public int getIdEstate() {
@@ -148,10 +148,6 @@ public class Estate extends Translate {
         this.garage = garage;
     }
 
-    public boolean isElevator() {
-        return elevator;
-    }
-
     public void setElevator(boolean elevator) {
         this.elevator = elevator;
     }
@@ -202,100 +198,100 @@ public class Estate extends Translate {
     }
 
     public static class Builder<typeBuilder extends Builder<typeBuilder>>{
-        private int idEstate = 0;
-        private Agent agente;
-        private Indirizzo indirizzo;
-        private Agency agenzia;
-        private String foto = "";
-        private String descrizione = "";
-        private double price = 0;
-        private double space = 0;
-        private int rooms = 0;
-        private int floor = 0;
-        private int wc = 0;
-        private int garage = 0;
-        private boolean elevator = false;
-        private EnergeticClass classeEnergetica;
-        private Mode mode;
-        private Status stato;
+        private int idEstateBuilder = 0;
+        private Agent agenteBuilder;
+        private Indirizzo indirizzoBuilder;
+        private Agency agenziaBuilder;
+        private String fotoBuilder = "";
+        private String descrizioneBuilder = "";
+        private double priceBuilder = 0;
+        private double spaceBuilder = 0;
+        private int roomsBuilder = 0;
+        private int floorBuilder = 0;
+        private int wcBuilder = 0;
+        private int garageBuilder = 0;
+        private boolean elevatorBuilder = false;
+        private EnergeticClass classeEnergeticaBuilder;
+        private Mode modeBuilder;
+        private Status statoBuilder;
 
-        public Builder(int idEstate) {
-            this.idEstate = idEstate;
+        public Builder(int idEstateBuilder) {
+            this.idEstateBuilder = idEstateBuilder;
         }
 
 
-        public typeBuilder setAgente(Agent agente) {
-            this.agente = agente;
+        public typeBuilder setAgenteBuilder(Agent agenteBuilder) {
+            this.agenteBuilder = agenteBuilder;
             return self();
         }
 
-        public typeBuilder setIndirizzo(Indirizzo indirizzo) {
-            this.indirizzo = indirizzo;
+        public typeBuilder setIndirizzoBuilder(Indirizzo indirizzoBuilder) {
+            this.indirizzoBuilder = indirizzoBuilder;
             return self();
         }
 
-        public typeBuilder setAgenzia(Agency agenzia) {
-            this.agenzia = agenzia;
+        public typeBuilder setAgenziaBuilder(Agency agenziaBuilder) {
+            this.agenziaBuilder = agenziaBuilder;
             return self();
         }
 
-        public typeBuilder setFoto(String foto) {
-            this.foto = foto;
+        public typeBuilder setFotoBuilder(String fotoBuilder) {
+            this.fotoBuilder = fotoBuilder;
             return self();
         }
 
-        public typeBuilder setDescrizione(String descrizione) {
-            this.descrizione = descrizione;
+        public typeBuilder setDescrizioneBuilder(String descrizioneBuilder) {
+            this.descrizioneBuilder = descrizioneBuilder;
             return self();
         }
 
-        public typeBuilder setPrice(double price) {
-            this.price = price;
+        public typeBuilder setPriceBuilder(double priceBuilder) {
+            this.priceBuilder = priceBuilder;
             return self();
         }
 
-        public typeBuilder setSpace(double space) {
-            this.space = space;
+        public typeBuilder setSpaceBuilder(double spaceBuilder) {
+            this.spaceBuilder = spaceBuilder;
             return self();
         }
 
-        public typeBuilder setRooms(int rooms) {
-            this.rooms = rooms;
+        public typeBuilder setRoomsBuilder(int roomsBuilder) {
+            this.roomsBuilder = roomsBuilder;
             return self();
         }
 
-        public typeBuilder setFloor(int floor) {
-            this.floor = floor;
+        public typeBuilder setFloorBuilder(int floorBuilder) {
+            this.floorBuilder = floorBuilder;
             return self();
         }
 
-        public typeBuilder setWc(int wc) {
-            this.wc = wc;
+        public typeBuilder setWcBuilder(int wcBuilder) {
+            this.wcBuilder = wcBuilder;
             return self();
         }
 
-        public typeBuilder setGarage(int garage) {
-            this.garage = garage;
+        public typeBuilder setGarageBuilder(int garageBuilder) {
+            this.garageBuilder = garageBuilder;
             return self();
         }
 
-        public typeBuilder setElevator(boolean elevator) {
-            this.elevator = elevator;
+        public typeBuilder setElevatorBuilder(boolean elevatorBuilder) {
+            this.elevatorBuilder = elevatorBuilder;
             return self();
         }
 
-        public typeBuilder setClasseEnergetica(EnergeticClass classeEnergetica) {
-            this.classeEnergetica = classeEnergetica;
+        public typeBuilder setClasseEnergeticaBuilder(EnergeticClass classeEnergeticaBuilder) {
+            this.classeEnergeticaBuilder = classeEnergeticaBuilder;
             return self();
         }
 
-        public typeBuilder setMode(Mode mode) {
-            this.mode = mode;
+        public typeBuilder setModeBuilder(Mode modeBuilder) {
+            this.modeBuilder = modeBuilder;
             return self();
         }
 
-        public typeBuilder setStato(Status stato) {
-            this.stato = stato;
+        public typeBuilder setStatoBuilder(Status statoBuilder) {
+            this.statoBuilder = statoBuilder;
             return self();
         }
 
