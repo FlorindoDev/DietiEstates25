@@ -32,7 +32,7 @@ public class   Main {
         Utente acquirente = new Acquirente.Builder(1,"utente1@email.com")
                 .setPassword("ciao")
                 .build();
-        //System.out.println(acquirente.TranslateToJson());
+        System.out.println(acquirente.TranslateToJson());
         System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
         System.in.read();
 

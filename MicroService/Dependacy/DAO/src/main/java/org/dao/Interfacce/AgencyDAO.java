@@ -6,7 +6,6 @@ import org.md.Estate.Estate;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface AgencyDAO {

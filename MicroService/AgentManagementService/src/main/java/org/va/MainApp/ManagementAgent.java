@@ -112,7 +112,7 @@ public class ManagementAgent implements ManagmentAgentService {
     @Override
     public String addEstateAgent(Estate estate, Agent agent) {
         try{
-            estateDAO.IsEstatePresent(estate);
+            estateDAO.isEstatePresent(estate);
             agentDAO.isUserPresent(agent);
             estateDAO.addEstateAgent(estate,agent);
 
