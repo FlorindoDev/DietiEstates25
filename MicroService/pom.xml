@@ -17,6 +17,7 @@
         <module>ManagementAccountService</module>
         <module>Dependacy</module>
         <module>AdEstateService</module>
+        <module>SearchService</module>
     </modules>
 
     <properties>
