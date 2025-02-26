@@ -20,4 +20,6 @@ public interface AgencyDAO {
     public List<Agent> getAgents(org.md.Agency.Agency agency) throws DietiEstateException;
 
     public List<Estate> getEstates(Agency agency) throws DietiEstateException;
+
+    boolean isAgencyPresent(Agency agency) throws DietiEstateException;
 }
