@@ -5,6 +5,7 @@ import org.md.Estate.ClasseEnergetica.EnergeticClass;
 import org.md.Agency.Agency;
 import org.md.Estate.Mode.Mode;
 import org.md.Estate.Status.Status;
+import org.md.Geolocalizzazione.Indirizzo;
 import org.md.Serializzazione.Translate;
 import org.md.Utente.Agent;
 

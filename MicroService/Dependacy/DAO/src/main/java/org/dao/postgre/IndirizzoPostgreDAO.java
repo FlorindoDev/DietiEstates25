@@ -4,7 +4,7 @@ import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.IndirizzoDAO;
 import org.exc.DataBaseException.*;
 import org.exc.DietiEstateException;
-import org.md.Estate.Indirizzo;
+import org.md.Geolocalizzazione.Indirizzo;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
