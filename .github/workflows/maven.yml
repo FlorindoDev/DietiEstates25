@@ -52,7 +52,10 @@ jobs:
       - name: SonarQube Quality Gate Check
         uses: sonarsource/sonarqube-quality-gate-action@master
         with:
-          sonarToken: ${{ secrets.SONAR_TOKEN }}
+          scanMetadataReportFile: .scannerwork/report-task.txt
+          pollingTimeoutSec: 300
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Build with Maven
         run: mvn -B package --file $SONAR_PROJECT_DIR/pom.xml -X
