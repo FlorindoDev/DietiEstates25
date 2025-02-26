@@ -1,7 +1,7 @@
 package org.md.Estate.Status;
 
 public class New extends Status{
-    New(){
+    public New(){
         setName("New");
     }
 }

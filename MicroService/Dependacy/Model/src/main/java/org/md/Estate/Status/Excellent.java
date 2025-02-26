@@ -1,7 +1,7 @@
 package org.md.Estate.Status;
 
 public class Excellent extends Status{
-    Excellent(){
+    public Excellent(){
         setName("Excellent");
     }
 }

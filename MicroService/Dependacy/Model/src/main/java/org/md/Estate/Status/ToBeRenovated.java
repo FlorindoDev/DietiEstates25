@@ -1,7 +1,7 @@
 package org.md.Estate.Status;
 
 public class ToBeRenovated extends Status {
-    ToBeRenovated(){
+    public ToBeRenovated(){
         setName("ToBeRenovated");
     }
 }

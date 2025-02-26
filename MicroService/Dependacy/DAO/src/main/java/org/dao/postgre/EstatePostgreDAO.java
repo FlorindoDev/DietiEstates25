@@ -52,7 +52,7 @@ public class EstatePostgreDAO implements EstateDAO {
             stmt.setInt(index++, newEstate.getWc());
             stmt.setInt(index++, newEstate.getGarage());
             stmt.setBoolean(index++, newEstate.getElevator());
-            stmt.setString(index++, newEstate.getClasseEnergetica().getEnergeticClass());
+            stmt.setString(index++, newEstate.getClasseEnergetica().getNome());
             stmt.setObject(index++, newEstate.getMode().getName(), Types.OTHER);
             stmt.setObject(index++, newEstate.getStato().getName(), Types.OTHER);
 
@@ -137,9 +137,12 @@ public class EstatePostgreDAO implements EstateDAO {
 
     @Override
     public void updateEstateAgent(Estate estate, Agent agent) throws DietiEstateException {
-        String query= "UPDATE immobile SET idagent = ? WHERE idimmobile = ? ";
 
         PreparedStatement stmt;
+        String query;
+
+        query= "UPDATE immobile SET idagente = ? WHERE idimmobile = ? ";
+        
         try {
             stmt = connection.getStatment(query);
             stmt.setInt(1, agent.getIdUser());
@@ -152,6 +155,8 @@ public class EstatePostgreDAO implements EstateDAO {
         makeEstateUpdate(stmt);
 
     }
+
+
 
 
     private int makeEstateUpdate(PreparedStatement stmt) throws ErrorExecutingQuery {
