@@ -136,7 +136,7 @@ public class EstatePostgreDAO implements EstateDAO {
     }
 
     @Override
-    public void addEstateAgent(Estate estate, Agent agent) throws DietiEstateException {
+    public void updateEstateAgent(Estate estate, Agent agent) throws DietiEstateException {
         String query= "UPDATE immobile SET idagent = ? WHERE idimmobile = ? ";
 
         PreparedStatement stmt;

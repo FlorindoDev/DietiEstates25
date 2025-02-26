@@ -110,11 +110,11 @@ public class ManagementAgent implements ManagmentAgentService {
     }
 
     @Override
-    public String addEstateAgent(Estate estate, Agent agent) {
+    public String updateEstateAgent(Estate estate, Agent agent) {
         try{
             estateDAO.isEstatePresent(estate);
             agentDAO.isUserPresent(agent);
-            estateDAO.addEstateAgent(estate,agent);
+            estateDAO.updateEstateAgent(estate,agent);
 
             return "{\"code\": 0, \"message\": \"success of action add agent to estate\"}";
         }catch (DietiEstateException e){
@@ -123,8 +123,4 @@ public class ManagementAgent implements ManagmentAgentService {
 
     }
 
-    @Override
-    public String removeEstateAgent(Estate estate, Agent agent) {
-        return addEstateAgent(estate,agent);
-    }
 }
