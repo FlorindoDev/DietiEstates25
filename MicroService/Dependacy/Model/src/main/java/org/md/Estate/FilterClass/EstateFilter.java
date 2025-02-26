@@ -28,22 +28,22 @@ public class EstateFilter extends Translate {
     public EstateFilter() {}
 
     public EstateFilter(Builder builder) {
-        this.circumference = builder.circumference;
-        this.mode = builder.mode;
-        this.energeticClass = builder.energeticClass;
-        this.wc = builder.wc;
-        this.stato = builder.stato;
-        this.piano = builder.piano;
-        this.garages = builder.garages;
-        this.ascensore = builder.ascensore;
-        this.maxRooms = builder.maxRooms;
-        this.minRooms = builder.minRooms;
-        this.maxSpace = builder.maxSpace;
-        this.minSpace = builder.minSpace;
-        this.maxPrice = builder.maxPrice;
-        this.minPrice = builder.minPrice;
-        this.descrizione = builder.descrizione;
-        this.idEstate = builder.idEstate;
+        this.circumference = builder.circumferenceBuilder;
+        this.mode = builder.modeBuilder;
+        this.energeticClass = builder.energeticClassBuilder;
+        this.wc = builder.wcBuilder;
+        this.stato = builder.statoBuilder;
+        this.piano = builder.pianoBuilder;
+        this.garages = builder.garagesBuilder;
+        this.ascensore = builder.ascensoreBuilder;
+        this.maxRooms = builder.maxRoomsBuilder;
+        this.minRooms = builder.minRoomsBuilder;
+        this.maxSpace = builder.maxSpaceBuilder;
+        this.minSpace = builder.minSpaceBuilder;
+        this.maxPrice = builder.maxPriceBuilder;
+        this.minPrice = builder.minPriceBuilder;
+        this.descrizione = builder.descrizioneBuilder;
+        this.idEstate = builder.idEstateBuilder;
 
     }
 
@@ -176,25 +176,25 @@ public class EstateFilter extends Translate {
     }
 
     public static class Builder<typeBuilder extends EstateFilter.Builder<typeBuilder>>{
-        private int idEstate = 0;
-        private String descrizione = "";
-        private double minPrice = 0;
-        private double maxPrice = 0;
-        private double minSpace = 0;
-        private double maxSpace = 0;
-        private double minRooms = 0;
-        private double maxRooms = 0;
-        private boolean ascensore = false;
-        private int garages = 0;
-        private int piano = 0;
-        private Status stato = null;
-        private int wc = 0;
-        private EnergeticClass energeticClass = null;
-        private Mode mode = null;
-        private Circumference circumference= null;
+        private int idEstateBuilder = 0;
+        private String descrizioneBuilder = "";
+        private double minPriceBuilder = 0;
+        private double maxPriceBuilder = 0;
+        private double minSpaceBuilder = 0;
+        private double maxSpaceBuilder = 0;
+        private double minRoomsBuilder = 0;
+        private double maxRoomsBuilder = 0;
+        private boolean ascensoreBuilder = false;
+        private int garagesBuilder = 0;
+        private int pianoBuilder = 0;
+        private Status statoBuilder = null;
+        private int wcBuilder = 0;
+        private EnergeticClass energeticClassBuilder = null;
+        private Mode modeBuilder = null;
+        private Circumference circumferenceBuilder = null;
 
         public Builder(int idEstate) {
-            this.idEstate = idEstate;
+            this.idEstateBuilder = idEstate;
         }
 
         protected typeBuilder self(){
@@ -206,83 +206,83 @@ public class EstateFilter extends Translate {
         }
 
 
-        public typeBuilder setIdEstate(int idEstate) {
-            this.idEstate = idEstate;
+        public typeBuilder setIdEstateBuilder(int idEstateBuilder) {
+            this.idEstateBuilder = idEstateBuilder;
             return self();
         }
 
-        public typeBuilder setCircumference(Circumference circumference) {
-            this.circumference = circumference;
+        public typeBuilder setCircumferenceBuilder(Circumference circumferenceBuilder) {
+            this.circumferenceBuilder = circumferenceBuilder;
             return self();
         }
 
-        public typeBuilder setDescrizione(String descrizione) {
-            this.descrizione = descrizione;
+        public typeBuilder setDescrizioneBuilder(String descrizioneBuilder) {
+            this.descrizioneBuilder = descrizioneBuilder;
             return self();
         }
 
-        public typeBuilder setMinPrice(double minPrice) {
-            this.minPrice = minPrice;
+        public typeBuilder setMinPriceBuilder(double minPriceBuilder) {
+            this.minPriceBuilder = minPriceBuilder;
             return self();
         }
 
-        public typeBuilder setMaxPrice(double maxPrice) {
-            this.maxPrice = maxPrice;
+        public typeBuilder setMaxPriceBuilder(double maxPriceBuilder) {
+            this.maxPriceBuilder = maxPriceBuilder;
             return self();
         }
 
-        public typeBuilder setMinSpace(double minSpace) {
-            this.minSpace = minSpace;
+        public typeBuilder setMinSpaceBuilder(double minSpaceBuilder) {
+            this.minSpaceBuilder = minSpaceBuilder;
             return self();
         }
 
-        public typeBuilder setMaxSpace(double maxSpace) {
-            this.maxSpace = maxSpace;
+        public typeBuilder setMaxSpaceBuilder(double maxSpaceBuilder) {
+            this.maxSpaceBuilder = maxSpaceBuilder;
             return self();
         }
 
-        public typeBuilder setMinRooms(double minRooms) {
-            this.minRooms = minRooms;
+        public typeBuilder setMinRoomsBuilder(double minRoomsBuilder) {
+            this.minRoomsBuilder = minRoomsBuilder;
             return self();
         }
 
-        public typeBuilder setMaxRooms(double maxRooms) {
-            this.maxRooms = maxRooms;
+        public typeBuilder setMaxRoomsBuilder(double maxRoomsBuilder) {
+            this.maxRoomsBuilder = maxRoomsBuilder;
             return self();
         }
 
-        public typeBuilder setAscensore(boolean ascensore) {
-            this.ascensore = ascensore;
+        public typeBuilder setAscensoreBuilder(boolean ascensoreBuilder) {
+            this.ascensoreBuilder = ascensoreBuilder;
             return self();
         }
 
-        public typeBuilder setGarages(int garages) {
-            this.garages = garages;
+        public typeBuilder setGaragesBuilder(int garagesBuilder) {
+            this.garagesBuilder = garagesBuilder;
             return self();
         }
 
         public typeBuilder setPianos(int piano) {
-            this.piano = piano;
+            this.pianoBuilder = piano;
             return self();
         }
 
-        public typeBuilder setStato(Status stato) {
-            this.stato = stato;
+        public typeBuilder setStatoBuilder(Status statoBuilder) {
+            this.statoBuilder = statoBuilder;
             return self();
         }
 
-        public typeBuilder setWc(int wc) {
-            this.wc = wc;
+        public typeBuilder setWcBuilder(int wcBuilder) {
+            this.wcBuilder = wcBuilder;
             return self();
         }
 
-        public typeBuilder setEnergeticClass(EnergeticClass energeticClass) {
-            this.energeticClass = energeticClass;
+        public typeBuilder setEnergeticClassBuilder(EnergeticClass energeticClassBuilder) {
+            this.energeticClassBuilder = energeticClassBuilder;
             return self();
         }
 
-        public typeBuilder setMode(Mode mode) {
-            this.mode = mode;
+        public typeBuilder setModeBuilder(Mode modeBuilder) {
+            this.modeBuilder = modeBuilder;
             return self();
         }
     }
