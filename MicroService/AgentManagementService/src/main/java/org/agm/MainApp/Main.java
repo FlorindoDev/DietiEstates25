@@ -10,7 +10,7 @@ import org.glassfish.jersey.server.ServerProperties;
 import org.md.Agency.Agency;
 import org.md.Estate.ClasseEnergetica.A;
 import org.md.Estate.Estate;
-import org.md.Estate.Indirizzo;
+import org.md.Geolocalizzazione.Indirizzo;
 import org.md.Estate.Mode.Vendita;
 import org.md.Estate.Status.New;
 import org.md.Utente.Agent;

@@ -1,4 +1,4 @@
-package org.md.Estate;
+package org.md.Geolocalizzazione;
 
 
 import org.md.Serializzazione.Translate;

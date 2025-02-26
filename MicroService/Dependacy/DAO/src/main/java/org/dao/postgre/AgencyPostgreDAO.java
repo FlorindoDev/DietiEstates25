@@ -8,7 +8,7 @@ import org.md.Agency.Agency;
 import org.md.Estate.ClasseEnergetica.ConverterEnergeticClass;
 import org.md.Estate.ClasseEnergetica.EnergeticClass;
 import org.md.Estate.Estate;
-import org.md.Estate.Indirizzo;
+import org.md.Geolocalizzazione.Indirizzo;
 import org.md.Estate.Mode.ConverterMode;
 import org.md.Estate.Mode.Mode;
 import org.md.Estate.Status.ConverterStatus;
