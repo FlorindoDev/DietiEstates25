@@ -14,8 +14,7 @@ public interface ManagmementAgentAPI {
 
     String getEstates(Agency agency);
 
-    String addEstateAgent(Estate estate, Agent agent);
+    String updateEstateAgent(Estate estate, Agent agent);
 
-    String removeEstateAgent(Estate estate, Agent agent);
 
 }
