@@ -1,4 +1,4 @@
-package org.va.API.Interfacce;
+package org.agm.API.Interfacce;
 
 import org.md.Agency.Agency;
 import org.md.Estate.Estate;
@@ -14,7 +14,7 @@ public interface ManagmementAgentAPI {
 
     String getEstates(Agency agency);
 
-    String updateEstateAgent(Estate estate, Agent agent);
+    String updateEstateAgent(Estate estate);
 
 
 }

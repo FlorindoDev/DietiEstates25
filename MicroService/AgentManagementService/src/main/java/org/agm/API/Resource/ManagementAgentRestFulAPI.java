@@ -1,4 +1,4 @@
-package org.va.API.Resource;
+package org.agm.API.Resource;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -6,9 +6,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.md.Estate.Estate;
-import org.va.API.Interfacce.ManagmementAgentAPI;
-import org.va.MainApp.Interfacce.ManagmentAgentService;
-import org.va.MainApp.ManagementAgent;
+import org.agm.API.Interfacce.ManagmementAgentAPI;
+import org.agm.MainApp.Interfacce.ManagmentAgentService;
+import org.agm.MainApp.ManagementAgent;
 import org.md.Agency.Agency;
 import org.md.Utente.Agent;
 
@@ -58,8 +58,8 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Override
-    public String updateEstateAgent(Estate estate, Agent agent) {
-        return managementAgent.updateEstateAgent(estate,agent);
+    public String updateEstateAgent(Estate estate) {
+        return managementAgent.updateEstateAgent(estate,estate.getAgente());
     }
 
 }

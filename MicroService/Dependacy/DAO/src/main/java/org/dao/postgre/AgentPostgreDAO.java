@@ -54,6 +54,26 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
     }
 
     @Override
+    public Agent estraiIdFromEmailAgent(Agent agent) throws ErrorCreateStatment {
+        String query= "SELECT * FROM agenteimmobiliare WHERE email = ?";
+
+        PreparedStatement stmt;
+
+        try {
+            stmt = connection.getStatment(query);
+            stmt.setString(1, agent.getEmail());
+            connection.makeQuery(stmt);
+            connection.nextRow();
+            agent.setIdUser(connection.extractInt("idagente"));
+        } catch (SQLException e) {
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorCreateStatment();
+        }
+        return agent;
+    }
+
+
+    @Override
     public void createUser(Agent agent) throws DietiEstateException{
         String query=
                 "INSERT INTO agenteimmobiliare(email, biografia, nome, cognome, password, partitaiva, immagineprofilo, idpushnotify, notify_appointment) VALUES" +

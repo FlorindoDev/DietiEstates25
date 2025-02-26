@@ -18,8 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 public interface EnergeticClass {
 
-    public String getEnergeticClass();
-
+    public String getNome();
 
 }
 

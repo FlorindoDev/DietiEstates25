@@ -1,8 +1,8 @@
-package org.va.MainApp;
+package org.agm.MainApp;
 
 import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.EstatePostgreDAO;
-import org.va.MainApp.Interfacce.ManagmentAgentService;
+import org.agm.MainApp.Interfacce.ManagmentAgentService;
 import org.va.Validate;
 import org.dao.Interfacce.AgencyDAO;
 import org.dao.Interfacce.AgentDAO;
@@ -114,6 +114,7 @@ public class ManagementAgent implements ManagmentAgentService {
         try{
             estateDAO.isEstatePresent(estate);
             agentDAO.isUserPresent(agent);
+            agent = agentDAO.estraiIdFromEmailAgent(agent);
             estateDAO.updateEstateAgent(estate,agent);
 
             return "{\"code\": 0, \"message\": \"success of action add agent to estate\"}";

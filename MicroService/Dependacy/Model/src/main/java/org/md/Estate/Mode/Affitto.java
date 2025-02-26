@@ -1,4 +1,4 @@
-package org.md.Estate.ClasseEnergetica.Mode;
+package org.md.Estate.Mode;
 
 import org.md.Serializzazione.Translate;
 

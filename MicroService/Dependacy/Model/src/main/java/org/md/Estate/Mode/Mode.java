@@ -1,4 +1,4 @@
-package org.md.Estate.ClasseEnergetica.Mode;
+package org.md.Estate.Mode;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
