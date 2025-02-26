@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>MicroService</groupId>
     <artifactId>root</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>pom</packaging> <!-- Packaging deve essere "pom" -->
 
     <modules>
@@ -23,10 +23,5 @@
         <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <sonar.host.url>http://4.232.70.79:9000/</sonar.host.url>
-        <sonar.login>sqp_cf0ed765a2e826ebafbd505d6b7cd41e8fbb27e0</sonar.login>
-        <sonar.projectKey>DietiEstate</sonar.projectKey>
-        <sonar.projectName>DietiEstate</sonar.projectName>
-
     </properties>
 </project>

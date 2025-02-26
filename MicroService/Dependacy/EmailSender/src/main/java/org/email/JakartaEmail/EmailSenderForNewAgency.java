@@ -16,7 +16,7 @@ public class EmailSenderForNewAgency extends EmailSenderJakarta{
         try {
             // Creazione del messaggio
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(email));
+            message.setFrom(new InternetAddress("DietiEstate@demomailtrap.com"));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(reciverEmail));
             message.setSubject("Oggetto della Email");

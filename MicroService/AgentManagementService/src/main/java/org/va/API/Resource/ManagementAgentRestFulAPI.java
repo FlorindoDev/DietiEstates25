@@ -54,20 +54,12 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     }
 
     @POST
-    @Path("addEstateAgent")
+    @Path("UpdateEstateAgent")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Override
-    public String addEstateAgent(Estate estate, Agent agent) {
-        return managementAgent.addEstateAgent(estate,agent);
+    public String updateEstateAgent(Estate estate, Agent agent) {
+        return managementAgent.updateEstateAgent(estate,agent);
     }
 
-    @POST
-    @Path("removeEstateAgent")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    @Override
-    public String removeEstateAgent(Estate estate, Agent agent) {
-        return managementAgent.removeEstateAgent(estate,agent);
-    }
 }

@@ -63,7 +63,9 @@ public class AppointmentManagement implements AppointmentService {
     @Override
     public String acceptAppointment(AppointmentAccept appointment) {
         //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
+        //TODO AGGIUNGERE DEI CONTROLLI PER VALORI NULL
         try {
+
             appointmentDAO.changeStatusAppointment(appointment);
             return "{\"code\": 0, \"message\": \"success of action accept appointment\"}";
 
@@ -75,7 +77,7 @@ public class AppointmentManagement implements AppointmentService {
     @Override
     public String declineAppointment(AppointmentReject appointment) {
         //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
-
+        //TODO AGGIUNGERE DEI CONTROLLI PER VALORI NULL
         try {
             appointmentDAO.changeStatusAppointment(appointment);
             return "{\"code\": 0, \"message\": \"success of action decline appointment\"}";

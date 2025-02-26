@@ -10,7 +10,7 @@ public interface EstateDAO {
     void changeEstate(Estate changEstate) throws DietiEstateException;
     Agent getAgent(Estate agency);
 
-    void addEstateAgent(Estate estate, Agent agent) throws DietiEstateException;
+    void updateEstateAgent(Estate estate, Agent agent) throws DietiEstateException;
 
     boolean isEstatePresent(Estate estate) throws DietiEstateException;
 }
