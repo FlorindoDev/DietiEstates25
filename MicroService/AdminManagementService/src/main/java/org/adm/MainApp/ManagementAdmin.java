@@ -91,7 +91,7 @@ public class ManagementAdmin implements ManagmentAdminService {
     @Override
     public String getAdmins(Agency agency) {
         try{
-            //TODO agencyDAO.isAgencyPresent(admin);
+            agencyDAO.isAgencyPresent(agency);
 
             List<Admin> admins = agencyDAO.getAdmins(agency);
             String json = "{\"code\": 0, \"message\": \"success of action admin upgraded\", \"admins\": [";
