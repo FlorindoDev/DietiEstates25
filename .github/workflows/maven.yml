@@ -45,7 +45,11 @@ jobs:
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.qualitygate.wait=true \
             -Dsonar.qualitygate.timeout=300
-      
+
+      - name: SonarQube Quality Gate Check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        with:
+          sonarToken: ${{ secrets.SONAR_TOKEN }}
 
       - name: Build with Maven
         run: mvn -B package --file $SONAR_PROJECT_DIR/pom.xml -X
