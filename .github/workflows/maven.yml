@@ -30,10 +30,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4      
 
-      - name: Build with Maven
+      #- name: Build with Maven
         #run: mvn -B package --file MicroService/pom.xml -X
-        with:
-          fetch-depth: 0  # Necessario per SonarQube per l'analisi completa
+        #with:
+          #fetch-depth: 0  # Necessario per SonarQube per l'analisi completa
 
       - name: SonarQube Scan
         run: |
