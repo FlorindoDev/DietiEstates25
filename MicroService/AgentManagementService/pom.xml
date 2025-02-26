@@ -6,13 +6,13 @@
 
     <groupId>org.agm</groupId>
     <artifactId>AgentManagementService</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.0</version>
     <name>AgentManagementService</name>
 
     <parent>
         <groupId>MicroService</groupId>
         <artifactId>root</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
 
     <dependencyManagement>
