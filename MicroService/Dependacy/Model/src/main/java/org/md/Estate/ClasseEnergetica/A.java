@@ -4,7 +4,7 @@ import org.md.Serializzazione.Translate;
 
 class A extends Translate implements Medium {
 
-    private static final String nome = "A";
+    private static final String NOME = "A";
 
     @Override
     public String getEnergeticClass() {
@@ -17,6 +17,6 @@ class A extends Translate implements Medium {
     }
 
     public String getNome() {
-        return nome;
+        return NOME;
     }
 }
