@@ -1,0 +1,53 @@
+_format_version: "1.1"  # La versione corretta del formato dichiarativo
+
+services:
+  - name: JWTService
+    host: google.com
+    routes:
+      - name: jwt-route
+        paths:
+          - /jwt
+        methods:
+          - POST
+        strip_path: true
+
+  - name: ManagementAccountService
+    url: http://another-backend:7004
+    routes:
+      - name: path1
+        paths:
+          - /another-api
+        methods:
+          - POST
+        strip_path: false
+
+plugins:
+  - name: jwt
+    enabled: true
+    config:
+      key_claim_name: kid
+      claims_to_verify: 
+        - exp
+      secret_is_base64: false
+      uri_param_names:
+        - jwt
+
+consumers:
+  - username: user
+
+jwt_secrets:
+  - consumer: user
+    key: kid  # Questo è il valore del `kid`
+    algorithm: RS256
+    secret_is_base64: false
+    rsa_public_key: |
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzGWc/hPB7Ng+4QAcfyXc 
+      4nk28QIx79TzHFxUKUm1pqcTk/s0NDMv0sX8ak+++grghqjaRqj7TA6COFhthqUE
+      KXB5yKFLHQaYOuQKYVrop1ra9HKDEr1iP0tPs2sHOs5+MUITbYWL/LAJA1VrdWGW
+      ezanylii2hC9kEQha3ZXhcBx5gRMpUEJu/VbHlrCWj4PeaFz4jO1bT57YYniVUq9
+      l0n9gdJ0KCwlS2BMjBLEGvTuO6BqGyHWlBztBgLB4t8cps6vZNxYvDboJp8FOY1o
+      rxSiCeG3oo/yjJx24B1RZJd1m2ud38FLfCPHYJmCnrlGqNB+plPfJpPN539nboD+
+      KwIDAQAB
+      ...LA TUA CHIAVE PUBBLICA QUI...
+      -----END PUBLIC KEY-----

@@ -1,53 +1,46 @@
 _format_version: "1.1"  # La versione corretta del formato dichiarativo
 
-services:
-  - name: JWTService
-    host: google.com
-    routes:
-      - name: jwt-route
-        paths:
-          - /jwt
-        methods:
-          - POST
-        strip_path: true
-
-  - name: ManagementAccountService
-    url: http://another-backend:7004
-    routes:
-      - name: path1
-        paths:
-          - /another-api
-        methods:
-          - POST
-        strip_path: false
-
-plugins:
-  - name: jwt
-    enabled: true
-    config:
-      key_claim_name: kid
-      claims_to_verify: 
-        - exp
-      secret_is_base64: false
-      uri_param_names:
-        - jwt
-
 consumers:
-  - username: user
+  - id: 43371078-334f-4f56-a85f-72220787fdb4
+    username: user
+    username_lower: user
+    type: 0
 
 jwt_secrets:
-  - consumer: user
-    key: kid  # Questo è il valore del `kid`
-    algorithm: RS256
-    secret_is_base64: false
-    rsa_public_key: |
-      -----BEGIN PUBLIC KEY-----
-      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzGWc/hPB7Ng+4QAcfyXc 
-      4nk28QIx79TzHFxUKUm1pqcTk/s0NDMv0sX8ak+++grghqjaRqj7TA6COFhthqUE
-      KXB5yKFLHQaYOuQKYVrop1ra9HKDEr1iP0tPs2sHOs5+MUITbYWL/LAJA1VrdWGW
-      ezanylii2hC9kEQha3ZXhcBx5gRMpUEJu/VbHlrCWj4PeaFz4jO1bT57YYniVUq9
-      l0n9gdJ0KCwlS2BMjBLEGvTuO6BqGyHWlBztBgLB4t8cps6vZNxYvDboJp8FOY1o
-      rxSiCeG3oo/yjJx24B1RZJd1m2ud38FLfCPHYJmCnrlGqNB+plPfJpPN539nboD+
-      KwIDAQAB
-      ...LA TUA CHIAVE PUBBLICA QUI...
-      -----END PUBLIC KEY-----
+  - consumer:
+      id: 43371078-334f-4f56-a85f-72220787fdb4
+    key: user
+    secret: >-
+      d48b0dc42339b9effa2026c6dae4b9291b717305302547bfa4e9cd7176cdc7fb92b8b8bd9cc1d17a164255dc0a3bbaa4
+    algorithm: HS256
+    id: dd062d19-b3ca-43a1-b52f-37b5fb3354ec
+
+routes:
+  - name: jwt-route
+    id: d2fff362-d627-4084-9107-e5ad61cfeb7e
+    paths:
+      - /jwt
+    preserve_host: false
+    strip_path: true
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    https_redirect_status_code: 426
+    methods:
+      - POST
+    protocols:
+      - http
+    service:
+      id: a7145b10-fa7b-484b-8129-7fb9a11f0e04
+
+services:
+  - name: JWTService
+    id: a7145b10-fa7b-484b-8129-7fb9a11f0e04
+    retries: 5
+    port: 80
+    enabled: true
+    connect_timeout: 60000
+    read_timeout: 60000
+    write_timeout: 60000
+    protocol: http
+    host: google.com
