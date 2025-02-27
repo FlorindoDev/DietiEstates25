@@ -16,7 +16,7 @@ import 'package:dietiestate25/AccessClass/SingUpWindow.dart';
 
 class AccessController {
   static final url = Uri.parse("http://api.florindodev.site/makeLogin");
-  //static final url = Uri.parse("http://127.0.0.1:7001/makeLogin");
+  //static final url = Uri.parse("http://127.0.0.1:7002/login/makeLogin");
   //static final url = Uri.parse("http://10.0.2.2:7001/makeLogin");
 
   static String token = "";
@@ -50,15 +50,17 @@ class AccessController {
       print(e.toString());
       // Se c'è un errore di connessione, rilancia con un messaggio specifico
       //throw Exception("Servizio non attualmente disponibile, prova tra qualche minuto");
-      return {
-        "code": null,
-        "message":
-            "Servizio non attualmente disponibile, prova tra qualche minuto"
-      };
+      return null;
     }
 
     // Controlla se lo statusCode non è 200 (OK)
-    return json.decode(response.body);
+    dynamic ris;
+    try {
+      ris = json.decode(response.body);
+    } catch (e) {
+      return null;
+    }
+    return ris;
   }
 
   static void toLogin(Utente utente, dynamic context) {
@@ -68,14 +70,11 @@ class AccessController {
     richiestaLogin(utente).then((risultato) {
       //risultato = json.decode(risultato);
       if (risultato == null)
-        MyApp.mostraPopUpInformativo(context, "Attenzione",
-            "Servizio non attualmente disponibile, prova tra qualche minuto");
+        MyApp.mostraPopUpInformativo(context, "Attenzione", "Servizio non attualmente disponibile, prova tra qualche minuto");
       else if (risultato['code'] == 1) {
-        MyApp.mostraPopUpInformativo(
-            context, "Attenzione", risultato['message']);
+        MyApp.mostraPopUpInformativo(context, "Attenzione", risultato['message']);
       } else if (risultato['code'] == 0) {
-        MyApp.mostraPopUpInformativo(
-            context, "Complimenti", "Login Effettuato!");
+        MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
       }
     });
     print("finito prova");
@@ -95,18 +94,15 @@ class AccessController {
   }
 
   static MaterialPageRoute<dynamic> goToSignUpWindow() {
-    return MaterialPageRoute(
-        builder: (_) => SingUpWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(builder: (_) => SingUpWindow(appbar: MyApp.appBarNotBackable));
   }
 
   static MaterialPageRoute<dynamic> goToLoginWindow() {
-    return MaterialPageRoute(
-        builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
   }
 
   static MaterialPageRoute<dynamic> goToCreateAgencyWindow() {
-    return MaterialPageRoute(
-        builder: (_) => CreateAgencyWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(builder: (_) => CreateAgencyWindow(appbar: MyApp.appBarNotBackable));
   }
 
   // Future<void> readAssetFile() async {

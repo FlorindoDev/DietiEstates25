@@ -1,7 +1,7 @@
+import 'package:dietiestate25/ManagementAccount/ProfileWindow.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dietiestate25/ProfileClass/ProfileWindow.dart';
 import 'package:dietiestate25/NotificationClass/NotificationWindow.dart';
 import 'package:dietiestate25/CalendarClass/CalendarWindow.dart';
 
@@ -70,123 +70,136 @@ class _HomeWindowState extends State<HomeWindow> {
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold( 
-      body: Container(
-        width: double.infinity,
-        child: Expanded(child:
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          spacing: 10,
-          children: [
-            ElevatedButton(
-              onPressed: (){}, 
-              
-              child: Row( 
-                mainAxisSize: MainAxisSize.min,
-                children:[
-                  Icon(
-                    Icons.location_on_rounded,
-                    color: Colors.white,
-                    size: 50,
-                  ),
-                  Text("Ricerca Immobile",
-                    style: TextStyle(
-                      fontSize: 25
-                    ),
-                  )
-              ]),
-              style: ButtonStyle(
-                padding: WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 20, horizontal: 10)),
-                backgroundColor: WidgetStateProperty.all(MyApp.rosso),
-                foregroundColor: WidgetStateProperty.all(Colors.white),
-              ),
-              
-            ),
-              
-             Expanded(
-              child :
-              
-              Container(
-              //width: double.infinity,
-              decoration: BoxDecoration(
-               color: MyApp.celeste,
-               
-                 borderRadius: BorderRadius.only(
-                   topLeft: Radius.circular(30),
-                   topRight: Radius.circular(30),
-                   bottomLeft: Radius.circular(0),
-                   bottomRight: Radius.circular(0),
-                 ),
-               ),
-
-              child:Expanded(
+    return Scaffold(
+        body: Container(
+            width: double.infinity,
+            child: Expanded(
                 child: Column(
-                children: [
-                  Text('Home Page, oh yessssssssssssssssss baby', style: TextStyle(fontSize: 24)),
-                  Scrollbar(
-                    thickness: 20,
-                    thumbVisibility: true,
-                    trackVisibility: true,
-                    child: 
-                  Expanded(
-                child:SingleChildScrollView(
-                  scrollDirection: Axis.horizontal, // Scroll orizzontale
-                  child: Row(
-                    children: [
-                      Card(
-                        color: Colors.white,
-                        child: Icon(Icons.home,size: 200,),
-                      ),
-                      Card(
-                        color: Colors.white,
-                        child: Icon(Icons.home,size: 200,),
-                      ),
-                      Card(
-                        color: Colors.white,
-                        child: Icon(Icons.home,size: 200,),
-                      ),
-                      Card(
-                        color: Colors.white,
-                        child: Icon(Icons.home,size: 200,),
-                      ),
-                      Card(
-                        color: Colors.white,
-                        child: Icon(Icons.home,size: 200,),
-                      ),
-                      Card(
-                        color: Colors.white,
-                        child: Icon(Icons.home,size: 200,),
-                      ),
-                      Card(
-                        color: Colors.white,
-                        child: Icon(Icons.home,size: 200,),
-                      ),
-                      Card(
-                        color: Colors.white,
-                        child: Icon(Icons.home,size: 200,),
-                      ),
-                      Card(
-                        color: Colors.white,
-                        child: Icon(Icons.home,size: 200,),
-                      ),
-                      Card(
-                        color: Colors.white,
-                        child: Icon(Icons.home,size: 200,),
-                      ),
-                    ],
-                  )
-                  )))
-                ],),
-              )
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              spacing: 10,
+              children: [
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Row(mainAxisSize: MainAxisSize.min, children: [
+                    Icon(
+                      Icons.location_on_rounded,
+                      color: Colors.white,
+                      size: 50,
+                    ),
+                    Text(
+                      "Ricerca Immobile",
+                      style: TextStyle(fontSize: 25),
+                    )
+                  ]),
+                  style: ButtonStyle(
+                    padding: WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 20, horizontal: 10)),
+                    backgroundColor: WidgetStateProperty.all(MyApp.rosso),
+                    foregroundColor: WidgetStateProperty.all(Colors.white),
+                  ),
                 ),
-          
-             )
-          ],
-
-        ))
-          
-      )
-    );
+                Expanded(
+                  child: Container(
+                      //width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: MyApp.celeste,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                          bottomLeft: Radius.circular(0),
+                          bottomRight: Radius.circular(0),
+                        ),
+                      ),
+                      child: Expanded(
+                        child: Column(
+                          children: [
+                            Text('Home Page, oh yessssssssssssssssss baby', style: TextStyle(fontSize: 24)),
+                            Scrollbar(
+                                thickness: 20,
+                                thumbVisibility: true,
+                                trackVisibility: true,
+                                child: Expanded(
+                                    child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal, // Scroll orizzontale
+                                        child: Row(
+                                          children: [
+                                            Card(
+                                              color: Colors.white,
+                                              child: Icon(
+                                                Icons.home,
+                                                size: 200,
+                                              ),
+                                            ),
+                                            Card(
+                                              color: Colors.white,
+                                              child: Icon(
+                                                Icons.home,
+                                                size: 200,
+                                              ),
+                                            ),
+                                            Card(
+                                              color: Colors.white,
+                                              child: Icon(
+                                                Icons.home,
+                                                size: 200,
+                                              ),
+                                            ),
+                                            Card(
+                                              color: Colors.white,
+                                              child: Icon(
+                                                Icons.home,
+                                                size: 200,
+                                              ),
+                                            ),
+                                            Card(
+                                              color: Colors.white,
+                                              child: Icon(
+                                                Icons.home,
+                                                size: 200,
+                                              ),
+                                            ),
+                                            Card(
+                                              color: Colors.white,
+                                              child: Icon(
+                                                Icons.home,
+                                                size: 200,
+                                              ),
+                                            ),
+                                            Card(
+                                              color: Colors.white,
+                                              child: Icon(
+                                                Icons.home,
+                                                size: 200,
+                                              ),
+                                            ),
+                                            Card(
+                                              color: Colors.white,
+                                              child: Icon(
+                                                Icons.home,
+                                                size: 200,
+                                              ),
+                                            ),
+                                            Card(
+                                              color: Colors.white,
+                                              child: Icon(
+                                                Icons.home,
+                                                size: 200,
+                                              ),
+                                            ),
+                                            Card(
+                                              color: Colors.white,
+                                              child: Icon(
+                                                Icons.home,
+                                                size: 200,
+                                              ),
+                                            ),
+                                          ],
+                                        ))))
+                          ],
+                        ),
+                      )),
+                )
+              ],
+            ))));
   }
 }
