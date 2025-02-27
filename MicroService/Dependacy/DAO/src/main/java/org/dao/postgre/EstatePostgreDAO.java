@@ -3,10 +3,8 @@ package org.dao.postgre;
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.EstateDAO;
 
-import org.exc.DataBaseException.ErrorExecutingQuery;
+import org.exc.DataBaseException.*;
 import org.exc.DietiEstateException;
-import org.exc.DataBaseException.ErrorCreateStatment;
-import org.exc.DataBaseException.EstateNotExists;
 import org.md.Estate.Estate;
 import org.md.Utente.Agent;
 
@@ -37,31 +35,63 @@ public class EstatePostgreDAO implements EstateDAO {
                 "idagente, idindirizzo, partitaIVA, foto, descrizione, prezzo, dimensioni, stanze, piano, bagni, garage, ascensore, classeenergetica, modalita, stato) VALUES (" +
                 "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.getStatment(query)) {
-            int index = 1;
+        IndirizzoPostgreDAO addrsDao = new IndirizzoPostgreDAO(connection);
 
-            stmt.setInt(index++, newEstate.getAgente().getIdUser());
-            stmt.setInt(index++, newEstate.getIndirizzo().getIdIndirizzo());
-            stmt.setString(index++, newEstate.getAgenzia().getCodicePartitaIVA());
-            stmt.setString(index++, newEstate.getFoto());
-            stmt.setString(index++, newEstate.getDescrizione());
-            stmt.setDouble(index++, newEstate.getPrice());
-            stmt.setDouble(index++, newEstate.getSpace());
-            stmt.setInt(index++, newEstate.getRooms());
-            stmt.setInt(index++, newEstate.getFloor());
-            stmt.setInt(index++, newEstate.getWc());
-            stmt.setInt(index++, newEstate.getGarage());
-            stmt.setBoolean(index++, newEstate.getElevator());
-            stmt.setString(index++, newEstate.getClasseEnergetica().getNome());
-            stmt.setObject(index++, newEstate.getMode().getName(), Types.OTHER);
-            stmt.setObject(index++, newEstate.getStato().getName(), Types.OTHER);
+        int idAddress = 0;
+
+        try {
+            addrsDao.isAddressNotExistsByALL(newEstate.getIndirizzo()); // vuole crearlo, verifico se gai esiste
+            // se non solleva eccezioni significa che non esiste, procedo a crarlo
+//            connection.setAutoCommit(false);
+            addrsDao.createAddress(newEstate.getIndirizzo());
+            idAddress = addrsDao.getLastAddressId();
+
+        } catch (AddressAlreadyExists e) {
+            System.out.println("SONO NEL CATCH");
+            try {
+                connection.nextRow();
+            } catch (SQLException e1) {
+                logger.severe(ERROR_EXECUTING_QUERY + e1.getMessage());
+                throw new ErrorExecutingQuery();
+            }
+            idAddress = connection.extractInt("idindirizzo");
+        }
+
+        System.out.println("[d] " + idAddress);
+
+
+        try (PreparedStatement stmt = connection.getStatment(query)) {
+
+            int index = 0;
+
+            stmt.setInt(++index, newEstate.getAgente().getIdUser());
+            stmt.setInt(++index, idAddress);
+            stmt.setString(++index, newEstate.getAgenzia().getCodicePartitaIVA());
+            stmt.setString(++index, newEstate.getFoto());
+            stmt.setString(++index, newEstate.getDescrizione());
+            stmt.setDouble(++index, newEstate.getPrice());
+            stmt.setDouble(++index, newEstate.getSpace());
+            stmt.setInt(++index, newEstate.getRooms());
+            stmt.setInt(++index, newEstate.getFloor());
+            stmt.setInt(++index, newEstate.getWc());
+            stmt.setInt(++index, newEstate.getGarage());
+            stmt.setBoolean(++index, newEstate.getElevator());
+            stmt.setString(++index, newEstate.getClasseEnergetica().getNome());
+            stmt.setObject(++index, newEstate.getMode().getName(), Types.OTHER);
+            stmt.setObject(++index, newEstate.getStato().getName(), Types.OTHER);
+
 
             connection.makeQueryUpdate(stmt);
+//            connection.commitActions();
 
         } catch (SQLException e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+//             connection.rollBackAction();
             throw new ErrorExecutingQuery();
+        }finally {
+//            connection.setAutoCommit(true);
         }
+
 
     }
 
@@ -155,8 +185,6 @@ public class EstatePostgreDAO implements EstateDAO {
         makeEstateUpdate(stmt);
 
     }
-
-
 
 
     private int makeEstateUpdate(PreparedStatement stmt) throws ErrorExecutingQuery {
