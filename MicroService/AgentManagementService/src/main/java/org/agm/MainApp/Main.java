@@ -35,7 +35,6 @@ public class Main {
         //TODO serve per la prova dopo eliminare
 
         Agency agency = new Agency.Builder("11111111111")
-                .setEmail("pincopallina1@gmail.com")
                 .setNome("Pico Pallina")
                 .build();
 

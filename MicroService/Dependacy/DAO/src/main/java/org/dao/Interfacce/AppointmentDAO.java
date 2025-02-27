@@ -13,7 +13,7 @@ public interface AppointmentDAO {
 
     ArrayList<Appointment> getAllAppointment(Acquirente acquirente) throws DietiEstateException;
 
-    void changeStatusAppointment(Appointment appointment) throws DietiEstateException;
+    void updateStatusAppointment(Appointment appointment) throws DietiEstateException;
 
     void createAppointment(Appointment appointment) throws DietiEstateException;
 

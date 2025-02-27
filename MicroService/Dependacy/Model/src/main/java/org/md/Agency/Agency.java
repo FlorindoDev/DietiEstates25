@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 public class Agency extends Translate {
     protected String codicePartitaIVA;
+
     protected String nome;
     protected String sede;
-    protected String email;
 
     protected ArrayList<Admin> admins;
 
@@ -23,7 +23,6 @@ public class Agency extends Translate {
         this.codicePartitaIVA = builder.codicePartitaIVA;
         this.nome = builder.nome;
         this.sede = builder.sede;
-        this.email = builder.email;
         this.admins = builder.admins;
         this.agents = builder.agents;
     }
@@ -40,10 +39,6 @@ public class Agency extends Translate {
         this.sede = sede;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getCodicePartitaIVA() {
         return codicePartitaIVA;
     }
@@ -54,10 +49,6 @@ public class Agency extends Translate {
 
     public String getSede() {
         return sede;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public ArrayList<Admin> getAdmins() {
@@ -81,7 +72,6 @@ public class Agency extends Translate {
         String codicePartitaIVA;
         String nome = "";
         String sede = "";
-        String email = "";
         ArrayList<Admin> admins = null;
         ArrayList<Agent> agents = null;
 
@@ -97,10 +87,6 @@ public class Agency extends Translate {
 
         public typeBuilder setSede(String sede){
             this.sede = sede;
-            return self();
-        }
-        public typeBuilder setEmail(String email){
-            this.email = email;
             return self();
         }
 

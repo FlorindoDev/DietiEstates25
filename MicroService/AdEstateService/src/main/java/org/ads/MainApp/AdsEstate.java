@@ -39,7 +39,7 @@ public class AdsEstate implements AdsEstateService {
 
         EstateDAO dao = new EstatePostgreDAO();
         try {
-            dao.changeEstate(estate);
+            dao.updateEstate(estate);
         }catch (DietiEstateException e) {
             return e.getMessage();
         }

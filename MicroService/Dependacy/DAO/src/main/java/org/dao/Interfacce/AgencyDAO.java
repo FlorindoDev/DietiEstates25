@@ -22,4 +22,7 @@ public interface AgencyDAO {
     public List<Estate> getEstates(Agency agency) throws DietiEstateException;
 
     boolean isAgencyPresent(Agency agency) throws DietiEstateException;
+
+    void createAgencyAtomic(Agency agency) throws DietiEstateException;
+
 }

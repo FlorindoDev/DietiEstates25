@@ -66,7 +66,7 @@ public class AppointmentManagement implements AppointmentService {
         //TODO AGGIUNGERE DEI CONTROLLI PER VALORI NULL
         try {
 
-            appointmentDAO.changeStatusAppointment(appointment);
+            appointmentDAO.updateStatusAppointment(appointment);
             return "{\"code\": 0, \"message\": \"success of action accept appointment\"}";
 
         } catch (DietiEstateException e) {
@@ -79,7 +79,7 @@ public class AppointmentManagement implements AppointmentService {
         //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
         //TODO AGGIUNGERE DEI CONTROLLI PER VALORI NULL
         try {
-            appointmentDAO.changeStatusAppointment(appointment);
+            appointmentDAO.updateStatusAppointment(appointment);
             return "{\"code\": 0, \"message\": \"success of action decline appointment\"}";
 
         } catch (DietiEstateException e) {

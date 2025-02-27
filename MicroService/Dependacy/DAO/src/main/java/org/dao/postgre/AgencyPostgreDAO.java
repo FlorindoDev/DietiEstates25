@@ -1,6 +1,7 @@
 package org.dao.postgre;
 
 import DBLib.Postgres.CommunicationWithPostgre;
+import org.dao.Interfacce.AdminDAO;
 import org.dao.Interfacce.AgencyDAO;
 import org.exc.DataBaseException.*;
 import org.exc.DietiEstateException;
@@ -27,8 +28,12 @@ public class AgencyPostgreDAO implements AgencyDAO {
     public static final String COGNOME_COLUMN = "cognome";
     public static final String PARTITAIVA_COLUMN = "partitaiva";
     public static final String EMAIL_COLUMN = "email";
-    private CommunicationWithPostgre connection = new CommunicationWithPostgre();
+    private final CommunicationWithPostgre connection;
     private static final Logger logger = Logger.getLogger(AgencyPostgreDAO.class.getName());
+
+    public AgencyPostgreDAO() {
+        connection = new CommunicationWithPostgre();
+    }
 
     protected PreparedStatement prepareStatementGetAgency(Agency agency, String query) throws DietiEstateException {
         PreparedStatement stmt = connection.getStatment(query);
@@ -212,7 +217,6 @@ public class AgencyPostgreDAO implements AgencyDAO {
                 Agency fullAgency = new Agency.Builder<>(connection.extractString(PARTITAIVA_COLUMN))
                         .setNome(connection.extractString("nome"))
                         .setSede(connection.extractString("sede"))
-                        .setEmail(agency.getEmail())
                         .build();
 
                 Agent agent = new Agent.Builder(1,connection.extractString(EMAIL_COLUMN))
@@ -263,7 +267,6 @@ public class AgencyPostgreDAO implements AgencyDAO {
                 Agency fullAgency = new Agency.Builder<>(connection.extractString(PARTITAIVA_COLUMN))
                         .setNome(connection.extractString("nome"))
                         .setSede(connection.extractString("sede"))
-                        .setEmail(agency.getEmail())
                         .build();
 
                 Agent agente = new Agent.Builder(connection.extractInt("idagente"),connection.extractString(EMAIL_COLUMN))
@@ -320,6 +323,44 @@ public class AgencyPostgreDAO implements AgencyDAO {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
+    }
+
+    public void createAgencyAtomic(Agency agency) throws DietiEstateException {
+
+        try {
+
+            connection.setAutoCommit(false);
+
+            AdminDAO adminDAO = new AdminPostgreDAO(connection);
+
+            Admin admin = agency.getAdmins().getFirst();
+
+            isAgencyAbsent(agency);
+
+            isNameAgencyAbsent(agency);
+
+            createAgency(agency);
+
+            adminDAO.isUserAbsentOverAll(admin);
+
+            adminDAO.createUser(admin);
+
+            connection.commitActions();
+
+        } catch (DietiEstateException e) {
+            connection.rollBackAction();
+            logger.info("[!] rollback");
+            throw e;
+
+        }catch(Exception ex){
+            logger.severe(ERROR_EXECUTING_QUERY + ex.getMessage());
+            connection.rollBackAction();
+            logger.info("[!] rollback");
+            throw new ErrorExecutingQuery();
+        }finally {
+            connection.setAutoCommit(true);
+        }
+
     }
 
 
