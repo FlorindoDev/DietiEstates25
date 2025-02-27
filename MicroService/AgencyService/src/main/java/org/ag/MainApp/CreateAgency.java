@@ -2,6 +2,8 @@ package org.ag.MainApp;
 
 
 import org.ag.MainApp.Interfacce.CreateAgencyService;
+import org.dao.Interfacce.AdminDAO;
+import org.dao.postgre.AdminPostgreDAO;
 import org.va.Validate;
 import org.dao.Interfacce.AgencyDAO;
 import org.dao.postgre.AgencyPostgreDAO;
@@ -11,42 +13,64 @@ import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.va.Validator;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class CreateAgency implements CreateAgencyService {
 
     private final AgencyDAO create;
+    private final AdminDAO createAdmin;
 
     public CreateAgency() {
         create = new AgencyPostgreDAO();
+        createAdmin = new AdminPostgreDAO();
     }
 
     @Override
     public String makeAgency(Agency agency) {
 
-
         Validator validaitor = Validate.getInstance();
 
-        EmailSender sender = new EmailSenderForNewAgency();
-
-
         try{
-            if(create.isAgencyAbsent(agency) && create.isNameAgencyAbsent(agency)){
+            create.isAgencyAbsent(agency);
+
+            create.isNameAgencyAbsent(agency);
+
+            validateAgencyField(agency, validaitor);
+
+            create.createAgency(agency);
+
+            //TODO  generare password e aggiungere admin
+            sendEmail(agency);
 
 
-                validaitor.validateEmail(agency.getEmail());
-                validaitor.validateAgencyName(agency.getNome());
-                validaitor.validatePartitaIVA(agency.getCodicePartitaIVA());
-                validaitor.validateSede(agency.getSede());
+            // TODO  AGGIUSATRE RITORNO
+            return "{\"code\": 0, \"message\": \"Success of action create agency\"}";
 
-                create.createAgency(agency);
-                // TODO  AGGIUNGERE EMAILSENDER
-                sender.sendEmail(agency.getEmail());
-
-                // TODO  AGGIUSATRE RITORNO
-                return "{\"code\": 0, \"message\": \"Success of action create agency\"}";
-            }
         }catch (DietiEstateException e){
             return e.getMessage();
         }
-        return "";
+
+    }
+
+    private void sendEmail(Agency agency){
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+
+        Runnable task = () -> {
+                                EmailSender sender = new EmailSenderForNewAgency("prova");
+                                sender.sendEmail(agency.getEmail());
+        };
+
+        executor.submit(task);
+
+
+    }
+
+    private void validateAgencyField(Agency agency, Validator validaitor) throws DietiEstateException {
+        validaitor.validateEmail(agency.getEmail());
+        validaitor.validateAgencyName(agency.getNome());
+        validaitor.validatePartitaIVA(agency.getCodicePartitaIVA());
+        validaitor.validateSede(agency.getSede());
     }
 }
