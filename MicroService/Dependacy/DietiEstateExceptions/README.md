@@ -32,3 +32,5 @@ Abbiamo due grandi categori: <br>
 - `105:` Sede non valida <br>
 - `106:` Data non valida <br>
 - `107:` Errore creazione agency <br>
+- `108:` Indirizzo non presente nel DB <br>
+- `109:` Indirizzo gia presente nel DB <br>
