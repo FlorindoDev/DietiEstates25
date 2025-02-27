@@ -8,7 +8,7 @@ import org.md.Appointment.Appointment;
 import org.md.Estate.Estate;
 import org.md.Utente.Acquirente;
 
-import java.io.IOException;
+
 import java.net.URI;
 
 

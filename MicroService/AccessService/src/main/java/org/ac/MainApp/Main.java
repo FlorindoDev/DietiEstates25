@@ -7,7 +7,7 @@ import org.md.Utente.Acquirente;
 import org.md.Utente.Utente;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
-import java.io.IOException;
+
 import java.net.URI;
 
 
