@@ -7,3 +7,4 @@ web/
 out/
 .metadata
 *.iml
+.vscode/
