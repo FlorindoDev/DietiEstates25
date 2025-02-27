@@ -1,6 +1,6 @@
 package sch.MainApp;
 
-import org.glassfish.grizzly.http.server.HttpServer;
+
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -24,7 +24,7 @@ public class Main {
     }
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         startServer();
         //TODO serve per la prova dopo eliminare
 
