@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class EstatePostgreDAO implements EstateDAO {
@@ -47,7 +48,7 @@ public class EstatePostgreDAO implements EstateDAO {
             idAddress = addrsDao.getLastAddressId();
 
         } catch (AddressAlreadyExists e) {
-            System.out.println("SONO NEL CATCH");
+            logger.info("sono nel catch");
             try {
                 connection.nextRow();
             } catch (SQLException e1) {
@@ -57,7 +58,8 @@ public class EstatePostgreDAO implements EstateDAO {
             idAddress = connection.extractInt("idindirizzo");
         }
 
-        System.out.println("[d] " + idAddress);
+        logger.log(Level.INFO, "ID Address: {0}", idAddress);
+
 
 
         try (PreparedStatement stmt = connection.getStatment(query)) {

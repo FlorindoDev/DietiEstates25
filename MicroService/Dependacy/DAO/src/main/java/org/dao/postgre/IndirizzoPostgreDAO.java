@@ -171,11 +171,11 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
             if(connection.hasNextRow()){
                 connection.nextRow();
 
-                int id_addr  = connection.extractInt("idindirizzo");
+                int idAddr  = connection.extractInt("idindirizzo");
 
-                if (id_addr == 0) throw new AddressNotExists();
+                if (idAddr == 0) throw new AddressNotExists();
 
-                return id_addr;
+                return idAddr;
 
             }else {
                 throw new AddressNotExists();
