@@ -21,12 +21,12 @@ public class Main {
     public static final String BASE_URI = "http://localhost:7001/";
     public static final String RESOURCE = "org.agm.API.Resource";
 
-    public static HttpServer startServer() {
+    public static void startServer() {
 
         final ResourceConfig rc = new ResourceConfig().packages(RESOURCE).register(JacksonFeature.class);
         rc.property(ServerProperties.WADL_FEATURE_DISABLE, true);
 
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
 
 
@@ -77,10 +77,8 @@ public class Main {
 
         System.out.println(estate.TranslateToJson());
 
-        final HttpServer server = startServer();
+        startServer();
 
         System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
-        System.in.read();
-        server.shutdownNow();
     }
 }
