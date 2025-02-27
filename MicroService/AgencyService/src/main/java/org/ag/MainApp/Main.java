@@ -26,7 +26,7 @@ public class Main {
     }
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         startServer();
 
         Agency agency = new Agency.Builder("55").setNome("marco").build();

@@ -26,7 +26,7 @@ public class   Main {
     }
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         startServer();
         //TODO serve per la prova dopo eliminare
         Acquirente acquirente = new Acquirente.Builder(0,"utente1@email.com").build();
