@@ -13,7 +13,8 @@ import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.va.Validator;
 
-import java.util.Random;
+
+import java.security.SecureRandom;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,6 +22,8 @@ public class CreateAgency implements CreateAgencyService {
 
     public static final String CHARACTERS_FOR_GENERATE_PASSWORD = "Z5v!EeR9aFGdySO$fcgDu4Wpi8xVo2N1tXClAnsbz6BTrYQwLm_3IjPHKkqhM0UJ7";
     private final AgencyDAO create;
+
+    private final SecureRandom random = new SecureRandom();
 
     public CreateAgency() {
         create = new AgencyPostgreDAO();
@@ -79,7 +82,6 @@ public class CreateAgency implements CreateAgencyService {
     private String generateRandomWord(int length) {
 
         String characters = CHARACTERS_FOR_GENERATE_PASSWORD;
-        Random random = new Random();
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < length; i++) {
