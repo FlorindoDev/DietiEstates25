@@ -42,7 +42,7 @@ public class EstatePostgreDAO implements EstateDAO {
         try {
             addrsDao.isAddressNotExistsByALL(newEstate.getIndirizzo()); // vuole crearlo, verifico se gai esiste
             // se non solleva eccezioni significa che non esiste, procedo a crarlo
-//            connection.setAutoCommit(false);
+            connection.setAutoCommit(false);
             addrsDao.createAddress(newEstate.getIndirizzo());
             idAddress = addrsDao.getLastAddressId();
 
@@ -82,14 +82,14 @@ public class EstatePostgreDAO implements EstateDAO {
 
 
             connection.makeQueryUpdate(stmt);
-//            connection.commitActions();
+            connection.commitActions();
 
         } catch (SQLException e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
-//             connection.rollBackAction();
+             connection.rollBackAction();
             throw new ErrorExecutingQuery();
         }finally {
-//            connection.setAutoCommit(true);
+            connection.setAutoCommit(true);
         }
 
 
