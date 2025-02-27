@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:dietiestate25/main.dart';
 import 'package:dietiestate25/AccessClass/CreateAgencyWindow.dart';
 import 'package:dietiestate25/Model/Agenzia/Agenzia.dart';
@@ -15,8 +15,8 @@ import 'package:dietiestate25/AccessClass/LoginWindow.dart';
 import 'package:dietiestate25/AccessClass/SingUpWindow.dart';
 
 class AccessController {
-  static final url = Uri.parse("http://api.florindodev.site/makeLogin");
-  //static final url = Uri.parse("http://127.0.0.1:7002/login/makeLogin");
+  //static final url = Uri.parse("http://api.florindodev.site/makeLogin");
+  static final url = Uri.parse("http://127.0.0.1:7001/login/makeLogin");
   //static final url = Uri.parse("http://10.0.2.2:7001/makeLogin");
 
   static String token = "";
@@ -47,7 +47,7 @@ class AccessController {
 
       print("1");
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
       // Se c'è un errore di connessione, rilancia con un messaggio specifico
       //throw Exception("Servizio non attualmente disponibile, prova tra qualche minuto");
       return null;
@@ -63,21 +63,50 @@ class AccessController {
     return ris;
   }
 
-  static void toLogin(Utente utente, dynamic context) {
+  static bool toLogin(Utente utente, dynamic context) {
     valida.validateEmail(utente.email);
     valida.validatePassword(utente.password);
     print("eseguo prova");
+
     richiestaLogin(utente).then((risultato) {
       //risultato = json.decode(risultato);
-      if (risultato == null)
+      if (risultato == null){
         MyApp.mostraPopUpInformativo(context, "Attenzione", "Servizio non attualmente disponibile, prova tra qualche minuto");
-      else if (risultato['code'] == 1) {
+        return false;
+      }else if (risultato['code'] == 1) {
         MyApp.mostraPopUpInformativo(context, "Attenzione", risultato['message']);
+        return false;
+      
       } else if (risultato['code'] == 0) {
-        MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
+        print('1');
+        scriviJWTInFile(risultato['message']);print('12');
+        MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");print('13');
+        Navigator.of(context).pop();
+        Navigator.of(context).pushNamed(RouteWindows.homeWindow);
+        return true;
       }
     });
+  
+    
+    
     print("finito prova");
+    return false;
+  }
+
+  static Future<void> scriviJWTInFile(jwt) async {print('2');
+    final directory = await getApplicationDocumentsDirectory(); print('2');
+    final file = File('${directory.path}/dietiEstate25.json');print('3');
+    if ((await file.exists())) {print('4');
+      String content = await file.readAsString();print('5');
+      dynamic json = jsonDecode(content); print('6');
+      print(jsonEncode(json));print('7');
+      json['JWT'] = jwt;print('8');
+      print(jsonEncode(json));print('9');
+      await file.writeAsString(jsonEncode(json));print('10');
+
+    }else{}print('11');
+      await file.writeAsString("{ \"JWT\":\"$jwt\" }");print('12');
+    
   }
 
   static void toSignUp(Utente utente) {

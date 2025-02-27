@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:dietiestate25/AccessClass/LoginWindow.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/AccessClass/AccessController.dart';
-
 // import 'package:dietiestate25/Home/HomeController.dart';
 import 'package:dietiestate25/Home/HomeWindow.dart';
 
@@ -92,7 +91,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: titleApp,
-      initialRoute: RouteWindows.homeWindow,
+      initialRoute: RouteWindows.loginWindow,
       onGenerateRoute: RouteWindows.generateRoute,
       //darkTheme: ThemeData.dark(),
       theme: ThemeData(
