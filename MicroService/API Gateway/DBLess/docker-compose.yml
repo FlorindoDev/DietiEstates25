@@ -3,7 +3,7 @@ version: '3.8'
 services:
   kong-gateway:
     build: .
-    container_name: kong-gateway
+    container_name: kong-gateway-dbless
     networks:
       - kong-net
     environment:
