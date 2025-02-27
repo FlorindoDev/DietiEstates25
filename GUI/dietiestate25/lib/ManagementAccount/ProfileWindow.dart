@@ -1,3 +1,4 @@
+import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/main.dart';
@@ -43,7 +44,9 @@ class _ProfileWindowState extends State<ProfileWindow>{
                           child: Text("Si"),
                           onPressed: () {
                             Navigator.of(context).pop(); // Chiude il dialogo
+                            ProfileController.resetJWT();
                             Navigator.of(context).pushNamed(RouteWindows.loginWindow);
+                          
                           },
                         ),
                         TextButton(
