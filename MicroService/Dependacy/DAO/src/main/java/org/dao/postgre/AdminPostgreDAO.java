@@ -24,6 +24,10 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
         connection = new CommunicationWithPostgre();
     }
 
+    public AdminPostgreDAO(CommunicationWithPostgre connection) {
+        this.connection = connection;
+    }
+
     @Override
     public Admin getUser(Admin admin) throws DietiEstateException {
 

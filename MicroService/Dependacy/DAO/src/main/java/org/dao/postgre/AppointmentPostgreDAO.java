@@ -139,7 +139,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
     }
 
     @Override
-    public void changeStatusAppointment(Appointment appointment) throws DietiEstateException {
+    public void updateStatusAppointment(Appointment appointment) throws DietiEstateException {
 
         Acquirente acquirente = getAcquirente(appointment);
 

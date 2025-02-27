@@ -66,7 +66,7 @@ public class EstatePostgreDAO implements EstateDAO {
     }
 
     @Override
-    public void changeEstate(Estate estate) throws DietiEstateException{
+    public void updateEstate(Estate estate) throws DietiEstateException{
 
         StringBuilder query = new StringBuilder(String.format("UPDATE %s SET ", TABLE));
         List<Object> params = new ArrayList<>();

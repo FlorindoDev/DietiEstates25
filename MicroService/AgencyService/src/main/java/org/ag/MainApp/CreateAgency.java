@@ -2,8 +2,8 @@ package org.ag.MainApp;
 
 
 import org.ag.MainApp.Interfacce.CreateAgencyService;
-import org.dao.Interfacce.AdminDAO;
-import org.dao.postgre.AdminPostgreDAO;
+import org.exc.DietiEstateMicroServiceException.ErrorCreatingAgency;
+import org.md.Utente.Admin;
 import org.va.Validate;
 import org.dao.Interfacce.AgencyDAO;
 import org.dao.postgre.AgencyPostgreDAO;
@@ -13,17 +13,17 @@ import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.va.Validator;
 
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CreateAgency implements CreateAgencyService {
 
+    public static final String CHARACTERS_FOR_GENERATE_PASSWORD = "Z5v!EeR9aFGdySO$fcgDu4Wpi8xVo2N1tXClAnsbz6BTrYQwLm_3IjPHKkqhM0UJ7";
     private final AgencyDAO create;
-    private final AdminDAO createAdmin;
 
     public CreateAgency() {
         create = new AgencyPostgreDAO();
-        createAdmin = new AdminPostgreDAO();
     }
 
     @Override
@@ -32,16 +32,15 @@ public class CreateAgency implements CreateAgencyService {
         Validator validaitor = Validate.getInstance();
 
         try{
-            create.isAgencyAbsent(agency);
-
-            create.isNameAgencyAbsent(agency);
 
             validateAgencyField(agency, validaitor);
 
-            create.createAgency(agency);
+            if(agency.getAdmins() == null) throw new ErrorCreatingAgency();
+            Admin admin = initAdmin(agency);
 
-            //TODO  generare password e aggiungere admin
-            sendEmail(agency);
+            create.createAgencyAtomic(agency);
+
+            sendEmail(admin);
 
 
             // TODO  AGGIUSATRE RITORNO
@@ -53,13 +52,23 @@ public class CreateAgency implements CreateAgencyService {
 
     }
 
-    private void sendEmail(Agency agency){
+    private Admin initAdmin(Agency agency) {
+        Admin admin = agency.getAdmins().getFirst();
+        admin.setPassword(generateRandomWord(10));
+        admin.setAgency(agency);
+        admin.setNome("admin");
+        admin.setCognome("admin");
+        admin.setSupport(false);
+        return admin;
+    }
+
+    private void sendEmail(Admin admin){
 
         ExecutorService executor = Executors.newFixedThreadPool(2);
 
         Runnable task = () -> {
-                                EmailSender sender = new EmailSenderForNewAgency("prova");
-                                sender.sendEmail(agency.getEmail());
+                                EmailSender sender = new EmailSenderForNewAgency(admin.getPassword());
+                                sender.sendEmail(admin.getEmail());
         };
 
         executor.submit(task);
@@ -67,8 +76,26 @@ public class CreateAgency implements CreateAgencyService {
 
     }
 
+    private String generateRandomWord(int length) {
+
+        String characters = CHARACTERS_FOR_GENERATE_PASSWORD;
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            char randomChar = characters.charAt(randomIndex);
+            sb.append(randomChar);
+        }
+
+        return sb.toString();
+    }
+
     private void validateAgencyField(Agency agency, Validator validaitor) throws DietiEstateException {
-        validaitor.validateEmail(agency.getEmail());
+
+        String emailAdmin = agency.getAdmins().getFirst().getEmail();
+
+        validaitor.validateEmail(emailAdmin);
         validaitor.validateAgencyName(agency.getNome());
         validaitor.validatePartitaIVA(agency.getCodicePartitaIVA());
         validaitor.validateSede(agency.getSede());

@@ -71,7 +71,7 @@ public class EmailSenderJakarta implements EmailSender {
         this.passwordEmail = rootNode.path("password").asText();
         this.username = rootNode.path("username").asText();
 
-        logger.info("[!] Username e passowrd email " + email + " " + passwordEmail + " " + username);
+        logger.info("[!] Username,passowrd e email: " + email + " " + passwordEmail + " " + username);
 
     }
 }

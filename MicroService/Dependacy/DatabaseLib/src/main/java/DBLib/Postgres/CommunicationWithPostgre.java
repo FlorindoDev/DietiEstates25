@@ -156,4 +156,26 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
         result.previous();
         return hasnext;
     }
+
+    public void setAutoCommit(boolean bool){
+        try {
+            managerConnection.getConnection().setAutoCommit(bool);
+        } catch (SQLException e) {
+            logger.severe("Error Imposting auto commit to " + bool + " : " + e.getMessage());
+        }
+
+    }
+
+    public void commitActions() throws SQLException {
+        managerConnection.getConnection().commit();
+    }
+
+    public void rollBackAction(){
+        try {
+            managerConnection.getConnection().rollback();
+        } catch (SQLException e) {
+            logger.severe("Error to rollback:" + e.getMessage());
+        }
+    }
+
 }

@@ -11,5 +11,8 @@ public interface CommunicationWithDataBase {
     int extractInt(String columnName);
     String extractString(String columnName);
     boolean extractBoolean(String columnName);
+    void setAutoCommit(boolean bool);
+    void commitActions() throws SQLException;
+    public void rollBackAction();
     void close();
 }

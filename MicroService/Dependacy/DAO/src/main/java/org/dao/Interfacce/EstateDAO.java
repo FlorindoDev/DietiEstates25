@@ -7,9 +7,8 @@ import org.md.Utente.Agent;
 public interface EstateDAO {
 
     void createEstate(Estate newEstate) throws DietiEstateException;
-    void changeEstate(Estate changEstate) throws DietiEstateException;
+    void updateEstate(Estate changEstate) throws DietiEstateException;
     Agent getAgent(Estate agency);
-
     void updateEstateAgent(Estate estate, Agent agent) throws DietiEstateException;
 
     boolean isEstatePresent(Estate estate) throws DietiEstateException;
