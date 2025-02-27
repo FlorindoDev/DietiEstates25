@@ -1,6 +1,8 @@
 package org.ap.MainApp;
 
 import org.ap.MainApp.interfacce.AppointmentService;
+import org.dao.Interfacce.EstateDAO;
+import org.dao.postgre.EstatePostgreDAO;
 import org.va.Validate;
 import org.dao.Interfacce.AppointmentDAO;
 import org.dao.postgre.AppointmentPostgreDAO;
@@ -19,6 +21,7 @@ public class AppointmentManagement implements AppointmentService {
     //ManagmentMQ message_queue;
 
     AppointmentDAO appointmentDAO = new AppointmentPostgreDAO();
+    EstateDAO estateDAO = new EstatePostgreDAO();
 
     private String ConvertToJson(ArrayList<Appointment> appointments) {
         String json = "{\"code\": 0, \"message\": \"success of action get appointment\", \"Appointments\": [";
@@ -63,7 +66,7 @@ public class AppointmentManagement implements AppointmentService {
     @Override
     public String acceptAppointment(AppointmentAccept appointment) {
         //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
-        //TODO AGGIUNGERE DEI CONTROLLI PER VALORI NULL
+
         try {
 
             appointmentDAO.updateStatusAppointment(appointment);
@@ -77,7 +80,7 @@ public class AppointmentManagement implements AppointmentService {
     @Override
     public String declineAppointment(AppointmentReject appointment) {
         //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
-        //TODO AGGIUNGERE DEI CONTROLLI PER VALORI NULL
+
         try {
             appointmentDAO.updateStatusAppointment(appointment);
             return "{\"code\": 0, \"message\": \"success of action decline appointment\"}";
@@ -97,6 +100,7 @@ public class AppointmentManagement implements AppointmentService {
 
             validate.validateDate(appointment.getData());
 
+            estateDAO.isEstatePresent(appointment.getEstate());
             appointmentDAO.hasUserAppointment(appointment);
             appointmentDAO.createAppointment(appointment);
             return "{\"code\": 0, \"message\": \"success of action add appointment\"}";
