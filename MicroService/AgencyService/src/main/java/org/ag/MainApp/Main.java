@@ -1,6 +1,6 @@
 package org.ag.MainApp;
 
-import org.glassfish.grizzly.http.server.HttpServer;
+
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -8,7 +8,6 @@ import org.glassfish.jersey.server.ServerProperties;
 import org.md.Agency.Agency;
 
 
-import java.io.IOException;
 import java.net.URI;
 
 public class Main {
@@ -17,22 +16,20 @@ public class Main {
     public static final String RESOURCE = "org.ag.API.Resource";
 
 
-    public static HttpServer startServer() {
+    public static void startServer() {
 
         final ResourceConfig rc = new ResourceConfig().packages(RESOURCE).register(JacksonFeature.class);
         rc.property(ServerProperties.WADL_FEATURE_DISABLE, true);
 
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
 
 
-    public static void main(String[] args) throws IOException {
-        final HttpServer server = startServer();
+    public static void main(String[] args){
+        startServer();
 
         Agency agency = new Agency.Builder("55").setNome("marco").build();
         System.out.println(agency.TranslateToJson());
         System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
-        System.in.read();
-        server.shutdownNow();
     }
 }
