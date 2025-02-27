@@ -3,7 +3,7 @@ import 'package:dietiestate25/Json/JSONConvertable.dart';
 import 'dart:convert';
 
 class Utente implements Jsonconvertable {
-  String _id_user = "";
+  String _idUser = "";
   String _email = "";
   String _cognome = "";
   String _password = "";
@@ -11,7 +11,7 @@ class Utente implements Jsonconvertable {
   String _nome = "";
 
   Utente._builder(UtenteBuilder builder)
-      : _id_user = builder._id_user,
+      : _idUser = builder._idUser,
         _nome = builder._nome ?? '',
         _cognome = builder._cognome ?? '',
         _email = builder._email,
@@ -20,10 +20,10 @@ class Utente implements Jsonconvertable {
 
   static UtenteBuilder get builder => UtenteBuilder();
 
-  String get id_user => _id_user;
+  String get idUser => _idUser;
 
-  set id_user(String value) {
-    _id_user = value;
+  set idUser(String value) {
+    _idUser = value;
   }
 
   String get cognome => _cognome;
@@ -59,19 +59,19 @@ class Utente implements Jsonconvertable {
   @override
   Map<String, dynamic> toJson() {
     return {
-      'id_user': _id_user,
+      'idUser': _idUser,
       'nome': _nome,
       'email': _email,
       'cognome': _cognome,
       'password': _password,
-      "notify_appointment": null,
+      "notifyAppointment": null,
       'idPushNotify': _idPushNotify,
     };
   }
 }
 
 class UtenteBuilder {
-  String _id_user = "";
+  String _idUser = "";
   String _email = "";
   String _cognome = "";
   String _password = "";
@@ -79,7 +79,7 @@ class UtenteBuilder {
   String _nome = "";
 
   UtenteBuilder setId(String idUser) {
-    _id_user = idUser;
+    _idUser = idUser;
     return this;
   }
 
