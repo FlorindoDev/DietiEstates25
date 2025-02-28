@@ -1,10 +1,10 @@
 FROM dependacy:1.0.0 AS builder
 
-WORKDIR /app/AccessService/src
+WORKDIR /app/AdminManagementService/src
 
 COPY src .
 
-WORKDIR /app/AccessService
+WORKDIR /app/AdminManagementService
 
 COPY pom.xml .
 
@@ -21,12 +21,12 @@ RUN addgroup -S nonroot \
     && mkdir -p /app/libs/
 
 
-COPY --from=builder app/AccessService/target/*.jar app/AccessService/
+COPY --from=builder app/AdminManagementService/target/*.jar app/AdminManagementService/
 
 USER nonroot
 
-WORKDIR /app/AccessService
+WORKDIR /app/AdminManagementService
 
 #CMD ["java", "-cp", "/app/libs/*:/app/AccessService/*", "org.ac.MainApp.Main"]
 
-CMD ["java", "-jar", "AccessMicroService-1.0.0.jar"]
+CMD ["java", "-jar", "AdminManagementService-1.0.0.jar"]

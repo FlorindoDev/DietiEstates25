@@ -9,15 +9,8 @@
     <packaging>pom</packaging> <!-- Packaging deve essere "pom" -->
 
     <modules>
-        <module>AccessService</module>
-        <module>AdminManagementService</module>
-        <module>AgencyService</module>
-        <module>AgentManagementService</module>
-        <module>AppointmentService</module>
         <module>ManagementAccountService</module>
         <module>Dependacy</module>
-        <module>AdsEstateService</module>
-        <module>SearchService</module>
     </modules>
 
     <properties>
