@@ -1,7 +1,5 @@
 #!bin/bash
 
-docker network create dieti_network
-
 docker build -t dependacy:1.0.0 .\Dependacy
 
 docker build -t access_micro_service:1.0.0 .\AccessService
