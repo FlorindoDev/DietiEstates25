@@ -1,0 +1,68 @@
+services:
+  access-service:
+    image: access_micro_service:1.0.0
+    container_name: access_service
+    networks:
+      - dieti-net
+    ports:
+      - "7001:7001"
+    restart: always
+
+  agency-service:
+    image: agency_service:1.0.0
+    container_name: agency_service
+    networks:
+      - dieti-net
+    ports:
+      - "7002:7002"
+    restart: always
+
+  admin-management-service:
+    image: admin_management_service:1.0.0
+    container_name: admin_management_service
+    networks:
+      - dieti-net
+    ports:
+      - "7003:7003"
+    restart: always
+
+  ads-estate-service:
+    image: ads_estate_service:1.0.0
+    container_name: ads_estate_service
+    networks:
+      - dieti-net
+    ports:
+      - "7004:7004"
+    restart: always
+
+  agent-management-service:
+    image: agent_management_service:1.0.0
+    container_name: agent_management_service
+    networks:
+      - dieti-net
+    ports:
+      - "7005:7005"
+    restart: always
+
+  appointment-service:
+    image: appointment_service:1.0.0
+    container_name: appointment_service
+    networks:
+      - dieti-net
+    ports:
+      - "7006:7006"
+    restart: always
+
+  management-account-service:
+    image: management_account_service:1.0.0
+    container_name: management_account_service
+    networks:
+      - dieti-net
+    ports:
+      - "7007:7007"
+    restart: always
+
+
+networks:
+  dieti-net:
+    driver: bridge

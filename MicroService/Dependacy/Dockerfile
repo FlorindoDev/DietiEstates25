@@ -1,4 +1,4 @@
-FROM maven:3.9.6-eclipse-temurin-21 AS builder
+FROM maven:3.9.6-eclipse-temurin-21
 
 # Imposta la cartella di lavoro
 WORKDIR /app/Dependacy
