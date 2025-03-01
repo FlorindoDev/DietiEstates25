@@ -5,7 +5,6 @@ import org.dao.Interfacce.AcquirenteDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DataBaseException.UserNotExists;
-import org.exc.DataBaseException.UserNotFoundException;
 import org.exc.DietiEstateException;
 import org.md.Utente.Acquirente;
 
