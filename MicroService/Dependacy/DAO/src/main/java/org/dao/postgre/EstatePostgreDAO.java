@@ -208,7 +208,7 @@ public class EstatePostgreDAO implements EstateDAO {
             stmt = connection.getStatment(query);
 
             stmt.setInt(1, estate.getIdEstate());
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
         }
