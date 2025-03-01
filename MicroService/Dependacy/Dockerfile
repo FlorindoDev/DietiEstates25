@@ -10,6 +10,7 @@ COPY DietiEstateExceptions ./DietiEstateExceptions
 COPY DatabaseLib ./DatabaseLib
 COPY DAO ./DAO
 COPY Validator ./Validator
+COPY RabbitMQ ./RabbitMQ
 COPY pom.xml pom.xml
 
 WORKDIR /app

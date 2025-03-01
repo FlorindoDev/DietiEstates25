@@ -21,8 +21,17 @@ public class UtentePostgreDAO implements UtenteDAO {
     public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     public static final String ID_USER_COLUMN = "id_user";
     public static final String EMAIL_COLUMN = "email";
-    private CommunicationWithPostgre connection = new CommunicationWithPostgre();
+    private final CommunicationWithPostgre connection;
     private static final Logger logger = Logger.getLogger(UtentePostgreDAO.class.getName());
+
+
+    public UtentePostgreDAO(CommunicationWithPostgre connection) {
+        this.connection = connection;
+    }
+
+    public UtentePostgreDAO() {
+        this.connection = new CommunicationWithPostgre();
+    }
 
     protected PreparedStatement prepareStatementGetUser(Utente utente, String query) throws DietiEstateException {
         PreparedStatement stmt = connection.getStatment(query);
