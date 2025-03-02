@@ -3,6 +3,9 @@ package org.ap.MainApp;
 import org.ap.MainApp.interfacce.AppointmentService;
 import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.EstatePostgreDAO;
+import org.rab.Interfacce.ManagementSenderMQ;
+import org.rab.Resource.Senders.ManagementRabbitSenderMQ;
+import org.springframework.context.ApplicationContext;
 import org.va.Validate;
 import org.dao.Interfacce.AppointmentDAO;
 import org.dao.postgre.AppointmentPostgreDAO;
@@ -18,10 +21,16 @@ import java.util.ArrayList;
 
 public class AppointmentManagement implements AppointmentService {
 
-    //ManagmentMQ message_queue;
-
     AppointmentDAO appointmentDAO = new AppointmentPostgreDAO();
+
+    ManagementSenderMQ senderMQ;
+
     EstateDAO estateDAO = new EstatePostgreDAO();
+
+
+    public AppointmentManagement(ApplicationContext rabbitMQ) {
+        senderMQ = rabbitMQ.getBean(ManagementRabbitSenderMQ.class);
+    }
 
     private String ConvertToJson(ArrayList<Appointment> appointments) {
         String json = "{\"code\": 0, \"message\": \"success of action get appointment\", \"Appointments\": [";
@@ -70,6 +79,8 @@ public class AppointmentManagement implements AppointmentService {
         try {
 
             appointmentDAO.updateStatusAppointment(appointment);
+            senderMQ.enQueueNotify("WOW MQ");
+
             return "{\"code\": 0, \"message\": \"success of action accept appointment\"}";
 
         } catch (DietiEstateException e) {

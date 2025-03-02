@@ -18,9 +18,9 @@ import java.util.logging.Logger;
 
 public class UtentePostgreDAO implements UtenteDAO {
 
-    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
-    public static final String ID_USER_COLUMN = "id_user";
-    public static final String EMAIL_COLUMN = "email";
+    private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
+    private static final String ID_USER_COLUMN = "id_user";
+    private static final String EMAIL_COLUMN = "email";
     private final CommunicationWithPostgre connection;
     private static final Logger logger = Logger.getLogger(UtentePostgreDAO.class.getName());
 

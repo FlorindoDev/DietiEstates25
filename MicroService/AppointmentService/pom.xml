@@ -29,6 +29,12 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.rab</groupId>
+            <artifactId>RabbitMQ</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.md</groupId> <!-- groupId del progetto Model -->
             <artifactId>Model</artifactId> <!-- artifactId del progetto Model -->
             <version>1.0.0</version> <!-- version del progetto Model -->

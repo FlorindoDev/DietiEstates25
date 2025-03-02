@@ -14,14 +14,14 @@ import java.util.logging.Logger;
 
 public class AcquirentePostgreDAO extends UtentePostgreDAO implements AcquirenteDAO {
 
-    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
+    private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private final String table = "acquirente";
 
-    private CommunicationWithPostgre connection = new CommunicationWithPostgre();
+    private final CommunicationWithPostgre connection;
     private static final Logger logger = Logger.getLogger(AcquirentePostgreDAO.class.getName());
 
     public AcquirentePostgreDAO() {
-        //Serve per il framework di JAX-RS
+        connection = new CommunicationWithPostgre();
     }
 
     @Override
