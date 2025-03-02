@@ -62,6 +62,15 @@ services:
       - "7007:7007"
     restart: always
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    networks:
+      - dieti-net
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
 
 networks:
   dieti-net:

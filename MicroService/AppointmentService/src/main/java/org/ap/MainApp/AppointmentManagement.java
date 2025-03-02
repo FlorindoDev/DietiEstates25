@@ -4,7 +4,7 @@ import org.ap.MainApp.interfacce.AppointmentService;
 import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.EstatePostgreDAO;
 import org.rab.Interfacce.ManagementSenderMQ;
-import org.rab.Resource.Senders.ManagementRabbitSenderMQ;
+import org.rab.Resource.Senders.ManagementSenderNotifyRabbitMQ;
 import org.springframework.context.ApplicationContext;
 import org.va.Validate;
 import org.dao.Interfacce.AppointmentDAO;
@@ -29,10 +29,10 @@ public class AppointmentManagement implements AppointmentService {
 
 
     public AppointmentManagement(ApplicationContext rabbitMQ) {
-        senderMQ = rabbitMQ.getBean(ManagementRabbitSenderMQ.class);
+        senderMQ = rabbitMQ.getBean(ManagementSenderNotifyRabbitMQ.class);
     }
 
-    private String ConvertToJson(ArrayList<Appointment> appointments) {
+    private String ConvertListAppointmentToJson(ArrayList<Appointment> appointments) {
         String json = "{\"code\": 0, \"message\": \"success of action get appointment\", \"Appointments\": [";
 
         for(Appointment appointment : appointments){
@@ -52,7 +52,7 @@ public class AppointmentManagement implements AppointmentService {
 
             ArrayList<Appointment> appointments = appointmentDAO.getAllAppointment(user);
 
-            return ConvertToJson(appointments);
+            return ConvertListAppointmentToJson(appointments);
 
         } catch (DietiEstateException e) {
             return e.getMessage();
@@ -65,7 +65,7 @@ public class AppointmentManagement implements AppointmentService {
 
             ArrayList<Appointment> appointments = appointmentDAO.getAllAppointment(user);
 
-            return ConvertToJson(appointments);
+            return ConvertListAppointmentToJson(appointments);
 
         } catch (DietiEstateException e) {
             return e.getMessage();
@@ -79,7 +79,7 @@ public class AppointmentManagement implements AppointmentService {
         try {
 
             appointmentDAO.updateStatusAppointment(appointment);
-            senderMQ.enQueueNotify("WOW MQ");
+            senderMQ.enQueue(appointment.TranslateToJson());
 
             return "{\"code\": 0, \"message\": \"success of action accept appointment\"}";
 
@@ -94,6 +94,7 @@ public class AppointmentManagement implements AppointmentService {
 
         try {
             appointmentDAO.updateStatusAppointment(appointment);
+            senderMQ.enQueue(appointment.TranslateToJson());
             return "{\"code\": 0, \"message\": \"success of action decline appointment\"}";
 
         } catch (DietiEstateException e) {

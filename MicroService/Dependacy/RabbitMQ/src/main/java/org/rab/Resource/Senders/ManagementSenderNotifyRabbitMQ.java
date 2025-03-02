@@ -11,19 +11,19 @@ import org.springframework.stereotype.Service;
 import java.util.logging.Logger;
 
 @Service
-public class ManagementRabbitSenderMQ implements ManagementSenderMQ {
+public class ManagementSenderNotifyRabbitMQ implements ManagementSenderMQ {
 
     private final RabbitTemplate rabbitTemplate;
 
-    private static final Logger logger = Logger.getLogger(ManagementRabbitSenderMQ.class.getName());
+    private static final Logger logger = Logger.getLogger(ManagementSenderNotifyRabbitMQ.class.getName());
     @Autowired
-    public ManagementRabbitSenderMQ(RabbitTemplate rabbitTemplate) {
+    public ManagementSenderNotifyRabbitMQ(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
     @Override
-    public boolean enQueueNotify(String message) throws DietiEstateException {
-        logger.info("[!] Message: " + message);
+    public boolean enQueue(String message) throws DietiEstateException {
+        logger.info("[!] il messaggio inviato: " + message);
         rabbitTemplate.convertAndSend(ConfigRabbitNotifyMQ.EXCHANGE_QUEUE_NAME, ConfigRabbitNotifyMQ.ROUTING_QUEUE_NAME, message);
         return true;
     }
