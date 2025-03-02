@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 import java.util.logging.Logger;
 
 @Service
-public class ManagementReceiverRabbitMQ implements ManagementReceiverMQ{
+public class ManagementReceiverNotifyRabbitMQ implements ManagementReceiverMQ{
     public static final String THREAD_CONSUMER = "5";
 
-    private static final Logger logger = Logger.getLogger(ManagementReceiverRabbitMQ.class.getName());
+    private static final Logger logger = Logger.getLogger(ManagementReceiverNotifyRabbitMQ.class.getName());
     @Override
     @RabbitListener(queues = ConfigRabbitNotifyMQ.QUEUE_NAME, concurrency = THREAD_CONSUMER)
-    public String deQueueNotify(String message) throws DietiEstateException {
-        logger.info("[!] il messaggio: " + message);
+    public String deQueue(String message) throws DietiEstateException {
+        logger.info("[!] il messaggio ricevuto: " + message);
         return null;
     }
 }

@@ -17,8 +17,8 @@ import java.net.URI;
 
 public class   Main {
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://localhost:7001/";
-    public static final String RESOURCE = "org.ap.API.Resource";
+    private static final String BASE_URI = "http://0.0.0.0:7006/";
+    private static final String RESOURCE = "org.ap.API.Resource";
 
     //Avvio springBoot per poter creare gli oggetti
     public static final ApplicationContext rabbitMQ = SpringApplication.run(MainSenderNotify.class);

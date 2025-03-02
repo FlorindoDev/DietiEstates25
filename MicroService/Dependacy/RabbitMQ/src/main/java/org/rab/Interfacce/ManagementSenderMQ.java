@@ -4,6 +4,6 @@ import org.exc.DietiEstateException;
 
 public interface ManagementSenderMQ {
 
-    boolean enQueueNotify(String message) throws DietiEstateException;
+    boolean enQueue(String message) throws DietiEstateException;
 
 }
