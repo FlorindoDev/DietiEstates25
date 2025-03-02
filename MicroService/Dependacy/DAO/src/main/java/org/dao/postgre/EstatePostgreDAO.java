@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class EstatePostgreDAO implements EstateDAO {
 
     private static final String TABLE = "immobile";
-    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
+    protected static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
 
     private CommunicationWithPostgre connection;
 

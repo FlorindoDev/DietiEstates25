@@ -24,10 +24,10 @@ import java.util.logging.Logger;
 
 public class AgencyPostgreDAO implements AgencyDAO {
 
-    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
-    public static final String COGNOME_COLUMN = "cognome";
-    public static final String PARTITAIVA_COLUMN = "partitaiva";
-    public static final String EMAIL_COLUMN = "email";
+    private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
+    private static final String COGNOME_COLUMN = "cognome";
+    private static final String PARTITAIVA_COLUMN = "partitaiva";
+    private static final String EMAIL_COLUMN = "email";
     private final CommunicationWithPostgre connection;
     private static final Logger logger = Logger.getLogger(AgencyPostgreDAO.class.getName());
 

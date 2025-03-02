@@ -2,6 +2,7 @@ package org.ap.API.Resource;
 
 import org.ap.API.interfacce.AppointmentAPI;
 import org.ap.MainApp.AppointmentManagement;
+import org.ap.MainApp.Main;
 import org.ap.MainApp.interfacce.AppointmentService;
 import org.md.Appointment.Appointment;
 import org.md.Appointment.AppointmentAccept;
@@ -18,7 +19,7 @@ import jakarta.ws.rs.core.MediaType;
 @Path("appointment")
 public class AppointmentRestFulAPI implements AppointmentAPI {
 
-    AppointmentService appointmentmanagement = new AppointmentManagement();
+    private final AppointmentService appointmentmanagement = new AppointmentManagement(Main.rabbitMQ);
 
     @Override
     @POST

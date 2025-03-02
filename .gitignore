@@ -8,3 +8,4 @@ out/
 .metadata
 *.iml
 .vscode/
+dependency-reduced-pom.xml
