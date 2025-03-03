@@ -2,7 +2,7 @@ package org.md.Notify;
 
 public class AppuntamentoRifiutato extends Notify{
 
-    private static final String TIPO = "Appuntamento Rifiutato";
+    private final String tipo = "Appuntamento Rifiutato";
     public AppuntamentoRifiutato() {
         //Serializzazione
     }
@@ -13,7 +13,7 @@ public class AppuntamentoRifiutato extends Notify{
 
     @Override
     public String getTipo() {
-        return TIPO;
+        return tipo;
     }
 
     public static class Builder extends Notify.Builder<AppuntamentoRifiutato.Builder> {

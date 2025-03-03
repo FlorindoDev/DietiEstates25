@@ -2,7 +2,7 @@ package org.md.Notify;
 
 public class AppuntamentoDaConfermare extends Notify{
 
-    private static final String TIPO = "Appuntamento Accettato";
+    private final String tipo = "Appuntamento Accettato";
 
     public AppuntamentoDaConfermare() {
         //Serializzazione
@@ -15,7 +15,7 @@ public class AppuntamentoDaConfermare extends Notify{
 
     @Override
     public String getTipo() {
-        return TIPO;
+        return tipo;
     }
 
     public static class Builder extends Notify.Builder<AppuntamentoDaConfermare.Builder> {

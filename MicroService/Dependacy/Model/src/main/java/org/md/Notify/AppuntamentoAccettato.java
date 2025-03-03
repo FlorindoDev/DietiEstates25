@@ -2,7 +2,7 @@ package org.md.Notify;
 
 public class AppuntamentoAccettato extends Notify{
 
-    private static final String TIPO = "Appuntamento Accettato";
+    private final String tipo = "Appuntamento Accettato";
 
     public AppuntamentoAccettato() {
         //Server per la seralizzazione
@@ -14,7 +14,7 @@ public class AppuntamentoAccettato extends Notify{
 
     @Override
     public String getTipo() {
-        return TIPO;
+        return tipo;
     }
 
     public static class Builder extends Notify.Builder<AppuntamentoAccettato.Builder> {
