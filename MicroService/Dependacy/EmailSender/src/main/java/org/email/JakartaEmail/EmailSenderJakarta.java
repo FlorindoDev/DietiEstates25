@@ -26,7 +26,8 @@ public class EmailSenderJakarta implements EmailSender {
 
     protected static final Logger logger = Logger.getLogger(EmailSenderJakarta.class.getName());
 
-    public EmailSenderJakarta() {
+
+    protected EmailSenderJakarta() {
 
         // Indirizzo email del mittente
 
@@ -51,6 +52,11 @@ public class EmailSenderJakarta implements EmailSender {
 
     @Override
     public void sendEmail(String reciverEmail) {
+        // è vuoto perche saranno i figli ad inviare email
+    }
+
+    @Override
+    public void setHtmlContent(String string) {
         // è vuoto perche saranno i figli ad inviare email
     }
 

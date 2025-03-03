@@ -8,7 +8,7 @@ public class Acquirente extends Utente{
 
     public Acquirente(){}
 
-    public Acquirente(Builder builder) {
+    protected Acquirente(Builder builder) {
         super(builder);
         this.notifyNewEstate = builder.notifyNewEstate;
         this.changePriceNotify = builder.changePriceNotify;

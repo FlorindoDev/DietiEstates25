@@ -23,7 +23,7 @@ public class Utente extends Translate {
 
     public Utente() {}
 
-    public Utente(Builder builder){
+    protected Utente(Builder builder){
         this.idUser = builder.idUser;
         this.nome = builder.nome;
         this.email = builder.email;

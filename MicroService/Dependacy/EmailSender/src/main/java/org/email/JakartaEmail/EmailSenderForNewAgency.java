@@ -19,6 +19,8 @@ public class EmailSenderForNewAgency extends EmailSenderJakarta{
 
     private final String password;
 
+    private String htmlContent;
+
     protected static final Logger logger = Logger.getLogger(EmailSenderForNewAgency.class.getName());
 
     public EmailSenderForNewAgency(String password) {
@@ -38,7 +40,7 @@ public class EmailSenderForNewAgency extends EmailSenderJakarta{
                     InternetAddress.parse(reciverEmail));
             message.setSubject("Creazione Agenzia");
 
-            String htmlContent = getHtmlContent(reciverEmail);
+            setHtmlContent(reciverEmail);
 
             message.setContent(htmlContent, "text/html; charset=utf-8");
 
@@ -53,11 +55,12 @@ public class EmailSenderForNewAgency extends EmailSenderJakarta{
 
     }
 
-    private String getHtmlContent(String reciverEmail) {
+    @Override
+    public void setHtmlContent(String reciverEmail) {
 
         InputStream inputStream = EmailSenderJakarta.class.getResourceAsStream("/creazioneAgenzia.html");
 
-        String htmlContent = new BufferedReader(new InputStreamReader(Objects.requireNonNull(inputStream)))
+        htmlContent = new BufferedReader(new InputStreamReader(Objects.requireNonNull(inputStream)))
                 .lines()
                 .collect(Collectors.joining("\n"));
 
@@ -68,6 +71,6 @@ public class EmailSenderForNewAgency extends EmailSenderJakarta{
                 "      </center>\n" +
                 "    </body>\n" +
                 "</html>";
-        return htmlContent;
+
     }
 }

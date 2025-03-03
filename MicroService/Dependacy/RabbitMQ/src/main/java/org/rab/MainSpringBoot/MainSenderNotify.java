@@ -1,7 +1,7 @@
 package org.rab.MainSpringBoot;
 
 
-import org.rab.Resource.Configs.ConfigRabbitNotifyMQ;
+import org.rab.Resource.Configs.ConfigRabbitNotifyAppointmentMQ;
 import org.rab.Resource.Senders.ManagementSenderNotifyRabbitMQ;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.FilterType;
 @ComponentScan(basePackages = {"org.rab.Resource.Senders", "org.rab.Resource.Configs"},
         includeFilters = {
                 @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = ManagementSenderNotifyRabbitMQ.class),
-                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = ConfigRabbitNotifyMQ.class)
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = ConfigRabbitNotifyAppointmentMQ.class)
         }
 )
 public class MainSenderNotify {
