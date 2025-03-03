@@ -13,7 +13,7 @@ import java.net.URI;
 
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    private static final String BASE_URI = "http://localhost:7008/";
+    private static final String BASE_URI = "http://0.0.0.0:7008/";
     private static final String RESOURCE = "org.not.API.Resource";
 
     //avvio app che si occuperda di inviare le notifiche
