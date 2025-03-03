@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
-    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
+    private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private static final String TABLE = "amministratore";
 
     private final CommunicationWithPostgre connection;

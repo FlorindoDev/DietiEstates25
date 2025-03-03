@@ -4,14 +4,14 @@
     <parent>
         <groupId>MicroService</groupId>
         <artifactId>root</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>Dependecy</groupId>
     <artifactId>RootDependecy</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging> <!-- Packaging deve essere "pom" -->
 
     <modules>
@@ -21,6 +21,7 @@
         <module>EmailSender</module>
         <module> Model </module>
         <module>Validator</module>
+        <module>RabbitMQ</module>
     </modules>
 
 

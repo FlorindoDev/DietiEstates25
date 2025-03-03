@@ -38,7 +38,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
         ArrayList<Appointment> appointments = new ArrayList<>();
 
-        UtenteDAO utenteDAO = new UtentePostgreDAO();
+        UtenteDAO utenteDAO = new UtentePostgreDAO(connection);
 
         Utente user  = utenteDAO.getUserFromEmail(agent);
 
@@ -96,7 +96,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
         ArrayList<Appointment> appointments = new ArrayList<>();
 
-        UtenteDAO utenteDAO = new UtentePostgreDAO();
+        UtenteDAO utenteDAO = new UtentePostgreDAO(connection);
 
         Utente user  = utenteDAO.getUserFromEmail(acquirente);
 

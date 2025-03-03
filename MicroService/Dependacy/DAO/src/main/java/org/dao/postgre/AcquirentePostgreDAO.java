@@ -4,6 +4,7 @@ import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AcquirenteDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
+import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
 import org.md.Utente.Acquirente;
 
@@ -13,14 +14,14 @@ import java.util.logging.Logger;
 
 public class AcquirentePostgreDAO extends UtentePostgreDAO implements AcquirenteDAO {
 
-    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
+    private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private final String table = "acquirente";
 
-    private CommunicationWithPostgre connection = new CommunicationWithPostgre();
+    private final CommunicationWithPostgre connection;
     private static final Logger logger = Logger.getLogger(AcquirentePostgreDAO.class.getName());
 
     public AcquirentePostgreDAO() {
-        //Serve per il framework di JAX-RS
+        connection = new CommunicationWithPostgre();
     }
 
     @Override
@@ -32,6 +33,7 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
 
         try {
             connection.makeQuery(stmt);
+            if(!connection.hasNextRow()) throw new UserNotExists("Acquirente non trovato");
             connection.nextRow();
         } catch (SQLException e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());

@@ -13,7 +13,7 @@ import org.md.Utente.Acquirente;
 @Path("signup")
 public class SignUpRestFulAPI implements SignUpAPI {
 
-    SignUpService singup_access =  new SignUp();
+    private final SignUpService singup_access =  new SignUp();
 
     @Path("makeSignup")
     @POST

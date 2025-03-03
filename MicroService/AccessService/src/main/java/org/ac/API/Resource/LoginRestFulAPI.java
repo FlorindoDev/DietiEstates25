@@ -13,7 +13,7 @@ import org.md.Utente.Utente;
 @Path("login")
 public class LoginRestFulAPI implements LoginAPI {
 
-    LoginService login_access =  new Login();
+    private final LoginService login_access =  new Login();
     @POST
     @Path("makeLogin")
     @Consumes(MediaType.APPLICATION_JSON)

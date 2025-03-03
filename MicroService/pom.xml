@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>MicroService</groupId>
     <artifactId>root</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <packaging>pom</packaging> <!-- Packaging deve essere "pom" -->
 
     <modules>
@@ -16,7 +16,7 @@
         <module>AppointmentService</module>
         <module>ManagementAccountService</module>
         <module>Dependacy</module>
-        <module>AdEstateService</module>
+        <module>AdsEstateService</module>
         <module>SearchService</module>
     </modules>
 

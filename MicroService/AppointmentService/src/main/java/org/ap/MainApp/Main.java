@@ -7,6 +7,9 @@ import org.glassfish.jersey.server.ServerProperties;
 import org.md.Appointment.Appointment;
 import org.md.Estate.Estate;
 import org.md.Utente.Acquirente;
+import org.rab.MainSpringBoot.MainSenderNotify;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 
 
 import java.net.URI;
@@ -14,8 +17,11 @@ import java.net.URI;
 
 public class   Main {
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://localhost:7001/";
-    public static final String RESOURCE = "org.ap.API.Resource";
+    private static final String BASE_URI = "http://0.0.0.0:7006/";
+    private static final String RESOURCE = "org.ap.API.Resource";
+
+    //Avvio springBoot per poter creare gli oggetti
+    public static final ApplicationContext rabbitMQ = SpringApplication.run(MainSenderNotify.class);
 
     public static void startServer() {
 

@@ -17,8 +17,8 @@ import org.md.Utente.Agent;
 
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://localhost:7001/";
-    public static final String RESOURCE = "org.agm.API.Resource";
+    private static final String BASE_URI = "http://localhost:7001/";
+    private static final String RESOURCE = "org.agm.API.Resource";
 
     public static void startServer() {
 
