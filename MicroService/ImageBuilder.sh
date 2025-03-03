@@ -16,4 +16,6 @@ docker build -t appointment_service:1.0.0 .\AppointmentService
 
 docker build -t management_account_service:1.0.0 .\ManagementAccountService
 
+docker build -t notify_service:1.0.0 .\NotifyService
+
 #docker build -t search_service:1.0.0 .\SearchService
