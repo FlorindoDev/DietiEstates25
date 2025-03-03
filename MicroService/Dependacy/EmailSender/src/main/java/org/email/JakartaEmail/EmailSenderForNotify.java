@@ -53,6 +53,7 @@ public class EmailSenderForNotify extends  EmailSenderJakarta{
     }
 
 
+    @Override
     public void setHtmlContent(String message) {
 
         InputStream inputStream = EmailSenderJakarta.class.getResourceAsStream("/NotificaAppuntamento.html");

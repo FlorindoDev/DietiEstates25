@@ -4,7 +4,6 @@ import org.ap.MainApp.interfacce.AppointmentService;
 import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.EstatePostgreDAO;
 import org.md.Notify.AppuntamentoRifiutato;
-import org.md.Notify.Notify;
 import org.rab.Interfacce.ManagementSenderMQ;
 import org.rab.Resource.Senders.ManagementSenderNotifyRabbitMQ;
 import org.springframework.context.ApplicationContext;

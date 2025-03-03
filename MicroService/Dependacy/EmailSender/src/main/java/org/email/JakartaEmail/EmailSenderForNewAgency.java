@@ -55,6 +55,7 @@ public class EmailSenderForNewAgency extends EmailSenderJakarta{
 
     }
 
+    @Override
     public void setHtmlContent(String reciverEmail) {
 
         InputStream inputStream = EmailSenderJakarta.class.getResourceAsStream("/creazioneAgenzia.html");
