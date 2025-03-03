@@ -28,7 +28,7 @@
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
-            <version>3.0.2</version> <!-- Usa la versione adatta al tuo progetto -->
+            <version>4.0.0-M2</version> <!-- Usa la versione adatta al tuo progetto -->
         </dependency>
     </dependencies>
     <build>
@@ -38,6 +38,7 @@
             <includes>
                 <include>credenzialiEmail.json</include> <!-- Includi tutti i file nella cartella resources -->
                 <include>creazioneAgenzia.html</include>
+                <include>NotificaAppuntamento.html</include>
             </includes>
         </resource>
     </resources>

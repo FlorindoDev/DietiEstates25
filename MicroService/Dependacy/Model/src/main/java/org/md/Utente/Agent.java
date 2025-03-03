@@ -10,7 +10,7 @@ public class Agent extends Utente{
     private Agency agency;
     public Agent() {}
 
-    public Agent(Builder builder) {
+    protected Agent(Builder builder) {
         super(builder);
         this.biografia = builder.biografia;
         this.profilePic = builder.profilePic;

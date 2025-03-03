@@ -3,6 +3,8 @@ package org.ap.MainApp;
 import org.ap.MainApp.interfacce.AppointmentService;
 import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.EstatePostgreDAO;
+import org.md.Notify.AppuntamentoRifiutato;
+import org.md.Notify.Notify;
 import org.rab.Interfacce.ManagementSenderMQ;
 import org.rab.Resource.Senders.ManagementSenderNotifyRabbitMQ;
 import org.springframework.context.ApplicationContext;
@@ -93,14 +95,27 @@ public class AppointmentManagement implements AppointmentService {
         //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
 
         try {
+
             appointmentDAO.updateStatusAppointment(appointment);
-            senderMQ.enQueue(appointment.TranslateToJson());
+
+            AppuntamentoRifiutato notify = initNotify(appointment);
+
+            senderMQ.enQueue(notify.TranslateToJson());
+
             return "{\"code\": 0, \"message\": \"success of action decline appointment\"}";
 
         } catch (DietiEstateException e) {
             return e.getMessage();
         }
 
+    }
+
+    private AppuntamentoRifiutato initNotify(AppointmentReject appointment) {
+        return new AppuntamentoRifiutato.Builder("Il tuo appuntamento è stato declinato")
+                .setData(appointment.getData())
+                .setEstate(appointment.getEstate())
+                .setUser(appointment.getAcquirente())
+                .build();
     }
 
     @Override

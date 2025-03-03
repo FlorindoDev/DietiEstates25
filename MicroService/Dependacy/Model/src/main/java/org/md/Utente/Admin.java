@@ -9,7 +9,7 @@ public class Admin extends Utente{
 
     public Admin() {}
 
-    public Admin(Builder builder) {
+    protected Admin(Builder builder) {
         super(builder);
         this.isSupport = builder.isSupport;
         this.agency = builder.agency;

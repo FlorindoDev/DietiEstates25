@@ -63,7 +63,7 @@ services:
     restart: always
 
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3.13-management
     container_name: rabbitmq
     networks:
       - dieti-net
