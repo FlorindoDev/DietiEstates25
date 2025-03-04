@@ -3,7 +3,7 @@ package org.email.JakartaEmail;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.*;
-import org.email.BesicEmailFactory;
+import org.email.BasicEmailFactory;
 import org.email.Email;
 import org.email.Interfacce.EmailFactory;
 import org.email.Interfacce.EmailSender;
@@ -50,7 +50,7 @@ public class EmailSenderJakarta implements EmailSender {
             }
         });
 
-        facotryEmail = new BesicEmailFactory(props, session,email);
+        facotryEmail = new BasicEmailFactory(props, session,email);
 
 
     }

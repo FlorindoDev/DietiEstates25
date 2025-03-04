@@ -8,14 +8,14 @@ import org.exc.DietiEstateException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class BesicEmailFactory implements EmailFactory {
+public class BasicEmailFactory implements EmailFactory {
 
     protected Properties props;
     protected Session session;
 
     protected String emailFrom;
 
-    public BesicEmailFactory(Properties props, Session session, String email) {
+    public BasicEmailFactory(Properties props, Session session, String email) {
         this.props = props;
         this.session = session;
         this.emailFrom = email;
