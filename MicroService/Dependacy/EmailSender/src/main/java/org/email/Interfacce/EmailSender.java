@@ -1,7 +1,11 @@
 package org.email.Interfacce;
 
-public interface EmailSender {
-    public void sendEmail(String reciverEmail);
+import org.email.Email;
 
-     void setHtmlContent(String string);
+public interface EmailSender {
+
+    void sendEmail(Email email);
+
+    EmailFactory getFacotryEmail();
+
 }

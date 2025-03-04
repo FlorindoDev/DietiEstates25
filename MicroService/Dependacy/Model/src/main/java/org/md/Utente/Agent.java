@@ -1,7 +1,6 @@
 package org.md.Utente;
 
 import org.md.Agency.Agency;
-import org.md.Utente.interfacce.UserSeparators;
 
 public class Agent extends Utente{
 
@@ -15,11 +14,6 @@ public class Agent extends Utente{
         this.biografia = builder.biografia;
         this.profilePic = builder.profilePic;
         this.agency = builder.agency;
-    }
-
-    @Override
-    public void Separator(UserSeparators split) {
-        split.separator(this);
     }
 
     public String getBiografia() {

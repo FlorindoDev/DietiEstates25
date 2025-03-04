@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.exc.DietiEstateException;
 import org.md.Estate.Estate;
+import org.md.Notify.Interfacce.NotifySeparators;
 import org.md.Serializzazione.Translate;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Utente;
@@ -28,7 +30,7 @@ public class Notify extends Translate {
     protected String dataRicezione;
 
     protected String message;
-    protected String tipo;
+    protected String tipo;  //Serve per i figli
 
     public Notify() {
     }
@@ -41,6 +43,10 @@ public class Notify extends Translate {
         this.dataRicezione = builder.dataRicezione;
         this.message = builder.message;
         this.tipo = builder.tipo;
+    }
+
+    public void separator(NotifySeparators split) throws DietiEstateException {
+        split.separator(this);
     }
 
     public int getIdNotify() {
