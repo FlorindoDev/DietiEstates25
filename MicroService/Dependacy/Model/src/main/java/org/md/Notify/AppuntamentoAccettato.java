@@ -1,5 +1,8 @@
 package org.md.Notify;
 
+import org.exc.DietiEstateException;
+import org.md.Notify.Interfacce.NotifySeparators;
+
 public class AppuntamentoAccettato extends Notify{
 
     private final String tipo = "Appuntamento Accettato";
@@ -15,6 +18,11 @@ public class AppuntamentoAccettato extends Notify{
     @Override
     public String getTipo() {
         return tipo;
+    }
+
+    @Override
+    public void separator(NotifySeparators split) throws DietiEstateException {
+        split.separator(this);
     }
 
     public static class Builder extends Notify.Builder<AppuntamentoAccettato.Builder> {

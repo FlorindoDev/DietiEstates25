@@ -1,7 +1,6 @@
 package org.md.Utente;
 
 import org.md.Agency.Agency;
-import org.md.Utente.interfacce.UserSeparators;
 
 public class Admin extends Utente{
     private Boolean isSupport;
@@ -13,11 +12,6 @@ public class Admin extends Utente{
         super(builder);
         this.isSupport = builder.isSupport;
         this.agency = builder.agency;
-    }
-
-    @Override
-    public void Separator(UserSeparators split) {
-        split.separator(this);
     }
 
     public void setSupport(Boolean support) {
