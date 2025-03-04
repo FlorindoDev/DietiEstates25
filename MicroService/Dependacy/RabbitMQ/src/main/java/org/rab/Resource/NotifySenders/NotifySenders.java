@@ -14,7 +14,6 @@ import org.md.Notify.AppuntamentoRifiutato;
 import org.md.Notify.Notify;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 public class NotifySenders {
 
