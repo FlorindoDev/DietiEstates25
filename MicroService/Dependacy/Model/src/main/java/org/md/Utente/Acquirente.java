@@ -1,6 +1,6 @@
 package org.md.Utente;
 
-import org.md.Utente.interfacce.UserSeparators;
+
 
 public class Acquirente extends Utente{
     private Boolean notifyNewEstate;
@@ -8,15 +8,10 @@ public class Acquirente extends Utente{
 
     public Acquirente(){}
 
-    public Acquirente(Builder builder) {
+    protected Acquirente(Builder builder) {
         super(builder);
         this.notifyNewEstate = builder.notifyNewEstate;
         this.changePriceNotify = builder.changePriceNotify;
-    }
-
-    @Override
-    public void Separator(UserSeparators split){
-        split.separator(this);
     }
 
     public Boolean getNotifyNewEstate() {

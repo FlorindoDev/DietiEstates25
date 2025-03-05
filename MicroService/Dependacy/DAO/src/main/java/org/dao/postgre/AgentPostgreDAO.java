@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
 
-    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
+    private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private static final String TABLE = "agenteimmobiliare";
 
     private final CommunicationWithPostgre connection;

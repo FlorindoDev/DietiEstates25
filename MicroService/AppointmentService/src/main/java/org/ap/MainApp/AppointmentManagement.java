@@ -3,6 +3,12 @@ package org.ap.MainApp;
 import org.ap.MainApp.interfacce.AppointmentService;
 import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.EstatePostgreDAO;
+import org.md.Notify.Interfacce.NotifyAppointmentFactory;
+import org.md.Notify.Notify;
+import org.md.Notify.NotifyBasicAppointmentFactory;
+import org.rab.Interfacce.ManagementSenderNotifyMQ;
+import org.rab.Resource.Senders.ManagementSenderNotifyRabbitMQ;
+import org.springframework.context.ApplicationContext;
 import org.va.Validate;
 import org.dao.Interfacce.AppointmentDAO;
 import org.dao.postgre.AppointmentPostgreDAO;
@@ -18,12 +24,21 @@ import java.util.ArrayList;
 
 public class AppointmentManagement implements AppointmentService {
 
-    //ManagmentMQ message_queue;
+    AppointmentDAO appointmentDAO;
 
-    AppointmentDAO appointmentDAO = new AppointmentPostgreDAO();
+    NotifyAppointmentFactory factory = new NotifyBasicAppointmentFactory();
+
+    ManagementSenderNotifyMQ senderMQ;
+
     EstateDAO estateDAO = new EstatePostgreDAO();
 
-    private String ConvertToJson(ArrayList<Appointment> appointments) {
+
+    public AppointmentManagement(ApplicationContext rabbitMQ) {
+        senderMQ = rabbitMQ.getBean(ManagementSenderNotifyRabbitMQ.class);
+        appointmentDAO = new AppointmentPostgreDAO();
+    }
+
+    private String ConvertListAppointmentToJson(ArrayList<Appointment> appointments) {
         String json = "{\"code\": 0, \"message\": \"success of action get appointment\", \"Appointments\": [";
 
         for(Appointment appointment : appointments){
@@ -43,7 +58,7 @@ public class AppointmentManagement implements AppointmentService {
 
             ArrayList<Appointment> appointments = appointmentDAO.getAllAppointment(user);
 
-            return ConvertToJson(appointments);
+            return ConvertListAppointmentToJson(appointments);
 
         } catch (DietiEstateException e) {
             return e.getMessage();
@@ -56,7 +71,7 @@ public class AppointmentManagement implements AppointmentService {
 
             ArrayList<Appointment> appointments = appointmentDAO.getAllAppointment(user);
 
-            return ConvertToJson(appointments);
+            return ConvertListAppointmentToJson(appointments);
 
         } catch (DietiEstateException e) {
             return e.getMessage();
@@ -65,11 +80,15 @@ public class AppointmentManagement implements AppointmentService {
 
     @Override
     public String acceptAppointment(AppointmentAccept appointment) {
-        //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
 
         try {
 
             appointmentDAO.updateStatusAppointment(appointment);
+
+            Notify notify = factory.createAcceptedNotify(appointment);
+
+            senderMQ.enQueueAppointmentNotify(notify.TranslateToJson());
+
             return "{\"code\": 0, \"message\": \"success of action accept appointment\"}";
 
         } catch (DietiEstateException e) {
@@ -79,10 +98,15 @@ public class AppointmentManagement implements AppointmentService {
 
     @Override
     public String declineAppointment(AppointmentReject appointment) {
-        //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
 
         try {
+
             appointmentDAO.updateStatusAppointment(appointment);
+
+            Notify notify = factory.createRejectedNotify(appointment);
+
+            senderMQ.enQueueAppointmentNotify(notify.TranslateToJson());
+
             return "{\"code\": 0, \"message\": \"success of action decline appointment\"}";
 
         } catch (DietiEstateException e) {
@@ -103,6 +127,11 @@ public class AppointmentManagement implements AppointmentService {
             estateDAO.isEstatePresent(appointment.getEstate());
             appointmentDAO.hasUserAppointment(appointment);
             appointmentDAO.createAppointment(appointment);
+
+            Notify notify = factory.createPendingNotify(appointment);
+
+            senderMQ.enQueueAppointmentNotify(notify.TranslateToJson());
+
             return "{\"code\": 0, \"message\": \"success of action add appointment\"}";
 
         } catch (DietiEstateException e) {

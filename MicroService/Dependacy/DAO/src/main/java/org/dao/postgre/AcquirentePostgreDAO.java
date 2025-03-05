@@ -4,6 +4,7 @@ import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AcquirenteDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
+import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
 import org.md.Utente.Acquirente;
 
@@ -13,14 +14,19 @@ import java.util.logging.Logger;
 
 public class AcquirentePostgreDAO extends UtentePostgreDAO implements AcquirenteDAO {
 
-    public static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
+    private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private final String table = "acquirente";
 
-    private CommunicationWithPostgre connection = new CommunicationWithPostgre();
+    private final CommunicationWithPostgre connection;
+
     private static final Logger logger = Logger.getLogger(AcquirentePostgreDAO.class.getName());
 
     public AcquirentePostgreDAO() {
-        //Serve per il framework di JAX-RS
+        connection = new CommunicationWithPostgre();
+    }
+
+    public AcquirentePostgreDAO(CommunicationWithPostgre connection) {
+        this.connection = connection;
     }
 
     @Override
@@ -32,13 +38,14 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
 
         try {
             connection.makeQuery(stmt);
+            if(!connection.hasNextRow()) throw new UserNotExists("Acquirente non trovato");
             connection.nextRow();
         } catch (SQLException e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
-        acquirente = new Acquirente.Builder(connection.extractInt("idacquirente"), connection.extractString("email"))
+        return new Acquirente.Builder(connection.extractInt("idacquirente"), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))
@@ -47,8 +54,6 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
                 .setNotifyNewEstate(connection.extractBoolean("notify_new_estate"))
                 .setNotifyAppointment(connection.extractBoolean("notify_appointment"))
                 .build();
-
-        return acquirente;
     }
 
     @Override

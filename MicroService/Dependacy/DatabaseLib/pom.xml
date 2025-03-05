@@ -7,7 +7,7 @@
     <parent>
         <groupId>Dependecy</groupId>
         <artifactId>RootDependecy</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </parent>
 
     <groupId>DBLib</groupId>
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.6.0</version> <!-- Assicurati di usare l'ultima versione disponibile -->
+            <version>42.7.5</version> <!-- Assicurati di usare l'ultima versione disponibile -->
         </dependency>
     </dependencies>
 

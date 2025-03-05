@@ -1,27 +1,33 @@
 package org.ag.MainApp;
 
 
+
 import org.ag.MainApp.Interfacce.CreateAgencyService;
+import org.email.Email;
+import org.email.JakartaEmail.EmailSenderJakarta;
 import org.exc.DietiEstateMicroServiceException.ErrorCreatingAgency;
 import org.md.Utente.Admin;
 import org.va.Validate;
 import org.dao.Interfacce.AgencyDAO;
 import org.dao.postgre.AgencyPostgreDAO;
 import org.email.Interfacce.EmailSender;
-import org.email.JakartaEmail.EmailSenderForNewAgency;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.va.Validator;
 
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class CreateAgency implements CreateAgencyService {
 
     public static final String CHARACTERS_FOR_GENERATE_PASSWORD = "Z5v!EeR9aFGdySO$fcgDu4Wpi8xVo2N1tXClAnsbz6BTrYQwLm_3IjPHKkqhM0UJ7";
     private final AgencyDAO create;
+
+    private static final Logger logger = Logger.getLogger(CreateAgency.class.getName());
 
     private final SecureRandom random = new SecureRandom();
 
@@ -69,14 +75,31 @@ public class CreateAgency implements CreateAgencyService {
 
         ExecutorService executor = Executors.newFixedThreadPool(2);
 
-        Runnable task = () -> {
-                                EmailSender sender = new EmailSenderForNewAgency(admin.getPassword());
-                                sender.sendEmail(admin.getEmail());
-        };
+        Runnable task = () -> sendEmailTask(admin);
 
         executor.submit(task);
 
 
+    }
+
+    private void sendEmailTask(Admin admin) {
+
+        try {
+            EmailSender sender = new EmailSenderJakarta();
+
+            String adminEmail = admin.getEmail();
+
+            ArrayList<String> contents = new ArrayList<>();
+            contents.add(adminEmail);
+            contents.add(admin.getPassword());
+
+            Email email = sender.getFacotryEmail().createEmailNewAgency(contents,"/creazioneAgenzia.html",adminEmail);
+
+            sender.sendEmail(email);
+
+        } catch (DietiEstateException e) {
+            logger.severe("[-] Fallimento invio email:" + e.getMessage());
+        }
     }
 
     private String generateRandomWord(int length) {

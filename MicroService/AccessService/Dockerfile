@@ -20,13 +20,6 @@ RUN addgroup -S nonroot \
     && adduser -S nonroot -G nonroot \
     && mkdir -p /app/libs/
 
-#COPY --from=builder app/Dependacy/DAO/target/*.jar app/libs/
-#COPY --from=builder app/Dependacy/DatabaseLib/target/*.jar app/libs/
-#COPY --from=builder app/Dependacy/DietiEstateExceptions/target/*.jar app/libs/
-#COPY --from=builder app/Dependacy/EmailSender/target/*.jar app/libs/
-#COPY --from=builder app/Dependacy/Model/target/*.jar app/libs/
-#COPY --from=builder app/Dependacy/Validator/target/*.jar app/libs/
-
 
 COPY --from=builder app/AccessService/target/*.jar app/AccessService/
 
