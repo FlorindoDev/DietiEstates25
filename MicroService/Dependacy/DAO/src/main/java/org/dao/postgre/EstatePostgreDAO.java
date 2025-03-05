@@ -1,12 +1,20 @@
 package org.dao.postgre;
 
 import DBLib.Postgres.CommunicationWithPostgre;
+import org.dao.Interfacce.AgentDAO;
 import org.dao.Interfacce.EstateDAO;
 
 import org.exc.DataBaseException.*;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
+import org.md.Estate.ClasseEnergetica.ConverterEnergeticClass;
+import org.md.Estate.ClasseEnergetica.EnergeticClass;
 import org.md.Estate.Estate;
+import org.md.Estate.Mode.ConverterMode;
+import org.md.Estate.Mode.Mode;
+import org.md.Estate.Status.ConverterStatus;
+import org.md.Estate.Status.Status;
+import org.md.Geolocalizzazione.Indirizzo;
 import org.md.Utente.Agent;
 
 import java.sql.PreparedStatement;
@@ -26,8 +34,11 @@ public class EstatePostgreDAO implements EstateDAO {
 
     private static final Logger logger = Logger.getLogger(EstatePostgreDAO.class.getName());
 
+    AgentDAO agentDAO;
+
     public EstatePostgreDAO() {
         this.connection = new CommunicationWithPostgre();
+        agentDAO = new AgentPostgreDAO();
     }
 
     @Override
@@ -255,6 +266,89 @@ public class EstatePostgreDAO implements EstateDAO {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
+    }
+
+    @Override
+    public List<Estate> estatesSerachFromCity(Indirizzo indirizzo) throws DietiEstateException {
+        String query= "SELECT * FROM immobile INNER JOIN indirizzo ON immobile.idindirizzo = indirizzo.idindirizzo" +
+                " WHERE citta = ? OR quartiere = ?";
+
+        PreparedStatement stmt;
+        try {
+            stmt = connection.getStatment(query);
+
+            stmt.setString(1, indirizzo.getCitta());
+            stmt.setString(2, indirizzo.getCitta());
+        } catch (Exception e) {
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorCreateStatment();
+        }
+
+        try {
+            connection.makeQuery(stmt);
+            if(!connection.hasNextRow()) throw new EstateNotExists();
+
+            ArrayList<Estate> estates = new ArrayList<>();
+
+            do{
+                connection.nextRow();
+
+                Indirizzo fulIndirizzo = new Indirizzo.Builder<>(connection.extractInt("idindirizzo"))
+                        .setStato(connection.extractString("stato"))
+                        .setCitta(connection.extractString("citta"))
+                        .setVia(connection.extractString("via"))
+                        .setNumeroCivico(connection.extractString("numerocivico"))
+                        .setCap(connection.extractInt("cap"))
+                        .setQuartiere(connection.extractString("quartiere"))
+                        .build();
+
+                Estate estate = new Estate.Builder<>(connection.extractInt("idimmobile"))
+                        .setIndirizzoBuilder(fulIndirizzo)
+                        .setElevatorBuilder(connection.extractBoolean("ascensore"))
+                        .setAgenteBuilder(null)
+                        .setClasseEnergeticaBuilder(null)
+                        .setDescrizioneBuilder(connection.extractString("descrizione"))
+                        .setFloorBuilder(connection.extractInt("piano"))
+                        .setFotoBuilder(connection.extractString("foto"))
+                        .setGarageBuilder(connection.extractInt("garage"))
+                        .setModeBuilder(null)
+                        .setRoomsBuilder(connection.extractInt("stanze"))
+                        .setPriceBuilder(connection.extractInt("prezzo"))
+                        .setWcBuilder(connection.extractInt("bagni"))
+                        .setSpaceBuilder(connection.extractInt("dimensioni"))
+                        .setStatoBuilder(null)
+                        .setAgenziaBuilder(null)
+                        .build();
+
+                EnergeticClass classe = ConverterEnergeticClass.traslateFromString(connection.extractString("classeenergetica"));
+                Mode mode = ConverterMode.traslateFromString(connection.extractString("modalita"));
+                Status status = ConverterStatus.traslateFromString(connection.extractString("stato"));
+
+
+
+                Agent agent = new Agent.Builder(connection.extractInt("idagente"),"").build();
+                agent = agentDAO.getAgentFromId(agent);
+
+                estate.setAgenzia(agent.getAgency());
+                estate.setAgente(agent);
+                estate.setClasseEnergetica(classe);
+                estate.setMode(mode);
+                estate.setStato(status);
+
+
+                estates.add(estate);
+            }while(connection.hasNextRow());
+
+            return estates;
+        } catch (SQLException e) {
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
+
+
+
+
     }
 
 }

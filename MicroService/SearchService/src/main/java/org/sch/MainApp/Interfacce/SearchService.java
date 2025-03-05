@@ -6,4 +6,6 @@ public interface SearchService {
     String allCity();
 
     String suggestionCities(Indirizzo indirizzo);
+
+    String estatesSerachFromCity(Indirizzo indirizzo);
 }

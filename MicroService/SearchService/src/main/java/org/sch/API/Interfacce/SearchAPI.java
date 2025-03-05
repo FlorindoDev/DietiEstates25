@@ -11,5 +11,7 @@ public interface SearchAPI {
 
     public String coordinatesEstates(Estate estate );
 
+    public String estatesSerachFromCity(Indirizzo indirizzo);
+
 
 }

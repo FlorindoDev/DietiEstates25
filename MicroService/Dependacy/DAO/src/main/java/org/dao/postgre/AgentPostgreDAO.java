@@ -6,6 +6,7 @@ import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
+import org.md.Agency.Agency;
 import org.md.Utente.Agent;
 
 import java.sql.PreparedStatement;
@@ -27,7 +28,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
     @Override
     public Agent getUser(Agent agent) throws DietiEstateException {
 
-        String query="SELECT * FROM agenteimmobiliare where ? = email";
+        String query="SELECT * FROM agenteimmobiliare INNER JOIN agenziaimmobiliare ON agenteimmobiliare.partitaiva = agenziaimmobiliare.partitaiva where ? = email";
 
         PreparedStatement stmt = prepareStatementGetUser(agent, query);
 
@@ -40,7 +41,44 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
         }
 
 
-        agent = new Agent.Builder(connection.extractInt("idagente"), connection.extractString("email"))
+        Agency agency = buildAgencyFromConnection();
+
+        agent = buildAgentFromConnection(agency);
+
+        return agent;
+    }
+
+    private Agency buildAgencyFromConnection() {
+        return new Agency.Builder<>(connection.extractString("partitaiva"))
+                .setNome(connection.extractString("nome"))
+                .setSede(connection.extractString("sede"))
+                .build();
+
+    }
+
+    public Agent getAgentFromId(Agent agent) throws DietiEstateException {
+
+        String query="SELECT * FROM agenteimmobiliare INNER JOIN agenziaimmobiliare ON agenteimmobiliare.partitaiva = agenziaimmobiliare.partitaiva where idagente = ?";
+
+        PreparedStatement stmt = connection.getStatment(query);
+        try {
+            stmt.setInt(1, agent.getIdUser());
+            connection.makeQuery(stmt);
+            connection.nextRow();
+        } catch (SQLException e) {
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
+        Agency agency = buildAgencyFromConnection();
+
+        agent = buildAgentFromConnection(agency);
+
+        return agent;
+    }
+
+    private Agent buildAgentFromConnection(Agency agency) {
+        return new Agent.Builder(connection.extractInt("idagente"), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))
@@ -48,9 +86,8 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
                 .setBiografia(connection.extractString("ImmagineProfilo"))
                 .setIdPushNotify(connection.extractString("idPushNoitfy"))
                 .setNotifyAppointment(connection.extractBoolean("notify_appointment"))
+                .setAgency(agency)
                 .build();
-
-        return agent;
     }
 
     @Override

@@ -1,7 +1,11 @@
 package org.sch.MainApp;
 
+import org.dao.Interfacce.EstateDAO;
+import org.dao.postgre.EstatePostgreDAO;
+import org.exc.DietiEstateException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.md.Estate.Estate;
 import org.md.Geolocalizzazione.Indirizzo;
 import org.sch.MainApp.Interfacce.SearchService;
 
@@ -14,6 +18,9 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Search implements SearchService {
+
+    private EstateDAO estateDAO = new EstatePostgreDAO();
+
     @Override
     public String allCity() {
 
@@ -48,6 +55,29 @@ public class Search implements SearchService {
         }catch (Exception e){
             return "{\"code\": 110, \"message\": \"error to read json\"}";
         }
+    }
+
+    @Override
+    public String estatesSerachFromCity(Indirizzo indirizzo) {
+        List<Estate> estates;
+        try {
+            estates = estateDAO.estatesSerachFromCity(indirizzo);
+        } catch (DietiEstateException e) {
+            return "{\"code\": 10, \"message\": \"There aren't estets in this city\"}";
+        }
+
+        String json = "{\"code\": 0, \"message\": \"success of action get estate\", \"Estates\": [";
+
+        for (Estate estate : estates){
+            json = json.concat(estate.TranslateToJson());
+            if(!estate.equals(estates.getLast()))
+                json = json.concat(",");
+        }
+
+
+        json = json + "]}";
+
+        return json;
     }
 
 

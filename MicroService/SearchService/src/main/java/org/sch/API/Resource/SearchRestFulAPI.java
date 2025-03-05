@@ -39,4 +39,13 @@ public class SearchRestFulAPI implements SearchAPI {
     public String coordinatesEstates(Estate estate) {
         return "";
     }
+
+    @Path("estatesSerachFromCity")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Override
+    public String estatesSerachFromCity(Indirizzo indirizzo) {
+        return searchService.estatesSerachFromCity(indirizzo);
+    }
 }

@@ -92,7 +92,7 @@ public class ManagementAgent implements ManagmentAgentService {
             //TODO agencyDAO.isAgencyPresent(admin);
 
             List<Estate> estates = agencyDAO.getEstates(agency);
-            String json = "{\"code\": 0, \"message\": \"success of action get estate\", \"Estate\": [";
+            String json = "{\"code\": 0, \"message\": \"success of action get estate\", \"Estates\": [";
 
             for (Estate estate : estates){
                 json = json.concat(estate.TranslateToJson());
