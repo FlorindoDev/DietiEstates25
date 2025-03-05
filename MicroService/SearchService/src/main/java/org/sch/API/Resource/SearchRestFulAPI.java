@@ -28,7 +28,7 @@ public class SearchRestFulAPI implements SearchAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String suggestionCities(Indirizzo indirizzo) {
-        return "";
+        return searchService.suggestionCities(indirizzo);
     }
 
     @Path("coordinatesEstates")

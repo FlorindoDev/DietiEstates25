@@ -5,6 +5,7 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
+import org.md.Geolocalizzazione.Indirizzo;
 
 import java.net.URI;
 
@@ -26,7 +27,6 @@ public class Main {
     public static void main(String[] args) {
         startServer();
         //TODO serve per la prova dopo eliminare
-
         System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
     }
 }
