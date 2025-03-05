@@ -35,7 +35,6 @@ public class NotifySenders {
             EmailSender emailSender = new EmailSenderJakarta();
             Agent agent = getAgent(notification);
             String emailUser = agent.getEmail();
-            System.out.println(agent.TranslateToJson());
 
             createNotifyOnDB(notification);
 

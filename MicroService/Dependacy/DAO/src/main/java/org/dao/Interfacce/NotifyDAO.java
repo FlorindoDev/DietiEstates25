@@ -1,7 +1,6 @@
 package org.dao.Interfacce;
 
 import org.exc.DietiEstateException;
-import org.md.Estate.ClasseEnergetica.D;
 import org.md.Notify.Notify;
 import org.md.Utente.Acquirente;
 
