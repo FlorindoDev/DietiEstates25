@@ -29,7 +29,7 @@ flutter:
     - images/
     - images/logo/
 
-  
+
   fonts:
     - family: Goldbill-XLBold
       fonts:

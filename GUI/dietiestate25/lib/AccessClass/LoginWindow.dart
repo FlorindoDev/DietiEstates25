@@ -144,10 +144,7 @@ class _LoginWindowState extends State<LoginWindow> {
                           try {
                             print("Prima");
                             AccessController.toLogin(utente, context);
-                              
-                            
-                            
-                            
+
                             print("Dopo");
                           } catch (e) {
                             print("Entro");

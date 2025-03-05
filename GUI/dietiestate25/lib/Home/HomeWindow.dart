@@ -96,6 +96,9 @@ class HomeScreen extends StatelessWidget {
                     padding: WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 20, horizontal: 10)),
                     backgroundColor: WidgetStateProperty.all(MyApp.rosso),
                     foregroundColor: WidgetStateProperty.all(Colors.white),
+                    shape: WidgetStateProperty.all(
+                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+                    ),
                   ),
                 ),
                 Expanded(
