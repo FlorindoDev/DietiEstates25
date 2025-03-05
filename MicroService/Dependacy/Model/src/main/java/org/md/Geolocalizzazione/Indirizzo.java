@@ -9,6 +9,7 @@ public class Indirizzo extends Translate {
     private int idIndirizzo = 0;
     private String stato = "";
     private String citta = "";
+    private String quartiere = "";
     private String via = "";
     private String numeroCivico = "";
     private int cap = 0;
@@ -62,12 +63,21 @@ public class Indirizzo extends Translate {
         this.cap = cap;
     }
 
+    public String getQuartiere() {
+        return quartiere;
+    }
+
+    public void setQuartiere(String quartiere) {
+        this.quartiere = quartiere;
+    }
+
     public Indirizzo() {}
 
     public Indirizzo(Indirizzo.Builder builder) {
         this.idIndirizzo = builder.idIndirizzo;
         this.cap = builder.cap;
         this.citta = builder.citta;
+        this.quartiere = builder.quartiere;
         this.stato = builder.stato;
         this.numeroCivico = builder.numeroCivico;
         this.via = builder.via;
@@ -79,6 +89,7 @@ public class Indirizzo extends Translate {
         private int idIndirizzo = 0;
         private String stato = "";
         private String citta = "";
+        private String quartiere = "";
         private String via = "";
         private String numeroCivico = "";
         private int cap = 0;
@@ -98,6 +109,11 @@ public class Indirizzo extends Translate {
 
         public typeBuilder setIdIndirizzo(int idIndirizzo) {
             this.idIndirizzo = idIndirizzo;
+            return self();
+        }
+
+        public typeBuilder setQuartiere(String quartiere) {
+            this.quartiere = quartiere;
             return self();
         }
 
