@@ -1,4 +1,4 @@
-package sch.MainApp;
+package org.sch.MainApp;
 
 
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;

@@ -1,4 +1,4 @@
-package sch.API.Interfacce;
+package org.sch.API.Interfacce;
 
 import org.md.Estate.Estate;
 import org.md.Geolocalizzazione.Indirizzo;

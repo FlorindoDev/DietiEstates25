@@ -1,23 +1,25 @@
-package sch.API.Resource;
+package org.sch.API.Resource;
 
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.md.Estate.Estate;
 import org.md.Geolocalizzazione.Indirizzo;
-import sch.API.Interfacce.SearchAPI;
+import org.sch.API.Interfacce.SearchAPI;
+import org.sch.MainApp.Interfacce.SearchService;
+import org.sch.MainApp.Search;
 
+@Path("Search")
 public class SearchRestFulAPI implements SearchAPI {
 
+    private final SearchService searchService =  new Search();
+
     @Path("allCity")
-    @POST
+    @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String allCity() {
-        return "";
+        return searchService.allCity();
     }
 
     @Path("suggestionCities")
