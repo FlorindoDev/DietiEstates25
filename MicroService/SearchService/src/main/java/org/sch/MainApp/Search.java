@@ -14,8 +14,7 @@ public class Search implements SearchService {
         try{
             InputStream inputStream;
             inputStream = Search.class.getResourceAsStream("/city_IT.json");
-            String jsonString = new Scanner(inputStream, StandardCharsets.UTF_8).useDelimiter("\\A").next();
-            return jsonString;
+            return new Scanner(inputStream, StandardCharsets.UTF_8).useDelimiter("\\A").next();
         }catch (Exception e){
             return "{\"code\": 110, \"message\": \"error to read json\"}";
         }
