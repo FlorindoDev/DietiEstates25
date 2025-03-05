@@ -3,7 +3,10 @@ package org.ap.MainApp;
 import org.ap.MainApp.interfacce.AppointmentService;
 import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.EstatePostgreDAO;
-import org.rab.Interfacce.ManagementSenderMQ;
+import org.md.Notify.Interfacce.NotifyAppointmentFactory;
+import org.md.Notify.Notify;
+import org.md.Notify.NotifyBasicAppointmentFactory;
+import org.rab.Interfacce.ManagementSenderNotifyMQ;
 import org.rab.Resource.Senders.ManagementSenderNotifyRabbitMQ;
 import org.springframework.context.ApplicationContext;
 import org.va.Validate;
@@ -21,15 +24,18 @@ import java.util.ArrayList;
 
 public class AppointmentManagement implements AppointmentService {
 
-    AppointmentDAO appointmentDAO = new AppointmentPostgreDAO();
+    AppointmentDAO appointmentDAO;
 
-    ManagementSenderMQ senderMQ;
+    NotifyAppointmentFactory factory = new NotifyBasicAppointmentFactory();
+
+    ManagementSenderNotifyMQ senderMQ;
 
     EstateDAO estateDAO = new EstatePostgreDAO();
 
 
     public AppointmentManagement(ApplicationContext rabbitMQ) {
         senderMQ = rabbitMQ.getBean(ManagementSenderNotifyRabbitMQ.class);
+        appointmentDAO = new AppointmentPostgreDAO();
     }
 
     private String ConvertListAppointmentToJson(ArrayList<Appointment> appointments) {
@@ -74,12 +80,14 @@ public class AppointmentManagement implements AppointmentService {
 
     @Override
     public String acceptAppointment(AppointmentAccept appointment) {
-        //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
 
         try {
 
             appointmentDAO.updateStatusAppointment(appointment);
-            senderMQ.enQueue(appointment.TranslateToJson());
+
+            Notify notify = factory.createAcceptedNotify(appointment);
+
+            senderMQ.enQueueAppointmentNotify(notify.TranslateToJson());
 
             return "{\"code\": 0, \"message\": \"success of action accept appointment\"}";
 
@@ -90,11 +98,15 @@ public class AppointmentManagement implements AppointmentService {
 
     @Override
     public String declineAppointment(AppointmentReject appointment) {
-        //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
 
         try {
+
             appointmentDAO.updateStatusAppointment(appointment);
-            senderMQ.enQueue(appointment.TranslateToJson());
+
+            Notify notify = factory.createRejectedNotify(appointment);
+
+            senderMQ.enQueueAppointmentNotify(notify.TranslateToJson());
+
             return "{\"code\": 0, \"message\": \"success of action decline appointment\"}";
 
         } catch (DietiEstateException e) {
@@ -115,6 +127,11 @@ public class AppointmentManagement implements AppointmentService {
             estateDAO.isEstatePresent(appointment.getEstate());
             appointmentDAO.hasUserAppointment(appointment);
             appointmentDAO.createAppointment(appointment);
+
+            Notify notify = factory.createPendingNotify(appointment);
+
+            senderMQ.enQueueAppointmentNotify(notify.TranslateToJson());
+
             return "{\"code\": 0, \"message\": \"success of action add appointment\"}";
 
         } catch (DietiEstateException e) {

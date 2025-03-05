@@ -18,6 +18,7 @@
         <module>Dependacy</module>
         <module>AdsEstateService</module>
         <module>SearchService</module>
+        <module>NotifyService</module>
     </modules>
 
     <properties>

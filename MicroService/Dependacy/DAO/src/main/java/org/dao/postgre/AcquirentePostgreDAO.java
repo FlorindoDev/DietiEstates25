@@ -18,10 +18,15 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
     private final String table = "acquirente";
 
     private final CommunicationWithPostgre connection;
+
     private static final Logger logger = Logger.getLogger(AcquirentePostgreDAO.class.getName());
 
     public AcquirentePostgreDAO() {
         connection = new CommunicationWithPostgre();
+    }
+
+    public AcquirentePostgreDAO(CommunicationWithPostgre connection) {
+        this.connection = connection;
     }
 
     @Override
@@ -40,7 +45,7 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
             throw new ErrorExecutingQuery();
         }
 
-        acquirente = new Acquirente.Builder(connection.extractInt("idacquirente"), connection.extractString("email"))
+        return new Acquirente.Builder(connection.extractInt("idacquirente"), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))
@@ -49,8 +54,6 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
                 .setNotifyNewEstate(connection.extractBoolean("notify_new_estate"))
                 .setNotifyAppointment(connection.extractBoolean("notify_appointment"))
                 .build();
-
-        return acquirente;
     }
 
     @Override

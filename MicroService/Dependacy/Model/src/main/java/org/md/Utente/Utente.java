@@ -1,8 +1,7 @@
 package org.md.Utente;
 
-import org.exc.DietiEstateException;
 import org.md.Serializzazione.Translate;
-import org.md.Utente.interfacce.UserSeparators;
+
 
 //@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type") // Specifica il tipo nel JSON
 //@JsonSubTypes({
@@ -13,6 +12,7 @@ import org.md.Utente.interfacce.UserSeparators;
 public class Utente extends Translate {
 
     protected int idUser;
+
     protected String nome;
 
     protected String email;
@@ -23,7 +23,7 @@ public class Utente extends Translate {
 
     public Utente() {}
 
-    public Utente(Builder builder){
+    protected Utente(Builder builder){
         this.idUser = builder.idUser;
         this.nome = builder.nome;
         this.email = builder.email;
@@ -33,11 +33,6 @@ public class Utente extends Translate {
         this.idPushNotify = builder.idPushNotify;
 
 
-    }
-
-
-    public void Separator(UserSeparators split) throws DietiEstateException {
-        split.separator(this);
     }
 
     public int getIdUser() {

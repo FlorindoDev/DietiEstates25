@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ConfigRabbitNotifyMQ {
+public class ConfigRabbitNotifyAppointmentMQ {
 
     public static final String QUEUE_NAME = "notify.queue";
     public static final String EXCHANGE_QUEUE_NAME = "notify.exchange";

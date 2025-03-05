@@ -9,6 +9,7 @@ docker build -t agency_service:1.0.0 .\AgencyService
 docker build -t agent_management_service:1.0.0 .\AgentManagementService
 docker build -t appointment_service:1.0.0 .\AppointmentService
 docker build -t management_account_service:1.0.0 .\ManagementAccountService
+docker build -t notify_service:1.0.0 .\NotifyService
 
 REM Per escludere il build di SearchService, lasciamo il comando commentato:
 REM docker build -t search_service:1.0.0 .\SearchService

@@ -2,9 +2,10 @@ package org.email.JakartaEmail;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.mail.Authenticator;
-import jakarta.mail.PasswordAuthentication;
-import jakarta.mail.Session;
+import jakarta.mail.*;
+import org.email.BasicEmailFactory;
+import org.email.Email;
+import org.email.Interfacce.EmailFactory;
 import org.email.Interfacce.EmailSender;
 
 import java.io.IOException;
@@ -21,14 +22,17 @@ public class EmailSenderJakarta implements EmailSender {
 
     protected String username;
     protected String passwordEmail;
-    protected Properties props;
-    protected Session session;
 
+
+    protected final EmailFactory facotryEmail;
     protected static final Logger logger = Logger.getLogger(EmailSenderJakarta.class.getName());
+
 
     public EmailSenderJakarta() {
 
         // Indirizzo email del mittente
+        Properties props;
+        Session session;
 
         readCredentials();
         props = new Properties();
@@ -46,12 +50,27 @@ public class EmailSenderJakarta implements EmailSender {
             }
         });
 
+        facotryEmail = new BasicEmailFactory(props, session,email);
+
 
     }
 
     @Override
-    public void sendEmail(String reciverEmail) {
-        // è vuoto perche saranno i figli ad inviare email
+    public EmailFactory getFacotryEmail() {
+        return facotryEmail;
+    }
+
+    @Override
+    public void sendEmail(Email email) {
+        try {
+
+            Transport.send(email.getMessage());
+            logger.info("[!] Invio riuscito");
+
+        } catch (MessagingException e) {
+            logger.severe("[-] Errore nel invio del email:" + e.getMessage());
+        }
+
     }
 
     private void readCredentials(){

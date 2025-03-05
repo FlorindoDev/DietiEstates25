@@ -62,8 +62,17 @@ services:
       - "7007:7007"
     restart: always
 
+  notify-service:
+    image: notify_service:1.0.0
+    container_name: notify_service
+    networks:
+      - dieti-net
+    ports:
+      - "7008:7008"
+    restart: always
+
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3.13-management
     container_name: rabbitmq
     networks:
       - dieti-net

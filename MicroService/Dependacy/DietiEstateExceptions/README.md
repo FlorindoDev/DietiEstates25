@@ -32,6 +32,7 @@ Abbiamo due grandi categori: <br>
 - `15` agenzia non esiste <br>
 - `16` Agency don't have estates <br>
 - `17` Errore creazione statement
+- `18` l'utente non ha notifiche <br>
 - `101:` Email non valida <br>
 - `102:` Password non valida <br>
 - `103:` nome agenzia non valido <br>
@@ -39,3 +40,5 @@ Abbiamo due grandi categori: <br>
 - `105:` Sede non valida <br>
 - `106:` Data non valida <br>
 - `107:` Errore creazione agency <br>
+- `108:` fallimento inserimento in coda rabbit <br>
+- `109:` fallimento invio notifica
