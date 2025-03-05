@@ -38,5 +38,9 @@ Abbiamo due grandi categori: <br>
 =======
 - `108:` fallimento inserimento in coda rabbit <br>
 - `109:` fallimento invio notifica
+<<<<<<< Updated upstream
+- `110:` fallimento invio cittá
+>>>>>>> Stashed changes
+=======
 - `110:` fallimento invio cittá
 >>>>>>> Stashed changes
