@@ -25,6 +25,10 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
         connection = new CommunicationWithPostgre();
     }
 
+    public AcquirentePostgreDAO(CommunicationWithPostgre connection) {
+        this.connection = connection;
+    }
+
     @Override
     public Acquirente getUser(Acquirente acquirente) throws DietiEstateException {
 

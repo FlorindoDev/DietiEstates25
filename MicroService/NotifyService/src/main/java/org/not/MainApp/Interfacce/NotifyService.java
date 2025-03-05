@@ -1,8 +1,13 @@
 package org.not.MainApp.Interfacce;
 
-import org.exc.DietiEstateException;
+
+import org.md.Utente.Acquirente;
+import org.md.Utente.Agent;
+
 
 public interface NotifyService {
 
-    void updateIdNotifyPush(String token) throws DietiEstateException;
+    String getNotifyAcquirente(Acquirente acquirente);
+
+    String getNotifyAgent(Agent agent);
 }

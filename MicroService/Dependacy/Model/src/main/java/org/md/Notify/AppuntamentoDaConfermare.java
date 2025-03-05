@@ -5,7 +5,7 @@ import org.md.Notify.Interfacce.NotifySeparators;
 
 public class AppuntamentoDaConfermare extends Notify{
 
-    private final String tipo = "Appuntamento Accettato";
+    private final String tipo = "Appuntamento Da Confermare";
 
     public AppuntamentoDaConfermare() {
         //Serializzazione

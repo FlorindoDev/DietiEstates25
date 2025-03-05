@@ -64,6 +64,7 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
 
     public PreparedStatement getStatment(String query){
         try {
+            if(stmt != null) stmt.close();
             this.stmt = this.managerConnection.getConnection().prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         } catch (Exception e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());

@@ -5,6 +5,7 @@ import org.dao.Interfacce.EstateDAO;
 
 import org.exc.DataBaseException.*;
 import org.exc.DietiEstateException;
+import org.md.Agency.Agency;
 import org.md.Estate.Estate;
 import org.md.Utente.Agent;
 
@@ -163,7 +164,40 @@ public class EstatePostgreDAO implements EstateDAO {
     }
 
     @Override
-    public Agent getAgent(Estate agency) {
+    public Agent getAgent(Estate estate) throws DietiEstateException{
+
+        String query = "SELECT a.idagente,email,nome,cognome,biografia,immagineprofilo, a.partitaiva, notify_appointment " +
+                "FROM (agenteimmobiliare as a join immobile ON immobile.idagente = a.idagente) " +
+                "where immobile.idimmobile = ?";
+
+        try{
+
+            PreparedStatement stmt = connection.getStatment(query);
+            stmt.setInt(1,estate.getIdEstate());
+            connection.makeQuery(stmt);
+
+            if(!connection.hasNextRow()) throw new EstateNotExists();
+
+            connection.nextRow();
+
+            Agency agency = new Agency.Builder<>(connection.extractString("partitaiva"))
+                    .build();
+
+            return new Agent.Builder(connection.extractInt("idagente"),connection.extractString("email"))
+                    .setName(connection.extractString("nome"))
+                    .setCognome(connection.extractString("nome"))
+                    .setBiografia(connection.extractString("biografia"))
+                    .setProfilePic(connection.extractString("immagineprofilo"))
+                    .setAgency(agency)
+                    .setNotifyAppointment(connection.extractBoolean("notify_appointment"))
+                    .build();
+
+
+        }catch(SQLException e){
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+
+        }
+
         return null;
     }
 

@@ -223,6 +223,9 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
                 .build();
 
         acquirente = takeAcquirente.getUser(acquirente);
+
+        acquirente.setPassword(" ");
+
         return acquirente;
     }
 

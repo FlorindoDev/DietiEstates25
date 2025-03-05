@@ -1,7 +1,9 @@
 package org.rab.Resource.NotifySenders;
 
 
+import org.dao.Interfacce.EstateDAO;
 import org.dao.Interfacce.NotifyDAO;
+import org.dao.postgre.EstatePostgreDAO;
 import org.dao.postgre.NotifyPostgreDAO;
 import org.email.Email;
 import org.email.Interfacce.EmailSender;
@@ -12,6 +14,7 @@ import org.md.Notify.AppuntamentoAccettato;
 import org.md.Notify.AppuntamentoDaConfermare;
 import org.md.Notify.AppuntamentoRifiutato;
 import org.md.Notify.Notify;
+import org.md.Utente.Agent;
 
 import java.util.ArrayList;
 
@@ -27,38 +30,66 @@ public class NotifySenders {
     }
 
     public void sendNotify(AppuntamentoDaConfermare notification) throws DietiEstateException {
-        //TODO
 
+        try {
+            EmailSender emailSender = new EmailSenderJakarta();
+            Agent agent = getAgent(notification);
+            String emailUser = agent.getEmail();
+
+            createNotifyOnDB(notification);
+
+            Email email = getEmail(notification, emailSender, emailUser,"/NotificaAppuntamentoPending.html");
+
+            emailSender.sendEmail(email);
+
+        }catch (Exception e) {
+            throw  new FailSendNotify(e.getMessage());
+        }
 
     }
+
 
     public void sendNotify(Notify notification) throws DietiEstateException {
         try {
 
-            NotifyDAO notifyDAO = new NotifyPostgreDAO();
-            EmailSender senderEmail = new EmailSenderJakarta();
-
-            notifyDAO.createNotify(notification);
-
-            ArrayList<String> contents = new ArrayList<>();
-
-            contents.add(notification.getTipo());
-            contents.add(notification.getData());
-
+            EmailSender emailSender = new EmailSenderJakarta();
             String emailUser = notification.getAcquirente().getEmail();
 
+            createNotifyOnDB(notification);
 
-            Email email = null;
-            email = senderEmail.getFacotryEmail().createEmailAppointment(contents,"/NotificaAppuntamento.html",emailUser);
-            senderEmail.sendEmail(email);
+
+            Email email = getEmail(notification, emailSender, emailUser,"/NotificaAppuntamento.html");
+
+            emailSender.sendEmail(email);
 
         } catch (Exception e) {
             throw  new FailSendNotify(e.getMessage());
         }
 
 
+    }
+
+    private Agent getAgent(AppuntamentoDaConfermare notification) throws DietiEstateException {
+        EstateDAO estateDAO = new EstatePostgreDAO();
+        return estateDAO.getAgent(notification.getEstate());
+    }
+
+    private void createNotifyOnDB(Notify notification) throws DietiEstateException {
+        NotifyDAO notifyDAO = new NotifyPostgreDAO();
+        notifyDAO.createNotify(notification);
+    }
+
+    private Email getEmail(Notify notification, EmailSender senderEmail, String emailUser,String fileNameHtml) throws DietiEstateException {
+
+        ArrayList<String> contents = new ArrayList<>();
 
 
+        contents.add(notification.getTipo());
+        contents.add(notification.getData());
 
+
+        Email email = null;
+        email = senderEmail.getFacotryEmail().createEmailAppointment(contents, fileNameHtml, emailUser);
+        return email;
     }
 }
