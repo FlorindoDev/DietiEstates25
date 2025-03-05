@@ -38,7 +38,6 @@ public class ManagementReceiverNotifyRabbitMQ implements ManagementReceiverNotif
 
         }catch (DietiEstateException e) {
             logger.info("[!] Errore durante invio notifica: " + e.getMessage());
-            e.printStackTrace();
 
         }
 
