@@ -44,6 +44,7 @@
                 <include>credenzialiEmail.json</include> <!-- Includi tutti i file nella cartella resources -->
                 <include>creazioneAgenzia.html</include>
                 <include>NotificaAppuntamento.html</include>
+                <include>NotificaAppuntamentoPending.html</include>
             </includes>
         </resource>
     </resources>

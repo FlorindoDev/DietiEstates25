@@ -32,6 +32,7 @@ Abbiamo due grandi categori: <br>
 - `15` agenzia non esiste <br>
 - `16` Agency don't have estates <br>
 - `17` Errore creazione statement
+- `18` l'utente non ha notifiche <br>
 - `101:` Email non valida <br>
 - `102:` Password non valida <br>
 - `103:` nome agenzia non valido <br>

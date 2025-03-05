@@ -4,13 +4,17 @@ import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AcquirenteDAO;
 import org.dao.Interfacce.NotifyDAO;
 import org.exc.DataBaseException.ErrorExecutingQuery;
+import org.exc.DataBaseException.UserNotifyNotFound;
 import org.exc.DietiEstateException;
+import org.md.Estate.Estate;
 import org.md.Notify.Notify;
 import org.md.Utente.Acquirente;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class NotifyPostgreDAO implements NotifyDAO {
@@ -28,7 +32,7 @@ public class NotifyPostgreDAO implements NotifyDAO {
     @Override
     public void createNotify(Notify notify) throws DietiEstateException {
 
-        Acquirente acquirente = getAcquirente(notify);
+        Acquirente acquirente = getAcquirente(notify.getAcquirente().getEmail());
 
         String query = "INSERT INTO Notifica(tiponotifica,messaggio,data,dataricezione,idacquirente,idimmobile) VALUES (?::notificatipo,?,?,?,?,?)";
 
@@ -51,16 +55,66 @@ public class NotifyPostgreDAO implements NotifyDAO {
 
     }
 
-    private Acquirente getAcquirente(Notify notify) throws DietiEstateException {
+    @Override
+    public ArrayList<Notify> getAllNotifyAcquirente(Acquirente acquirente) throws DietiEstateException {
 
-        AcquirenteDAO takeAcquirente = new AcquirentePostgreDAO();
+        ArrayList<Notify> notifies = new ArrayList<>();
 
-        String emailAcquirente = notify.getAcquirente().getEmail();
+        String query = "SELECT * FROM notifica where idacquirente = ?";
+
+        acquirente = getAcquirente(acquirente.getEmail());
+
+        try {
+            PreparedStatement stmt = connection.getStatment(query);
+            stmt.setInt(1,acquirente.getIdUser());
+
+            connection.makeQuery(stmt);
+
+            if(!connection.hasNextRow()) throw  new UserNotifyNotFound();
+
+            while(connection.hasNextRow()){
+
+                connection.nextRow();
+
+                notifies.add(initNotify(acquirente));
+
+            }
+
+            return notifies;
+
+        }catch (SQLException e){
+            throw new ErrorExecutingQuery();
+        }
+
+
+    }
+
+    private Notify initNotify(Acquirente acquirente) {
+
+        Estate estate = new Estate.Builder<>(connection.extractInt("idimmobile")).build();
+
+
+        return new Notify.Builder<>(connection.extractString("messaggio"))
+                .setIdNotify(connection.extractInt("idnotifica"))
+                .setData(String.valueOf(connection.extractDate("data")))
+                .setDataRicezione(String.valueOf(connection.extractDate("dataricezione")))
+                .setEstate(estate)
+                .setUser(acquirente)
+                .build();
+    }
+
+    private Acquirente getAcquirente(String emailAcquirente) throws DietiEstateException {
+
+        AcquirenteDAO takeAcquirente = new AcquirentePostgreDAO(connection);
+
 
         Acquirente acquirente = new Acquirente.Builder(0,emailAcquirente)
                 .build();
 
         acquirente = takeAcquirente.getUser(acquirente);
+
+        acquirente.setPassword(" ");
+
         return acquirente;
     }
 }

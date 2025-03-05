@@ -80,7 +80,6 @@ public class AppointmentManagement implements AppointmentService {
 
     @Override
     public String acceptAppointment(AppointmentAccept appointment) {
-        //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
 
         try {
 
@@ -99,7 +98,6 @@ public class AppointmentManagement implements AppointmentService {
 
     @Override
     public String declineAppointment(AppointmentReject appointment) {
-        //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
 
         try {
 
