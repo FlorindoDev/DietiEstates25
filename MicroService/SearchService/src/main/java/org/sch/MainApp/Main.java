@@ -26,7 +26,6 @@ public class Main {
     public static void main(String[] args) {
         startServer();
         //TODO serve per la prova dopo eliminare
-
         System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
     }
 }

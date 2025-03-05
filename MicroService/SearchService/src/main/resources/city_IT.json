@@ -29782,7 +29782,7 @@
     },
     {
         "id": "3176959",
-        "name": "Florence",
+        "name": "Firenze",
         "country": "IT",
         "admin1": "Toscana",
         "lat": "43.7792500",
@@ -32806,7 +32806,7 @@
     },
     {
         "id": "3176219",
-        "name": "Genoa",
+        "name": "Genova",
         "country": "IT",
         "admin1": "Liguria",
         "lat": "44.4047800",
@@ -44344,7 +44344,7 @@
     },
     {
         "id": "3173435",
-        "name": "Milan",
+        "name": "Milano",
         "country": "IT",
         "admin1": "Lombardia",
         "lat": "45.4642700",
@@ -48916,7 +48916,7 @@
     },
     {
         "id": "3172394",
-        "name": "Naples",
+        "name": "Napoli",
         "country": "IT",
         "admin1": "Campania",
         "lat": "40.8521600",
@@ -63748,7 +63748,7 @@
     },
     {
         "id": "3169070",
-        "name": "Rome",
+        "name": "Roma",
         "country": "IT",
         "admin1": "Lazio",
         "lat": "41.8919300",
@@ -82576,7 +82576,7 @@
     },
     {
         "id": "3165524",
-        "name": "Turin",
+        "name": "Torino",
         "country": "IT",
         "admin1": "Piemonte",
         "lat": "45.0704900",
@@ -84709,7 +84709,7 @@
     },
     {
         "id": "3164603",
-        "name": "Venice",
+        "name": "Venezia",
         "country": "IT",
         "admin1": "Veneto",
         "lat": "45.4371300",
