@@ -17,5 +17,5 @@ public interface AgentDAO{
     boolean isUserAbsentOverAll(Agent user) throws DietiEstateException;
     void removeAdmin(Agent agent) throws DietiEstateException;
 
-    Agent getAgentFromId(Agent agent) throws DietiEstateException;;
+    Agent getAgentFromId(Agent agent) throws DietiEstateException;
 }

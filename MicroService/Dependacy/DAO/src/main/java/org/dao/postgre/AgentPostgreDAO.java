@@ -49,7 +49,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
     }
 
     private Agency buildAgencyFromConnection() {
-        return new Agency.Builder(connection.extractString("partitaiva"))
+        return new Agency.Builder<>(connection.extractString("partitaiva"))
                 .setNome(connection.extractString("nome"))
                 .setSede(connection.extractString("sede"))
                 .build();
