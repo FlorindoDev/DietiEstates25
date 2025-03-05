@@ -42,3 +42,6 @@ Abbiamo due grandi categori: <br>
 - `107:` Errore creazione agency <br>
 - `108:` fallimento inserimento in coda rabbit <br>
 - `109:` fallimento invio notifica
+- `110:` fallimento invio cittá
+
+
