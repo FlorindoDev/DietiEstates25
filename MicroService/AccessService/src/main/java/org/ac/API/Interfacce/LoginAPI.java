@@ -4,6 +4,6 @@ import org.md.Utente.Utente;
 
 public interface LoginAPI {
 
-    public String makeLogin(Utente user);
+    String makeLogin(Utente user);
 
 }

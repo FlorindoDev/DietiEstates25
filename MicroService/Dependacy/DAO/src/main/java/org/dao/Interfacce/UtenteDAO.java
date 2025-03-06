@@ -18,4 +18,6 @@ public interface UtenteDAO {
 
     boolean isUserAbsentOverAll(Utente utente) throws DietiEstateException;
 
+    void close();
+
 }

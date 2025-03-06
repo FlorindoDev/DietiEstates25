@@ -39,4 +39,9 @@ public class Login implements LoginService{
 
 
     }
+
+    public void close(){
+        utenteDAO.close();
+    }
+
 }

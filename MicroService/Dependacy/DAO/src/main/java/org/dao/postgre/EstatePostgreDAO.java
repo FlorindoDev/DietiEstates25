@@ -346,10 +346,10 @@ public class EstatePostgreDAO implements EstateDAO {
             throw new ErrorExecutingQuery();
         }
 
+    }
 
-
-
-
+    public void close(){
+        connection.close();
     }
 
     @Override

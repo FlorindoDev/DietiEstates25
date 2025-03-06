@@ -30,6 +30,9 @@ class HomeController {
       print(ris['Notify']);
       for (int i = 0; i < response.body.length; i++) {
         notifies.add(Notify.fromJson(ris['Notify'][i]));
+        print("\n-------\n");
+        print(ris['Notify'][i]);
+        print("\n-------\n");
       }
     } catch (e) {
       return List<Notify>.empty();

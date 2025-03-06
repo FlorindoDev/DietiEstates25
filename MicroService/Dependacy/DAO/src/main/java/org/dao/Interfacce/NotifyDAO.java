@@ -10,4 +10,6 @@ public interface NotifyDAO {
     void createNotify(Notify notify) throws DietiEstateException;
 
     ArrayList<Notify> getAllNotifyAcquirente(Acquirente acquirente) throws DietiEstateException;
+
+    void close();
 }
