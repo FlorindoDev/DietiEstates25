@@ -23,8 +23,9 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @Produces(MediaType.TEXT_PLAIN)
     public String createEstate(Estate estate) {
         AdsEstate ads = new AdsEstate(Main.rabbitMQ);
+        String response = ads.createEstate(estate);
         ads.close();
-        return ads.createEstate(estate);
+        return response;
     }
 
     @Override
@@ -34,8 +35,9 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @Produces(MediaType.TEXT_PLAIN)
     public String changeEstate(Estate estate) {
         AdsEstate ads = new AdsEstate(Main.rabbitMQ);
+        String response = ads.changeEstate(estate);
         ads.close();
-        return ads.changeEstate(estate);
+        return response;
     }
 
     @Override
@@ -45,7 +47,8 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @Produces(MediaType.TEXT_PLAIN)
     public String loadEstate(Agency agency) {
         AdsEstate ads = new AdsEstate(Main.rabbitMQ);
+        String response = ads.loadEstate(agency);
         ads.close();
-        return ads.loadEstate(agency);
+        return response;
     }
 }
