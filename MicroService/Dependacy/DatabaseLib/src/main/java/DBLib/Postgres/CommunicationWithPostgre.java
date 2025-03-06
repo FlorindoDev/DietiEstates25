@@ -17,7 +17,6 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
 
     private static final Logger logger = Logger.getLogger(CommunicationWithPostgre.class.getName());
 
-
     public CommunicationWithPostgre() {
         this.managerConnection = new ManagementConnectionPostgre();
         this.managerConnection.createConnection();
