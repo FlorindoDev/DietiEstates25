@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class AdsEstate implements AdsEstateService {
 
-    AgencyPostgreDAO dao = new AgencyPostgreDAO();
+    AgencyPostgreDAO agencyDao = new AgencyPostgreDAO();
     EstateDAO estateDao = new EstatePostgreDAO();
 
     ManagementSenderNotifyMQ senderMQ;
@@ -57,17 +57,12 @@ public class AdsEstate implements AdsEstateService {
     public String loadEstate(Agency agency) {
 
         try {
-            ArrayList<Estate> estates = dao.getEstates(agency);
+            ArrayList<Estate> estates = agencyDao.getEstates(agency);
             return convertToJson(estates);
         }catch (DietiEstateException e){
             return e.getMessage();
         }
 
-    }
-
-    @Override
-    public void close() {
-        estateDao.close();
     }
 
 
