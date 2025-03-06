@@ -27,7 +27,9 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String loadAppointment(Agent agent) {
-        return appointmentmanagement.loadAppointment(agent);
+        String result = appointmentmanagement.loadAppointment(agent);
+        appointmentmanagement.close();
+        return result;
     }
 
     @Override
@@ -36,7 +38,9 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String loadAppointment(Acquirente acquirente) {
-        return appointmentmanagement.loadAppointment(acquirente);
+        String result = appointmentmanagement.loadAppointment(acquirente);
+        appointmentmanagement.close();
+        return result;
     }
 
     @Override
@@ -45,7 +49,9 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String acceptAppointment(AppointmentAccept appointment) {
-        return appointmentmanagement.acceptAppointment(appointment);
+        String result = appointmentmanagement.acceptAppointment(appointment);
+        appointmentmanagement.close();
+        return result;
     }
 
     @Override
@@ -54,7 +60,9 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String declineAppointment(AppointmentReject appointment) {
-        return appointmentmanagement.declineAppointment(appointment);
+        String result = appointmentmanagement.declineAppointment(appointment);
+        appointmentmanagement.close();
+        return result;
     }
 
     @Override
@@ -63,7 +71,8 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String makeAppointment(Appointment appointment) {
-
-        return appointmentmanagement.makeAppointment(appointment);
+        String result = appointmentmanagement.makeAppointment(appointment);
+        appointmentmanagement.close();
+        return result;
     }
 }

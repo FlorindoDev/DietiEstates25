@@ -29,6 +29,7 @@ class HomeController {
       ris = json.decode(response.body);
       print(ris['Notify']);
       for (int i = 0; i < response.body.length; i++) {
+        print("sono dentro");
         notifies.add(Notify.fromJson(ris['Notify'][i]));
         print("\n-------\n");
         print(ris['Notify'][i]);

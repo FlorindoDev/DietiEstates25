@@ -15,4 +15,6 @@ public interface ManagmentAdminService {
 
     public String getAdmins(Agency agency);
 
+    void close();
+
 }

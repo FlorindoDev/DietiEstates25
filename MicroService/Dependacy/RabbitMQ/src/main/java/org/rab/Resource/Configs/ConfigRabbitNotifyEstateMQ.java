@@ -5,6 +5,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,17 +21,17 @@ public class ConfigRabbitNotifyEstateMQ {
     }
 
     @Bean
-    protected Queue queue() {
+    protected Queue queueEstateNotify() {
         return new Queue(QUEUE_NAME, true);  // true = la coda è persistente
     }
 
     @Bean
-    protected DirectExchange exchange() {
+    protected DirectExchange exchangeEstateNotify() {
         return new DirectExchange(EXCHANGE_QUEUE_NAME);
     }
 
     @Bean
-    protected Binding binding(Queue queue, DirectExchange exchange) {
+    protected Binding bindingEstateNotify(@Qualifier("queueEstateNotify") Queue queue, @Qualifier("exchangeEstateNotify") DirectExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(ROUTING_QUEUE_NAME);
     }
 }

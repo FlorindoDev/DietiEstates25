@@ -8,4 +8,6 @@ public interface SearchService {
     String suggestionCities(Indirizzo indirizzo);
 
     String estatesSerachFromCity(Indirizzo indirizzo);
+
+    void close();
 }

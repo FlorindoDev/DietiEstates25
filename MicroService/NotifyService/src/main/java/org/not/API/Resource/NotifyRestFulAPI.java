@@ -24,8 +24,9 @@ public class NotifyRestFulAPI implements NotifyAPI {
     @Produces(MediaType.TEXT_PLAIN)
     public String getNotifyAcquirente(Acquirente acquirente) {
 
-
-        return notify.getNotifyAcquirente(acquirente);
+        String result = notify.getNotifyAcquirente(acquirente);
+        notify.close();
+        return result;
     }
 
     @Override
