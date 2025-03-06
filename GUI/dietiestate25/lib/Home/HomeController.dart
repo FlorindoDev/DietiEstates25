@@ -26,14 +26,9 @@ class HomeController {
     dynamic ris;
     List<Notify> notifies = [];
     try {
-      ris = json.decode(response.body);
-      print(ris['Notify']);
-      for (int i = 0; i < response.body.length; i++) {
-        print("sono dentro");
+      ris = json.decode(utf8.decode(response.bodyBytes));
+      for (int i = 0; i < ris['Notify'].length; i++) {
         notifies.add(Notify.fromJson(ris['Notify'][i]));
-        print("\n-------\n");
-        print(ris['Notify'][i]);
-        print("\n-------\n");
       }
     } catch (e) {
       return List<Notify>.empty();
