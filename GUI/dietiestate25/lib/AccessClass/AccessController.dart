@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dietiestate25/Home/HomeController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
@@ -79,6 +80,7 @@ class AccessController {
       } else if (risultato['code'] == 0) {
         print('1');
         scriviJWTInFile(risultato['message']);
+        HomeController.utente = utente;
         print('12');
         MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
         print('13');

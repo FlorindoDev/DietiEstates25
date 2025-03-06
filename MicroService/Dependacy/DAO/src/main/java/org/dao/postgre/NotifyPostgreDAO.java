@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 public class NotifyPostgreDAO implements NotifyDAO {
 
-    CommunicationWithPostgre connection;
+    private final CommunicationWithPostgre connection;
 
     private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
 
@@ -79,6 +79,7 @@ public class NotifyPostgreDAO implements NotifyDAO {
                 notifies.add(initNotify(acquirente));
 
             }
+
 
             return notifies;
 

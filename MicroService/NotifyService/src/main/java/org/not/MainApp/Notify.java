@@ -36,7 +36,7 @@ public class Notify implements NotifyService {
 
 
     private String convertListNotifyToJson(List<org.md.Notify.Notify> notifies) {
-        String json = "{\"code\": 0, \"message\": \"success of action get appointment\", \"Appointments\": [";
+        String json = "{\"code\": 0, \"message\": \"success of action get notify\", \"Notify\": [";
 
         for(org.md.Notify.Notify notify : notifies){
             json = json.concat(notify.TranslateToJson());
