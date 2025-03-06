@@ -348,6 +348,7 @@ public class EstatePostgreDAO implements EstateDAO {
 
     }
 
+    @Override
     public void close(){
         connection.close();
     }
