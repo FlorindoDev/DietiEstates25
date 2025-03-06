@@ -4,6 +4,7 @@ import org.exc.DietiEstateException;
 import org.exc.DietiEstateMicroServiceException.FailToInsertOnQueue;
 import org.rab.Interfacce.ManagementSenderNotifyMQ;
 import org.rab.Resource.Configs.ConfigRabbitNotifyAppointmentMQ;
+import org.rab.Resource.Configs.ConfigRabbitNotifyEstateMQ;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,16 @@ public class ManagementSenderNotifyRabbitMQ implements ManagementSenderNotifyMQ 
         logger.info("[!] il messaggio inviato: " + message);
         try{
             rabbitTemplate.convertAndSend(ConfigRabbitNotifyAppointmentMQ.EXCHANGE_QUEUE_NAME, ConfigRabbitNotifyAppointmentMQ.ROUTING_QUEUE_NAME, message);
+        }catch (Exception e){
+            throw  new FailToInsertOnQueue(e.getMessage());
+        }
+
+    }
+
+    public void enQueueEstateNotify(String message) throws DietiEstateException {
+        logger.info("[!] il messaggio inviato: " + message);
+        try{
+            rabbitTemplate.convertAndSend(ConfigRabbitNotifyEstateMQ.EXCHANGE_QUEUE_NAME, ConfigRabbitNotifyEstateMQ.ROUTING_QUEUE_NAME, message);
         }catch (Exception e){
             throw  new FailToInsertOnQueue(e.getMessage());
         }
