@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class AcquirentePostgreDAO extends UtentePostgreDAO implements AcquirenteDAO {
 
     private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
-    private final String table = "acquirente";
+    private static final String TABLE = "acquirente";
 
     private final CommunicationWithPostgre connection;
 
@@ -87,21 +87,21 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
     @Override
     public void updateUser(Acquirente utente) throws DietiEstateException {
 
-        super.updateUser(utente, table);
+        super.updateUser(utente, TABLE);
 
     }
 
     @Override
     public boolean isUserAbsent(Acquirente user) throws DietiEstateException {
 
-        return super.isUserAbsent(user, table);
+        return super.isUserAbsent(user, TABLE);
 
     }
 
     @Override
     public boolean isUserPresent(Acquirente user) throws DietiEstateException {
 
-        return super.isUserPresent(user, table);
+        return super.isUserPresent(user, TABLE);
 
     }
 
