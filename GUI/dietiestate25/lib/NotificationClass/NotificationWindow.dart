@@ -27,7 +27,13 @@ class _NotificationWindowState extends State<NotificationWindow> {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: EdgeInsets.all(8),
-                    child: Text('[$index] ${snapshot.data![0].message}'),
+                    //child: Text('[$index] ${snapshot.data![0].message}'),
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 40),
+                      child: Column(
+                        children: [Text(snapshot.data![index].message), Text(snapshot.data![index].data)],
+                      ),
+                    ),
                   );
                 },
               );

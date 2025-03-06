@@ -16,6 +16,6 @@ class Notify {
   Notify({required this.idNotify, required this.data, required this.dataRicezione, required this.message, required this.tipo, required this.idEstate, required this.idAcquirente});
 
   factory Notify.fromJson(Map<String, dynamic> json) {
-    return Notify(idNotify: json['idNotify'], data: json['data'], dataRicezione: json['dataRicezione'], message: json['message'], tipo: json['tipo'], idEstate: json['estate']['idEstate'], idAcquirente: json['acquirente']['idAcquirente']);
+    return Notify(idNotify: json['idNotify'], data: json['data'], dataRicezione: json['dataRicezione'], message: json['message'], tipo: json['tipo'], idEstate: json['estate']['idEstate'], idAcquirente: json['acquirente']['idUser']);
   }
 }
