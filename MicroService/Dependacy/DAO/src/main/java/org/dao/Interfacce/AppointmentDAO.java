@@ -19,5 +19,5 @@ public interface AppointmentDAO {
 
     boolean hasUserAppointment(Appointment appointment) throws DietiEstateException;
 
-
+    void close();
 }

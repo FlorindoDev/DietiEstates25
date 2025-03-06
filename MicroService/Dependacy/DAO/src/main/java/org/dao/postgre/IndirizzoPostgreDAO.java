@@ -200,4 +200,8 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
 
     }
 
+    public void close(){
+        connection.close();
+    }
+
 }

@@ -363,6 +363,9 @@ public class AgencyPostgreDAO implements AgencyDAO {
 
     }
 
+    public void close(){
+        connection.close();
+    }
 
 
 }

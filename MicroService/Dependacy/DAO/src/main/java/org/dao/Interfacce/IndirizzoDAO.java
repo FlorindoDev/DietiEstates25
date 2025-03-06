@@ -15,4 +15,6 @@ public interface IndirizzoDAO {
     boolean createAddress(Indirizzo indirizzo) throws DietiEstateException;
 
     int getLastAddressId() throws DietiEstateException;
+
+    void close();
 }
