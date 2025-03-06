@@ -23,7 +23,6 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class EstatePostgreDAO implements EstateDAO {
 
@@ -49,6 +48,14 @@ public class EstatePostgreDAO implements EstateDAO {
                 "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         IndirizzoPostgreDAO addrsDao = new IndirizzoPostgreDAO(connection);
+        AgentPostgreDAO agentsDao = new AgentPostgreDAO();
+
+        int idAgente = newEstate.getAgente().getIdUser();
+        if (idAgente == 0) {
+            idAgente = agentDAO.getUser(newEstate.getAgente()).getIdUser();
+            newEstate.getAgente().setIdUser(idAgente);
+        }
+        agentsDao.isUserPresent(newEstate.getAgente());
 
         int idAddress = 0;
 
