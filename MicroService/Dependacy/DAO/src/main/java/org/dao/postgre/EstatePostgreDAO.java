@@ -49,6 +49,14 @@ public class EstatePostgreDAO implements EstateDAO {
                 "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         IndirizzoPostgreDAO addrsDao = new IndirizzoPostgreDAO(connection);
+        AgentPostgreDAO agentsDao = new AgentPostgreDAO();
+
+        int idAgente = newEstate.getAgente().getIdUser();
+        if (idAgente == 0) {
+            idAgente = agentDAO.getUser(newEstate.getAgente()).getIdUser();
+            newEstate.getAgente().setIdUser(idAgente);
+        }
+        agentsDao.isUserPresent(newEstate.getAgente());
 
         int idAddress = 0;
 
@@ -60,7 +68,6 @@ public class EstatePostgreDAO implements EstateDAO {
             idAddress = addrsDao.getLastAddressId();
 
         } catch (AddressAlreadyExists e) {
-            logger.info("sono nel catch");
             try {
                 connection.nextRow();
             } catch (SQLException e1) {
@@ -69,10 +76,6 @@ public class EstatePostgreDAO implements EstateDAO {
             }
             idAddress = connection.extractInt("idindirizzo");
         }
-
-        logger.log(Level.INFO, "ID Address: {0}", idAddress);
-
-
 
         try (PreparedStatement stmt = connection.getStatment(query)) {
 
