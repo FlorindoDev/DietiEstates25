@@ -34,7 +34,9 @@ class _NotificationWindowState extends State<NotificationWindow> {
             } else if (snapshot.hasError) {
               return Text("errore");
             }
-            return Text("sdrogo");
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }),
     );
   }
