@@ -24,18 +24,20 @@ import java.util.ArrayList;
 
 public class AppointmentManagement implements AppointmentService {
 
-    AppointmentDAO appointmentDAO;
+    private final AppointmentDAO appointmentDAO;
 
-    NotifyAppointmentFactory factory = new NotifyBasicAppointmentFactory();
+    private final NotifyAppointmentFactory factory;
 
-    ManagementSenderNotifyMQ senderMQ;
+    private final ManagementSenderNotifyMQ senderMQ;
 
-    EstateDAO estateDAO = new EstatePostgreDAO();
+    private final EstateDAO estateDAO;
 
 
     public AppointmentManagement(ApplicationContext rabbitMQ) {
         senderMQ = rabbitMQ.getBean(ManagementSenderNotifyRabbitMQ.class);
         appointmentDAO = new AppointmentPostgreDAO();
+        estateDAO = new EstatePostgreDAO();
+        factory = new NotifyBasicAppointmentFactory();
     }
 
     private String ConvertListAppointmentToJson(ArrayList<Appointment> appointments) {
@@ -138,5 +140,11 @@ public class AppointmentManagement implements AppointmentService {
             return e.getMessage();
         }
 
+    }
+
+    @Override
+    public void close() {
+        appointmentDAO.close();
+        estateDAO.close();
     }
 }

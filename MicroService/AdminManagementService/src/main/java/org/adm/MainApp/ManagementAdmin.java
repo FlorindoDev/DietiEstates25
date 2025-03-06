@@ -112,4 +112,9 @@ public class ManagementAdmin implements ManagmentAdminService {
 
     }
 
+    public void close(){
+        adminDAO.close();
+        agencyDAO.close();
+    }
+
 }

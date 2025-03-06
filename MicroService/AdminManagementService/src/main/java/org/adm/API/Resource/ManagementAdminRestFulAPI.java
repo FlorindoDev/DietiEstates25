@@ -23,8 +23,9 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String addAdmin(Admin admin) {
-
-        return managementAdmin.addAdmin(admin,admin.getAgency());
+        String result = managementAdmin.addAdmin(admin,admin.getAgency());
+        managementAdmin.close();
+        return result;
     }
 
     @POST
@@ -33,7 +34,9 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String removeAdmin(Admin admin) {
-        return managementAdmin.removeAdmin(admin);
+        String result = managementAdmin.removeAdmin(admin);
+        managementAdmin.close();
+        return result;
     }
 
     @POST
@@ -42,7 +45,9 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String upgradeSupportAdmin(Admin admin) {
-        return managementAdmin.upgradeSupportAdmin(admin);
+        String result = managementAdmin.upgradeSupportAdmin(admin);
+        managementAdmin.close();
+        return result;
     }
 
     @POST
@@ -51,7 +56,9 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String downgradeSupport(Admin admin) {
-        return managementAdmin.downgradeSupport(admin);
+        String result = managementAdmin.downgradeSupport(admin);
+        managementAdmin.close();
+        return result;
     }
 
     @POST
@@ -60,6 +67,8 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String loadAdmin(Agency agency) {
-        return managementAdmin.getAdmins(agency);
+        String result = managementAdmin.getAdmins(agency);
+        managementAdmin.close();
+        return result;
     }
 }

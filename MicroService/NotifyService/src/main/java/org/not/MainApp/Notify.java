@@ -48,4 +48,8 @@ public class Notify implements NotifyService {
         return json + "]}";
     }
 
+    @Override
+    public void close() {
+        notifyDAO.close();
+    }
 }

@@ -23,7 +23,9 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String addAgent(Agent agent) {
-        return managementAgent.addAgent(agent);
+        String result = managementAgent.addAgent(agent);
+        managementAgent.close();
+        return result;
     }
 
     @POST
@@ -32,7 +34,9 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String removeAgent(Agent agent) {
-        return managementAgent.removeAgent(agent);
+        String result = managementAgent.removeAgent(agent);
+        managementAgent.close();
+        return result;
     }
 
     @POST
@@ -41,7 +45,9 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String getAgents(Agency agency) {
-        return managementAgent.getAgents(agency);
+        String result = managementAgent.getAgents(agency);
+        managementAgent.close();
+        return result;
     }
 
     @POST
@@ -50,7 +56,9 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String getEstates(Agency agency) {
-        return managementAgent.getEstates(agency);
+        String result = managementAgent.getEstates(agency);
+        managementAgent.close();
+        return result;
     }
 
     @POST
@@ -59,7 +67,9 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String updateEstateAgent(Estate estate) {
-        return managementAgent.updateEstateAgent(estate,estate.getAgente());
+        String result = managementAgent.updateEstateAgent(estate,estate.getAgente());
+        managementAgent.close();
+        return result;
     }
 
 }

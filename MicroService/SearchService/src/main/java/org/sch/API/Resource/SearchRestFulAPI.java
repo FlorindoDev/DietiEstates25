@@ -19,7 +19,9 @@ public class SearchRestFulAPI implements SearchAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String allCity() {
-        return searchService.allCity();
+        String result = searchService.allCity();
+        searchService.close();
+        return result;
     }
 
     @Path("suggestionCities")
@@ -28,7 +30,9 @@ public class SearchRestFulAPI implements SearchAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String suggestionCities(Indirizzo indirizzo) {
-        return searchService.suggestionCities(indirizzo);
+        String result = searchService.suggestionCities(indirizzo);
+        searchService.close();
+        return result;
     }
 
     @Path("coordinatesEstates")
@@ -38,6 +42,7 @@ public class SearchRestFulAPI implements SearchAPI {
     @Override
     public String coordinatesEstates(Estate estate) {
         return "";
+
     }
 
     @Path("estatesSerachFromCity")
@@ -46,6 +51,8 @@ public class SearchRestFulAPI implements SearchAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String estatesSerachFromCity(Indirizzo indirizzo) {
-        return searchService.estatesSerachFromCity(indirizzo);
+        String result = searchService.estatesSerachFromCity(indirizzo);
+        searchService.close();
+        return result;
     }
 }

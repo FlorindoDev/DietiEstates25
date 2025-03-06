@@ -10,4 +10,6 @@ public interface NotifyService {
     String getNotifyAcquirente(Acquirente acquirente);
 
     String getNotifyAgent(Agent agent);
+
+    void close();
 }
