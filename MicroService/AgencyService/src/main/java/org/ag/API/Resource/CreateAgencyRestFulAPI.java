@@ -19,6 +19,8 @@ public class CreateAgencyRestFulAPI implements CreateAgencyAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String createAgency(Agency agency) {
-        return createAgnecy.makeAgency(agency);
+        String result = createAgnecy.makeAgency(agency);
+        createAgnecy.close();
+        return result;
     }
 }

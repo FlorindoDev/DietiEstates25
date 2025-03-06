@@ -80,5 +80,8 @@ public class Search implements SearchService {
         return json;
     }
 
-
+    @Override
+    public void close() {
+        estateDAO.close();
+    }
 }

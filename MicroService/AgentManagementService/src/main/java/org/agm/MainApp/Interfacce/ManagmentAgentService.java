@@ -16,4 +16,6 @@ public interface ManagmentAgentService {
 
     String updateEstateAgent(Estate estate, Agent agent);
 
+    void close();
+
 }
