@@ -16,6 +16,9 @@ import java.util.ArrayList;
 
 public class AdsEstate implements AdsEstateService {
 
+    AgencyPostgreDAO dao = new AgencyPostgreDAO();
+    EstateDAO estateDao = new EstatePostgreDAO();
+
     ManagementSenderNotifyMQ senderMQ;
 
     public AdsEstate (ApplicationContext rabbitMQ){
@@ -25,9 +28,8 @@ public class AdsEstate implements AdsEstateService {
     @Override
     public String createEstate(Estate estate) {
 
-        EstateDAO dao = new EstatePostgreDAO();
         try {
-            dao.createEstate(estate);
+            estateDao.createEstate(estate);
             senderMQ.enQueueEstateNotify("{}");
         }catch (DietiEstateException e) {
             return e.getMessage();
@@ -41,9 +43,8 @@ public class AdsEstate implements AdsEstateService {
 
         //TODO PUSH TO RBMQ QUEUE
 
-        EstateDAO dao = new EstatePostgreDAO();
         try {
-            dao.updateEstate(estate);
+            estateDao.updateEstate(estate);
         }catch (DietiEstateException e) {
             return e.getMessage();
         }
@@ -54,7 +55,6 @@ public class AdsEstate implements AdsEstateService {
 
     @Override
     public String loadEstate(Agency agency) {
-        AgencyPostgreDAO dao = new AgencyPostgreDAO();
 
         try {
             ArrayList<Estate> estates = dao.getEstates(agency);
@@ -63,6 +63,11 @@ public class AdsEstate implements AdsEstateService {
             return e.getMessage();
         }
 
+    }
+
+    @Override
+    public void close() {
+        estateDao.close();
     }
 
 

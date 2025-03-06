@@ -9,4 +9,6 @@ public interface AdsEstateService {
     String changeEstate(Estate estate);
     String loadEstate(Agency estate);
 
+    void close();
+
 }
