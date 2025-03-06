@@ -2,6 +2,7 @@ package org.ads.API.Resource;
 
 import org.ads.API.Interface.AdsEstateAPI;
 import org.ads.MainApp.AdsEstate;
+import org.ads.MainApp.Main;
 import org.md.Agency.Agency;
 import org.md.Estate.Estate;
 
@@ -14,7 +15,7 @@ import jakarta.ws.rs.core.MediaType;
 @Path("AdsEstate")
 public class AdsEstateRestfulAPI implements AdsEstateAPI {
 
-    AdsEstate ads = new AdsEstate();
+    AdsEstate ads = new AdsEstate(Main.rabbitMQ);
 
     @Override
     @POST
