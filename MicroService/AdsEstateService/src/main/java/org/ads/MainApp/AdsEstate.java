@@ -1,6 +1,5 @@
 package org.ads.MainApp;
 
-import jakarta.ws.rs.core.Application;
 import org.ads.MainApp.Interface.AdsEstateService;
 import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.AgencyPostgreDAO;
@@ -14,8 +13,6 @@ import org.rab.Resource.Senders.ManagementSenderNotifyRabbitMQ;
 import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
-
-import static org.ads.MainApp.Main.rabbitMQ;
 
 public class AdsEstate implements AdsEstateService {
 
