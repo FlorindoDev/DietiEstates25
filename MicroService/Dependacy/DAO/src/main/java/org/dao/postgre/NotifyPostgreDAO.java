@@ -118,6 +118,8 @@ public class NotifyPostgreDAO implements NotifyDAO {
 
         return acquirente;
     }
+
+
     @Override
     public void close(){
         connection.close();

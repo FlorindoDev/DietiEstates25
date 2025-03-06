@@ -18,4 +18,6 @@ public interface ManagementAccountService {
 
     String getAccountAgent(Agent utente);
 
+    void close();
+
 }

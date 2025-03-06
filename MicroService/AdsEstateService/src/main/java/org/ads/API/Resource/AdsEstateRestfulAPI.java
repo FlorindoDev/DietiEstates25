@@ -15,7 +15,6 @@ import jakarta.ws.rs.core.MediaType;
 @Path("AdsEstate")
 public class AdsEstateRestfulAPI implements AdsEstateAPI {
 
-    AdsEstate ads = new AdsEstate(Main.rabbitMQ);
 
     @Override
     @POST
@@ -23,7 +22,10 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String createEstate(Estate estate) {
-        return ads.createEstate(estate);
+        AdsEstate ads = new AdsEstate(Main.rabbitMQ);
+        String response = ads.createEstate(estate);
+        ads.close();
+        return response;
     }
 
     @Override
@@ -32,7 +34,10 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String changeEstate(Estate estate) {
-        return ads.changeEstate(estate);
+        AdsEstate ads = new AdsEstate(Main.rabbitMQ);
+        String response = ads.changeEstate(estate);
+        ads.close();
+        return response;
     }
 
     @Override
@@ -41,6 +46,9 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String loadEstate(Agency agency) {
-        return ads.loadEstate(agency);
+        AdsEstate ads = new AdsEstate(Main.rabbitMQ);
+        String response = ads.loadEstate(agency);
+        ads.close();
+        return response;
     }
 }

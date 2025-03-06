@@ -15,12 +15,13 @@ import org.md.Utente.Utente;
 
 public class ManagementAccount implements ManagementAccountService {
 
-    public static final String SUCCESS = "{\"code\": 0, \"message\": \"success of update action ManagementAccount\"}";
+    private static final String SUCCESS = "{\"code\": 0, \"message\": \"success of update action ManagementAccount\"}";
     private Validator validator;
+    private AgentPostgreDAO agentDAO;
+    private AdminPostgreDAO adminDAO;
+    private AcquirentePostgreDAO acquirenteDAO;
 
-    public ManagementAccount(){
-        validator = Validate.getInstance();
-    }
+    public ManagementAccount(){validator = Validate.getInstance();}
 
     private void validateData(Utente utente) throws DietiEstateException {
         if (utente.getPassword() != null) {
@@ -37,16 +38,16 @@ public class ManagementAccount implements ManagementAccountService {
     @Override
     public String applyChangeAcquirente(Acquirente utente) {
 
-        AcquirentePostgreDAO dao = new AcquirentePostgreDAO();
+        acquirenteDAO = new AcquirentePostgreDAO();
 
         try {
-            dao.isUserPresent(utente);
+            acquirenteDAO.isUserPresent(utente);
 
             validateData(utente);
 
             //TODO contollare path immagine profilo & STOREGE delle stesse
 
-            dao.updateUser(utente);
+            acquirenteDAO.updateUser(utente);
 
             return SUCCESS;
         } catch (DietiEstateException e) {
@@ -58,14 +59,14 @@ public class ManagementAccount implements ManagementAccountService {
     @Override
     public String applyChangeAgent(Agent utente) {
 
-        AgentPostgreDAO dao = new AgentPostgreDAO();
+        agentDAO = new AgentPostgreDAO();
 
         try {
-            dao.isUserPresent(utente);
+            agentDAO.isUserPresent(utente);
 
             validateData(utente);
 
-            dao.updateUser(utente);
+            agentDAO.updateUser(utente);
 
             return SUCCESS;
         } catch (DietiEstateException e) {
@@ -77,14 +78,14 @@ public class ManagementAccount implements ManagementAccountService {
     @Override
     public String applyChangeAdmin(Admin utente) {
 
-        AdminPostgreDAO dao = new AdminPostgreDAO();
+        adminDAO = new AdminPostgreDAO();
 
         try {
-            dao.isUserPresent(utente);
+            adminDAO.isUserPresent(utente);
 
             validateData(utente);
 
-            dao.updateUser(utente);
+            adminDAO.updateUser(utente);
 
             return SUCCESS;
         } catch (DietiEstateException e) {
@@ -95,7 +96,8 @@ public class ManagementAccount implements ManagementAccountService {
     @Override
     public String getAccountAcquirente(Acquirente utente) {
         try {
-            return new AcquirentePostgreDAO().getUser(utente).TranslateToJson();
+            acquirenteDAO = new AcquirentePostgreDAO();
+            return acquirenteDAO.getUser(utente).TranslateToJson();
         } catch (DietiEstateException e){
             return e.getMessage();
         }
@@ -104,7 +106,8 @@ public class ManagementAccount implements ManagementAccountService {
     @Override
     public String getAccountAdmin(Admin utente) {
         try {
-            return new AdminPostgreDAO().getUser(utente).TranslateToJson();
+            adminDAO = new AdminPostgreDAO();
+            return adminDAO.getUser(utente).TranslateToJson();
         } catch (DietiEstateException e){
             return e.getMessage();
         }
@@ -113,10 +116,18 @@ public class ManagementAccount implements ManagementAccountService {
     @Override
     public String getAccountAgent(Agent utente) {
         try {
-            return new AgentPostgreDAO().getUser(utente).TranslateToJson();
+            agentDAO = new AgentPostgreDAO();
+            return agentDAO.getUser(utente).TranslateToJson();
         } catch (DietiEstateException e){
             return e.getMessage();
         }
+    }
+
+    @Override
+    public void close() {
+        if (acquirenteDAO != null) {acquirenteDAO.close();}
+        if (agentDAO != null) {agentDAO.close();}
+        if (adminDAO != null) {adminDAO.close();}
     }
 
 }
