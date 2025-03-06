@@ -24,7 +24,6 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @Produces(MediaType.TEXT_PLAIN)
     public String createEstate(Estate estate) {
         AdsEstate ads = new AdsEstate(Main.rabbitMQ);
-        ads.close();
         return ads.createEstate(estate);
     }
 
