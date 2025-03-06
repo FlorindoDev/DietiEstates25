@@ -65,6 +65,12 @@ public class AdsEstate implements AdsEstateService {
 
     }
 
+    @Override
+    public void close() {
+        agencyDao.close();
+        estateDao.close();
+    }
+
 
     private String convertToJson(ArrayList<Estate> estates) {
 
