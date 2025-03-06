@@ -25,14 +25,14 @@ import java.util.logging.Logger;
 public class CreateAgency implements CreateAgencyService {
 
     public static final String CHARACTERS_FOR_GENERATE_PASSWORD = "Z5v!EeR9aFGdySO$fcgDu4Wpi8xVo2N1tXClAnsbz6BTrYQwLm_3IjPHKkqhM0UJ7";
-    private final AgencyDAO create;
+    private final AgencyDAO agencyDAO;
 
     private static final Logger logger = Logger.getLogger(CreateAgency.class.getName());
 
-    private final SecureRandom random = new SecureRandom();
+    private SecureRandom random = new SecureRandom();
 
     public CreateAgency() {
-        create = new AgencyPostgreDAO();
+        agencyDAO = new AgencyPostgreDAO();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class CreateAgency implements CreateAgencyService {
             if(agency.getAdmins() == null) throw new ErrorCreatingAgency();
             Admin admin = initAdmin(agency);
 
-            create.createAgencyAtomic(agency);
+            agencyDAO.createAgencyAtomic(agency);
 
             sendEmail(admin);
 
@@ -124,5 +124,12 @@ public class CreateAgency implements CreateAgencyService {
         validaitor.validateAgencyName(agency.getNome());
         validaitor.validatePartitaIVA(agency.getCodicePartitaIVA());
         validaitor.validateSede(agency.getSede());
+    }
+
+    @Override
+    public void close() {
+        agencyDAO.close();
+        random = null;
+
     }
 }

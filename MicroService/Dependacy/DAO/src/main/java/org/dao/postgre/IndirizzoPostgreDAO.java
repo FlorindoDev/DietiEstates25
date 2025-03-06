@@ -199,7 +199,7 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
         }
 
     }
-
+    @Override
     public void close(){
         connection.close();
     }

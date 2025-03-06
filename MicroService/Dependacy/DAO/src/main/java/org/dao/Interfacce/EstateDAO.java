@@ -18,4 +18,6 @@ public interface EstateDAO {
 
     List<Estate> estatesSerachFromCity(Indirizzo indirizzo) throws DietiEstateException;
 
+    void close();
+
 }

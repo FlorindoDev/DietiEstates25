@@ -124,4 +124,10 @@ public class ManagementAgent implements ManagmentAgentService {
 
     }
 
+    @Override
+    public void close() {
+        agencyDAO.close();
+        agentDAO.close();
+        estateDAO.close();
+    }
 }

@@ -13,4 +13,5 @@ public interface AppointmentService {
     String acceptAppointment(AppointmentAccept appointment);
     String declineAppointment(AppointmentReject appointment);
     String makeAppointment(Appointment appointment);
+    void close();
 }

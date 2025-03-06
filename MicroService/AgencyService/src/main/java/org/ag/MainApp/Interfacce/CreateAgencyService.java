@@ -4,5 +4,7 @@ import org.md.Agency.Agency;
 
 public interface CreateAgencyService {
 
-    public String makeAgency(Agency agency);
+    String makeAgency(Agency agency);
+
+    void close();
 }
