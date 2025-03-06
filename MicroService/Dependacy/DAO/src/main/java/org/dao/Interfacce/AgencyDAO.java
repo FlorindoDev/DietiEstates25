@@ -24,5 +24,6 @@ public interface AgencyDAO {
     boolean isAgencyPresent(Agency agency) throws DietiEstateException;
 
     void createAgencyAtomic(Agency agency) throws DietiEstateException;
+    void close();
 
 }

@@ -20,6 +20,9 @@ public class LoginRestFulAPI implements LoginAPI {
     @Produces(MediaType.TEXT_PLAIN)
     public String makeLogin(Utente user) {
 
-        return login_access.makeLogin(user);
+        String result = login_access.makeLogin(user);
+        login_access.close();
+
+        return result;
     }
 }

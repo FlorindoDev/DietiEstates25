@@ -4,5 +4,5 @@ import org.md.Utente.Acquirente;
 
 public interface SignUpAPI {
 
-    public String makeSignUp(Acquirente utente);
+    String makeSignUp(Acquirente utente);
 }

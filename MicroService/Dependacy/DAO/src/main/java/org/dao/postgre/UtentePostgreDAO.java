@@ -257,5 +257,9 @@ public class UtentePostgreDAO implements UtenteDAO {
 
     }
 
+    public void close(){
+        connection.close();
+    }
+
 
 }
