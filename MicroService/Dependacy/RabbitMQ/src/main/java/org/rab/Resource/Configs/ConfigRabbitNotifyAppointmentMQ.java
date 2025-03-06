@@ -2,6 +2,7 @@ package org.rab.Resource.Configs;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.amqp.core.*;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,17 +19,17 @@ public class ConfigRabbitNotifyAppointmentMQ {
     }
 
     @Bean
-    protected Queue queue() {
+    protected Queue queueAppointmentNotify() {
         return new Queue(QUEUE_NAME, true);  // true = la coda è persistente
     }
 
     @Bean
-    protected DirectExchange exchange() {
+    protected DirectExchange exchangeAppointmentNotify() {
         return new DirectExchange(EXCHANGE_QUEUE_NAME);
     }
 
     @Bean
-    protected Binding binding(Queue queue, DirectExchange exchange) {
+    protected Binding bindingAppointmentNotify(@Qualifier("queueAppointmentNotify") Queue queue, @Qualifier("exchangeAppointmentNotify") DirectExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(ROUTING_QUEUE_NAME);
     }
 }
