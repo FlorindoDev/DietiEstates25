@@ -36,4 +36,8 @@ public class SignUp implements SignUpService {
         return "";
 
     }
+    @Override
+    public void close() {
+        signup.close();
+    }
 }

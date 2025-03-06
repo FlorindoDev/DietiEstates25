@@ -15,4 +15,6 @@ public interface AcquirenteDAO{
     boolean isUserPresent(Acquirente acquirente) throws DietiEstateException;
 
     boolean isUserAbsentOverAll(Acquirente acquirente) throws DietiEstateException;
+
+    void close();
 }

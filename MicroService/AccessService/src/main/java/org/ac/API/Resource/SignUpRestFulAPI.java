@@ -21,6 +21,8 @@ public class SignUpRestFulAPI implements SignUpAPI {
     @Produces(MediaType.TEXT_PLAIN)
     @Override
     public String makeSignUp(Acquirente user) {
-        return singup_access.makeSignUp(user);
+        String result = singup_access.makeSignUp(user);
+        singup_access.close();
+        return result;
     }
 }

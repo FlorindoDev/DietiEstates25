@@ -229,5 +229,8 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
         return acquirente;
     }
 
+    public void close(){
+        connection.close();
+    }
 
 }
