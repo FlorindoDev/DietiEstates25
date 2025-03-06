@@ -17,6 +17,5 @@ public interface EstateDAO {
     boolean isEstatePresent(Estate estate) throws DietiEstateException;
 
     List<Estate> estatesSerachFromCity(Indirizzo indirizzo) throws DietiEstateException;
-
-    void close();
+    
 }
