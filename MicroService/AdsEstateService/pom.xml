@@ -89,6 +89,11 @@
             <artifactId>DAO</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.rab</groupId>
+            <artifactId>RabbitMQ</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
     </dependencies>
 

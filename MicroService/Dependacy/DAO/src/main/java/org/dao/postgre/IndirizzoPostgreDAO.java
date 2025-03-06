@@ -75,6 +75,8 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
         } catch (SQLException e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
+        }finally {
+            connection.close();
         }
     }
 
@@ -82,8 +84,8 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
     public boolean isAddressExistsByALL(Indirizzo addr) throws DietiEstateException {
 
         String query;
-        if (addr.getIdIndirizzo() == 0) query="SELECT * FROM "+TABLE+" WHERE stato = ? AND citta = ? AND via = ? AND numeroCivico = ? AND cap = ?";
-        else query = "SELECT * FROM "+TABLE+" WHERE idindirizzo = ? AND stato = ? AND citta = ? AND via = ? AND numeroCivico = ? AND cap = ?";
+        if (addr.getIdIndirizzo() == 0) query="SELECT * FROM "+TABLE+" WHERE stato = ? AND citta = ? AND via = ? AND numeroCivico = ? AND cap = ? AND quartiere = ?";
+        else query = "SELECT * FROM "+TABLE+" WHERE idindirizzo = ? AND stato = ? AND citta = ? AND via = ? AND numeroCivico = ? AND cap = ? AND quartiere = ?";
 
         PreparedStatement stmt = connection.getStatment(query);
 
@@ -95,6 +97,11 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
             stmt.setString(++idx, addr.getVia());
             stmt.setString(++idx, addr.getNumeroCivico());
             stmt.setInt(++idx, addr.getCap());
+            if (addr.getQuartiere().isEmpty()) {
+                stmt.setString(++idx, addr.getQuartiere());
+            }else{
+                stmt.setString(++idx, null);
+            }
 
             connection.makeQuery(stmt);
 
@@ -110,8 +117,8 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
     public boolean isAddressNotExistsByALL(Indirizzo addr) throws DietiEstateException {
 
         String query;
-        if (addr.getIdIndirizzo() == 0) query = "SELECT * FROM "+TABLE+" WHERE stato = ? AND citta = ? AND via = ? AND numeroCivico = ? AND cap = ?";
-        else query = "SELECT * FROM "+TABLE+" WHERE idindirizzo = ? AND stato = ? AND citta = ? AND via = ? AND numeroCivico = ? AND cap = ?";
+        if (addr.getIdIndirizzo() == 0) query = "SELECT * FROM "+TABLE+" WHERE stato = ? AND citta = ? AND via = ? AND numeroCivico = ? AND cap = ? AND quartiere = ?";
+        else query = "SELECT * FROM "+TABLE+" WHERE idindirizzo = ? AND stato = ? AND citta = ? AND via = ? AND numeroCivico = ? AND cap = ?  AND quartiere = ?";
 
         PreparedStatement stmt = connection.getStatment(query);
 
@@ -123,6 +130,11 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
             stmt.setString(++idx, addr.getVia());
             stmt.setString(++idx, addr.getNumeroCivico());
             stmt.setInt(++idx, addr.getCap());
+            if (addr.getQuartiere().isEmpty()) {
+                stmt.setString(++idx, addr.getQuartiere());
+            }else{
+                stmt.setString(++idx, null);
+            }
 
             connection.makeQuery(stmt);
 
@@ -138,7 +150,7 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
     @Override
     public boolean createAddress(Indirizzo indirizzo) throws DietiEstateException {
 
-        String query = "INSERT INTO "+TABLE+" (stato, citta, via, numerocivico, cap) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO "+TABLE+" (stato, citta, via, numerocivico, cap, quartiere) VALUES (?, ?, ?, ?, ?, ?)";
 
         PreparedStatement stmt = connection.getStatment(query);
 
@@ -149,6 +161,7 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
             stmt.setString(++idx, indirizzo.getVia());
             stmt.setString(++idx, indirizzo.getNumeroCivico());
             stmt.setInt(++idx, indirizzo.getCap());
+            stmt.setString(++idx, indirizzo.getQuartiere());
 
             connection.makeQueryUpdate(stmt);
             return true;

@@ -34,6 +34,7 @@ public class ManagementSenderNotifyRabbitMQ implements ManagementSenderNotifyMQ 
 
     }
 
+    @Override
     public void enQueueEstateNotify(String message) throws DietiEstateException {
         logger.info("[!] il messaggio inviato: " + message);
         try{

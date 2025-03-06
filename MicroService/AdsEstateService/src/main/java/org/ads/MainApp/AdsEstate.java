@@ -8,16 +8,19 @@ import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 
 import org.md.Estate.Estate;
+import org.rab.Interfacce.ManagementSenderNotifyMQ;
+import org.rab.Resource.Senders.ManagementSenderNotifyRabbitMQ;
+import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
 
-//TODO IMPORTARE MQ
-
 public class AdsEstate implements AdsEstateService {
 
-    private EstateDAO adEstate;
+    ManagementSenderNotifyMQ senderMQ;
 
-    //TODO RIFERIMENTO A MQ
+    public AdsEstate (ApplicationContext rabbitMQ){
+        senderMQ = rabbitMQ.getBean(ManagementSenderNotifyRabbitMQ.class);
+    }
 
     @Override
     public String createEstate(Estate estate) {
@@ -25,6 +28,7 @@ public class AdsEstate implements AdsEstateService {
         EstateDAO dao = new EstatePostgreDAO();
         try {
             dao.createEstate(estate);
+            senderMQ.enQueueEstateNotify("{}");
         }catch (DietiEstateException e) {
             return e.getMessage();
         }
