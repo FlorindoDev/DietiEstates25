@@ -1,9 +1,6 @@
 package org.not.API.Resource;
 
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Agent;
@@ -19,12 +16,22 @@ public class NotifyRestFulAPI implements NotifyAPI {
 
     @Override
     @Path("/getNotifyAcquirente")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getNotifyAcquirente(Acquirente acquirente) {
+    public String getNotifyAcquirente(@QueryParam("email") String email, @QueryParam("orderbydate") boolean order) {
 
-        String result = notify.getNotifyAcquirente(acquirente);
+        Acquirente acquirente = null;
+        String result = null;
+
+        if(email != null)acquirente = new Acquirente.Builder(0,email).build();
+
+
+        if(order){
+            result = notify.getNotifyAcquirente(acquirente, "Order by dataricezione DESC");
+        }else{
+            result = notify.getNotifyAcquirente(acquirente, " ");
+        }
+
         notify.close();
         return result;
     }

@@ -26,6 +26,7 @@
             <artifactId>DatabaseLib</artifactId>
             <version>1.0.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.exc</groupId>
             <artifactId>DietiEstateExceptions</artifactId>

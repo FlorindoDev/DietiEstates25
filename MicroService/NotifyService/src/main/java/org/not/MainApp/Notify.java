@@ -15,11 +15,11 @@ public class Notify implements NotifyService {
     private NotifyDAO notifyDAO = new NotifyPostgreDAO();
 
     @Override
-    public String getNotifyAcquirente(Acquirente acquirente) {
+    public String getNotifyAcquirente(Acquirente acquirente, String order) {
 
 
         try {
-            ArrayList<org.md.Notify.Notify> notifes = notifyDAO.getAllNotifyAcquirente(acquirente);
+            ArrayList<org.md.Notify.Notify> notifes = notifyDAO.getAllNotifyAcquirente(acquirente,order);
 
             return convertListNotifyToJson(notifes);
 
