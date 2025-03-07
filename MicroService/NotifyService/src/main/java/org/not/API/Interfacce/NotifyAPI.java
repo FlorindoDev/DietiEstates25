@@ -1,7 +1,6 @@
 package org.not.API.Interfacce;
 
 import jakarta.ws.rs.QueryParam;
-import org.md.Utente.Acquirente;
 import org.md.Utente.Agent;
 
 
