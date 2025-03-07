@@ -1,13 +1,6 @@
 package DBLib.Postgres;
 
-import java.io.InputStream;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 import java.util.logging.Logger;
-//file
-import org.json.JSONObject;
-
 //sql
 import java.sql.Connection;
 import java.sql.DriverManager;
