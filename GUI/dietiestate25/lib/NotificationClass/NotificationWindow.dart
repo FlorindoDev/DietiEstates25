@@ -13,7 +13,7 @@ class _NotificationWindowState extends State<NotificationWindow> {
 
   void initState() {
     super.initState();
-    notifications = HomeController.getNotify();
+    notifications = HomeController.getNotify(context);
   }
 
   @override
@@ -105,7 +105,9 @@ class _NotificationWindowState extends State<NotificationWindow> {
               return Text("errore");
             }
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                strokeWidth: 5,
+              ),
             );
           }),
     );

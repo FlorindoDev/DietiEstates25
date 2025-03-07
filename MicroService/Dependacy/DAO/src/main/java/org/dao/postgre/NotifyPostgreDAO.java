@@ -56,17 +56,25 @@ public class NotifyPostgreDAO implements NotifyDAO {
     }
 
     @Override
-    public ArrayList<Notify> getAllNotifyAcquirente(Acquirente acquirente) throws DietiEstateException {
+    public ArrayList<Notify> getAllNotifyAcquirente(Acquirente acquirente, String order) throws DietiEstateException {
 
         ArrayList<Notify> notifies = new ArrayList<>();
 
-        String query = "SELECT * FROM notifica where idacquirente = ? Order by dataricezione DESC";
-
-        acquirente = getAcquirente(acquirente.getEmail());
+        String query;
 
         try {
+
+
+            if(acquirente == null){
+                query = "SELECT * FROM notifica " + order;
+            }else{
+                query = "SELECT * FROM notifica where idacquirente = ? " + order;
+                acquirente = getAcquirente(acquirente.getEmail());
+            }
+
             PreparedStatement stmt = connection.getStatment(query);
-            stmt.setInt(1,acquirente.getIdUser());
+
+            if(acquirente != null) stmt.setInt(1,acquirente.getIdUser());
 
             connection.makeQuery(stmt);
 
