@@ -250,7 +250,7 @@ public class UtentePostgreDAO implements UtenteDAO {
 
             if(connection.hasNextRow()) throw new UserAlreadyExists();
             return true;
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
