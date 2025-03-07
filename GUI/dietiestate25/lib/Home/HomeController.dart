@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:dietiestate25/Model/Notify/AppointmentRejected.dart';
+import 'package:dietiestate25/Model/Notify/AppoitmentAccepted.dart';
 import 'package:http/http.dart' as http;
 import 'package:dietiestate25/Model/Utente/Utente.dart';
 import 'package:dietiestate25/Model/Notify/Notify.dart';
@@ -28,7 +30,11 @@ class HomeController {
     try {
       ris = json.decode(utf8.decode(response.bodyBytes));
       for (int i = 0; i < ris['Notify'].length; i++) {
-        notifies.add(Notify.fromJson(ris['Notify'][i]));
+        if (ris['Notify'][i]['message'] == 'Il tuo appuntamento è stato accettato') {
+          notifies.add(Appoitmentaccepted.fromJson(ris['Notify'][i]));
+        } else if (ris['Notify'][i]['message'] == 'Il tuo appuntamento è stato rifiutato') {
+          notifies.add(Appointmentrejected.fromJson(ris['Notify'][i]));
+        }
       }
     } catch (e) {
       return List<Notify>.empty();

@@ -18,4 +18,8 @@ class Notify {
   factory Notify.fromJson(Map<String, dynamic> json) {
     return Notify(idNotify: json['idNotify'], data: json['data'], dataRicezione: json['dataRicezione'], message: json['message'], tipo: json['tipo'], idEstate: json['estate']['idEstate'], idAcquirente: json['acquirente']['idUser']);
   }
+
+  bool isRifiutato() {
+    return true;
+  }
 }
