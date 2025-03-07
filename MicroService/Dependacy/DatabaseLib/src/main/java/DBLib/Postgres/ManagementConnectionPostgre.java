@@ -1,13 +1,6 @@
 package DBLib.Postgres;
 
-import java.io.InputStream;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 import java.util.logging.Logger;
-//file
-import org.json.JSONObject;
-
 //sql
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -35,28 +28,17 @@ public class ManagementConnectionPostgre {
     }
 
     public ManagementConnectionPostgre() {
-        readDataBaseAccessFile();
+        readEnvVariablesBaseAccessFile();
     }
 
-    private void readDataBaseAccessFile() {
+    private void readEnvVariablesBaseAccessFile(){
+        this.host = System.getenv("DB_HOST");
+        this.user = System.getenv("DB_USER");
+        this.password = System.getenv("DB_PASS");
+        this.port = System.getenv("DB_PORT");
+        this.database = System.getenv("DB_DATABASE_NAME");
+        this.keycrypt = System.getenv("DB_CRYPTKEY");
 
-        try {
-
-
-        InputStream inputStream = ManagementConnectionPostgre.class.getResourceAsStream("/credentialsPostgre.json");
-        String jsonString = new Scanner(inputStream, StandardCharsets.UTF_8).useDelimiter("\\A").next();
-        JSONObject json = new JSONObject(jsonString);
-
-        this.host = json.getString("host");
-        this.user = json.getString("user");
-        this.password = json.getString("password");
-        this.port = json.getString("port");
-        this.database = json.getString("database");
-        this.keycrypt = json.getString("keycrypt");
-        }catch (NullPointerException e){
-            logger.severe("[-] Errore nella lettura del file DB: " + e.getMessage());
-            System.exit(-1);
-        }
     }
 
     public void createConnection() {

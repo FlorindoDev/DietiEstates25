@@ -38,7 +38,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>credentialsPostgre.json</include> <!-- Includi tutti i file nella cartella resources -->
+                    <!-- Includi tutti i file nella cartella resources -->
                 </includes>
             </resource>
         </resources>
