@@ -60,7 +60,7 @@ public class NotifyPostgreDAO implements NotifyDAO {
 
         ArrayList<Notify> notifies = new ArrayList<>();
 
-        String query = "SELECT * FROM notifica where idacquirente = ?";
+        String query = "SELECT * FROM notifica where idacquirente = ? Order by dataricezione DESC";
 
         acquirente = getAcquirente(acquirente.getEmail());
 
