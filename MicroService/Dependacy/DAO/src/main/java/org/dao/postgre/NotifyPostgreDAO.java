@@ -78,17 +78,7 @@ public class NotifyPostgreDAO implements NotifyDAO {
             stmt.setInt(1, acquirente.getIdUser());
 
 
-            connection.makeQuery(stmt);
-
-            if(!connection.hasNextRow()) throw  new UserNotifyNotFound();
-
-            while(connection.hasNextRow()){
-
-                connection.nextRow();
-
-                notifies.add(initNotify(acquirente));
-
-            }
+            executeQuery(stmt, notifies, acquirente);
 
 
             return notifies;
@@ -98,6 +88,20 @@ public class NotifyPostgreDAO implements NotifyDAO {
         }
 
 
+    }
+
+    private void executeQuery(PreparedStatement stmt, ArrayList<Notify> notifies, Acquirente acquirente) throws SQLException, UserNotifyNotFound {
+        connection.makeQuery(stmt);
+
+        if(!connection.hasNextRow()) throw  new UserNotifyNotFound();
+
+        while(connection.hasNextRow()){
+
+            connection.nextRow();
+
+            notifies.add(initNotify(acquirente));
+
+        }
     }
 
     @Override
@@ -116,17 +120,7 @@ public class NotifyPostgreDAO implements NotifyDAO {
 
             stmt.setInt(1,acquirente.getIdUser());
 
-            connection.makeQuery(stmt);
-
-            if(!connection.hasNextRow()) throw  new UserNotifyNotFound();
-
-            while(connection.hasNextRow()){
-
-                connection.nextRow();
-
-                notifies.add(initNotify(acquirente));
-
-            }
+            executeQuery(stmt, notifies, acquirente);
 
 
             return notifies;
