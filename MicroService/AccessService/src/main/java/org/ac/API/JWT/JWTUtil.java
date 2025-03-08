@@ -22,7 +22,7 @@ public class JWTUtil {
     private JWTUtil(){}
     private static final Logger logger = Logger.getLogger(JWTUtil.class.getName());
 
-    public static String generateToken(String email, List<String> roles) {
+    public static String generateToken(String email, String role) {
         JsonNode rootNode = null;
         try {
 
@@ -40,7 +40,7 @@ public class JWTUtil {
 
         return Jwts.builder()
                 .claim("sub",email)
-                .claim("roles", roles)
+                .claim("kid", role)
                 .issuedAt(Date.from(Instant.now()))
                 .expiration(Date.from(Instant.now().plusMillis(rootNode.path("Exp").asInt())))
                 .signWith(key)
