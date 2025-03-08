@@ -9,6 +9,8 @@ public class Appointment extends Translate {
 
     protected int idAppointment;
     protected String data;
+    protected String esito;
+    protected String dataRichesta;
     protected Acquirente acquirente;
     protected Estate estate;
 
@@ -20,6 +22,24 @@ public class Appointment extends Translate {
         this.data = builder.data;
         this.acquirente = builder.acquirente;
         this.estate = builder.estate;
+        this.dataRichesta = builder.dataRichesta;
+        this.esito = builder.esito;
+    }
+
+    public String getDataRichesta() {
+        return dataRichesta;
+    }
+
+    public String getEsito() {
+        return esito;
+    }
+
+    public void setEsito(String esito) {
+        this.esito = esito;
+    }
+
+    public void setDataRichesta(String dataRichesta) {
+        this.dataRichesta = dataRichesta;
     }
 
     public void setIdAppointment(int idAppointment) {
@@ -63,6 +83,9 @@ public class Appointment extends Translate {
         protected String data = "";
         protected Acquirente acquirente = null;
         protected Estate estate = null;
+        protected String esito = "";
+
+        protected String dataRichesta = "";
 
         public Builder(int idAppointment){
             this.idAppointment = idAppointment;
@@ -70,6 +93,16 @@ public class Appointment extends Translate {
 
         public TypeBuilder setData(String data){
             this.data = data;
+            return self();
+        }
+
+        public TypeBuilder setEsito(String esito){
+            this.esito = esito;
+            return self();
+        }
+
+        public TypeBuilder setdataRichesta(String dataRichesta){
+            this.dataRichesta = dataRichesta;
             return self();
         }
 

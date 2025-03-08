@@ -18,6 +18,7 @@ import org.md.Utente.Utente;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -78,6 +79,8 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
                 Appointment appointment = new Appointment.Builder<>(connection.extractInt("idappuntamento"))
                         .setEstate(estate)
                         .setData(String.valueOf(connection.extractDate("data")))
+                        .setdataRichesta(String.valueOf(connection.extractDate("datarichiesta")))
+                        .setEsito(connection.extractString("esito"))
                         .setAcquirente(acquirente)
                         .build();
 
@@ -129,6 +132,8 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
                 Appointment appointment = new Appointment.Builder<>(connection.extractInt("idappuntamento"))
                         .setEstate(estate)
                         .setData(String.valueOf(connection.extractDate("data")))
+                        .setdataRichesta(String.valueOf(connection.extractDate("datarichiesta")))
+                        .setEsito(connection.extractString("esito"))
                         .setAcquirente((Acquirente) user)
                         .build();
 
@@ -170,7 +175,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
         Acquirente acquirente = getAcquirente(appointment);
 
-        String query = "INSERT INTO appuntamento(esito,data,idacquirente,idimmobile) VALUES (?,?,?,?)";
+        String query = "INSERT INTO appuntamento(esito,data,idacquirente,idimmobile,datarichiesta) VALUES (?,?,?,?,?)";
 
         try{
 
@@ -179,6 +184,7 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
             stmt.setDate(2, Date.valueOf(appointment.getData()));
             stmt.setInt(3, acquirente.getIdUser());
             stmt.setInt(4, appointment.getEstate().getIdEstate());
+            stmt.setDate(5, Date.valueOf(LocalDate.now()));
 
             connection.makeQueryUpdate(stmt);
 
