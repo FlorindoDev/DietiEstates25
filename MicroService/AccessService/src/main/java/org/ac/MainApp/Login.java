@@ -8,8 +8,6 @@ import org.dao.postgre.UtentePostgreDAO;
 import org.exc.DietiEstateException;
 import org.md.Utente.Utente;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class Login implements LoginService{
