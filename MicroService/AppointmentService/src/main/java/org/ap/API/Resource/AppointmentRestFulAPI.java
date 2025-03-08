@@ -8,8 +8,7 @@ import org.ap.MainApp.interfacce.AppointmentService;
 import org.md.Appointment.Appointment;
 import org.md.Appointment.AppointmentAccept;
 import org.md.Appointment.AppointmentReject;
-import org.md.Utente.Acquirente;
-import org.md.Utente.Agent;
+
 
 import jakarta.ws.rs.core.MediaType;
 

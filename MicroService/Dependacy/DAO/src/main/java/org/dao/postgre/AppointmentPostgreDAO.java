@@ -13,7 +13,6 @@ import org.exc.DietiEstateException;
 import org.md.Appointment.Appointment;
 import org.md.Estate.Estate;
 import org.md.Utente.Acquirente;
-import org.md.Utente.Agent;
 import org.md.Utente.Utente;
 
 import java.sql.Date;

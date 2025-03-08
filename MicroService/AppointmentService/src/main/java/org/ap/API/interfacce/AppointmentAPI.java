@@ -5,8 +5,7 @@ import org.ap.API.Resource.AppointmentQuery;
 import org.md.Appointment.Appointment;
 import org.md.Appointment.AppointmentAccept;
 import org.md.Appointment.AppointmentReject;
-import org.md.Utente.Acquirente;
-import org.md.Utente.Agent;
+
 
 public interface AppointmentAPI {
     String loadAppointmentAcquirente(@BeanParam AppointmentQuery query);
