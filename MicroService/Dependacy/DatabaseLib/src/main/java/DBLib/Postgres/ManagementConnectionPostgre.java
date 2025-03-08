@@ -60,7 +60,7 @@ public class ManagementConnectionPostgre {
         try {
             this.connection.close();
             this.connection = null;
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.severe("Error closing connection: " + e.getMessage());
         }
     }

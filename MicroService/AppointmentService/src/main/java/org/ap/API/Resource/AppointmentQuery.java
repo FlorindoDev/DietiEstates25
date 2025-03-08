@@ -21,7 +21,21 @@ public class AppointmentQuery implements QueryParametersAppointment {
     @DefaultValue("*")
     String columns;
 
+    @QueryParam("esiti")
+    @DefaultValue("'Da decidere','Rifiutato','Accettato'")
+    String esitiAppointment;
+
     // Getters e Setters
+
+    public List<String> getEsiti() {
+        return Arrays.asList(esitiAppointment.split(","));
+    }
+
+    @Override
+    public void setEsiti(String tipoAppointment) {
+        this.esitiAppointment = tipoAppointment;
+    }
+
     @Override
     public String getEmail() {
         return email;

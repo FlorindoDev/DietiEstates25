@@ -54,9 +54,9 @@ class HomeController {
     return notifies;
   }
 
-  static Future<List<Appointment>> getAppointment(dynamic context, String query) async {
+  static Future<List<Appointment>> getAppointment(dynamic context) async {
     http.Response response;
-    Uri uri = Uri.parse(urlAppointment + '?email=' + utente.email + '&orderbydate=true' + query);
+    Uri uri = Uri.parse(urlAppointment + '?email=' + utente.email + '&orderbydate=true');
 
     try {
       print(uri);

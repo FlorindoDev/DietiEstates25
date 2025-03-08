@@ -62,7 +62,7 @@ public class AppointmentManagement implements AppointmentService {
 
         try {
 
-            String query = factoryAppointment.selectQueryAcquirenteAllColumns();
+            String query = factoryAppointment.selectQueryAcquirenteAllColumns(parameters);
 
             ArrayList<Appointment> appointments = appointmentDAO.getAllAppointmentAcquirente(query, parameters);
 

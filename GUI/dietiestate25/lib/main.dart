@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
 
   static AppBar appBarNotBackable = AppBar(
     centerTitle: true,
-    toolbarHeight: 120,
+    toolbarHeight: 100,
     leadingWidth: 0,
     backgroundColor: Colors.white,
     automaticallyImplyLeading: false,
@@ -40,8 +40,8 @@ class MyApp extends StatelessWidget {
       children: [
         Image.asset(
           'images/logo/logo_piccolo.jpg',
-          height: 100,
-          width: 100,
+          height: 85,
+          width: 85,
         ),
         Row(
           children: [
