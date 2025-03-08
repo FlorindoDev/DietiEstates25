@@ -8,8 +8,6 @@ import org.dao.postgre.UtentePostgreDAO;
 import org.exc.DietiEstateException;
 import org.md.Utente.Utente;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class Login implements LoginService{
@@ -28,9 +26,9 @@ public class Login implements LoginService{
             String emailFromDB = userFromDB.getEmail();
 
 
-            List<String> roles = new ArrayList<>();
-            roles.add(userFromDB.getClass().getSimpleName());
-            return "{\"code\":0 , \"message\":\"" + JWTUtil.generateToken(emailFromDB, roles) + "\"}";
+
+            String role = userFromDB.getClass().getSimpleName();
+            return "{\"code\":0 , \"message\":\"" + JWTUtil.generateToken(emailFromDB, role) + "\"}";
 
 
         } catch (DietiEstateException e) {
