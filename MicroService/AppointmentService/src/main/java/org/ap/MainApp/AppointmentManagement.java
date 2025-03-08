@@ -78,6 +78,7 @@ public class AppointmentManagement implements AppointmentService {
     public String loadAppointmentAgent(QueryParametersAppointment parameters) {
 
         QueryFactoryAppointment factoryAppointment = new FactoryFilteredQueryAppointmentPostgres();
+
         try {
 
             String query = factoryAppointment.selectQueryAgentAllColumns();
