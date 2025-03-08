@@ -8,10 +8,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AppointmentQuery implements QueryParametersAppointment {
+
+
     @QueryParam("email")
     private String email;
 
     @QueryParam("orderbydate")
+    @DefaultValue("false")
     private boolean order;
 
     @QueryParam("columns")

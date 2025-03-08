@@ -23,6 +23,11 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
     @Produces(MediaType.TEXT_PLAIN)
     public String loadAppointmentAgent(@BeanParam AppointmentQuery query) {
 
+        String email = query.getEmail();
+        if(email == null || email.isEmpty()) {
+            return "{\"code\":-1, \"error\": \"email parameter is required\"}";
+        }
+
         String result = appointmentmanagement.loadAppointmentAgent(query);
         appointmentmanagement.close();
         return result;
@@ -33,6 +38,12 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
     @Path("/appointments/acquirente")
     @Produces(MediaType.TEXT_PLAIN)
     public String loadAppointmentAcquirente(@BeanParam AppointmentQuery query) {
+
+        String email = query.getEmail();
+        if(email == null || email.isEmpty()) {
+            return "{\"code\":-1, \"error\": \"email parameter is required\"}";
+        }
+
         String result = appointmentmanagement.loadAppointmentAcquirente(query);
         appointmentmanagement.close();
         return result;
