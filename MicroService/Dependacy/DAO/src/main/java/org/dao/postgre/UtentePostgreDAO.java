@@ -125,7 +125,7 @@ public class UtentePostgreDAO implements UtenteDAO {
         return user;
     }
 
-    public Utente getUserFromEmail(Utente utente) throws DietiEstateException {
+    public Utente getUserFromEmail(String emailUser) throws DietiEstateException {
 
         Utente user=null;
 
@@ -135,7 +135,6 @@ public class UtentePostgreDAO implements UtenteDAO {
                 " UNION " +
                 "SELECT idagente as id_user,email, 'Agent' AS user_type FROM agenteimmobiliare WHERE email like ? ";
 
-        String emailUser = utente.getEmail();
         try {
             PreparedStatement stmt = connection.getStatment(query);
             stmt.setString(1,emailUser);

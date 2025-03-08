@@ -7,7 +7,7 @@ import 'package:dietiestate25/Model/Notify/Notify.dart';
 import 'package:dietiestate25/main.dart';
 
 class HomeController {
-  static final String url = 'http://10.0.2.2:7008/notify/getNotifyAcquirente';
+  static final String url = 'http://10.0.2.2:7008/api/notifies/acquirente';
 
   static late final Utente utente;
 
@@ -16,6 +16,7 @@ class HomeController {
     Uri uri = Uri.parse(url + '?email=' + utente.email + '&orderbydate=true');
 
     try {
+      print(uri);
       // Fai la richiesta HTTP
       response = await http.get(
         uri, // URL valido

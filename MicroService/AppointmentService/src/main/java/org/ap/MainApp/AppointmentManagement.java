@@ -2,7 +2,10 @@ package org.ap.MainApp;
 
 import org.ap.MainApp.interfacce.AppointmentService;
 import org.dao.Interfacce.EstateDAO;
+import org.dao.Interfacce.Factory.QueryFactoryAppointment;
+import org.dao.Interfacce.Factory.QueryParametersAppointment;
 import org.dao.postgre.EstatePostgreDAO;
+import org.dao.postgre.Factory.FactoryFilteredQueryAppointmentPostgres;
 import org.md.Notify.Interfacce.NotifyAppointmentFactory;
 import org.md.Notify.Notify;
 import org.md.Notify.NotifyBasicAppointmentFactory;
@@ -16,8 +19,6 @@ import org.exc.DietiEstateException;
 import org.md.Appointment.Appointment;
 import org.md.Appointment.AppointmentAccept;
 import org.md.Appointment.AppointmentReject;
-import org.md.Utente.Acquirente;
-import org.md.Utente.Agent;
 import org.va.Validator;
 
 import java.util.ArrayList;
@@ -55,10 +56,15 @@ public class AppointmentManagement implements AppointmentService {
 
 
     @Override
-    public String loadAppointment(Acquirente user) {
+    public String loadAppointmentAcquirente(QueryParametersAppointment parameters) {
+
+        QueryFactoryAppointment factoryAppointment = new FactoryFilteredQueryAppointmentPostgres();
+
         try {
 
-            ArrayList<Appointment> appointments = appointmentDAO.getAllAppointment(user);
+            String query = factoryAppointment.selectQueryAcquirenteAllColumns();
+
+            ArrayList<Appointment> appointments = appointmentDAO.getAllAppointmentAcquirente(query, parameters);
 
             return ConvertListAppointmentToJson(appointments);
 
@@ -68,10 +74,15 @@ public class AppointmentManagement implements AppointmentService {
 
     }
 
-    public String loadAppointment(Agent user) {
+    @Override
+    public String loadAppointmentAgent(QueryParametersAppointment parameters) {
+
+        QueryFactoryAppointment factoryAppointment = new FactoryFilteredQueryAppointmentPostgres();
         try {
 
-            ArrayList<Appointment> appointments = appointmentDAO.getAllAppointment(user);
+            String query = factoryAppointment.selectQueryAgentAllColumns();
+
+            ArrayList<Appointment> appointments = appointmentDAO.getAllAppointmentAgent(query, parameters);
 
             return ConvertListAppointmentToJson(appointments);
 

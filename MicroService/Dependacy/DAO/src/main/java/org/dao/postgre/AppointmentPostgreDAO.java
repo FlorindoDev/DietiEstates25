@@ -3,6 +3,7 @@ package org.dao.postgre;
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AcquirenteDAO;
 import org.dao.Interfacce.AppointmentDAO;
+import org.dao.Interfacce.Factory.QueryParametersAppointment;
 import org.dao.Interfacce.UtenteDAO;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DataBaseException.UpdateAppointmentFail;
@@ -12,7 +13,6 @@ import org.exc.DietiEstateException;
 import org.md.Appointment.Appointment;
 import org.md.Estate.Estate;
 import org.md.Utente.Acquirente;
-import org.md.Utente.Agent;
 import org.md.Utente.Utente;
 
 import java.sql.Date;
@@ -34,23 +34,20 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
     }
 
     @Override
-    public ArrayList<Appointment> getAllAppointment(Agent agent) throws DietiEstateException {
+    public ArrayList<Appointment> getAllAppointmentAgent(String query, QueryParametersAppointment parameters) throws DietiEstateException {
 
         ArrayList<Appointment> appointments = new ArrayList<>();
 
         UtenteDAO utenteDAO = new UtentePostgreDAO(connection);
 
-        Utente user  = utenteDAO.getUserFromEmail(agent);
+        Utente user  = utenteDAO.getUserFromEmail(parameters.getEmail());
 
-        String query = "SELECT email as email_acquirente,idappuntamento,esito,data,idacquirente,idimmobile \n" +
-                "FROM \n" +
-                "\t(SELECT idacquirente as tmp_idacquirente,idappuntamento,esito,data,idimmobile \n" +
-                " \tFROM \n" +
-                " \t\t(SELECT idimmobile as tmp_idimmobile \n" +
-                "\t\t FROM immobile join agenteimmobiliare ON immobile.idagente = agenteimmobiliare.idagente \n" +
-                "\t\t\twhere agenteimmobiliare.idagente = ?) as tmp join appuntamento \n" +
-                "\t ON tmp.tmp_idimmobile = appuntamento.idimmobile) as tmp join acquirente\n" +
-                "ON tmp.tmp_idacquirente = acquirente.idacquirente";
+        if (parameters.isOrder()){
+            query = query + "DESC";
+        }else{
+            query = query + "ASC";
+        }
+
 
         try{
 
@@ -64,6 +61,8 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
         }
 
         try {
+            
+            if(!connection.hasNextRow()) throw new UserNotHaveAppointment();
             while (connection.hasNextRow()) {
 
                 connection.nextRow();
@@ -92,15 +91,19 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
     }
 
     @Override
-    public ArrayList<Appointment> getAllAppointment(Acquirente acquirente) throws DietiEstateException {
+    public ArrayList<Appointment> getAllAppointmentAcquirente(String query, QueryParametersAppointment parameters) throws DietiEstateException {
 
         ArrayList<Appointment> appointments = new ArrayList<>();
 
         UtenteDAO utenteDAO = new UtentePostgreDAO(connection);
 
-        Utente user  = utenteDAO.getUserFromEmail(acquirente);
+        Utente user  = utenteDAO.getUserFromEmail(parameters.getEmail());
 
-        String query = "SELECT * FROM appuntamento where idacquirente = ? ";
+        if (parameters.isOrder()){
+            query = query + "DESC";
+        }else{
+            query = query + "ASC";
+        }
 
         try{
 
