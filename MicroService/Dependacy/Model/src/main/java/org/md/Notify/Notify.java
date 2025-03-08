@@ -149,6 +149,11 @@ public class Notify extends Translate {
             return self();
         }
 
+        public typeBuilder setTipo(String tipo){
+            this.tipo = tipo;
+            return self();
+        }
+
         public typeBuilder setUser(Acquirente acquirente){
             this.acquirente = acquirente;
             return self();

@@ -1,5 +1,6 @@
 package org.ap.API.Resource;
 
+import jakarta.ws.rs.*;
 import org.ap.API.interfacce.AppointmentAPI;
 import org.ap.MainApp.AppointmentManagement;
 import org.ap.MainApp.Main;
@@ -10,42 +11,37 @@ import org.md.Appointment.AppointmentReject;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Agent;
 
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
-@Path("appointment")
+@Path("/api")
 public class AppointmentRestFulAPI implements AppointmentAPI {
 
     private final AppointmentService appointmentmanagement = new AppointmentManagement(Main.rabbitMQ);
 
     @Override
-    @POST
-    @Path("loadAppointmentAgent")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @GET
+    @Path("/appointments/agent")
     @Produces(MediaType.TEXT_PLAIN)
-    public String loadAppointment(Agent agent) {
-        String result = appointmentmanagement.loadAppointment(agent);
+    public String loadAppointmentAgent(@BeanParam AppointmentQuery query) {
+
+        String result = appointmentmanagement.loadAppointmentAgent(query);
+        appointmentmanagement.close();
+        return result;
+    }
+
+    @Override
+    @GET
+    @Path("/appointments/acquirente")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String loadAppointmentAcquirente(@BeanParam AppointmentQuery query) {
+        String result = appointmentmanagement.loadAppointmentAcquirente(query);
         appointmentmanagement.close();
         return result;
     }
 
     @Override
     @POST
-    @Path("loadAppointmentAcquirente")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String loadAppointment(Acquirente acquirente) {
-        String result = appointmentmanagement.loadAppointment(acquirente);
-        appointmentmanagement.close();
-        return result;
-    }
-
-    @Override
-    @POST
-    @Path("acceptAppointment")
+    @Path("/appointments/acceptAppointment")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String acceptAppointment(AppointmentAccept appointment) {
@@ -56,7 +52,7 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
 
     @Override
     @POST
-    @Path("declineAppointment")
+    @Path("/appointments/declineAppointment")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String declineAppointment(AppointmentReject appointment) {
@@ -67,7 +63,7 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
 
     @Override
     @POST
-    @Path("makeAppointment")
+    @Path("/appointments/makeAppointment")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String makeAppointment(Appointment appointment) {

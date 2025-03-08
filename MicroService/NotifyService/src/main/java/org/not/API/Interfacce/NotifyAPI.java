@@ -1,12 +1,13 @@
 package org.not.API.Interfacce;
 
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.BeanParam;
 import org.md.Utente.Agent;
+import org.not.API.Resource.NotifyQuery;
 
 
 public interface NotifyAPI {
     String getNotifyAgent(Agent agent);
 
-    String getNotifyAcquirente(@QueryParam("email") String email, @QueryParam("orderbydate") boolean order);
+    String getNotifyAcquirente(@BeanParam NotifyQuery query);
 
 }

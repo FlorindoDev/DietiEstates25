@@ -22,6 +22,9 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
         this.managerConnection.createConnection();
     }
 
+    public int countPlaceholders(String query) {
+        return query.length() - query.replace("?", "").length();
+    }
     @Override
     public void makeQuery(PreparedStatement stmt) throws SQLException {
 

@@ -2,6 +2,7 @@ package org.dao.postgre;
 
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AcquirenteDAO;
+import org.dao.Interfacce.Factory.QueryParametersNotify;
 import org.dao.Interfacce.NotifyDAO;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DataBaseException.UserNotifyNotFound;
@@ -15,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class NotifyPostgreDAO implements NotifyDAO {
@@ -55,26 +57,64 @@ public class NotifyPostgreDAO implements NotifyDAO {
 
     }
 
-    @Override
-    public ArrayList<Notify> getAllNotifyAcquirente(Acquirente acquirente, String order) throws DietiEstateException {
+    public List<Notify> getNotifyAcquirenteAllFilter(String query, QueryParametersNotify parameters) throws DietiEstateException {
 
         ArrayList<Notify> notifies = new ArrayList<>();
 
-        String query;
+        Acquirente acquirente;
 
         try {
 
-
-            if(acquirente == null){
-                query = "SELECT * FROM notifica " + order;
+            if (parameters.isOrder()){
+                query = query + "DESC";
             }else{
-                query = "SELECT * FROM notifica where idacquirente = ? " + order;
-                acquirente = getAcquirente(acquirente.getEmail());
+                query = query + "ASC";
             }
+
+            acquirente = getAcquirente(parameters.getEmail());
 
             PreparedStatement stmt = connection.getStatment(query);
 
-            if(acquirente != null) stmt.setInt(1,acquirente.getIdUser());
+            stmt.setInt(1, acquirente.getIdUser());
+
+
+            connection.makeQuery(stmt);
+
+            if(!connection.hasNextRow()) throw  new UserNotifyNotFound();
+
+            while(connection.hasNextRow()){
+
+                connection.nextRow();
+
+                notifies.add(initNotify(acquirente));
+
+            }
+
+
+            return notifies;
+
+        }catch (SQLException e){
+            throw new ErrorExecutingQuery();
+        }
+
+
+    }
+
+    @Override
+    public List<Notify> getNotifyAcquirenteNoFilter(Acquirente acquirente) throws DietiEstateException {
+
+        ArrayList<Notify> notifies = new ArrayList<>();
+
+        String query = "SELECT * FROM notifica where idacquirente = ?";
+
+
+        try {
+
+            acquirente = getAcquirente(acquirente.getEmail());
+
+            PreparedStatement stmt = connection.getStatment(query);
+
+            stmt.setInt(1,acquirente.getIdUser());
 
             connection.makeQuery(stmt);
 
@@ -102,11 +142,11 @@ public class NotifyPostgreDAO implements NotifyDAO {
 
         Estate estate = new Estate.Builder<>(connection.extractInt("idimmobile")).build();
 
-
         return new Notify.Builder<>(connection.extractString("messaggio"))
                 .setIdNotify(connection.extractInt("idnotifica"))
                 .setData(String.valueOf(connection.extractDate("data")))
                 .setDataRicezione(String.valueOf(connection.extractDate("dataricezione")))
+                .setTipo(connection.extractString("tiponotifica"))
                 .setEstate(estate)
                 .setUser(acquirente)
                 .build();

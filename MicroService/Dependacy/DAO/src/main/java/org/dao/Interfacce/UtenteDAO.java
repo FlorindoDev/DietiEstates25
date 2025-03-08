@@ -6,7 +6,7 @@ import org.exc.DietiEstateException;
 import org.md.Utente.Utente;
 
 public interface UtenteDAO {
-    public Utente getUserFromEmail(Utente utente) throws DietiEstateException;
+    public Utente getUserFromEmail(String email) throws DietiEstateException;
 
     Utente getUser(Utente utente) throws DietiEstateException;
 

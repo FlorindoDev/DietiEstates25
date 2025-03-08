@@ -9,40 +9,39 @@ import org.not.MainApp.Interfacce.NotifyService;
 import org.not.MainApp.Notify;
 
 
-@Path("/notify")
+@Path("/api")
 public class NotifyRestFulAPI implements NotifyAPI {
 
     NotifyService notify = new Notify();
 
     @Override
-    @Path("/getNotifyAcquirente")
+    @Path("/notifies/acquirente")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getNotifyAcquirente(@QueryParam("email") String email, @QueryParam("orderbydate") boolean order) {
+    public String getNotifyAcquirente(@BeanParam NotifyQuery query) {
 
-        Acquirente acquirente = null;
-        String result = null;
-
-        if(email != null)acquirente = new Acquirente.Builder(0,email).build();
+        String email = query.getEmail();
 
 
-        if(order){
-            result = notify.getNotifyAcquirente(acquirente, "Order by dataricezione DESC");
-        }else{
-            result = notify.getNotifyAcquirente(acquirente, " ");
+        if(email == null || email.isEmpty()) {
+            return "{\"code\":-1, \"error\": \"email parameter is required\"}";
         }
+
+        String result = notify.getNotifyAcquirente(query);
+
 
         notify.close();
         return result;
     }
 
     @Override
-    @Path("/getNotifyAgent")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/notifes/agent")
+    @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getNotifyAgent(Agent agent) {
-
         return null;
     }
 }
+
+
+

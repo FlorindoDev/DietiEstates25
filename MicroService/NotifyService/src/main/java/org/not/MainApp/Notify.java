@@ -1,25 +1,29 @@
 package org.not.MainApp;
 
+import org.dao.Interfacce.Factory.QueryParametersNotify;
 import org.dao.Interfacce.NotifyDAO;
+import org.dao.postgre.Factory.FactoryFilteredQueryNotifyPostgres;
 import org.dao.postgre.NotifyPostgreDAO;
 import org.exc.DietiEstateException;
-import org.md.Utente.Acquirente;
 import org.md.Utente.Agent;
 import org.not.MainApp.Interfacce.NotifyService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Notify implements NotifyService {
 
-    private NotifyDAO notifyDAO = new NotifyPostgreDAO();
+    private final NotifyDAO notifyDAO = new NotifyPostgreDAO();
 
     @Override
-    public String getNotifyAcquirente(Acquirente acquirente, String order) {
+    public String getNotifyAcquirente(QueryParametersNotify parameters) {
 
+        FactoryFilteredQueryNotifyPostgres queryFacotry = new FactoryFilteredQueryNotifyPostgres();
 
         try {
-            ArrayList<org.md.Notify.Notify> notifes = notifyDAO.getAllNotifyAcquirente(acquirente,order);
+
+            String query = queryFacotry.notifySelectQueryAllColumns();
+
+            List<org.md.Notify.Notify> notifes = notifyDAO.getNotifyAcquirenteAllFilter(query, parameters);
 
             return convertListNotifyToJson(notifes);
 

@@ -13,7 +13,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
   final String initialRoute;
 
   static const String fontApp = 'Goldbill-XLBold';
@@ -100,7 +99,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
 
         fontFamily: fontApp,
-        
+
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.white,
           primary: blu,
