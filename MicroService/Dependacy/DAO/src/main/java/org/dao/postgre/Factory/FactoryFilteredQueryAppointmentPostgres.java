@@ -12,7 +12,7 @@ public class FactoryFilteredQueryAppointmentPostgres implements QueryFactoryAppo
 
         query.append(" where idacquirente = ? ");
 
-        query.append(" Order by data ");
+        query.append(" Order by datarichiesta ");
 
         return query.toString();
     }
@@ -32,7 +32,7 @@ public class FactoryFilteredQueryAppointmentPostgres implements QueryFactoryAppo
         "\t ON tmp.tmp_idimmobile = appuntamento.idimmobile) as tmp join acquirente\n" +
                 "ON tmp.tmp_idacquirente = acquirente.idacquirente");
 
-        query.append(" Order by data ");
+        query.append(" Order by datarichiesta ");
 
         return query.toString();
 

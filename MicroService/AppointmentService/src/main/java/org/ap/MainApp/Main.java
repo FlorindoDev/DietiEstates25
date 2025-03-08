@@ -36,9 +36,9 @@ public class   Main {
         startServer();
         //TODO serve per la prova dopo eliminare
         Acquirente acquirente = new Acquirente.Builder(0,"utente1@email.com").build();
-        Estate estate = new Estate.Builder(3).build();
+        Estate estate = new Estate.Builder<>(3).build();
 
-        Appointment appointment= new Appointment.Builder(0)
+        Appointment appointment= new Appointment.Builder<>(0)
                 .setAcquirente(acquirente)
                 .setData("2025-11-11")
                 .setEstate(estate)
