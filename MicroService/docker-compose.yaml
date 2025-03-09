@@ -1,7 +1,7 @@
 services:
   access-service:
     image: access_micro_service:1.0.0
-    container_name: access_service
+    container_name: accessService
     networks:
       - dieti-net
     ports:
