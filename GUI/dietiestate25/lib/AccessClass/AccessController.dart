@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dietiestate25/Home/HomeController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:dietiestate25/main.dart';
@@ -15,10 +14,12 @@ import 'package:dietiestate25/Validation/Validetor.dart';
 import 'package:dietiestate25/AccessClass/LoginWindow.dart';
 import 'package:dietiestate25/AccessClass/SingUpWindow.dart';
 
+import 'package:dietiestate25/Connection/Connection.dart';
+
 class AccessController {
   //static final url = Uri.parse("http://api.florindodev.site/makeLogin");
   //static final url = Uri.parse("http://127.0.0.1:7001/login/makeLogin");
-  static final url = Uri.parse("http://10.0.2.2:7001/login/makeLogin");
+  // static final url = Uri.parse("http://10.0.2.2:7001/login/makeLogin");
 
   static String token = "";
   static Validator valida = Validate();
@@ -34,34 +35,14 @@ class AccessController {
   );
 
   static Future<dynamic> richiestaLogin(Utente utente) async {
-    http.Response response;
-
     print(jsonEncode(utente.toJson()));
 
-    try {
-      // Fai la richiesta HTTP
-      response = await http.post(
-        url, // URL valido
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(utente.toJson()),
-      ); //as http.Response;
+    http.Response? response = await Connection.makeLogin(utente.toJson());
 
-      print("1");
-    } catch (e) {
-      //print(e.toString());
-      // Se c'è un errore di connessione, rilancia con un messaggio specifico
-      //throw Exception("Servizio non attualmente disponibile, prova tra qualche minuto");
-      return null;
+    if (response != null) {
+      return json.decode(response.body);
     }
-
-    // Controlla se lo statusCode non è 200 (OK)
-    dynamic ris;
-    try {
-      ris = json.decode(response.body);
-    } catch (e) {
-      return null;
-    }
-    return ris;
+    return null;
   }
 
   static bool toLogin(Utente utente, dynamic context) {
@@ -72,17 +53,20 @@ class AccessController {
     richiestaLogin(utente).then((risultato) {
       //risultato = json.decode(risultato);
       if (risultato == null) {
-        MyApp.mostraPopUpInformativo(context, "Attenzione", "Servizio non attualmente disponibile, prova tra qualche minuto");
+        MyApp.mostraPopUpInformativo(context, "Attenzione",
+            "Servizio non attualmente disponibile, prova tra qualche minuto");
         return false;
       } else if (risultato['code'] == 1) {
-        MyApp.mostraPopUpInformativo(context, "Attenzione", risultato['message']);
+        MyApp.mostraPopUpInformativo(
+            context, "Attenzione", risultato['message']);
         return false;
       } else if (risultato['code'] == 0) {
         print('1');
         scriviJWTInFile(risultato['message']);
         HomeController.utente = utente;
         print('12');
-        MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
+        MyApp.mostraPopUpInformativo(
+            context, "Complimenti", "Login Effettuato!");
         print('13');
         Navigator.of(context).pop();
         Navigator.of(context).pushNamed(RouteWindows.homeWindow);
@@ -134,15 +118,18 @@ class AccessController {
   }
 
   static MaterialPageRoute<dynamic> goToSignUpWindow() {
-    return MaterialPageRoute(builder: (_) => SingUpWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(
+        builder: (_) => SingUpWindow(appbar: MyApp.appBarNotBackable));
   }
 
   static MaterialPageRoute<dynamic> goToLoginWindow() {
-    return MaterialPageRoute(builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(
+        builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
   }
 
   static MaterialPageRoute<dynamic> goToCreateAgencyWindow() {
-    return MaterialPageRoute(builder: (_) => CreateAgencyWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(
+        builder: (_) => CreateAgencyWindow(appbar: MyApp.appBarNotBackable));
   }
 
   // Future<void> readAssetFile() async {
@@ -152,11 +139,21 @@ class AccessController {
 
   static Future<bool> checkLogin() async {
     try {
-      String content = await rootBundle.loadString('assets/storage.json');
-      Map<String, dynamic> jsonData = jsonDecode(content);
-      print(content);
-      //INVIO A KONG PER LA VALIDAZIONE DEL JWT
-      return true;
+      http.Response? response = await Connection.validateJwtRequest();
+
+      String? body;
+      int? code;
+      if (response != null) {
+        body = response.body;
+        code = response.statusCode;
+      }
+      print("RICHIESTA PRE LOGIN EFFETTUATA: $body $code");
+
+      if (response != null && response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       print("Errore: $e");
       return false;

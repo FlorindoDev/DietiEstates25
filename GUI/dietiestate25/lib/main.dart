@@ -1,14 +1,16 @@
+import 'package:dietiestate25/Connection/Connection.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/AccessClass/LoginWindow.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/AccessClass/AccessController.dart';
 // import 'package:dietiestate25/Home/HomeController.dart';
 import 'package:dietiestate25/Home/HomeWindow.dart';
+import 'package:dietiestate25/Connection/Connection.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Assicura l'inizializzazione di Flutter
+  await Connection.init();
   String initialRoute = await RouteWindows.checkLogin();
-  print("[var] " + initialRoute);
   runApp(MyApp(initialRoute: initialRoute));
 }
 
@@ -65,7 +67,8 @@ class MyApp extends StatelessWidget {
     ),
   );
 
-  static void mostraPopUpInformativo(dynamic context, String titolo, String messaggio) {
+  static void mostraPopUpInformativo(
+      dynamic context, String titolo, String messaggio) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
