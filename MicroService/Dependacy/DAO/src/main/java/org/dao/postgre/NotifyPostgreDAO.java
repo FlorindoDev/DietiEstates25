@@ -164,7 +164,7 @@ public class NotifyPostgreDAO implements NotifyDAO {
 
     @Override
     public void close(){
-        if(connection !=null) {
+        if(connection != null) {
             connection.close();
         }
     }

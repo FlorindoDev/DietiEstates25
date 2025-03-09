@@ -71,12 +71,15 @@ public class NotifySenders {
 
     private Agent getAgent(AppuntamentoDaConfermare notification) throws DietiEstateException {
         EstateDAO estateDAO = new EstatePostgreDAO();
-        return estateDAO.getAgent(notification.getEstate());
+        Agent agent = estateDAO.getAgent(notification.getEstate());
+        estateDAO.close();
+        return agent;
     }
 
     private void createNotifyOnDB(Notify notification) throws DietiEstateException {
         NotifyDAO notifyDAO = new NotifyPostgreDAO();
         notifyDAO.createNotify(notification);
+        notifyDAO.close();
     }
 
     private Email getEmail(Notify notification, EmailSender senderEmail, String emailUser,String fileNameHtml) throws DietiEstateException {
