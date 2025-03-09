@@ -18,11 +18,15 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
     private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private static final String TABLE = "agenteimmobiliare";
 
-    private final CommunicationWithPostgre connection;
+
     private static final Logger logger = Logger.getLogger(AgentPostgreDAO.class.getName());
 
     public AgentPostgreDAO() {
-        connection = new CommunicationWithPostgre();
+        super();
+    }
+
+    public AgentPostgreDAO(CommunicationWithPostgre connection) {
+        super(connection);
     }
 
     @Override

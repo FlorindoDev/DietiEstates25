@@ -60,124 +60,114 @@ class _LoginWindowState extends State<LoginWindow> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: widget.appbar,
-      body: FutureBuilder(
-        future: init,
-        builder: (context, snapshot) {
-          return Container(
-            decoration: const BoxDecoration(
-              color: MyApp.panna,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              ),
-            ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.of(context)
-                              .pushNamed(RouteWindows.createAgencyWindow);
-                        },
-                        style: AccessController.clickable_style_button,
-                        child: const Text('Crea Agenzia'),
-                      ),
-                      const SizedBox(width: 10), // Spazio tra i pulsanti
-                      ElevatedButton(
-                        onPressed: null,
-                        style: AccessController.not_clickable_style_button,
-                        child: const Text('Login'),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.of(context)
-                              .pushNamed(RouteWindows.singUpWindow);
-                        },
-                        style: AccessController.clickable_style_button,
-                        child: const Text('Sign Up'),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 40),
-                    child: Column(
-                      children: [
-                        TextField(
-                          style: MyApp.stile_testo_solo_nero,
-                          decoration: InputDecoration(
-                            icon: const Icon(Icons.alternate_email_rounded),
-                            iconColor: MyApp.blu,
-                            label: const Text('Email'),
-                            border: const OutlineInputBorder(),
-                          ),
-                          onChanged: (e) {
-                            utente.email = e;
-                            campiCompilatiControl();
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        TextField(
-                          obscureText: _obscureText,
-                          style: MyApp.stile_testo_solo_nero,
-                          decoration: InputDecoration(
-                            icon: const Icon(Icons.key_sharp),
-                            iconColor: MyApp.blu,
-                            label: const Text('Password'),
-                            border: const OutlineInputBorder(),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _obscureText
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _obscureText = !_obscureText;
-                                });
-                              },
-                            ),
-                          ),
-                          onChanged: (p) {
-                            utente.password = p;
-                            campiCompilatiControl();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+      body: Container(
+        decoration: const BoxDecoration(
+          color: MyApp.panna,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
                   ElevatedButton(
-                    onPressed: isCampiCompilati
-                        ? () {
-                            try {
-                              print("Prima");
-                              AccessController.toLogin(utente, context);
-                              print("Dopo");
-                            } catch (e) {
-                              print("Entro");
-                              MyApp.mostraPopUpInformativo(
-                                  context, "Attenzione", e.toString());
-                              print("Esco");
-                            }
-                          }
-                        : null,
-                    style: ButtonStyle(
-                      backgroundColor: coloreBottoneAccedi,
-                      foregroundColor: MaterialStateProperty.all(Colors.white),
-                    ),
-                    child: const Text('Accedi'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed(RouteWindows.createAgencyWindow);
+                    },
+                    style: AccessController.clickable_style_button,
+                    child: const Text('Crea Agenzia'),
+                  ),
+                  const SizedBox(width: 10), // Spazio tra i pulsanti
+                  ElevatedButton(
+                    onPressed: null,
+                    style: AccessController.not_clickable_style_button,
+                    child: const Text('Login'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed(RouteWindows.singUpWindow);
+                    },
+                    style: AccessController.clickable_style_button,
+                    child: const Text('Sign Up'),
                   ),
                 ],
               ),
-            ),
-          );
-        },
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 40),
+                child: Column(
+                  children: [
+                    TextField(
+                      style: MyApp.stile_testo_solo_nero,
+                      decoration: InputDecoration(
+                        icon: const Icon(Icons.alternate_email_rounded),
+                        iconColor: MyApp.blu,
+                        label: const Text('Email'),
+                        border: const OutlineInputBorder(),
+                      ),
+                      onChanged: (e) {
+                        utente.email = e;
+                        campiCompilatiControl();
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      obscureText: _obscureText,
+                      style: MyApp.stile_testo_solo_nero,
+                      decoration: InputDecoration(
+                        icon: const Icon(Icons.key_sharp),
+                        iconColor: MyApp.blu,
+                        label: const Text('Password'),
+                        border: const OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureText ? Icons.visibility_off : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                        ),
+                      ),
+                      onChanged: (p) {
+                        utente.password = p;
+                        campiCompilatiControl();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                onPressed: isCampiCompilati
+                    ? () {
+                        try {
+                          print("Prima");
+                          AccessController.toLogin(utente, context);
+                          print("Dopo");
+                        } catch (e) {
+                          print("Entro");
+                          MyApp.mostraPopUpInformativo(context, "Attenzione", e.toString());
+                          print("Esco");
+                        }
+                      }
+                    : null,
+                style: ButtonStyle(
+                  backgroundColor: coloreBottoneAccedi,
+                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                ),
+                child: const Text('Accedi'),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

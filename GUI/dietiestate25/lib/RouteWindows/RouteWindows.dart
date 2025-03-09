@@ -16,13 +16,10 @@ class RouteWindows {
   }
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    
     print("[settings name] ${settings.name}");
 
     if (settings.name != '/') {
-
       switch (settings.name) {
-
         case RouteWindows.loginWindow:
           return AccessController.goToLoginWindow();
 
@@ -32,15 +29,13 @@ class RouteWindows {
         case RouteWindows.createAgencyWindow:
           return AccessController.goToCreateAgencyWindow();
 
-        case RouteWindows.homeWindow: // 👉 Aggiunto il caso HomeWindow
-          return MaterialPageRoute(
-              builder: (_) => HomeWindow(appbar: MyApp.appBarNotBackable));
+        case RouteWindows.homeWindow:
+          return MaterialPageRoute(builder: (_) => HomeWindow(appbar: MyApp.appBarNotBackable));
       }
     } else {
       print("[d] not initilaized route");
     }
 
-      return MaterialPageRoute(
-          builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
   }
 }
