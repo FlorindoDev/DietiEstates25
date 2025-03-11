@@ -26,6 +26,12 @@ public class FactoryFilteredQueryAppointmentPostgres implements QueryFactoryAppo
 
         query.append(" Order by datarichiesta ");
 
+        if (parameters.isOrder()){
+            query.append("DESC");
+        }else{
+            query.append("ASC");
+        }
+
         return query.toString();
     }
 

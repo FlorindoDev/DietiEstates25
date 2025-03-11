@@ -10,8 +10,6 @@ import java.util.List;
 public interface NotifyDAO {
     void createNotify(Notify notify) throws DietiEstateException;
 
-    List<Notify> getNotifyAcquirenteNoFilter(Acquirente acquirente) throws DietiEstateException;
-
     List<Notify> getNotifyAcquirenteAllFilter(String query, QueryParametersNotify parameters) throws DietiEstateException;
 
     void close();
