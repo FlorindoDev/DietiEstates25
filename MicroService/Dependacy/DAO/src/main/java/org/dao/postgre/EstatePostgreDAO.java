@@ -33,11 +33,11 @@ public class EstatePostgreDAO implements EstateDAO {
 
     private static final Logger logger = Logger.getLogger(EstatePostgreDAO.class.getName());
 
-    AgentDAO agentDAO;
+    private final AgentDAO agentDAO;
 
     public EstatePostgreDAO() {
         this.connection = new CommunicationWithPostgre();
-        agentDAO = new AgentPostgreDAO();
+        this.agentDAO = new AgentPostgreDAO();
     }
 
     @Override
@@ -351,6 +351,7 @@ public class EstatePostgreDAO implements EstateDAO {
     @Override
     public void close(){
         if(connection != null)connection.close();
+        agentDAO.close();
     }
 
 

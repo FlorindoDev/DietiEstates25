@@ -21,7 +21,7 @@ public class Notify implements NotifyService {
 
         try {
 
-            String query = queryFacotry.notifySelectQueryAllColumns();
+            String query = queryFacotry.notifySelectQueryAllColumns(parameters);
 
             List<org.md.Notify.Notify> notifes = notifyDAO.getNotifyAcquirenteAllFilter(query, parameters);
 

@@ -15,7 +15,7 @@ class HomeController {
 
   static final String urlAppointment = 'http://10.0.2.2:7006/api/appointments/acquirente';
 
-  static late final Utente utente;
+  static late Utente utente;
 
   static Future<List<Notify>> getNotify(dynamic context) async {
     http.Response response;

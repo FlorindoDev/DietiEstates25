@@ -65,12 +65,6 @@ public class NotifyPostgreDAO implements NotifyDAO {
 
         try {
 
-            if (parameters.isOrder()){
-                query = query + "DESC";
-            }else{
-                query = query + "ASC";
-            }
-
             acquirente = getAcquirente(parameters.getEmail());
 
             PreparedStatement stmt = connection.getStatment(query);
@@ -104,33 +98,6 @@ public class NotifyPostgreDAO implements NotifyDAO {
         }
     }
 
-    @Override
-    public List<Notify> getNotifyAcquirenteNoFilter(Acquirente acquirente) throws DietiEstateException {
-
-        ArrayList<Notify> notifies = new ArrayList<>();
-
-        String query = "SELECT * FROM notifica where idacquirente = ?";
-
-
-        try {
-
-            acquirente = getAcquirente(acquirente.getEmail());
-
-            PreparedStatement stmt = connection.getStatment(query);
-
-            stmt.setInt(1,acquirente.getIdUser());
-
-            executeQuery(stmt, notifies, acquirente);
-
-
-            return notifies;
-
-        }catch (SQLException e){
-            throw new ErrorExecutingQuery();
-        }
-
-
-    }
 
     private Notify initNotify(Acquirente acquirente) {
 
@@ -164,7 +131,7 @@ public class NotifyPostgreDAO implements NotifyDAO {
 
     @Override
     public void close(){
-        if(connection !=null) {
+        if(connection != null) {
             connection.close();
         }
     }

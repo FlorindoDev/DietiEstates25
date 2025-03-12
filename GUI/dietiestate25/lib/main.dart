@@ -67,8 +67,7 @@ class MyApp extends StatelessWidget {
     ),
   );
 
-  static void mostraPopUpInformativo(
-      dynamic context, String titolo, String messaggio) {
+  static void mostraPopUpInformativo(dynamic context, String titolo, String messaggio) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -93,7 +92,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: titleApp,
-      initialRoute: RouteWindows.loginWindow,
+      initialRoute: initialRoute,
       onGenerateRoute: RouteWindows.generateRoute,
       //darkTheme: ThemeData.dark(),
       theme: ThemeData(

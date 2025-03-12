@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dietiestate25/Home/HomeController.dart';
+import 'package:dietiestate25/Home/HomeWindow.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
@@ -53,20 +54,17 @@ class AccessController {
     richiestaLogin(utente).then((risultato) {
       //risultato = json.decode(risultato);
       if (risultato == null) {
-        MyApp.mostraPopUpInformativo(context, "Attenzione",
-            "Servizio non attualmente disponibile, prova tra qualche minuto");
+        MyApp.mostraPopUpInformativo(context, "Attenzione", "Servizio non attualmente disponibile, prova tra qualche minuto");
         return false;
       } else if (risultato['code'] == 1) {
-        MyApp.mostraPopUpInformativo(
-            context, "Attenzione", risultato['message']);
+        MyApp.mostraPopUpInformativo(context, "Attenzione", risultato['message']);
         return false;
       } else if (risultato['code'] == 0) {
         print('1');
         scriviJWTInFile(risultato['message']);
         HomeController.utente = utente;
         print('12');
-        MyApp.mostraPopUpInformativo(
-            context, "Complimenti", "Login Effettuato!");
+        MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
         print('13');
         Navigator.of(context).pop();
         Navigator.of(context).pushNamed(RouteWindows.homeWindow);
@@ -118,18 +116,15 @@ class AccessController {
   }
 
   static MaterialPageRoute<dynamic> goToSignUpWindow() {
-    return MaterialPageRoute(
-        builder: (_) => SingUpWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(builder: (_) => SingUpWindow(appbar: MyApp.appBarNotBackable));
   }
 
   static MaterialPageRoute<dynamic> goToLoginWindow() {
-    return MaterialPageRoute(
-        builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
   }
 
   static MaterialPageRoute<dynamic> goToCreateAgencyWindow() {
-    return MaterialPageRoute(
-        builder: (_) => CreateAgencyWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(builder: (_) => CreateAgencyWindow(appbar: MyApp.appBarNotBackable));
   }
 
   // Future<void> readAssetFile() async {
@@ -150,6 +145,23 @@ class AccessController {
       print("RICHIESTA PRE LOGIN EFFETTUATA: $body $code");
 
       if (response != null && response.statusCode == 200) {
+        // Dividi il token in 3 parti
+        List<String> parts = Connection.jwt!.split('.');
+        if (parts.length != 3) {
+          throw Exception("Token non valido");
+        }
+
+        String payloadBase64 = parts[1];
+
+        String normalized = base64Url.normalize(payloadBase64);
+        String decoded = utf8.decode(base64Url.decode(normalized));
+
+        Map<String, dynamic> payloadMap = json.decode(decoded);
+
+        String email = payloadMap["sub"];
+        Utente utente = Utente.builder.setId("").setEmail(email).build();
+        HomeController.utente = utente;
+
         return true;
       } else {
         return false;

@@ -17,16 +17,14 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
     private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private static final String TABLE = "acquirente";
 
-    private final CommunicationWithPostgre connection;
-
     private static final Logger logger = Logger.getLogger(AcquirentePostgreDAO.class.getName());
 
     public AcquirentePostgreDAO() {
-        connection = new CommunicationWithPostgre();
+        super();
     }
 
     public AcquirentePostgreDAO(CommunicationWithPostgre connection) {
-        this.connection = connection;
+       super(connection);
     }
 
     @Override
