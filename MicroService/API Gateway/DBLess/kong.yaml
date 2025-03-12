@@ -17,21 +17,21 @@ consumers:
 jwt_secrets:
   - consumer:
       id: 43371078-334f-4f56-a85f-72220787fdb4
-    key: agent
+    key: Agent
     secret: >-
       d48b0dc42339b9effa2026c6dae4b9291b717305302547bfa4e9cd7176cdc7fb92b8b8bd9cc1d17a164255dc0a3bbaa4
     algorithm: HS512
 
   - consumer:
       id: 43371078-334f-4f56-a85f-72220787fdb6
-    key: acquirente
+    key: Acquirente
     secret: >-
       d48b0dc42339b9effa2026c6dae4b9291b717305302547bfa4e9cd7176cdc7fb92b8b8bd9cc1d17a164255dc0a3bbaa4
     algorithm: HS512
 
   - consumer:
       id: 43371078-334f-4f56-a85f-72220787fdb8
-    key: admin
+    key: Admin
     secret: >-
       d48b0dc42339b9effa2026c6dae4b9291b717305302547bfa4e9cd7176cdc7fb92b8b8bd9cc1d17a164255dc0a3bbaa4
     algorithm: HS512
