@@ -25,13 +25,20 @@ public class FactoryFilteredQueryNotifyPostgres implements QueryFactoryNotify {
         return query.toString();
     }
 
-    public String notifySelectQueryAllColumns() {
+    public String notifySelectQueryAllColumns(QueryParametersNotify parameters) {
 
         StringBuilder query = new StringBuilder("SELECT * FROM notifica ");
 
         query.append(" where idacquirente = ? ");
 
         query.append(" Order by dataricezione ");
+
+        if (parameters.isOrder()){
+            query.append("DESC");
+        }else{
+            query.append("ASC");
+        }
+
 
         return query.toString();
     }

@@ -43,12 +43,6 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
         Utente user  = utenteDAO.getUserFromEmail(parameters.getEmail());
 
-        if (parameters.isOrder()){
-            query = query + "DESC";
-        }else{
-            query = query + "ASC";
-        }
-
 
         try{
 
@@ -102,11 +96,6 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
         Utente user  = utenteDAO.getUserFromEmail(parameters.getEmail());
 
-        if (parameters.isOrder()){
-            query = query + "DESC";
-        }else{
-            query = query + "ASC";
-        }
 
         try{
 
