@@ -2,36 +2,36 @@ _format_version: "1.1"  # La versione corretta del formato dichiarativo
 
 consumers:
   - id: 43371078-334f-4f56-a85f-72220787fdb4
-    username: Agent
+    username: agent
     username_lower: agent
     type: 0
   - id: 43371078-334f-4f56-a85f-72220787fdb6
-    username: Acquirente
+    username: acquirente
     username_lower: acquirente
     type: 0
   - id: 43371078-334f-4f56-a85f-72220787fdb8
-    username: Admin
+    username: admin
     username_lower: admin
     type: 0
 
 jwt_secrets:
   - consumer:
       id: 43371078-334f-4f56-a85f-72220787fdb4
-    key: Agent
+    key: agent
     secret: >-
       d48b0dc42339b9effa2026c6dae4b9291b717305302547bfa4e9cd7176cdc7fb92b8b8bd9cc1d17a164255dc0a3bbaa4
     algorithm: HS512
 
   - consumer:
       id: 43371078-334f-4f56-a85f-72220787fdb6
-    key: Acquirente
+    key: acquirente
     secret: >-
       d48b0dc42339b9effa2026c6dae4b9291b717305302547bfa4e9cd7176cdc7fb92b8b8bd9cc1d17a164255dc0a3bbaa4
     algorithm: HS512
 
   - consumer:
       id: 43371078-334f-4f56-a85f-72220787fdb8
-    key: Admin
+    key: admin
     secret: >-
       d48b0dc42339b9effa2026c6dae4b9291b717305302547bfa4e9cd7176cdc7fb92b8b8bd9cc1d17a164255dc0a3bbaa4
     algorithm: HS512
@@ -42,7 +42,6 @@ routes:
     preserve_host: false
     methods:
       - GET
-      - POST
     strip_path: true
     request_buffering: true
     response_buffering: true
