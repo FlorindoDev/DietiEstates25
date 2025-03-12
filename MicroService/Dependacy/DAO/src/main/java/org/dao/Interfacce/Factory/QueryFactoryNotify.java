@@ -4,6 +4,6 @@ public interface QueryFactoryNotify {
 
     String notifySelectQueryAllFilter(QueryParametersNotify paramters);
 
-    String notifySelectQueryAllColumns();
+    String notifySelectQueryAllColumns(QueryParametersNotify parameters);
 
 }

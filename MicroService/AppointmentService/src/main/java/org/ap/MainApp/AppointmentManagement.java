@@ -25,19 +25,17 @@ import java.util.ArrayList;
 
 public class AppointmentManagement implements AppointmentService {
 
-    private final AppointmentDAO appointmentDAO;
+    private AppointmentDAO appointmentDAO;
 
     private final NotifyAppointmentFactory factory;
 
     private final ManagementSenderNotifyMQ senderMQ;
 
-    private final EstateDAO estateDAO;
+    private EstateDAO estateDAO;
 
 
     public AppointmentManagement(ApplicationContext rabbitMQ) {
         senderMQ = rabbitMQ.getBean(ManagementSenderNotifyRabbitMQ.class);
-        appointmentDAO = new AppointmentPostgreDAO();
-        estateDAO = new EstatePostgreDAO();
         factory = new NotifyBasicAppointmentFactory();
     }
 
@@ -58,6 +56,8 @@ public class AppointmentManagement implements AppointmentService {
     @Override
     public String loadAppointmentAcquirente(QueryParametersAppointment parameters) {
 
+        appointmentDAO = new AppointmentPostgreDAO();
+
         QueryFactoryAppointment factoryAppointment = new FactoryFilteredQueryAppointmentPostgres();
 
         try {
@@ -77,6 +77,8 @@ public class AppointmentManagement implements AppointmentService {
     @Override
     public String loadAppointmentAgent(QueryParametersAppointment parameters) {
 
+        appointmentDAO = new AppointmentPostgreDAO();
+
         QueryFactoryAppointment factoryAppointment = new FactoryFilteredQueryAppointmentPostgres();
 
         try {
@@ -94,6 +96,8 @@ public class AppointmentManagement implements AppointmentService {
 
     @Override
     public String acceptAppointment(AppointmentAccept appointment) {
+
+        appointmentDAO = new AppointmentPostgreDAO();
 
         try {
 
@@ -113,6 +117,8 @@ public class AppointmentManagement implements AppointmentService {
     @Override
     public String declineAppointment(AppointmentReject appointment) {
 
+        appointmentDAO = new AppointmentPostgreDAO();
+
         try {
 
             appointmentDAO.updateStatusAppointment(appointment);
@@ -131,6 +137,9 @@ public class AppointmentManagement implements AppointmentService {
 
     @Override
     public String makeAppointment(Appointment appointment) {
+
+        appointmentDAO = new AppointmentPostgreDAO();
+        estateDAO = new EstatePostgreDAO();
 
         try {
             //TODO METTERE NELLA CODA DI MESSAGGI LA NOTIFICA
@@ -156,7 +165,7 @@ public class AppointmentManagement implements AppointmentService {
 
     @Override
     public void close() {
-        appointmentDAO.close();
-        estateDAO.close();
+        if(appointmentDAO != null)appointmentDAO.close();
+        if(estateDAO != null)estateDAO.close();
     }
 }

@@ -17,15 +17,15 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private static final String TABLE = "amministratore";
 
-    private final CommunicationWithPostgre connection;
+
     private static final Logger logger = Logger.getLogger(AdminPostgreDAO.class.getName());
 
     public AdminPostgreDAO() {
-        connection = new CommunicationWithPostgre();
+        super();
     }
 
     public AdminPostgreDAO(CommunicationWithPostgre connection) {
-        this.connection = connection;
+        super(connection);
     }
 
     @Override
