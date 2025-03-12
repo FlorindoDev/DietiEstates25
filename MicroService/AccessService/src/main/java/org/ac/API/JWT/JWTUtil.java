@@ -39,7 +39,7 @@ public class JWTUtil {
 
         return Jwts.builder()
                 .claim("sub",email)
-                .claim("kid", role)
+                .claim("kid", role.toLowerCase())
                 .issuedAt(Date.from(Instant.now()))
                 .expiration(Date.from(Instant.now().plusMillis(rootNode.path("Exp").asInt())))
                 .signWith(key)

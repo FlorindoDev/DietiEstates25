@@ -142,7 +142,7 @@ class AccessController {
         body = response.body;
         code = response.statusCode;
       }
-      print("RICHIESTA PRE LOGIN EFFETTUATA: $body $code");
+      print("status code ${response!.statusCode} RICHIESTA PRE LOGIN EFFETTUATA: $body $code");
 
       if (response != null && response.statusCode == 200) {
         // Dividi il token in 3 parti
