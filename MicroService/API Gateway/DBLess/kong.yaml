@@ -2,18 +2,39 @@ _format_version: "1.1"  # La versione corretta del formato dichiarativo
 
 consumers:
   - id: 43371078-334f-4f56-a85f-72220787fdb4
-    username: user
-    username_lower: user
+    username: Agent
+    username_lower: agent
+    type: 0
+  - id: 43371078-334f-4f56-a85f-72220787fdb6
+    username: Acquirente
+    username_lower: acquirente
+    type: 0
+  - id: 43371078-334f-4f56-a85f-72220787fdb8
+    username: Admin
+    username_lower: admin
     type: 0
 
 jwt_secrets:
   - consumer:
       id: 43371078-334f-4f56-a85f-72220787fdb4
-    key: user
+    key: Agent
     secret: >-
       d48b0dc42339b9effa2026c6dae4b9291b717305302547bfa4e9cd7176cdc7fb92b8b8bd9cc1d17a164255dc0a3bbaa4
     algorithm: HS512
-    id: dd062d19-b3ca-43a1-b52f-37b5fb3354ec
+
+  - consumer:
+      id: 43371078-334f-4f56-a85f-72220787fdb6
+    key: Acquirente
+    secret: >-
+      d48b0dc42339b9effa2026c6dae4b9291b717305302547bfa4e9cd7176cdc7fb92b8b8bd9cc1d17a164255dc0a3bbaa4
+    algorithm: HS512
+
+  - consumer:
+      id: 43371078-334f-4f56-a85f-72220787fdb8
+    key: Admin
+    secret: >-
+      d48b0dc42339b9effa2026c6dae4b9291b717305302547bfa4e9cd7176cdc7fb92b8b8bd9cc1d17a164255dc0a3bbaa4
+    algorithm: HS512
 
 routes:
   - name: jwt-route
@@ -35,6 +56,28 @@ routes:
     protocols:
       - http
       - https
+
+    plugins:
+      - name: jwt
+        protocols:
+          - http
+          - https
+        config:
+          run_on_preflight: true
+          anonymous: null
+          secret_is_base64: false
+          header_names:
+            - authorization
+          cookie_names: []
+          uri_param_names:
+            - jwt
+          key_claim_name: kid
+          maximum_expiration: 0
+          claims_to_verify:
+            - exp
+          realm: null
+        enabled: true
+        id: 9bd311fc-0677-4239-907d-74b36ab26dfa
 
   - name: login-route
     id: 98ab703d-e1ca-401f-8ace-01a86ec1d666
