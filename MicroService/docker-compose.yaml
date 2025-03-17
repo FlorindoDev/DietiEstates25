@@ -1,6 +1,6 @@
 services:
   access-service:
-    image: access_micro_service:1.0.0
+    image: access_service:1.0.0
     container_name: accessService
     networks:
       - dieti-net
@@ -17,7 +17,7 @@ services:
 
   agency-service:
     image: agency_service:1.0.0
-    container_name: agency_service
+    container_name: agencyService
     networks:
       - dieti-net
     ports:
@@ -37,7 +37,7 @@ services:
 
   admin-management-service:
     image: admin_management_service:1.0.0
-    container_name: admin_management_service
+    container_name: adminManagementService
     networks:
       - dieti-net
     ports:
@@ -53,7 +53,7 @@ services:
 
   ads-estate-service:
     image: ads_estate_service:1.0.0
-    container_name: ads_estate_service
+    container_name: adsEstateService
     networks:
       - dieti-net
     ports:
@@ -69,7 +69,7 @@ services:
 
   agent-management-service:
     image: agent_management_service:1.0.0
-    container_name: agent_management_service
+    container_name: agentManagementService
     networks:
       - dieti-net
     ports:
@@ -85,7 +85,7 @@ services:
 
   appointment-service:
     image: appointment_service:1.0.0
-    container_name: appointment_service
+    container_name: appointmentService
     networks:
       - dieti-net
     ports:
@@ -105,7 +105,7 @@ services:
 
   management-account-service:
     image: management_account_service:1.0.0
-    container_name: management_account_service
+    container_name: managementAccountService
     networks:
       - dieti-net
     ports:
@@ -121,7 +121,7 @@ services:
 
   notify-service:
     image: notify_service:1.0.0
-    container_name: notify_service
+    container_name: notifyService
     networks:
       - dieti-net
     ports:

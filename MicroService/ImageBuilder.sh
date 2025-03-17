@@ -2,7 +2,7 @@
 
 docker build -t dependacy:1.0.0 ./Dependacy
 
-docker build -t access_micro_service:1.0.0 ./AccessService
+docker build -t access_service:1.0.0 ./AccessService
 
 docker build -t admin_management_service:1.0.0 ./AdminManagementService
 
