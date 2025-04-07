@@ -20,7 +20,7 @@ import 'package:dietiestate25/Connection/Connection.dart';
 class AccessController {
   //static final url = Uri.parse("http://api.florindodev.site/makeLogin");
   //static final url = Uri.parse("http://127.0.0.1:7001/login/makeLogin");
-  // static final url = Uri.parse("http://10.0.2.2:7001/login/makeLogin");
+  //static final url = Uri.parse("http://10.0.2.2:7001/login/makeLogin");
 
   static String token = "";
   static Validator valida = Validate();
@@ -54,26 +54,52 @@ class AccessController {
     richiestaLogin(utente).then((risultato) {
       //risultato = json.decode(risultato);
       if (risultato == null) {
-        MyApp.mostraPopUpInformativo(context, "Attenzione", "Servizio non attualmente disponibile, prova tra qualche minuto");
+        MyApp.mostraPopUpInformativo(context, "Attenzione",
+            "Servizio non attualmente disponibile, prova tra qualche minuto");
         return false;
       } else if (risultato['code'] == 1) {
-        MyApp.mostraPopUpInformativo(context, "Attenzione", risultato['message']);
+        MyApp.mostraPopUpInformativo(
+            context, "Attenzione", risultato['message']);
         return false;
       } else if (risultato['code'] == 0) {
+        final role = payload(risultato['message'].split('.')[1]);
         print('1');
         scriviJWTInFile(risultato['message']);
-        HomeController.utente = utente;
+        print(role);
+        if (role == "acquirente") {
+          HomeController.utente = utente;
+          Navigator.of(context).pop();
+          Navigator.of(context).pushNamed(RouteWindows.homeWindow);
+        } else if (role == "agent") {
+          Navigator.of(context).pop();
+          Navigator.of(context).pushNamed(RouteWindows.agentHomeWindow);
+        }
+
         print('12');
-        MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
+        MyApp.mostraPopUpInformativo(
+            context, "Complimenti", "Login Effettuato!");
         print('13');
-        Navigator.of(context).pop();
-        Navigator.of(context).pushNamed(RouteWindows.homeWindow);
+
         return true;
       }
     });
 
     print("finito prova");
     return false;
+  }
+
+  static String payload(String jwt) {
+    // La parte centrale è il payload
+    final payload = jwt;
+
+    // Assicurati che la stringa Base64 abbia il padding corretto
+    final normalizedPayload = base64Url.normalize(payload);
+
+    // Decodifica il payload da Base64Url e poi da JSON
+    final payloadMap =
+        json.decode(utf8.decode(base64Url.decode(normalizedPayload)));
+
+    return payloadMap["kid"];
   }
 
   static Future<void> scriviJWTInFile(jwt) async {
@@ -116,15 +142,18 @@ class AccessController {
   }
 
   static MaterialPageRoute<dynamic> goToSignUpWindow() {
-    return MaterialPageRoute(builder: (_) => SingUpWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(
+        builder: (_) => SingUpWindow(appbar: MyApp.appBarNotBackable));
   }
 
   static MaterialPageRoute<dynamic> goToLoginWindow() {
-    return MaterialPageRoute(builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(
+        builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
   }
 
   static MaterialPageRoute<dynamic> goToCreateAgencyWindow() {
-    return MaterialPageRoute(builder: (_) => CreateAgencyWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(
+        builder: (_) => CreateAgencyWindow(appbar: MyApp.appBarNotBackable));
   }
 
   // Future<void> readAssetFile() async {
@@ -142,7 +171,8 @@ class AccessController {
         body = response.body;
         code = response.statusCode;
       }
-      print("status code ${response!.statusCode} RICHIESTA PRE LOGIN EFFETTUATA: $body $code");
+      print(
+          "status code ${response!.statusCode} RICHIESTA PRE LOGIN EFFETTUATA: $body $code");
 
       if (response != null && response.statusCode == 200) {
         // Dividi il token in 3 parti

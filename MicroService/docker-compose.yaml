@@ -150,6 +150,35 @@ services:
     restart: always
 
 
+  kong-gateway:
+    image: dbless-kong-gateway
+    container_name: kong-gateway-dbless
+    networks:
+      - dieti-net
+    environment:
+      KONG_DATABASE: off
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
+      KONG_ADMIN_GUI_URL: http://localhost:8002
+      KONG_ENFORCE_RBAC: on
+      KONG_ADMIN_GUI_AUTH: basic-auth
+      KONG_ADMIN_GUI_SESSION_CONF: '{"secret":"a139e57d97b2771ae76f9c9867b8c7321ad381bedb167b4afd4d6815ac1872ec","cookie_secure":false}'
+      KONG_DECLARATIVE_CONFIG: /kong/kong.yaml
+    ports:
+      - "8000:8000"
+      - "8443:8443"
+      - "8001:8001"
+      - "8444:8444"
+      - "8002:8002"
+      - "8445:8445"
+      - "8003:8003"
+      - "8004:8004"
+
+
+
 networks:
   dieti-net:
     driver: bridge

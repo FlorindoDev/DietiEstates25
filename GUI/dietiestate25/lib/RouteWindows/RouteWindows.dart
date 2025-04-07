@@ -1,6 +1,7 @@
 import 'package:dietiestate25/AccessClass/AccessController.dart';
 import 'package:dietiestate25/AccessClass/LoginWindow.dart';
 import 'package:dietiestate25/Home/HomeWindow.dart';
+import 'package:dietiestate25/AgentHome/AgentHomeWindow.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ class RouteWindows {
   static const singUpWindow = '/SingUpWindow';
   static const createAgencyWindow = '/CreateAgencyWindow';
   static const homeWindow = '/HomeWindow';
+  static const agentHomeWindow = '/AgentHomeWindow';
 
   static Future<String> checkLogin() async {
     bool isLoggedIn = await AccessController.checkLogin();
@@ -30,12 +32,17 @@ class RouteWindows {
           return AccessController.goToCreateAgencyWindow();
 
         case RouteWindows.homeWindow:
-          return MaterialPageRoute(builder: (_) => HomeWindow(appbar: MyApp.appBarNotBackable));
+          return MaterialPageRoute(
+              builder: (_) => HomeWindow(appbar: MyApp.appBarNotBackable));
+        case RouteWindows.agentHomeWindow:
+          return MaterialPageRoute(
+              builder: (_) => AgentHomeWindow(appbar: MyApp.appBarNotBackable));
       }
     } else {
       print("[d] not initilaized route");
     }
 
-    return MaterialPageRoute(builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
+    return MaterialPageRoute(
+        builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
   }
 }
