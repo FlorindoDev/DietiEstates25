@@ -8,7 +8,6 @@ class Connection {
   static final String baseUrl = 'http://10.0.2.2:8000';
 
   static String? jwt;
-  // final String jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWZmYUByYWZmYS5jb20iLCJraWQiOiJ1c2VyIiwiaWF0IjoxNzE0NjA2NDcsImV4cCI6MTc0MTU0NzA0N30.GCfttSBjYk_00vVihEk0iR-vPO7tVCflfILEamSZinY5t8fNOWPBXVl6vbsWz1agyoveBHKqk_bzDBUHsAP_vg";
 
   Connection._();
 

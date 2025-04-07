@@ -8,7 +8,8 @@ import 'package:dietiestate25/Home/HomeWindow.dart';
 import 'package:dietiestate25/Connection/Connection.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Assicura l'inizializzazione di Flutter
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Assicura l'inizializzazione di Flutter
   await Connection.init();
   String initialRoute = await RouteWindows.checkLogin();
   runApp(MyApp(initialRoute: initialRoute));
@@ -67,7 +68,8 @@ class MyApp extends StatelessWidget {
     ),
   );
 
-  static void mostraPopUpInformativo(dynamic context, String titolo, String messaggio) {
+  static void mostraPopUpInformativo(
+      dynamic context, String titolo, String messaggio) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
