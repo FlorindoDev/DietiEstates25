@@ -7,7 +7,6 @@ import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
-import org.md.Estate.Estate;
 import org.md.Utente.Agent;
 
 import java.sql.PreparedStatement;

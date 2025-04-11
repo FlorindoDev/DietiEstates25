@@ -2,8 +2,6 @@ package org.not.API.Resource;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import org.md.Utente.Acquirente;
-import org.md.Utente.Agent;
 import org.not.API.Interfacce.NotifyAPI;
 import org.not.MainApp.Interfacce.NotifyService;
 import org.not.MainApp.Notify;

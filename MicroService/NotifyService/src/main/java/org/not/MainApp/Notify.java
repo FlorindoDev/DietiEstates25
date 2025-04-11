@@ -5,7 +5,6 @@ import org.dao.Interfacce.NotifyDAO;
 import org.dao.postgre.Factory.FactoryFilteredQueryNotifyPostgres;
 import org.dao.postgre.NotifyPostgreDAO;
 import org.exc.DietiEstateException;
-import org.md.Utente.Agent;
 import org.not.MainApp.Interfacce.NotifyService;
 
 import java.util.List;
@@ -41,7 +40,6 @@ public class Notify implements NotifyService {
         try {
 
             String query = queryFacotry.agentNotifySelectQueryAllFilter(parameters);
-            System.out.println(query);
 
             List<org.md.Notify.Notify> notifes = notifyDAO.getAgentNotifyAcquirenteAllFilter(query, parameters);
 

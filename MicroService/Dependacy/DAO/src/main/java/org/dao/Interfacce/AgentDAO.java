@@ -3,7 +3,6 @@ package org.dao.Interfacce;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DietiEstateException;
 
-import org.md.Estate.Estate;
 import org.md.Utente.Agent;
 
 import java.util.List;
