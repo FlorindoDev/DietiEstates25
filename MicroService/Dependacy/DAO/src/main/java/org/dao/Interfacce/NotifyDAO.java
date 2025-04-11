@@ -11,5 +11,7 @@ public interface NotifyDAO {
 
     List<Notify> getNotifyAcquirenteAllFilter(String query, QueryParametersNotify parameters) throws DietiEstateException;
 
+    List<Notify> getAgentNotifyAcquirenteAllFilter(String query, QueryParametersNotify parameters) throws DietiEstateException;
+
     void close();
 }

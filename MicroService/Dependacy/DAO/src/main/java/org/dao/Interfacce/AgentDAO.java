@@ -5,6 +5,8 @@ import org.exc.DietiEstateException;
 
 import org.md.Utente.Agent;
 
+import java.util.List;
+
 public interface AgentDAO{
     Agent getUser(Agent agent) throws DietiEstateException;
 
@@ -17,5 +19,6 @@ public interface AgentDAO{
     boolean isUserAbsentOverAll(Agent user) throws DietiEstateException;
     void removeAdmin(Agent agent) throws DietiEstateException;
     Agent getAgentFromId(Agent agent) throws DietiEstateException;
+    List<Integer> getIdEstate(Agent agent) throws DietiEstateException;
     void close();
 }

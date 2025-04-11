@@ -11,6 +11,8 @@ import org.md.Utente.Agent;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
@@ -171,6 +173,31 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
     public boolean isUserPresent(Agent user) throws DietiEstateException {
 
         return super.isUserPresent(user, TABLE);
+
+    }
+
+    @Override
+    public List<Integer> getIdEstate(Agent agent) throws DietiEstateException {
+
+        String query= "SELECT idimmobile FROM immobile JOIN agenteimmobiliare ON agenteimmobiliare.idagente = immobile.idagente where agenteimmobiliare.email = ?";
+
+        ArrayList<Integer> idEtsates = new ArrayList<>();
+
+        PreparedStatement stmt = connection.getStatment(query);
+
+        try {
+            stmt.setString(1, agent.getEmail());
+            connection.makeQuery(stmt);
+            while(connection.hasNextRow()){
+                connection.nextRow();
+                idEtsates.add(connection.extractInt("idimmobile"));
+            }
+            return idEtsates;
+        } catch (SQLException e) {
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorCreateStatment();
+        }
+
 
     }
 

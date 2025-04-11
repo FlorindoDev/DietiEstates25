@@ -2,8 +2,6 @@ package org.not.API.Resource;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import org.md.Utente.Acquirente;
-import org.md.Utente.Agent;
 import org.not.API.Interfacce.NotifyAPI;
 import org.not.MainApp.Interfacce.NotifyService;
 import org.not.MainApp.Notify;
@@ -35,11 +33,23 @@ public class NotifyRestFulAPI implements NotifyAPI {
     }
 
     @Override
-    @Path("/notifes/agent")
+    @Path("/notifies/agent")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getNotifyAgent(Agent agent) {
-        return null;
+    public String getNotifyAgent(@BeanParam NotifyQuery query) {
+
+        String email = query.getEmail();
+
+
+        if(email == null || email.isEmpty()) {
+            return "{\"code\":-1, \"error\": \"email parameter is required\"}";
+        }
+
+        String result = notify.getNotifyAgent(query);
+
+
+        notify.close();
+        return result;
     }
 }
 

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dietiestate25/AgentHome/AgentHomeController.dart';
 import 'package:dietiestate25/Home/HomeController.dart';
 import 'package:dietiestate25/Home/HomeWindow.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
@@ -71,6 +72,7 @@ class AccessController {
           Navigator.of(context).pop();
           Navigator.of(context).pushNamed(RouteWindows.homeWindow);
         } else if (role == "agent") {
+          AgentHomeController.utente = utente;
           Navigator.of(context).pop();
           Navigator.of(context).pushNamed(RouteWindows.agentHomeWindow);
         }
