@@ -6,7 +6,7 @@ import org.not.API.Resource.NotifyQuery;
 
 
 public interface NotifyAPI {
-    String getNotifyAgent(Agent agent);
+    String getNotifyAgent(@BeanParam NotifyQuery query);
 
     String getNotifyAcquirente(@BeanParam NotifyQuery query);
 

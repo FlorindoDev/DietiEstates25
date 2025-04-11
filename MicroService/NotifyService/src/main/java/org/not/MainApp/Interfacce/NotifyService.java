@@ -10,7 +10,7 @@ public interface NotifyService {
 
     String getNotifyAcquirente(QueryParametersNotify parameters);
 
-    String getNotifyAgent(Agent agent);
+    String getNotifyAgent(QueryParametersNotify parameters);
 
     void close();
 }

@@ -35,11 +35,23 @@ public class NotifyRestFulAPI implements NotifyAPI {
     }
 
     @Override
-    @Path("/notifes/agent")
+    @Path("/notifies/agent")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getNotifyAgent(Agent agent) {
-        return null;
+    public String getNotifyAgent(@BeanParam NotifyQuery query) {
+
+        String email = query.getEmail();
+
+
+        if(email == null || email.isEmpty()) {
+            return "{\"code\":-1, \"error\": \"email parameter is required\"}";
+        }
+
+        String result = notify.getNotifyAgent(query);
+
+
+        notify.close();
+        return result;
     }
 }
 

@@ -2,6 +2,7 @@ package org.dao.postgre;
 
 import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AcquirenteDAO;
+import org.dao.Interfacce.AgentDAO;
 import org.dao.Interfacce.Factory.QueryParametersNotify;
 import org.dao.Interfacce.NotifyDAO;
 import org.exc.DataBaseException.ErrorExecutingQuery;
@@ -10,6 +11,7 @@ import org.exc.DietiEstateException;
 import org.md.Estate.Estate;
 import org.md.Notify.Notify;
 import org.md.Utente.Acquirente;
+import org.md.Utente.Agent;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -82,6 +84,37 @@ public class NotifyPostgreDAO implements NotifyDAO {
         }
 
 
+    }
+
+    @Override
+    public List<Notify> getAgentNotifyAcquirenteAllFilter(String query, QueryParametersNotify parameters) throws DietiEstateException {
+
+        ArrayList<Notify> notifies = new ArrayList<>();
+
+        AgentDAO agentDAO = new AgentPostgreDAO(connection);
+
+        Agent agent = new Agent.Builder(0, parameters.getEmail()).build();
+        List<Integer> idEstates = agentDAO.getIdEstate(agent);
+
+        PreparedStatement stmt = connection.getStatment(query);
+
+        try {
+            for(Integer id : idEstates){
+                stmt.setInt(1, id);
+                connection.makeQuery(stmt);
+
+                if(connection.hasNextRow()){
+                    connection.nextRow();
+                    Acquirente acquirente = new Acquirente.Builder(connection.extractInt("idacquirente"), "").build();
+                    notifies.add(initNotify(acquirente));
+                }
+
+            }
+
+            return notifies;
+        }catch (SQLException e){
+            throw new ErrorExecutingQuery();
+        }
     }
 
     private void executeQuery(PreparedStatement stmt, ArrayList<Notify> notifies, Acquirente acquirente) throws SQLException, UserNotifyNotFound {

@@ -34,8 +34,22 @@ public class Notify implements NotifyService {
     }
 
     @Override
-    public String getNotifyAgent(Agent agent) {
-        return null;
+    public String getNotifyAgent(QueryParametersNotify parameters) {
+
+        FactoryFilteredQueryNotifyPostgres queryFacotry = new FactoryFilteredQueryNotifyPostgres();
+
+        try {
+
+            String query = queryFacotry.agentNotifySelectQueryAllFilter(parameters);
+            System.out.println(query);
+
+            List<org.md.Notify.Notify> notifes = notifyDAO.getAgentNotifyAcquirenteAllFilter(query, parameters);
+
+            return convertListNotifyToJson(notifes);
+
+        } catch (DietiEstateException e) {
+            return e.getMessage();
+        }
     }
 
 
