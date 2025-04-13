@@ -35,11 +35,13 @@ public class FactoryFilteredQueryAppointmentPostgres implements QueryFactoryAppo
         return query.toString();
     }
 
-    public String selectQueryAgentAllColumns(){
+    public String selectQueryAgentAllColumns(QueryParametersAppointment parameters){
 
-        StringBuilder query = new StringBuilder("SELECT email as email_acquirente,idappuntamento,esito,data,idacquirente,idimmobile \n" +
+        List<String> allowedColumns = Arrays.asList("'Da decidere'","'Rifiutato'","'Accettato'");
+
+        StringBuilder query = new StringBuilder("SELECT email as email_acquirente,idappuntamento,esito,data,idacquirente,idimmobile,datarichiesta \n" +
                 "FROM \n" +
-                "\t(SELECT idacquirente as tmp_idacquirente,idappuntamento,esito,data,idimmobile \n" +
+                "\t(SELECT idacquirente as tmp_idacquirente,idappuntamento,esito,data,idimmobile,datarichiesta \n" +
                 " \tFROM \n" +
                 " \t\t(SELECT idimmobile as tmp_idimmobile \n" +
                 "\t\t FROM immobile join agenteimmobiliare ON immobile.idagente = agenteimmobiliare.idagente \n");
@@ -50,7 +52,20 @@ public class FactoryFilteredQueryAppointmentPostgres implements QueryFactoryAppo
         "\t ON tmp.tmp_idimmobile = appuntamento.idimmobile) as tmp join acquirente\n" +
                 "ON tmp.tmp_idacquirente = acquirente.idacquirente");
 
+        query.append(" where esito in (");
+
+        setColumns(query,parameters, allowedColumns);
+
+        query.append(") ");
+
         query.append(" Order by datarichiesta ");
+
+        if (parameters.isOrder()){
+            query.append("DESC");
+        }else{
+            query.append("ASC");
+        }
+
 
         return query.toString();
 

@@ -17,6 +17,23 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
 
     private final AppointmentService appointmentmanagement = new AppointmentManagement(Main.rabbitMQ);
 
+
+    @Override
+    @GET
+    @Path("/appointments")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getAppointment(@BeanParam AppointmentQuery query) {
+
+        String email = query.getEmail();
+        if(email == null || email.isEmpty()) {
+            return "{\"code\":-1, \"error\": \"email parameter is required\"}";
+        }
+
+        String result = appointmentmanagement.loadAppointmentAgent(query);
+        appointmentmanagement.close();
+        return result;
+    }
+
     @Override
     @GET
     @Path("/appointments/agent")

@@ -8,6 +8,8 @@ import org.md.Appointment.AppointmentReject;
 
 
 public interface AppointmentAPI {
+
+    String getAppointment(@BeanParam AppointmentQuery query);
     String loadAppointmentAcquirente(@BeanParam AppointmentQuery query);
     String loadAppointmentAgent(@BeanParam AppointmentQuery query);
     String acceptAppointment(AppointmentAccept appointment);

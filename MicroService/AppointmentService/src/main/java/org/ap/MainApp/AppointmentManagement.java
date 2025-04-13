@@ -33,7 +33,6 @@ public class AppointmentManagement implements AppointmentService {
 
     private EstateDAO estateDAO;
 
-
     public AppointmentManagement(ApplicationContext rabbitMQ) {
         senderMQ = rabbitMQ.getBean(ManagementSenderNotifyRabbitMQ.class);
         factory = new NotifyBasicAppointmentFactory();
@@ -74,6 +73,13 @@ public class AppointmentManagement implements AppointmentService {
 
     }
 
+    public String getAppointment(QueryParametersAppointment parameters){
+
+
+        return null;
+    }
+
+
     @Override
     public String loadAppointmentAgent(QueryParametersAppointment parameters) {
 
@@ -83,7 +89,7 @@ public class AppointmentManagement implements AppointmentService {
 
         try {
 
-            String query = factoryAppointment.selectQueryAgentAllColumns();
+            String query = factoryAppointment.selectQueryAgentAllColumns(parameters);
 
             ArrayList<Appointment> appointments = appointmentDAO.getAllAppointmentAgent(query, parameters);
 
