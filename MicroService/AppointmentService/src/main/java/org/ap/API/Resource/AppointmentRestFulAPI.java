@@ -15,6 +15,7 @@ import jakarta.ws.rs.core.MediaType;
 @Path("/api")
 public class AppointmentRestFulAPI implements AppointmentAPI {
 
+    public static final String ERROR_EMAIL_PARAMETER_IS_REQUIRED = "{\"code\":-1, \"error\": \"email parameter is required\"}";
     private final AppointmentService appointmentmanagement = new AppointmentManagement(Main.rabbitMQ);
 
 
@@ -23,15 +24,7 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
     @Path("/appointments")
     @Produces(MediaType.TEXT_PLAIN)
     public String getAppointment(@BeanParam AppointmentQuery query) {
-
-        String email = query.getEmail();
-        if(email == null || email.isEmpty()) {
-            return "{\"code\":-1, \"error\": \"email parameter is required\"}";
-        }
-
-        String result = appointmentmanagement.loadAppointmentAgent(query);
-        appointmentmanagement.close();
-        return result;
+        return "";
     }
 
     @Override
@@ -42,7 +35,7 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
 
         String email = query.getEmail();
         if(email == null || email.isEmpty()) {
-            return "{\"code\":-1, \"error\": \"email parameter is required\"}";
+            return ERROR_EMAIL_PARAMETER_IS_REQUIRED;
         }
 
         String result = appointmentmanagement.loadAppointmentAgent(query);
@@ -58,7 +51,7 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
 
         String email = query.getEmail();
         if(email == null || email.isEmpty()) {
-            return "{\"code\":-1, \"error\": \"email parameter is required\"}";
+            return ERROR_EMAIL_PARAMETER_IS_REQUIRED;
         }
 
         String result = appointmentmanagement.loadAppointmentAcquirente(query);
