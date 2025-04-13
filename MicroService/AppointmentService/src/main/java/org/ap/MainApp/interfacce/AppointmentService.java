@@ -9,6 +9,7 @@ import org.md.Appointment.AppointmentReject;
 
 public interface AppointmentService {
     String loadAppointmentAcquirente(QueryParametersAppointment parameters);
+    String getAppointment(QueryParametersAppointment parameters);
     String loadAppointmentAgent(QueryParametersAppointment parameters);
     String acceptAppointment(AppointmentAccept appointment);
     String declineAppointment(AppointmentReject appointment);

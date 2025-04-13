@@ -13,6 +13,9 @@ public class AppointmentQuery implements QueryParametersAppointment {
     @QueryParam("email")
     private String email;
 
+    @QueryParam("id")
+    private String idAppointment;
+
     @QueryParam("orderbydate")
     @DefaultValue("false")
     private boolean order;
@@ -63,5 +66,21 @@ public class AppointmentQuery implements QueryParametersAppointment {
     @Override
     public void setOrder(boolean order) {
         this.order = order;
+    }
+
+    public String getIdAppointment() {
+        return idAppointment;
+    }
+
+    public void setIdAppointment(String idAppointment) {
+        this.idAppointment = idAppointment;
+    }
+
+    public String getEsitiAppointment() {
+        return esitiAppointment;
+    }
+
+    public void setEsitiAppointment(String esitiAppointment) {
+        this.esitiAppointment = esitiAppointment;
     }
 }

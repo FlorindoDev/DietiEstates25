@@ -9,6 +9,8 @@ public interface AppointmentDAO {
 
     ArrayList<Appointment> getAllAppointmentAgent(String query, QueryParametersAppointment parameters) throws DietiEstateException;
 
+    public Appointment getAppointment() throws DietiEstateException;
+
     ArrayList<Appointment> getAllAppointmentAcquirente(String query, QueryParametersAppointment parameters) throws DietiEstateException;
 
     void updateStatusAppointment(Appointment appointment) throws DietiEstateException;

@@ -87,6 +87,11 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
         return appointments;
     }
 
+    public Appointment getAppointment() throws DietiEstateException{
+        //TODO fare questo get
+        return null;
+    }
+
     @Override
     public ArrayList<Appointment> getAllAppointmentAcquirente(String query, QueryParametersAppointment parameters) throws DietiEstateException {
 
