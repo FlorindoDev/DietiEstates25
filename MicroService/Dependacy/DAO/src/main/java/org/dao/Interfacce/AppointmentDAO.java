@@ -1,6 +1,7 @@
 package org.dao.Interfacce;
 
 import org.dao.Interfacce.Factory.QueryParametersAppointment;
+import org.dto.AppointmentSpecification;
 import org.exc.DietiEstateException;
 import org.md.Appointment.Appointment;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ public interface AppointmentDAO {
 
     ArrayList<Appointment> getAllAppointmentAgent(String query, QueryParametersAppointment parameters) throws DietiEstateException;
 
-    public Appointment getAppointment() throws DietiEstateException;
+    public AppointmentSpecification getAppointment(String query, QueryParametersAppointment parameters) throws DietiEstateException;
 
     ArrayList<Appointment> getAllAppointmentAcquirente(String query, QueryParametersAppointment parameters) throws DietiEstateException;
 

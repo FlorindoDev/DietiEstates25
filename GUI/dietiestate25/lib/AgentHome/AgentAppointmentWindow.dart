@@ -178,13 +178,17 @@ class _AgentAppointmentWindowState extends State<AgentAppointmentWindow> {
                     return InkWell(
                       onTap: () {
                         // Navigazione verso la schermata di dettaglio dell'appuntamento
-                        Navigator.push(
+                        final shouldRefresh = Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => AppointmentDetailScreen(
                                 appointment: appointment),
                           ),
                         );
+                        if (shouldRefresh == true) {
+                          appointments =
+                              AgentHomeController.getAppointment(context, "");
+                        }
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8),
@@ -278,12 +282,13 @@ class AppointmentDetailScreen extends StatefulWidget {
 }
 
 class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
-  late Future<AppointmentNotification> appointmentsDetails;
+  late Future<AppointmentNotification> appointmentDetails;
 
   @override
   void initState() {
     super.initState();
-    //appointmentsDetails = new AppointmentNotification();
+    appointmentDetails = AgentHomeController.getAppointmentSpecific(
+        context, widget.appointment.idAppointment.toString());
   }
 
   @override
@@ -293,99 +298,161 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
         title: const Text('Dettagli Appuntamento'),
       ),
       body: FutureBuilder<AppointmentNotification>(
-        future: appointmentsDetails,
+        future: appointmentDetails,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child: CircularProgressIndicator(strokeWidth: 5),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text("Errore: ${snapshot.error}"),
-            );
-          } else if (snapshot.hasData) {
-            final details = snapshot.data!;
-            return ListView.builder(
-              itemCount: 1,
-              itemBuilder: (context, index) {
-                ;
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 10.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                      side: BorderSide(color: MyApp.blu, width: 2),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "details.message",
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 32,
-                                height: 32,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: const Color.fromARGB(255, 0, 0, 0),
-                                    width: 3,
-                                  ),
-                                ),
-                                child: CircleAvatar(
-                                  backgroundColor: MyApp.panna,
-                                  radius: 16,
-                                  child: const Icon(
-                                    Icons.pending_actions,
-                                    color: Color.fromARGB(255, 0, 0, 0),
-                                    size: 25,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Text(
-                                'Data appuntamento: ' + "detail.data",
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                "details.dataRicezione",
-                                style: const TextStyle(
-                                    fontSize: 14, color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
+              child: CircularProgressIndicator(strokeWidth: 4),
             );
           }
-          return const Center(
-            child: CircularProgressIndicator(strokeWidth: 5),
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Errore: ${snapshot.error}'),
+            );
+          }
+          if (!snapshot.hasData) {
+            return const Center(
+              child: Text('Nessun dettaglio disponibile'),
+            );
+          }
+
+          final details = snapshot.data!;
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Card(
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Center(
+                      child: CircleAvatar(
+                        radius: 36,
+                        backgroundColor: Colors.blueAccent,
+                        child: Icon(
+                          Icons.event,
+                          size: 40,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      details.nomeEcognome,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      details.viaEstate,
+                      style: const TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                    const Divider(height: 32),
+                    ListTile(
+                      leading: const Icon(Icons.calendar_today),
+                      title: const Text('Data Richiesta'),
+                      subtitle: Text(details.dataRichesta),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.event),
+                      title: const Text('Data Appuntamento'),
+                      subtitle: Text(details.data),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.assignment_turned_in),
+                      title: const Text('Esito'),
+                      subtitle: Text(
+                        details.esito,
+                        style: TextStyle(
+                          color: details.esito.toLowerCase() == 'accettato'
+                              ? Colors.green
+                              : Colors.red,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    details.esito == "Da decidere"
+                        ? Container(
+                            width: double.infinity,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    Navigator.pop(
+                                        context,
+                                        AgentHomeController.updateAppointment(
+                                            context, true, widget.appointment));
+                                  },
+                                  icon: const Icon(Icons.check,
+                                      color: Colors.black),
+                                  label: const Text('Accetta',
+                                      style: TextStyle(color: Colors.black)),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: MyApp.celeste,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 24),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                  ),
+                                ),
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    Navigator.pop(
+                                        context,
+                                        AgentHomeController.updateAppointment(
+                                            context,
+                                            false,
+                                            widget.appointment));
+                                  },
+                                  icon: const Icon(Icons.delete,
+                                      color: Colors.black),
+                                  label: const Text('Rifiuta',
+                                      style: TextStyle(color: Colors.black)),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: MyApp.rosso,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 24),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        : ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: const Icon(Icons.arrow_back,
+                                color: Colors.black),
+                            label: const Text('Torna indietro',
+                                style: TextStyle(color: Colors.black)),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: MyApp.rosso,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 24),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                          )
+                  ],
+                ),
+              ),
+            ),
           );
         },
       ),

@@ -8,6 +8,8 @@ class AppointmentNotification {
   String dataRichesta;
   int idAcquirente;
   int idEstate;
+  String nomeEcognome;
+  String viaEstate;
 
   AppointmentNotification({
     required this.idAppointment,
@@ -16,6 +18,8 @@ class AppointmentNotification {
     required this.dataRichesta,
     required this.idAcquirente,
     required this.idEstate,
+    required this.nomeEcognome,
+    required this.viaEstate,
   });
 
   factory AppointmentNotification.fromJson(Map<String, dynamic> json) {
@@ -24,8 +28,10 @@ class AppointmentNotification {
       data: json['data'],
       esito: json['esito'],
       dataRichesta: json['dataRichesta'],
-      idAcquirente: json['acquirente']['idUser'],
-      idEstate: json['estate']['idEstate'],
+      idAcquirente: json['idAcquirente'],
+      idEstate: json['idEstate'],
+      viaEstate: json['viaEstate'],
+      nomeEcognome: json['nomeEcognome'],
     );
   }
 

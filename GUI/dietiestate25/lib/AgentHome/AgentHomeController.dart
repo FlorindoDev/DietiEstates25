@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:ffi';
+import 'package:dietiestate25/Model/Appointment/AppointmentNotification.dart';
 import 'package:dietiestate25/Model/Notify/AppointmentPending.dart';
 import 'package:dietiestate25/Model/Estate/Estate.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +20,12 @@ class AgentHomeController {
 
   static final String urlAppointment =
       'http://10.0.2.2:7006/api/appointments/agent';
+
+  static final String urlAppointmentSpecific =
+      'http://10.0.2.2:7006/api/appointments';
+
+  static final String urlAppointmentUpdate =
+      'http://10.0.2.2:7006/api/appointments';
 
   static late final Utente utente;
 
@@ -145,5 +153,94 @@ class AgentHomeController {
       return List<Appointment>.empty();
     }
     return Appointments;
+  }
+
+  static Future<AppointmentNotification> getAppointmentSpecific(
+      dynamic context, String idAppointment) async {
+    http.Response response;
+    Uri uri = Uri.parse(
+        urlAppointmentSpecific + '?id=' + idAppointment + '&extended=true');
+
+    AppointmentNotification Appointments = new AppointmentNotification(
+        idAppointment: 0,
+        data: "0",
+        esito: "0",
+        dataRichesta: "0",
+        idAcquirente: 0,
+        idEstate: 0,
+        nomeEcognome: "0",
+        viaEstate: "0");
+    try {
+      print(uri);
+      // Fai la richiesta HTTP
+      response = await http.get(
+        uri, // URL valido
+        headers: {"Content-Type": "application/json"},
+      ); //as http.Response;
+    } catch (e) {
+      return Appointments;
+    }
+
+    // Controlla se lo statusCode non è 200 (OK)
+    dynamic ris;
+
+    try {
+      ris = json.decode(utf8.decode(response.bodyBytes));
+      if (ris['code'] == 0) {
+        Appointments = AppointmentNotification.fromJson(ris['Appointment']);
+      } else {
+        MyApp.mostraPopUpInformativo(context, "Errore", ris['message']);
+      }
+    } catch (e) {
+      return Appointments;
+    }
+    return Appointments;
+  }
+
+  static Future<bool> updateAppointment(
+      dynamic context, bool accettato, Appointment appointment) async {
+    http.Response response;
+    Uri? uri;
+    String? body;
+    if (accettato == true) {
+      uri = Uri.parse(urlAppointmentSpecific + "/acceptAppointment");
+      body = jsonEncode(appointment.toJson("Accettato"));
+    } else {
+      uri = Uri.parse(urlAppointmentSpecific + "/declineAppointment");
+      body = jsonEncode(appointment.toJson("Rifiutato"));
+    }
+    bool esito = false;
+    print(body);
+    try {
+      print(uri);
+      // Fai la richiesta HTTP
+      response = await http.post(
+        uri,
+        headers: {
+          "Content-Type": "application/json",
+          // Aggiungi altri header se necessario (es: token auth)
+        },
+        body: body, // Codifica l'oggetto in JSON
+      ); //as http.Response;
+    } catch (e) {
+      MyApp.mostraPopUpInformativo(
+          context, "Errore", "Qualcosa è adato storto durante l'operazione");
+      return esito;
+    }
+
+    dynamic ris;
+
+    try {
+      ris = json.decode(utf8.decode(response.bodyBytes));
+      if (ris['code'] == 0) {
+        MyApp.mostraPopUpInformativo(context, "Riuscito", ris['message']);
+        esito = true;
+      } else {
+        MyApp.mostraPopUpInformativo(context, "Errore", ris['message']);
+      }
+    } catch (e) {
+      return esito;
+    }
+    return esito;
   }
 }

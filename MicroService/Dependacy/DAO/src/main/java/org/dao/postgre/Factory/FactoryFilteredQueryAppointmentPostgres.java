@@ -35,6 +35,41 @@ public class FactoryFilteredQueryAppointmentPostgres implements QueryFactoryAppo
         return query.toString();
     }
 
+    public String selectSpecificAppointment(QueryParametersAppointment parameters) {
+
+        StringBuilder query;
+
+
+
+        if(parameters.isExtended()){
+
+            if(!parameters.isAgent()){
+                query = new StringBuilder("SELECT idappuntamento,data,datarichiesta,esito,nome,cognome,cap,numerocivico,via,citta " +
+                        " FROM (((SELECT * FROM appuntamento where idappuntamento = ?) as appuntamento \n" +
+                        "\t\t\t\t join immobile \n" +
+                        "\t\t\t   ON immobile.idimmobile = appuntamento.idimmobile) as ap\n " +
+                        "\t\t\t   JOIN indirizzo  on ap.idindirizzo = indirizzo.idindirizzo) as ap2\n " +
+                        "\t\t\t   Join agenteimmobiliare on agenteimmobiliare.idagente = ap2.idagente");
+
+            }else{
+                query = new StringBuilder("SELECT idappuntamento,data,datarichiesta,esito,nome,cognome,cap,numerocivico,via,citta" +
+                        " FROM (((SELECT * FROM appuntamento where idappuntamento = ?) as appuntamento \n" +
+                        "        join immobile\n" +
+                        "        ON immobile.idimmobile = appuntamento.idimmobile) as ap\n" +
+                        "        JOIN indirizzo  on ap.idindirizzo = indirizzo.idindirizzo) as ap2\n" +
+                        "        Join acquirente on acquirente.idacquirente = ap2.idacquirente");
+            }
+        }else{
+            query = new StringBuilder("SELECT * FROM appuntamento where idappuntamento = ?");
+        }
+
+
+
+        return query.toString();
+    }
+
+
+
     public String selectQueryAgentAllColumns(QueryParametersAppointment parameters){
 
         List<String> allowedColumns = Arrays.asList("'Da decidere'","'Rifiutato'","'Accettato'");

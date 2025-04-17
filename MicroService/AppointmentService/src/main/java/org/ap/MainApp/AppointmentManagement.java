@@ -4,6 +4,7 @@ import org.ap.MainApp.interfacce.AppointmentService;
 import org.dao.Interfacce.EstateDAO;
 import org.dao.Interfacce.Factory.QueryFactoryAppointment;
 import org.dao.Interfacce.Factory.QueryParametersAppointment;
+import org.dto.AppointmentSpecification;
 import org.dao.postgre.EstatePostgreDAO;
 import org.dao.postgre.Factory.FactoryFilteredQueryAppointmentPostgres;
 import org.md.Notify.Interfacce.NotifyAppointmentFactory;
@@ -75,8 +76,23 @@ public class AppointmentManagement implements AppointmentService {
 
     public String getAppointment(QueryParametersAppointment parameters){
 
+        appointmentDAO = new AppointmentPostgreDAO();
 
-        return null;
+        QueryFactoryAppointment factoryAppointment = new FactoryFilteredQueryAppointmentPostgres();
+
+        try{
+            String query = factoryAppointment.selectSpecificAppointment(parameters);
+            System.out.println(query);
+            AppointmentSpecification appointment =  appointmentDAO.getAppointment(query, parameters);
+
+
+
+            return "{\"code\": 0, \"message\": \"success of action accept appointment\", \"Appointment\":" + appointment.TranslateToJson() + "}";
+
+        }catch (DietiEstateException e){
+            return e.getMessage();
+        }
+
     }
 
 

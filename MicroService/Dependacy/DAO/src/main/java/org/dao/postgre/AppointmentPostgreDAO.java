@@ -4,7 +4,9 @@ import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AcquirenteDAO;
 import org.dao.Interfacce.AppointmentDAO;
 import org.dao.Interfacce.Factory.QueryParametersAppointment;
+import org.dao.Interfacce.Factory.QueryParamters;
 import org.dao.Interfacce.UtenteDAO;
+import org.dto.AppointmentSpecification;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DataBaseException.UpdateAppointmentFail;
 import org.exc.DataBaseException.UserAppointmentAlreadyExists;
@@ -87,9 +89,39 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
         return appointments;
     }
 
-    public Appointment getAppointment() throws DietiEstateException{
-        //TODO fare questo get
-        return null;
+    public AppointmentSpecification getAppointment(String query, QueryParametersAppointment paramters) throws DietiEstateException{
+
+        AppointmentSpecification appointment = new AppointmentSpecification(0);
+
+        try{
+            PreparedStatement stmt = connection.getStatment(query);
+            stmt.setInt(1,paramters.getIdAppointment());
+            connection.makeQuery(stmt);
+            if(!connection.hasNextRow()) throw new UserNotHaveAppointment();
+            connection.nextRow();
+
+            appointment.setIdAppointment(connection.extractInt("idappuntamento"));
+            appointment.setData(String.valueOf(connection.extractDate("data")));
+            appointment.setDataRichesta(String.valueOf(connection.extractDate("datarichiesta")));
+            appointment.setEsito(connection.extractString("esito"));
+
+            if(paramters.isExtended()){
+
+
+                appointment.setNomeEcognome(connection.extractString("nome") + " " + connection.extractString("cognome"));
+
+                String via = connection.extractString("via") + "," + connection.extractString("numerocivico") +
+                        "," + connection.extractString("cap") + "," + connection.extractString("citta");
+
+                appointment.setViaEstate(via);
+            }
+
+
+        }catch (SQLException e){
+           throw new ErrorExecutingQuery();
+        }
+
+        return appointment;
     }
 
     @Override
@@ -143,7 +175,15 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
     @Override
     public void updateStatusAppointment(Appointment appointment) throws DietiEstateException {
 
-        Acquirente acquirente = getAcquirente(appointment);
+        Acquirente acquirente;
+
+        if(appointment.getAcquirente().getIdUser() == 0) {
+            acquirente = getAcquirente(appointment);
+        }else{
+            acquirente = new Acquirente.Builder(appointment.getAcquirente().getIdUser(), " ").build();
+        }
+
+        System.out.println(acquirente.TranslateToJson());
 
         String query = "UPDATE appuntamento SET esito = ? where idimmobile = ? and idacquirente = ? and data = ?";
 

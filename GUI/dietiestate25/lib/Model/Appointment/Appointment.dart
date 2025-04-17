@@ -18,6 +18,17 @@ class Appointment {
     required this.idEstate,
   });
 
+  Map<String, dynamic> toJson(String esito) {
+    return {
+      'idAppointment': idAppointment,
+      'data': data,
+      'esito': esito,
+      'dataRichesta': dataRichesta,
+      'acquirente': {'idUser': idAcquirente},
+      'estate': {'idEstate': idEstate},
+    };
+  }
+
   factory Appointment.fromJson(Map<String, dynamic> json) {
     return Appointment(
       idAppointment: json['idAppointment'],
@@ -30,6 +41,7 @@ class Appointment {
   }
 
   CircleAvatar icon() {
-    return CircleAvatar(radius: 16, backgroundColor: MyApp.rosso, child: Icon(Icons.pending));
+    return CircleAvatar(
+        radius: 16, backgroundColor: MyApp.rosso, child: Icon(Icons.pending));
   }
 }
