@@ -178,17 +178,13 @@ class _AgentAppointmentWindowState extends State<AgentAppointmentWindow> {
                     return InkWell(
                       onTap: () {
                         // Navigazione verso la schermata di dettaglio dell'appuntamento
-                        final shouldRefresh = Navigator.push(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => AppointmentDetailScreen(
                                 appointment: appointment),
                           ),
                         );
-                        if (shouldRefresh == true) {
-                          appointments =
-                              AgentHomeController.getAppointment(context, "");
-                        }
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8),
@@ -389,10 +385,9 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                               children: [
                                 ElevatedButton.icon(
                                   onPressed: () {
-                                    Navigator.pop(
-                                        context,
-                                        AgentHomeController.updateAppointment(
-                                            context, true, widget.appointment));
+                                    AgentHomeController.updateAppointment(
+                                        context, true, widget.appointment);
+                                    Navigator.pop(context);
                                   },
                                   icon: const Icon(Icons.check,
                                       color: Colors.black),
@@ -409,12 +404,9 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                 ),
                                 ElevatedButton.icon(
                                   onPressed: () {
-                                    Navigator.pop(
-                                        context,
-                                        AgentHomeController.updateAppointment(
-                                            context,
-                                            false,
-                                            widget.appointment));
+                                    AgentHomeController.updateAppointment(
+                                        context, false, widget.appointment);
+                                    Navigator.pop(context);
                                   },
                                   icon: const Icon(Icons.delete,
                                       color: Colors.black),
