@@ -15,7 +15,7 @@ class SingUpWindow extends StatefulWidget {
 
 class _SingUpWindowState extends State<SingUpWindow> {
   Utente utente = Utente.builder.setId("").setEmail("").build();
-
+  bool _obscureText = true;
   bool isCampiCompilati = false;
   var coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
 
@@ -47,7 +47,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
 
   @override
   Widget build(BuildContext context) {
-    bool obscureText = true;
+    
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -144,23 +144,27 @@ class _SingUpWindowState extends State<SingUpWindow> {
                       ),
                       SizedBox(height: 20),
                       TextField(
-                        obscureText: obscureText,
+                        obscureText: _obscureText,
                         style: MyApp.stile_testo_solo_nero,
                         decoration: InputDecoration(
-                          icon: Icon(Icons.key_sharp),
+                          icon: const Icon(Icons.key_sharp),
                           iconColor: MyApp.blu,
-                          labelText: 'Password',
-                          border: OutlineInputBorder(),
+                          label: const Text('Password'),
+                          border: const OutlineInputBorder(),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
+                              _obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
                             ),
                             onPressed: () {
+                              
+                              
                               setState(() {
-                                obscureText = !obscureText;
+                                
+                                _obscureText = !_obscureText;
                               });
+                              
                             },
                           ),
                         ),
