@@ -13,4 +13,19 @@ public interface QueryParametersAppointment extends QueryParamters{
 
      void setEsiti(String tipoAppointment);
 
+    int getIdAppointment();
+
+    void setIdAppointment(int id);
+
+    String getEsitiAppointment();
+
+    void setEsitiAppointment(String esito);
+
+    boolean isExtended();
+
+    void setExtended(boolean extended);
+
+    boolean isAgent();
+
+    void setAgent(boolean agent);
 }

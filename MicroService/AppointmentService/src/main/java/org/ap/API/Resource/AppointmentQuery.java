@@ -14,7 +14,17 @@ public class AppointmentQuery implements QueryParametersAppointment {
     private String email;
 
     @QueryParam("id")
-    private String idAppointment;
+    @DefaultValue("0")
+    private int idAppointment;
+
+    @QueryParam("agent")
+    @DefaultValue("true")
+    private boolean agent;
+
+    @QueryParam("extended")
+    @DefaultValue("false")
+    private boolean extended;
+
 
     @QueryParam("orderbydate")
     @DefaultValue("false")
@@ -68,11 +78,11 @@ public class AppointmentQuery implements QueryParametersAppointment {
         this.order = order;
     }
 
-    public String getIdAppointment() {
+    public int getIdAppointment() {
         return idAppointment;
     }
 
-    public void setIdAppointment(String idAppointment) {
+    public void setIdAppointment(int idAppointment) {
         this.idAppointment = idAppointment;
     }
 
@@ -82,5 +92,21 @@ public class AppointmentQuery implements QueryParametersAppointment {
 
     public void setEsitiAppointment(String esitiAppointment) {
         this.esitiAppointment = esitiAppointment;
+    }
+
+    public boolean isExtended() {
+        return extended;
+    }
+
+    public void setExtended(boolean extended) {
+        this.extended = extended;
+    }
+
+    public boolean isAgent() {
+        return agent;
+    }
+
+    public void setAgent(boolean agent) {
+        this.agent = agent;
     }
 }

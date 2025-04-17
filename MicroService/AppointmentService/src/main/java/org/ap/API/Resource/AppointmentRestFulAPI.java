@@ -16,6 +16,8 @@ import jakarta.ws.rs.core.MediaType;
 public class AppointmentRestFulAPI implements AppointmentAPI {
 
     public static final String ERROR_EMAIL_PARAMETER_IS_REQUIRED = "{\"code\":-1, \"error\": \"email parameter is required\"}";
+
+    public static final String ERROR_IDAPPOINTMENT_PARAMETER_IS_REQUIRED = "{\"code\":-1, \"error\": \"idAppointment parameter is required\"}";
     private final AppointmentService appointmentmanagement = new AppointmentManagement(Main.rabbitMQ);
 
 
@@ -24,7 +26,14 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
     @Path("/appointments")
     @Produces(MediaType.TEXT_PLAIN)
     public String getAppointment(@BeanParam AppointmentQuery query) {
-        return "";
+
+        if(query.getIdAppointment() == 0){
+            return ERROR_IDAPPOINTMENT_PARAMETER_IS_REQUIRED;
+        }
+
+        String result = appointmentmanagement.getAppointment(query);
+        appointmentmanagement.close();
+        return result;
     }
 
     @Override
