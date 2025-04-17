@@ -82,7 +82,6 @@ public class AppointmentManagement implements AppointmentService {
 
         try{
             String query = factoryAppointment.selectSpecificAppointment(parameters);
-            System.out.println(query);
             AppointmentSpecification appointment =  appointmentDAO.getAppointment(query, parameters);
 
 

@@ -4,7 +4,6 @@ import DBLib.Postgres.CommunicationWithPostgre;
 import org.dao.Interfacce.AcquirenteDAO;
 import org.dao.Interfacce.AppointmentDAO;
 import org.dao.Interfacce.Factory.QueryParametersAppointment;
-import org.dao.Interfacce.Factory.QueryParamters;
 import org.dao.Interfacce.UtenteDAO;
 import org.dto.AppointmentSpecification;
 import org.exc.DataBaseException.ErrorExecutingQuery;
@@ -26,6 +25,10 @@ import java.util.logging.Logger;
 
 public class AppointmentPostgreDAO implements AppointmentDAO {
 
+    public static final String COLUMN_IDAPPUNTAMENTO = "idappuntamento";
+    public static final String COLUMN_DATA = "data";
+    public static final String COLUMN_DATARICHIESTA = "datarichiesta";
+    public static final String COLUMN_ESITO = "esito";
     CommunicationWithPostgre connection;
 
     private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
@@ -72,11 +75,11 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
                 Acquirente acquirente = new Acquirente.Builder(idacquirente,emailacquirente)
                         .build();
 
-                Appointment appointment = new Appointment.Builder<>(connection.extractInt("idappuntamento"))
+                Appointment appointment = new Appointment.Builder<>(connection.extractInt(COLUMN_IDAPPUNTAMENTO))
                         .setEstate(estate)
-                        .setData(String.valueOf(connection.extractDate("data")))
-                        .setdataRichesta(String.valueOf(connection.extractDate("datarichiesta")))
-                        .setEsito(connection.extractString("esito"))
+                        .setData(String.valueOf(connection.extractDate(COLUMN_DATA)))
+                        .setdataRichesta(String.valueOf(connection.extractDate(COLUMN_DATARICHIESTA)))
+                        .setEsito(connection.extractString(COLUMN_ESITO))
                         .setAcquirente(acquirente)
                         .build();
 
@@ -100,10 +103,10 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
             if(!connection.hasNextRow()) throw new UserNotHaveAppointment();
             connection.nextRow();
 
-            appointment.setIdAppointment(connection.extractInt("idappuntamento"));
-            appointment.setData(String.valueOf(connection.extractDate("data")));
-            appointment.setDataRichesta(String.valueOf(connection.extractDate("datarichiesta")));
-            appointment.setEsito(connection.extractString("esito"));
+            appointment.setIdAppointment(connection.extractInt(COLUMN_IDAPPUNTAMENTO));
+            appointment.setData(String.valueOf(connection.extractDate(COLUMN_DATA)));
+            appointment.setDataRichesta(String.valueOf(connection.extractDate(COLUMN_DATARICHIESTA)));
+            appointment.setEsito(connection.extractString(COLUMN_ESITO));
 
             if(paramters.isExtended()){
 
@@ -155,11 +158,11 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
 
                 Estate estate = new Estate.Builder<>(connection.extractInt("idimmobile")).build();
 
-                Appointment appointment = new Appointment.Builder<>(connection.extractInt("idappuntamento"))
+                Appointment appointment = new Appointment.Builder<>(connection.extractInt(COLUMN_IDAPPUNTAMENTO))
                         .setEstate(estate)
-                        .setData(String.valueOf(connection.extractDate("data")))
-                        .setdataRichesta(String.valueOf(connection.extractDate("datarichiesta")))
-                        .setEsito(connection.extractString("esito"))
+                        .setData(String.valueOf(connection.extractDate(COLUMN_DATA)))
+                        .setdataRichesta(String.valueOf(connection.extractDate(COLUMN_DATARICHIESTA)))
+                        .setEsito(connection.extractString(COLUMN_ESITO))
                         .setAcquirente((Acquirente) user)
                         .build();
 
@@ -182,8 +185,6 @@ public class AppointmentPostgreDAO implements AppointmentDAO {
         }else{
             acquirente = new Acquirente.Builder(appointment.getAcquirente().getIdUser(), " ").build();
         }
-
-        System.out.println(acquirente.TranslateToJson());
 
         String query = "UPDATE appuntamento SET esito = ? where idimmobile = ? and idacquirente = ? and data = ?";
 
