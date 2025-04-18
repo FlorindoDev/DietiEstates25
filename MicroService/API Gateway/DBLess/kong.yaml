@@ -64,7 +64,7 @@ routes:
         config:
           run_on_preflight: true
           anonymous: null
-          secret_is_base64: false
+          secret_is_base64: true
           header_names:
             - authorization
           cookie_names: []
