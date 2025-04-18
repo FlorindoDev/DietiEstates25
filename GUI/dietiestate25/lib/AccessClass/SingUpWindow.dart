@@ -176,7 +176,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
                                 try {
                                   AccessController.toSignUp(utente);
                                 } catch (e) {
-                                  MyApp.mostraPopUpInformativo(
+                                  MyApp.mostraPopUpWarining(
                                       context, "Attenzione", e.toString());
                                 }
                               }

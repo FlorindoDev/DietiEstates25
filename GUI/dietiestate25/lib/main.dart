@@ -8,10 +8,10 @@ import 'package:dietiestate25/Home/HomeWindow.dart';
 import 'package:dietiestate25/Connection/Connection.dart';
 
 void main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Assicura l'inizializzazione di Flutter
+  WidgetsFlutterBinding.ensureInitialized(); // Assicura l'inizializzazione di Flutter
   await Connection.init();
   String initialRoute = await RouteWindows.checkLogin();
+  print("[debug] Effettuato check login, initial doute: $initialRoute");
   runApp(MyApp(initialRoute: initialRoute));
 }
 
@@ -69,6 +69,28 @@ class MyApp extends StatelessWidget {
   );
 
   static void mostraPopUpInformativo(
+      dynamic context, String titolo, String messaggio) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(titolo),
+          icon: Icon(Icons.info),
+          content: Text(messaggio),
+          actions: <Widget>[
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Chiude il dialogo
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static void mostraPopUpWarining(
       dynamic context, String titolo, String messaggio) {
     showDialog(
       context: context,

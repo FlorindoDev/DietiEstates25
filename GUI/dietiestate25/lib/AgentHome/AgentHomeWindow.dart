@@ -106,13 +106,13 @@ class _HomeScreen extends State<HomeScreen> {
             if (snapshot.hasError && !_errorShown) {
               //MyApp.mostraPopUpInformativo(context, 'Error', "Errore riprova più tardi");
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                MyApp.mostraPopUpInformativo(
+                MyApp.mostraPopUpWarining(
                     context, 'Error', "Errore riprova più tardi");
               });
             }
             if (!snapshot.hasData || snapshot.data!.isEmpty && !_noDataShown) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                MyApp.mostraPopUpInformativo(
+                MyApp.mostraPopUpWarining(
                     context, 'Error', "Errore riprova più tardi");
               });
             }

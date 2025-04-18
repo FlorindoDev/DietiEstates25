@@ -21,9 +21,6 @@ class _ProfileWindowState extends State<ProfileWindow>{
           color: MyApp.panna,
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(30),
-            topRight: const Radius.circular(30),
-            bottomLeft: const Radius.circular(0),
-            bottomRight: const Radius.circular(0),
           ),
         ),
         child:Center(

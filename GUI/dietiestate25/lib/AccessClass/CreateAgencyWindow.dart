@@ -198,7 +198,7 @@ class _CreateAgencyWindowState extends State<CreateAgencyWindow> {
                       try{
                         AccessController.toCreateAgency(agenzia);
                       }catch(e){
-                        MyApp.mostraPopUpInformativo(context,"Attenzione",e.toString());
+                        MyApp.mostraPopUpWarining(context,"Attenzione",e.toString());
                       }
                       
                     }: null,

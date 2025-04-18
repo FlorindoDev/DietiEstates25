@@ -53,7 +53,7 @@ class HomeController {
           }
         }
       } else {
-        MyApp.mostraPopUpInformativo(context, "Errore", ris['message']);
+        MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
       }
     } catch (e) {
       return List<Notify>.empty();
@@ -100,7 +100,7 @@ class HomeController {
           }
         }
       } else {
-        MyApp.mostraPopUpInformativo(context, "Errore", ris['message']);
+        MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
       }
     } catch (e) {
       return List<Appointment>.empty();
@@ -147,7 +147,7 @@ class HomeController {
       if (ris['code'] == 0) {
         Appointments = AppointmentNotification.fromJson(ris['Appointment']);
       } else {
-        MyApp.mostraPopUpInformativo(context, "Errore", ris['message']);
+        MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
       }
     } catch (e) {
       return Appointments;
