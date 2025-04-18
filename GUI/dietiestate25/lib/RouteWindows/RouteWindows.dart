@@ -15,7 +15,6 @@ class RouteWindows {
 
   static Future<String> checkLogin() async {
     String isLoggedIn = await AccessController.checkLogin();
-    print(isLoggedIn);
     if (isLoggedIn != "false") {
       if (isLoggedIn == "HomeWindow") {
         return homeWindow;
