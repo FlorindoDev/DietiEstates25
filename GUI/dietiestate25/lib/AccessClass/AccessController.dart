@@ -162,7 +162,7 @@ class AccessController {
   //   print(content);
   // }
 
-  static Future<bool> checkLogin() async {
+  static Future<String> checkLogin() async {
     try {
       http.Response? response = await Connection.validateJwtRequest();
 
@@ -172,7 +172,8 @@ class AccessController {
         body = response.body;
         code = response.statusCode;
       }
-      print("status code ${response!.statusCode} RICHIESTA PRE LOGIN EFFETTUATA: $body $code");
+      print(
+          "status code ${response!.statusCode} RICHIESTA PRE LOGIN EFFETTUATA: $body $code");
 
       if (response != null && response.statusCode == 200) {
         // Dividi il token in 3 parti
@@ -190,15 +191,22 @@ class AccessController {
 
         String email = payloadMap["sub"];
         Utente utente = Utente.builder.setId("").setEmail(email).build();
-        HomeController.utente = utente;
+        print(payloadMap["kid"]);
+        if (payloadMap["kid"] == "acquirente") {
+          HomeController.utente = utente;
+          return "HomeWindow";
+        } else if (payloadMap["kid"] == "agent") {
+          AgentHomeController.utente = utente;
+          return "AgentHomeWindow";
+        }
 
-        return true;
+        return "false";
       } else {
-        return false;
+        return "false";
       }
     } catch (e) {
       print("Errore: $e");
-      return false;
+      return "false";
     }
   }
 }
