@@ -33,34 +33,34 @@ class Connection {
   }
 
   static Future<http.Response?> makePostRequest(
-      Map<String, dynamic>? body, String? path) async {
-    print("JWT in POST request $jwt");
-    try {
-      String fullUrl = baseUrl;
-      if (path != null && path.isNotEmpty) {
-        fullUrl += path.startsWith('/') ? path : '/$path';
-      }
-      // Fai la richiesta HTTP con il JWT nell'header
-      final response = await http.post(
-        Uri.parse(fullUrl),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $jwt", // Aggiunto il token Bearer
-        },
-        body: jsonEncode(body),
-      );
+    Map<String, dynamic>? body, String? path) async {
+      print("JWT in POST request $jwt");
+      try {
+        String fullUrl = baseUrl;
+        if (path != null && path.isNotEmpty) {
+          fullUrl += path.startsWith('/') ? path : '/$path';
+        }
+        // Fai la richiesta HTTP con il JWT nell'header
+        final response = await http.post(
+          Uri.parse(fullUrl),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $jwt", // Aggiunto il token Bearer
+          },
+          body: jsonEncode(body),
+        );
 
-      // Controlla se la richiesta ha avuto successo (200-299)
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        return response;
-      } else {
-        print("Errore HTTP: ${response.statusCode} - ${response.body}");
+        // Controlla se la richiesta ha avuto successo (200-299)
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          return response;
+        } else {
+          print("Errore HTTP: ${response.statusCode} - ${response.body}");
+          return null;
+        }
+      } catch (e) {
+        print("Errore durante la richiesta: $e");
         return null;
       }
-    } catch (e) {
-      print("Errore durante la richiesta: $e");
-      return null;
-    }
   }
 
   static Future<http.Response?> makeGetRequest(String? path) async {

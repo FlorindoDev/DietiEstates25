@@ -4,8 +4,6 @@ import 'package:path_provider/path_provider.dart';
 
 class ProfileController{
   
-  
-  
   static Future<void> resetJWT() async {
 
     final directory = await getApplicationDocumentsDirectory();
@@ -20,6 +18,8 @@ class ProfileController{
       await file.writeAsString('{ "JWT":"" }');
     
   }
+
+  
   
 
 

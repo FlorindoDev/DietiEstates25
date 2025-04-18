@@ -55,12 +55,11 @@ class AccessController {
     richiestaLogin(utente).then((risultato) {
       //risultato = json.decode(risultato);
       if (risultato == null) {
-        MyApp.mostraPopUpInformativo(context, "Attenzione",
+        MyApp.mostraPopUpWarining(context, "Attenzione",
             "Servizio non attualmente disponibile, prova tra qualche minuto");
         return false;
       } else if (risultato['code'] == 1) {
-        MyApp.mostraPopUpInformativo(
-            context, "Attenzione", risultato['message']);
+        MyApp.mostraPopUpWarining(context, "Attenzione", risultato['message']);
         return false;
       } else if (risultato['code'] == 0) {
         final role = payload(risultato['message'].split('.')[1]);
@@ -115,11 +114,11 @@ class AccessController {
       String content = await file.readAsString();
       print('5');
       dynamic json = jsonDecode(content);
-      print('6');
+      print('6: json old salvato');
       print(jsonEncode(json));
       print('7');
       json['JWT'] = jwt;
-      print('8');
+      print('8: json new salvato');
       print(jsonEncode(json));
       print('9');
       await file.writeAsString(jsonEncode(json));
@@ -127,7 +126,7 @@ class AccessController {
     } else {}
     print('11');
     await file.writeAsString("{ \"JWT\":\"$jwt\" }");
-    print('12');
+    print('12: termine salvataggio su file');
   }
 
   static void toSignUp(Utente utente) {
@@ -173,8 +172,7 @@ class AccessController {
         body = response.body;
         code = response.statusCode;
       }
-      print(
-          "status code ${response!.statusCode} RICHIESTA PRE LOGIN EFFETTUATA: $body $code");
+      print("status code ${response!.statusCode} RICHIESTA PRE LOGIN EFFETTUATA: $body $code");
 
       if (response != null && response.statusCode == 200) {
         // Dividi il token in 3 parti

@@ -44,6 +44,7 @@ class AgentHomeController {
       return List<Estate>.empty();
     }
 
+
     List<Estate> estates = [];
     return estates;
     /*
@@ -100,7 +101,7 @@ class AgentHomeController {
           }
         }
       } else {
-        MyApp.mostraPopUpInformativo(context, "Errore", ris['message']);
+        MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
       }
     } catch (e) {
       return List<Notify>.empty();
@@ -147,7 +148,7 @@ class AgentHomeController {
           }
         }
       } else {
-        MyApp.mostraPopUpInformativo(context, "Errore", ris['message']);
+        MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
       }
     } catch (e) {
       return List<Appointment>.empty();
@@ -189,7 +190,7 @@ class AgentHomeController {
       if (ris['code'] == 0) {
         Appointments = AppointmentNotification.fromJson(ris['Appointment']);
       } else {
-        MyApp.mostraPopUpInformativo(context, "Errore", ris['message']);
+        MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
       }
     } catch (e) {
       return Appointments;
@@ -223,7 +224,7 @@ class AgentHomeController {
         body: body, // Codifica l'oggetto in JSON
       ); //as http.Response;
     } catch (e) {
-      MyApp.mostraPopUpInformativo(
+      MyApp.mostraPopUpWarining(
           context, "Errore", "Qualcosa è adato storto durante l'operazione");
       return esito;
     }
@@ -236,7 +237,7 @@ class AgentHomeController {
         MyApp.mostraPopUpInformativo(context, "Riuscito", ris['message']);
         esito = true;
       } else {
-        MyApp.mostraPopUpInformativo(context, "Errore", ris['message']);
+        MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
       }
     } catch (e) {
       return esito;
