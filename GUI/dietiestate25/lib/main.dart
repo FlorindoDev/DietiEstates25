@@ -4,11 +4,13 @@ import 'package:dietiestate25/AccessClass/LoginWindow.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/AccessClass/AccessController.dart';
 // import 'package:dietiestate25/Home/HomeController.dart';
+import 'package:dietiestate25/AgentHome/AgentHomeWindow.dart';
 import 'package:dietiestate25/Home/HomeWindow.dart';
 import 'package:dietiestate25/Connection/Connection.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Assicura l'inizializzazione di Flutter
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Assicura l'inizializzazione di Flutter
   await Connection.init();
   String initialRoute = await RouteWindows.checkLogin();
   print("[debug] Effettuato check login, initial doute: $initialRoute");
