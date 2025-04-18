@@ -1,5 +1,6 @@
 import 'package:dietiestate25/AccessClass/AccessController.dart';
 import 'package:dietiestate25/AccessClass/LoginWindow.dart';
+import 'package:dietiestate25/Home/HomeController.dart';
 import 'package:dietiestate25/Home/HomeWindow.dart';
 import 'package:dietiestate25/AgentHome/AgentHomeWindow.dart';
 import 'package:dietiestate25/main.dart';
@@ -13,8 +14,18 @@ class RouteWindows {
   static const agentHomeWindow = '/AgentHomeWindow';
 
   static Future<String> checkLogin() async {
-    bool isLoggedIn = await AccessController.checkLogin();
-    return isLoggedIn ? homeWindow : loginWindow;
+    String isLoggedIn = await AccessController.checkLogin();
+    print(isLoggedIn);
+    if (isLoggedIn != "false") {
+      if (isLoggedIn == "HomeWindow") {
+        return homeWindow;
+      } else if (isLoggedIn == "AgentHomeWindow") {
+        return agentHomeWindow;
+      }
+    } else {
+      return loginWindow;
+    }
+    return loginWindow;
   }
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
