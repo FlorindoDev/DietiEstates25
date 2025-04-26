@@ -20,7 +20,7 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @POST
     @Path("createEstate")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String createEstate(Estate estate) {
         AdsEstate ads = new AdsEstate(Main.rabbitMQ);
         String response = ads.createEstate(estate);
@@ -32,7 +32,7 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @POST
     @Path("changeEstate")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String changeEstate(Estate estate) {
         AdsEstate ads = new AdsEstate(Main.rabbitMQ);
         String response = ads.changeEstate(estate);
@@ -44,7 +44,7 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @POST
     @Path("loadEstate")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String loadEstate(Agency agency) {
         AdsEstate ads = new AdsEstate(Main.rabbitMQ);
         String response = ads.loadEstate(agency);

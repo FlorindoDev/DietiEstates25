@@ -17,7 +17,7 @@ public class LoginRestFulAPI implements LoginAPI {
     @POST
     @Path("makeLogin")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String makeLogin(Utente user) {
 
         String result = login_access.makeLogin(user);

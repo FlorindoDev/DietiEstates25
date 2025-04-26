@@ -18,7 +18,7 @@ public class SignUpRestFulAPI implements SignUpAPI {
     @Path("makeSignup")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String makeSignUp(Acquirente user) {
         String result = singup_access.makeSignUp(user);

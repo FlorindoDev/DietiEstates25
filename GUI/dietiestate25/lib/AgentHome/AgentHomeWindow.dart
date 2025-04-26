@@ -4,6 +4,7 @@ import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/AgentHome/NotificationAgentWindow.dart';
 import 'package:dietiestate25/AgentHome/AgentAppointmentWindow.dart';
+import 'package:dietiestate25/ManagementAccount/ProfileWindow.dart';
 
 class AgentHomeWindow extends StatefulWidget {
   const AgentHomeWindow({super.key, required this.appbar});
@@ -22,6 +23,7 @@ class _AgentHomeWindowState extends State<AgentHomeWindow> {
     NotificationAgentWindow(),
     AgentAppointmentWindow(),
     //ProfileAgentWindow(),
+    ProfileWindow(),
   ];
 
   @override

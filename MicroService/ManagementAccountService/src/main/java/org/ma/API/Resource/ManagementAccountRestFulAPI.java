@@ -18,7 +18,7 @@ public class ManagementAccountRestFulAPI implements ManagementAccountAPI {
     @POST
     @Path("applyChangeAcquirente")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String applyChangeAcquirente(Acquirente utente) {
         managementAccount = new ManagementAccount();
         String response = managementAccount.applyChangeAcquirente(utente);
@@ -30,7 +30,7 @@ public class ManagementAccountRestFulAPI implements ManagementAccountAPI {
     @POST
     @Path("applyChangeAgent")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String applyChangeAgent(Agent utente) {
         managementAccount = new ManagementAccount();
         String response = managementAccount.applyChangeAgent(utente);
@@ -42,7 +42,7 @@ public class ManagementAccountRestFulAPI implements ManagementAccountAPI {
     @POST
     @Path("applyChangeAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String applyChangeAdmin(Admin utente) {
         managementAccount = new ManagementAccount();
         String response = managementAccount.applyChangeAdmin(utente);
@@ -54,7 +54,7 @@ public class ManagementAccountRestFulAPI implements ManagementAccountAPI {
     @POST
     @Path("getAccountAcquirente")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String getAccountAcquirente(Acquirente utente) {
         managementAccount = new ManagementAccount();
         String response = managementAccount.getAccountAcquirente(utente);
@@ -66,7 +66,7 @@ public class ManagementAccountRestFulAPI implements ManagementAccountAPI {
     @POST
     @Path("getAccountAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String getAccountAdmin(Admin utente) {
         managementAccount = new ManagementAccount();
         String response = managementAccount.getAccountAdmin(utente);
@@ -78,7 +78,7 @@ public class ManagementAccountRestFulAPI implements ManagementAccountAPI {
     @POST
     @Path("getAccountAgent")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String getAccountAgent(Agent utente) {
         managementAccount = new ManagementAccount();
         String response = managementAccount.getAccountAgent(utente);

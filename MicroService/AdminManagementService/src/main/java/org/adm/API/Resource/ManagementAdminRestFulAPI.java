@@ -20,7 +20,7 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @POST
     @Path("addAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String addAdmin(Admin admin) {
         String result = managementAdmin.addAdmin(admin,admin.getAgency());
@@ -31,7 +31,7 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @POST
     @Path("removeAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String removeAdmin(Admin admin) {
         String result = managementAdmin.removeAdmin(admin);
@@ -42,7 +42,7 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @POST
     @Path("upgradeSupportAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String upgradeSupportAdmin(Admin admin) {
         String result = managementAdmin.upgradeSupportAdmin(admin);
@@ -53,7 +53,7 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @POST
     @Path("downgradeSupport")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String downgradeSupport(Admin admin) {
         String result = managementAdmin.downgradeSupport(admin);
@@ -64,7 +64,7 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @POST
     @Path("loadAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String loadAdmin(Agency agency) {
         String result = managementAdmin.getAdmins(agency);
