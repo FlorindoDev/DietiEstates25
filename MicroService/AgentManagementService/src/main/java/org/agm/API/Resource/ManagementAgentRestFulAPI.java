@@ -20,7 +20,7 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @POST
     @Path("addAgent")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String addAgent(Agent agent) {
         String result = managementAgent.addAgent(agent);
@@ -31,7 +31,7 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @POST
     @Path("removeAgent")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String removeAgent(Agent agent) {
         String result = managementAgent.removeAgent(agent);
@@ -42,7 +42,7 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @POST
     @Path("getAgents")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String getAgents(Agency agency) {
         String result = managementAgent.getAgents(agency);
@@ -53,7 +53,7 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @POST
     @Path("getEstates")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String getEstates(Agency agency) {
         String result = managementAgent.getEstates(agency);
@@ -64,7 +64,7 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @POST
     @Path("UpdateEstateAgent")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String updateEstateAgent(Estate estate) {
         String result = managementAgent.updateEstateAgent(estate,estate.getAgente());

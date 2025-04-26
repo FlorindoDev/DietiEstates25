@@ -16,7 +16,7 @@ public class SearchRestFulAPI implements SearchAPI {
     @Path("allCity")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String allCity() {
         String result = searchService.allCity();
@@ -27,7 +27,7 @@ public class SearchRestFulAPI implements SearchAPI {
     @Path("suggestionCities")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String suggestionCities(Indirizzo indirizzo) {
         String result = searchService.suggestionCities(indirizzo);
@@ -38,7 +38,7 @@ public class SearchRestFulAPI implements SearchAPI {
     @Path("coordinatesEstates")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String coordinatesEstates(Estate estate) {
         return "";
@@ -48,7 +48,7 @@ public class SearchRestFulAPI implements SearchAPI {
     @Path("estatesSerachFromCity")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String estatesSerachFromCity(Indirizzo indirizzo) {
         String result = searchService.estatesSerachFromCity(indirizzo);

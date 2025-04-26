@@ -17,7 +17,7 @@ public class CreateAgencyRestFulAPI implements CreateAgencyAPI {
     @POST
     @Path("createAgency")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String createAgency(Agency agency) {
         String result = createAgnecy.makeAgency(agency);
         createAgnecy.close();

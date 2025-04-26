@@ -15,7 +15,7 @@ public class NotifyRestFulAPI implements NotifyAPI {
     @Override
     @Path("/notifies/acquirente")
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String getNotifyAcquirente(@BeanParam NotifyQuery query) {
 
         String email = query.getEmail();
@@ -35,7 +35,7 @@ public class NotifyRestFulAPI implements NotifyAPI {
     @Override
     @Path("/notifies/agent")
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String getNotifyAgent(@BeanParam NotifyQuery query) {
 
         String email = query.getEmail();
