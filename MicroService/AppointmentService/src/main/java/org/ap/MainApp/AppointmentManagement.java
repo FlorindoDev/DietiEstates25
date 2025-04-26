@@ -7,6 +7,7 @@ import org.dao.Interfacce.Factory.QueryParametersAppointment;
 import org.dto.AppointmentSpecification;
 import org.dao.postgre.EstatePostgreDAO;
 import org.dao.postgre.Factory.FactoryFilteredQueryAppointmentPostgres;
+import org.exc.DietiEstateMicroServiceException.ErrorRequestHTTP;
 import org.md.Notify.Interfacce.NotifyAppointmentFactory;
 import org.md.Notify.Notify;
 import org.md.Notify.NotifyBasicAppointmentFactory;
@@ -22,10 +23,16 @@ import org.md.Appointment.AppointmentAccept;
 import org.md.Appointment.AppointmentReject;
 import org.va.Validator;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 
 public class AppointmentManagement implements AppointmentService {
 
+    public static final String URL_STRING_METEO = "https://api.open-meteo.com/v1/forecast?";
     private AppointmentDAO appointmentDAO;
 
     private final NotifyAppointmentFactory factory;
@@ -182,6 +189,54 @@ public class AppointmentManagement implements AppointmentService {
             return e.getMessage();
         }
 
+    }
+
+    @Override
+    public String getMeteo(String queryParameters){
+        String body;
+        try {
+            body = httpRequest(URL_STRING_METEO + queryParameters);
+            return body;
+        } catch (DietiEstateException e) {
+            return e.getMessage();
+        }
+
+    }
+
+    private String httpRequest(String urlString) throws DietiEstateException{
+        HttpURLConnection conn = null;
+        BufferedReader reader = null;
+        int status = 0;
+
+
+        try {
+            URI uri = new URI(urlString);
+            URL url = uri.toURL();
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            status = conn.getResponseCode();
+            if (status != HttpURLConnection.HTTP_OK) {
+                throw new ErrorRequestHTTP();
+            }
+
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+
+            return response.toString();
+
+        } catch (Exception e) {
+            throw new ErrorRequestHTTP(getStringFromInt(status));
+        }
+    }
+
+    private String getStringFromInt(int status) {
+        return Integer.toString(status);
     }
 
     @Override

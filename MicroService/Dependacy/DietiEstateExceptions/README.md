@@ -27,12 +27,12 @@ Abbiamo due grandi categori: <br>
 - `10:` estate non esiste <br>
 - `11:` Indirizzo non presente nel DB <br>
 - `12:` Indirizzo gia presente nel DB <br>
-- `13` agenzia non ha admins <br>
-- `14` agenzia non ha agenti <br>
-- `15` agenzia non esiste <br>
-- `16` Agency don't have estates <br>
-- `17` Errore creazione statement
-- `18` l'utente non ha notifiche <br>
+- `13:` agenzia non ha admins <br>
+- `14:` agenzia non ha agenti <br>
+- `15:` agenzia non esiste <br>
+- `16:` Agency don't have estates <br>
+- `17:` Errore creazione statement
+- `18:` l'utente non ha notifiche <br>
 - `101:` Email non valida <br>
 - `102:` Password non valida <br>
 - `103:` nome agenzia non valido <br>
@@ -43,5 +43,7 @@ Abbiamo due grandi categori: <br>
 - `108:` fallimento inserimento in coda rabbit <br>
 - `109:` fallimento invio notifica
 - `110:` fallimento invio cittá
+- `111:` Bad request dei get
+- `112:` errore richuesta HTTP
 
 
