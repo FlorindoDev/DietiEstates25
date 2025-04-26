@@ -14,5 +14,6 @@ public interface AppointmentService {
     String acceptAppointment(AppointmentAccept appointment);
     String declineAppointment(AppointmentReject appointment);
     String makeAppointment(Appointment appointment);
+    String getMeteo(String queryParameters);
     void close();
 }
