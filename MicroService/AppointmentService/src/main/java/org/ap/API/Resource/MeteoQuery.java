@@ -6,7 +6,7 @@ import jakarta.ws.rs.QueryParam;
 public class MeteoQuery {
 
     @QueryParam("hourly")
-    @DefaultValue("precipitation,temperature_2m,cloud_cover")
+    @DefaultValue("precipitation,precipitation_probability,cloud_cover")
     private String hourly;
 
     @QueryParam("latitude")

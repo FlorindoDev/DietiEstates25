@@ -119,7 +119,8 @@ public class AppointmentRestFulAPI implements AppointmentAPI {
         }
 
         String parameters = query.makeParametersQuery(query);
-        return Response.status(Response.Status.OK).entity(appointmentmanagement.getMeteo(parameters)).build();
+        String result = "{\"code\":0, \"weather\": "+ appointmentmanagement.getMeteo(parameters) + "}";
+        return Response.status(Response.Status.OK).entity(result).build();
     }
 
     private void checkQuery(MeteoQuery query) throws DietiEstateException{
