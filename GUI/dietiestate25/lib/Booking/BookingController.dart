@@ -16,16 +16,12 @@ class BookingController {
       dynamic context, DateTime date, String lon, String lat) async {
     final formattedDate = DateFormat('yyyy-MM-dd').format(date);
     dynamic ris;
-    print(url);
-    print(formattedDate);
     try {
       final urls = Uri.parse(url +
           'latitude=${lat}&longitude=${lon}&start_date=${formattedDate}&end_date=${formattedDate}');
       print(urls);
       final response = await http.get(urls);
       ris = json.decode(utf8.decode(response.bodyBytes));
-      print(ris);
-      print(ris["weather"]["hourly"]);
       if (ris['code'] == 0) {
         if (ris["weather"]['code'] == 112 || ris["weather"]['code'] == 111)
           MyApp.mostraPopUpWarining(context, "Errore",
