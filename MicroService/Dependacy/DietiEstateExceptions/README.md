@@ -44,6 +44,6 @@ Abbiamo due grandi categori: <br>
 - `109:` fallimento invio notifica
 - `110:` fallimento invio cittá
 - `111:` Bad request dei get
-- `112:` errore richuesta HTTP
+- `112:` errore richiesta HTTP
 
 
