@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 public class CreateAgency implements CreateAgencyService {
 
-    public static final String CHARACTERS_FOR_GENERATE_PASSWORD = "Z5v!EeR9aFGdySO$fcgDu4Wpi8xVo2N1tXClAnsbz6BTrYQwLm_3IjPHKkqhM0UJ7";
+    private static final String CHARACTERS_FOR_GENERATE_PASSWORD = "Z5v!EeR9aFGdySO$fcgDu4Wpi8xVo2N1tXClAnsbz6BTrYQwLm_3IjPHKkqhM0UJ7";
     private final AgencyDAO agencyDAO;
 
     private static final Logger logger = Logger.getLogger(CreateAgency.class.getName());

@@ -15,6 +15,7 @@ import 'package:dietiestate25/Validation/Validate.dart';
 import 'package:dietiestate25/Validation/Validetor.dart';
 import 'package:dietiestate25/AccessClass/LoginWindow.dart';
 import 'package:dietiestate25/AccessClass/SingUpWindow.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:dietiestate25/Connection/Connection.dart';
 
@@ -207,6 +208,44 @@ class AccessController {
     } catch (e) {
       print("Errore: $e");
       return "false";
+    }
+  }
+
+  // GoogleSignIn instance
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: ['email', 'profile', 'openid'],
+      serverClientId:
+          '602800046237-coq03uq25dau8bv7lop0il5h6a8cbr12.apps.googleusercontent.com');
+
+  Future<void> handleGoogleSignUp(dynamic context) async {
+    try {
+      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+      if (account == null) return; // user aborted
+      final GoogleSignInAuthentication auth = await account.authentication;
+
+      // send idToken to backend for verification and signup
+      Uri uri = Uri.parse('http://10.0.2.2:7001/signup/google');
+      final response = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'idToken': auth.idToken}),
+      );
+      print("ciao2");
+
+      final body = jsonDecode(response.body);
+      print(response.body);
+      if (body['code'] == 0) {
+        MyApp.mostraPopUpInformativo(
+            context, 'Google SignUp eseguito con Successo!', body['message']);
+        // salva il JWT e proced
+      } else {
+        MyApp.mostraPopUpWarining(
+            context, 'Errore Google SignUp', body['message']);
+      }
+    } catch (error) {
+      print("ciao");
+      MyApp.mostraPopUpWarining(
+          context, 'Errore Google SignUp', error.toString());
     }
   }
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "602800046237",
+    "project_id": "dietiestate-76d0d",
+    "storage_bucket": "dietiestate-76d0d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602800046237:android:ce6e692e68f86916a41474",
+        "android_client_info": {
+          "package_name": "com.example.dietiestate25"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxXBiwqf62fd6p4j95SxyQUUGsH4MGwsE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

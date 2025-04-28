@@ -1,6 +1,5 @@
 .idea/
 *.class
-android/
 target/
 windows/
 web/

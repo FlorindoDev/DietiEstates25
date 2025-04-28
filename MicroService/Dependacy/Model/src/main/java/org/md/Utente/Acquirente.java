@@ -6,6 +6,7 @@ public class Acquirente extends Utente{
     private Boolean notifyNewEstate;
     private Boolean changePriceNotify;
 
+
     public Acquirente(){}
 
     protected Acquirente(Builder builder) {

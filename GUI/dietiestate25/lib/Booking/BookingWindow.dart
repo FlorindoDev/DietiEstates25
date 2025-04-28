@@ -212,6 +212,7 @@ class _BookingWindowState extends State<BookingWindow> {
                               onTap: () {
                                 setState(() {
                                   _selectedDate = date;
+                                  //TODO le cordinate devono essere quelle del immobile
                                   _weatherFuture =
                                       BookingController.fetchWeatherList(
                                     context,
@@ -429,7 +430,9 @@ class _BookingWindowState extends State<BookingWindow> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: _selectedDate != null
-                        ? () {/* conferma action */}
+                        ? () {
+                            /* TODO Aggioungere creazione del  appointment */
+                          }
                         : null,
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,

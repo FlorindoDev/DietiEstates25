@@ -16,6 +16,7 @@ dependencies:
   
   http: ^1.3.0  # Controlla se esiste una versione più recente
   path_provider: ^2.1.5
+  google_sign_in: ^6.0.0
 
 
 dev_dependencies:
@@ -30,6 +31,7 @@ flutter:
   assets:
     - images/
     - images/logo/
+    - assets/
 
 
   fonts:

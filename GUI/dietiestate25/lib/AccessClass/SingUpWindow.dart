@@ -3,6 +3,9 @@ import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:dietiestate25/AccessClass/AccessController.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SingUpWindow extends StatefulWidget {
   const SingUpWindow({super.key, required this.appbar});
@@ -15,6 +18,7 @@ class SingUpWindow extends StatefulWidget {
 
 class _SingUpWindowState extends State<SingUpWindow> {
   Utente utente = Utente.builder.setId("").setEmail("").build();
+  AccessController accessController = new AccessController();
 
   bool isCampiCompilati = false;
   var coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
@@ -22,11 +26,8 @@ class _SingUpWindowState extends State<SingUpWindow> {
   void setIsCampiCompilati(bool b) {
     setState(() {
       isCampiCompilati = b;
-      if (b) {
-        coloreBottoneAccedi = WidgetStateProperty.all<Color>(MyApp.rosso);
-      } else {
-        coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
-      }
+      coloreBottoneAccedi =
+          WidgetStateProperty.all<Color>(b ? MyApp.rosso : Colors.grey);
     });
   }
 
@@ -38,11 +39,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
   }
 
   void campiCompilatiControl() {
-    if (isAllCompilato()) {
-      setIsCampiCompilati(true);
-    } else {
-      setIsCampiCompilati(false);
-    }
+    setIsCampiCompilati(isAllCompilato());
   }
 
   @override
@@ -101,6 +98,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
                   child: Column(
                     children: [
                       SizedBox(height: 20),
+                      /* Campi Nome, Cognome, Email, Password */
                       TextField(
                         style: MyApp.stile_testo_solo_nero,
                         decoration: InputDecoration(
@@ -157,11 +155,8 @@ class _SingUpWindowState extends State<SingUpWindow> {
                                   ? Icons.visibility_off
                                   : Icons.visibility,
                             ),
-                            onPressed: () {
-                              setState(() {
-                                obscureText = !obscureText;
-                              });
-                            },
+                            onPressed: () =>
+                                setState(() => obscureText = !obscureText),
                           ),
                         ),
                         onChanged: (p) {
@@ -170,6 +165,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
                         },
                       ),
                       SizedBox(height: 20),
+                      // Pulsante di registrazione tradizionale
                       ElevatedButton(
                         onPressed: isCampiCompilati
                             ? () {
@@ -187,6 +183,36 @@ class _SingUpWindowState extends State<SingUpWindow> {
                               WidgetStateProperty.all(Colors.white),
                         ),
                         child: Text('Registrati'),
+                      ),
+                      SizedBox(height: 20),
+                      // Pulsante Google Sign-Up
+                      ElevatedButton.icon(
+                        icon: Image.asset(
+                          'assets/google_logo.png',
+                          height: 18,
+                        ),
+                        label: Text('Registrati con Google'),
+                        onPressed: () {
+                          accessController.handleGoogleSignUp(context);
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              WidgetStateProperty.all(Colors.white),
+                          foregroundColor:
+                              WidgetStateProperty.all(Colors.black),
+                          overlayColor:
+                              WidgetStateProperty.resolveWith<Color?>((states) {
+                            if (states.contains(MaterialState.pressed))
+                              return MyApp.panna;
+                            return null;
+                          }),
+                          shape:
+                              WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
                       ),
                       SizedBox(height: 20),
                     ],
