@@ -21,6 +21,8 @@ public class Utente extends Translate {
     protected Boolean notifyAppointment;
     protected String idPushNotify;
 
+
+
     public Utente() {}
 
     protected Utente(Builder builder){

@@ -96,6 +96,23 @@
         </dependency>
 
         <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>2.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client-jetty</artifactId>
+            <version>1.35.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.http-client</groupId>
+            <artifactId>google-http-client-jackson2</artifactId>
+            <version>1.46.3</version> <!-- o la versione più recente disponibile -->
+        </dependency>
+
+        <dependency>
             <groupId>org.dao</groupId>
             <artifactId>DAO</artifactId>
             <version>1.0.0</version>

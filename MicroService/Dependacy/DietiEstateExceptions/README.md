@@ -45,5 +45,6 @@ Abbiamo due grandi categori: <br>
 - `110:` fallimento invio cittá
 - `111:` Bad request dei get
 - `112:` errore richiesta HTTP
+- `113:` Errore nella verifica del token google
 
 

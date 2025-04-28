@@ -14,6 +14,7 @@ services:
       DB_PORT: "5432"
       DB_DATABASE_NAME: "postgres"
       DB_CRYPTKEY: "$$1$$umHzr98T$$3Vwn/QZppjsfu5XchOib.0"
+      CLIENT_ID_GOOGLE: "602800046237-coq03uq25dau8bv7lop0il5h6a8cbr12.apps.googleusercontent.com"
 
   agency-service:
     image: agency_service:1.0.0
