@@ -17,6 +17,7 @@ class LoginWindow extends StatefulWidget {
 
 class _LoginWindowState extends State<LoginWindow> {
   Utente utente = Utente.builder.setId("").setEmail("").build();
+  AccessController accessController = new AccessController();
 
   bool _obscureText = true;
 
@@ -148,6 +149,37 @@ class _LoginWindowState extends State<LoginWindow> {
                               campiCompilatiControl();
                             },
                           ),
+                          SizedBox(height: 20),
+                          ElevatedButton.icon(
+                            icon: Image.asset(
+                              'assets/google_logo.png',
+                              height: 18,
+                            ),
+                            label: Text('Login con Google'),
+                            onPressed: () {
+                              accessController.handleGoogleLogIn(context);
+                            },
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  WidgetStateProperty.all(Colors.white),
+                              foregroundColor:
+                                  WidgetStateProperty.all(Colors.black),
+                              overlayColor:
+                                  WidgetStateProperty.resolveWith<Color?>(
+                                      (states) {
+                                if (states.contains(MaterialState.pressed))
+                                  return MyApp.panna;
+                                return null;
+                              }),
+                              shape: WidgetStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
                         ],
                       )),
                 ),

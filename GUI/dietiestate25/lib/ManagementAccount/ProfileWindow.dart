@@ -4,18 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:dietiestate25/main.dart';
 
 class ProfileWindow extends StatefulWidget {
-
   @override
   State<ProfileWindow> createState() => _ProfileWindowState();
-
 }
 
-class _ProfileWindowState extends State<ProfileWindow>{
-
+class _ProfileWindowState extends State<ProfileWindow> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Container(
         decoration: const BoxDecoration(
           color: MyApp.panna,
@@ -23,12 +19,10 @@ class _ProfileWindowState extends State<ProfileWindow>{
             topLeft: const Radius.circular(30),
           ),
         ),
-        child:Center(
-        child: Column(
-        
-          children : [
+        child: Center(
+          child: Column(children: [
             ElevatedButton(
-              onPressed: (){
+              onPressed: () {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -42,8 +36,8 @@ class _ProfileWindowState extends State<ProfileWindow>{
                           onPressed: () {
                             Navigator.of(context).pop(); // Chiude il dialogo
                             ProfileController.resetJWT();
-                            Navigator.of(context).pushNamed(RouteWindows.loginWindow);
-                          
+                            Navigator.of(context)
+                                .pushNamed(RouteWindows.loginWindow);
                           },
                         ),
                         TextButton(
@@ -56,23 +50,16 @@ class _ProfileWindowState extends State<ProfileWindow>{
                     );
                   },
                 );
-
-              }, 
+              },
               style: ButtonStyle(
                 backgroundColor: WidgetStateProperty.all(MyApp.rosso),
                 foregroundColor: WidgetStateProperty.all(Colors.white),
               ),
               child: const Text('Esci'),
             )
-          ]
+          ]),
         ),
       ),
-      ),
-
-
     );
-    
-    
   }
-
 }

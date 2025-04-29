@@ -96,12 +96,16 @@ public class NotifyPostgreDAO implements NotifyDAO {
         Agent agent = new Agent.Builder(0, parameters.getEmail()).build();
         List<Integer> idEstates = agentDAO.getIdEstate(agent);
 
+        if(idEstates.size() == 0) throw new UserNotifyNotFound();
+
         PreparedStatement stmt = connection.getStatment(query);
 
         try {
             for(Integer id : idEstates){
                 stmt.setInt(1, id);
                 connection.makeQuery(stmt);
+
+                if(!connection.hasNextRow()) throw  new UserNotifyNotFound();
 
                 while(connection.hasNextRow()){
                     connection.nextRow();

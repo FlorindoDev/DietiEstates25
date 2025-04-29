@@ -63,24 +63,7 @@ class AccessController {
         MyApp.mostraPopUpWarining(context, "Attenzione", risultato['message']);
         return false;
       } else if (risultato['code'] == 0) {
-        final role = payload(risultato['message'].split('.')[1]);
-        print('1');
-        scriviJWTInFile(risultato['message']);
-        print(role);
-        if (role == "acquirente") {
-          HomeController.utente = utente;
-          Navigator.of(context).pop();
-          Navigator.of(context).pushNamed(RouteWindows.homeWindow);
-        } else if (role == "agent") {
-          AgentHomeController.utente = utente;
-          Navigator.of(context).pop();
-          Navigator.of(context).pushNamed(RouteWindows.agentHomeWindow);
-        }
-
-        print('12');
-        MyApp.mostraPopUpInformativo(
-            context, "Complimenti", "Login Effettuato!");
-        print('13');
+        screenShooser(risultato, utente, context);
 
         return true;
       }
@@ -90,7 +73,27 @@ class AccessController {
     return false;
   }
 
-  static String payload(String jwt) {
+  static void screenShooser(risultato, Utente utente, context) {
+    final jwtPlayload = payload(risultato['message'].split('.')[1]);
+    utente.email = jwtPlayload["sub"];
+    scriviJWTInFile(risultato['message']);
+    print(jwtPlayload["kid"]);
+    if (jwtPlayload["kid"] == "acquirente") {
+      HomeController.utente = utente;
+      Navigator.of(context).pop();
+      Navigator.of(context).pushNamed(RouteWindows.homeWindow);
+    } else if (jwtPlayload["kid"] == "agent") {
+      AgentHomeController.utente = utente;
+      Navigator.of(context).pop();
+      Navigator.of(context).pushNamed(RouteWindows.agentHomeWindow);
+    }
+
+    print('12');
+    MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
+    print('13');
+  }
+
+  static Map payload(String jwt) {
     // La parte centrale è il payload
     final payload = jwt;
 
@@ -101,7 +104,7 @@ class AccessController {
     final payloadMap =
         json.decode(utf8.decode(base64Url.decode(normalizedPayload)));
 
-    return payloadMap["kid"];
+    return payloadMap;
   }
 
   static Future<void> scriviJWTInFile(jwt) async {
@@ -230,7 +233,6 @@ class AccessController {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'idToken': auth.idToken}),
       );
-      print("ciao2");
 
       final body = jsonDecode(response.body);
       print(response.body);
@@ -243,9 +245,38 @@ class AccessController {
             context, 'Errore Google SignUp', body['message']);
       }
     } catch (error) {
-      print("ciao");
       MyApp.mostraPopUpWarining(
           context, 'Errore Google SignUp', error.toString());
+    }
+  }
+
+  Future<void> handleGoogleLogIn(dynamic context) async {
+    try {
+      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+      if (account == null) return; // user aborted
+      final GoogleSignInAuthentication auth = await account.authentication;
+
+      // send idToken to backend for verification and signup
+      Uri uri = Uri.parse('http://10.0.2.2:7001/login/google');
+      final response = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'idToken': auth.idToken}),
+      );
+
+      final body = jsonDecode(response.body);
+      print(response.body);
+      if (body['code'] == 0) {
+        Utente utente = Utente.builder.build();
+        screenShooser(body, utente, context);
+      } else {
+        MyApp.mostraPopUpWarining(
+            context, 'Errore Google Login', body['message']);
+      }
+    } catch (error) {
+      print("QUIIIII");
+      MyApp.mostraPopUpWarining(
+          context, 'Errore Google Login', error.toString());
     }
   }
 }

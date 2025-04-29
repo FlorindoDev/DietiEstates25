@@ -27,7 +27,7 @@ class AgentHomeController {
   static final String urlAppointmentUpdate =
       'http://10.0.2.2:7006/api/appointments';
 
-  static late final Utente utente;
+  static late Utente utente;
 
   static Future<List<Estate>> getEstate(dynamic context) async {
     http.Response response;
@@ -43,7 +43,6 @@ class AgentHomeController {
     } catch (e) {
       return List<Estate>.empty();
     }
-
 
     List<Estate> estates = [];
     return estates;
