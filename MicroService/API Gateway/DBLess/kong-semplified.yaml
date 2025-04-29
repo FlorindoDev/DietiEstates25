@@ -123,13 +123,15 @@ services:
     id: 7a8f9c1d-2b3e-4f5a-9b8c-1234567890ab   # <- replace with your own UUID
     enabled: true
     protocol: http
-    url: http://localhost:7006
+    host: appointmentService
+    port: 7006
+    path: /api/appointments
     retries: 5
     connect_timeout: 60000
     write_timeout: 60000
     read_timeout: 60000
     routes:
-      - name: appointments
+      - name: get-appointments
         id: f1e2d3c4-b5a6-7890-1234-abcdef123456   # <- your own UUID
         protocols:
           - http
@@ -137,8 +139,10 @@ services:
         methods:
           - GET
         paths:
-          - /api
+          - /api/appointments
         strip_path: true
+        path_handling: v0
+        preserve_host: false
         plugins:
           - name: jwt
             protocols:
@@ -158,3 +162,91 @@ services:
               claims_to_verify:
                 - exp
               realm: null
+
+  - name: AppointmentAcceptAppointmentService
+    id: 7a8f9c1d-2b3e-4f5a-9b8c-1234567890ac   # <- replace with your own UUID
+    enabled: true
+    protocol: http
+    host: appointmentService
+    port: 7006
+    path: /api/appointments/acceptAppointment
+    retries: 5
+    connect_timeout: 60000
+    write_timeout: 60000
+    read_timeout: 60000
+    routes:
+    - name: get-appointments-acceptAppointment
+      id: f1e2d3c4-b5a6-7890-1234-abcdef123457   # <- your own UUID
+      protocols:
+        - http
+        - https
+      methods:
+        - POST
+      paths:
+        - /api/appointments/acceptAppointment
+      strip_path: true
+      path_handling: v0
+      preserve_host: false
+      plugins:
+        - name: jwt
+          protocols:
+            - http
+            - https
+          config:
+            run_on_preflight: true
+            anonymous: null
+            secret_is_base64: true
+            header_names:
+              - authorization
+            cookie_names: []
+            uri_param_names:
+              - jwt
+            key_claim_name: kid
+            maximum_expiration: 0
+            claims_to_verify:
+              - exp
+            realm: null
+
+  - name: AppointmentDeclineAppointmentService
+    id: 7a8f9c1d-2b3e-4f5a-9b8c-1234567890ad   # <- replace with your own UUID
+    enabled: true
+    protocol: http
+    host: appointmentService
+    port: 7006
+    path: /api/appointments/declineAppointment
+    retries: 5
+    connect_timeout: 60000
+    write_timeout: 60000
+    read_timeout: 60000
+    routes:
+    - name: get-appointments-declineAppointment
+      id: f1e2d3c4-b5a6-7890-1234-abcdef123458   # <- your own UUID
+      protocols:
+        - http
+        - https
+      methods:
+        - POST
+      paths:
+        - /api/appointments/declineAppointment
+      strip_path: true
+      path_handling: v0
+      preserve_host: false
+      plugins:
+        - name: jwt
+          protocols:
+            - http
+            - https
+          config:
+            run_on_preflight: true
+            anonymous: null
+            secret_is_base64: true
+            header_names:
+              - authorization
+            cookie_names: []
+            uri_param_names:
+              - jwt
+            key_claim_name: kid
+            maximum_expiration: 0
+            claims_to_verify:
+              - exp
+            realm: null
