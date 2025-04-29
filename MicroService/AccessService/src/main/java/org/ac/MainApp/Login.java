@@ -12,6 +12,8 @@ import org.dao.Interfacce.UtenteDAO;
 import org.dao.postgre.UtentePostgreDAO;
 import org.exc.DietiEstateException;
 import org.exc.DietiEstateMicroServiceException.DietiEstateMicroSercviceException;
+import org.exc.DietiEstateMicroServiceException.ErrorValidateTokenGoogle;
+import org.exc.DietiEstateMicroServiceException.TokenIsNull;
 import org.md.Utente.Utente;
 
 import java.util.Collections;
@@ -69,11 +71,11 @@ public class Login implements LoginService{
                 return "{\"code\":0 , \"message\":\"" + JWTUtil.generateToken(email, role) + "\"}";
 
             } else {
-                throw new RuntimeException();
+                throw new TokenIsNull();
             }
 
         } catch (Exception e) {
-            throw new DietiEstateMicroSercviceException(e.getMessage());
+            throw new ErrorValidateTokenGoogle(e.getMessage());
         }
 
     }

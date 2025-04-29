@@ -46,5 +46,6 @@ Abbiamo due grandi categori: <br>
 - `111:` Bad request dei get
 - `112:` errore richiesta HTTP
 - `113:` Errore nella verifica del token google
+- `114:` Errore il token è null
 
 
