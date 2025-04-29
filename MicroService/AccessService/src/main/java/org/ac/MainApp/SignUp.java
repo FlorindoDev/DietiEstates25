@@ -9,6 +9,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import org.ac.MainApp.interfacce.SignUpService;
 import org.exc.DietiEstateMicroServiceException.DietiEstateMicroSercviceException;
 
+import org.exc.DietiEstateMicroServiceException.TokenIsNull;
 import org.va.Validate;
 import org.dao.Interfacce.AcquirenteDAO;
 import org.dao.postgre.AcquirentePostgreDAO;
@@ -85,7 +86,7 @@ public class SignUp implements SignUpService {
                 return makeSignUp(acquirente);
 
             } else {
-                throw new RuntimeException();
+                throw new TokenIsNull();
             }
 
         } catch (Exception e) {
