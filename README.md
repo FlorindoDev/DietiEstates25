@@ -5,11 +5,13 @@
 - `mvn clean verify sonar:sonar` # push changes on sonarQube Server
 
 - `docker network connect microservice_dieti-net kong-gateway-dbless` 
-`
+
+- `curl -i -X POST http://localhost:8001/config --data-binary "@kong.yaml" -H "Content-Type: application/yaml"` # per aggiornare dinamicamente king.yml #da eseguire nella dire di kong.yml
+
 
 # Google
 `android/app/src/main/AndroidManifest.xml`
-Va messo dentro il tag <application> e non dentro <activity>:
+Va messo dentro il tag `<application>` e non dentro `<activity>`:
 ```xml
 <meta-data
     android:name="com.google.android.gms.client.id"
@@ -17,7 +19,7 @@ Va messo dentro il tag <application> e non dentro <activity>:
 
 ```
 `android/app/src/main/res/values/strings.xml`
-Va creato il file se non esiste, altrimenti va aggiunto il tag <string> dentro il tag <resources>:
+Va creato il file se non esiste, altrimenti va aggiunto il tag `<string>` dentro il tag `<resources>`:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
