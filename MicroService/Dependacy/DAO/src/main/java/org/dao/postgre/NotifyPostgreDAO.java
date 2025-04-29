@@ -105,8 +105,6 @@ public class NotifyPostgreDAO implements NotifyDAO {
                 stmt.setInt(1, id);
                 connection.makeQuery(stmt);
 
-                if(!connection.hasNextRow()) throw  new UserNotifyNotFound();
-
                 while(connection.hasNextRow()){
                     connection.nextRow();
                     Acquirente acquirente = new Acquirente.Builder(connection.extractInt("idacquirente"), "").build();
