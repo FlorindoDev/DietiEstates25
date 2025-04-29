@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'package:dietiestate25/Connection/Connection.dart';
 import 'package:dietiestate25/Model/Appointment/AppointmentNotification.dart';
 import 'package:dietiestate25/Model/Notify/AppointmentPending.dart';
 import 'package:dietiestate25/Model/Estate/Estate.dart';
@@ -21,8 +22,7 @@ class AgentHomeController {
   static final String urlAppointment =
       'http://10.0.2.2:7006/api/appointments/agent';
 
-  static final String urlAppointmentSpecific =
-      'http://10.0.2.2:7006/api/appointments';
+  static final String urlAppointmentSpecific = '/api/appointments';
 
   static final String urlAppointmentUpdate =
       'http://10.0.2.2:7006/api/appointments';
@@ -157,10 +157,6 @@ class AgentHomeController {
 
   static Future<AppointmentNotification> getAppointmentSpecific(
       dynamic context, String idAppointment) async {
-    http.Response response;
-    Uri uri = Uri.parse(
-        urlAppointmentSpecific + '?id=' + idAppointment + '&extended=true');
-
     AppointmentNotification Appointments = new AppointmentNotification(
         idAppointment: 0,
         data: "0",
@@ -170,73 +166,92 @@ class AgentHomeController {
         idEstate: 0,
         nomeEcognome: "0",
         viaEstate: "0");
-    try {
-      print(uri);
-      // Fai la richiesta HTTP
-      response = await http.get(
-        uri, // URL valido
-        headers: {"Content-Type": "application/json"},
-      ); //as http.Response;
-    } catch (e) {
-      return Appointments;
-    }
+
+    // Uri uri = Uri.parse(
+    //     urlAppointmentSpecific + '?id=' + idAppointment + '&extended=true');
+    http.Response? response = await Connection.makeGetRequest(
+        urlAppointmentSpecific + '?id=' + idAppointment + '&extended=true');
+
+    // try {
+    //   // print(uri);
+    //   // Fai la richiesta HTTP
+    //   response = await http.get(
+    //     uri, // URL valido
+    //     headers: {"Content-Type": "application/json"},
+    //   ); //as http.Response;
+    // } catch (e) {
+    //   return Appointments;
+    // }
 
     // Controlla se lo statusCode non è 200 (OK)
     dynamic ris;
 
-    try {
-      ris = json.decode(utf8.decode(response.bodyBytes));
-      if (ris['code'] == 0) {
-        Appointments = AppointmentNotification.fromJson(ris['Appointment']);
-      } else {
-        MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
+    if (response != null) {
+      try {
+        ris = json.decode(utf8.decode(response.bodyBytes));
+        if (ris['code'] == 0) {
+          Appointments = AppointmentNotification.fromJson(ris['Appointment']);
+        } else {
+          MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
+        }
+      } catch (e) {
+        return Appointments;
       }
-    } catch (e) {
-      return Appointments;
     }
     return Appointments;
   }
 
   static Future<bool> updateAppointment(
       dynamic context, bool accettato, Appointment appointment) async {
-    http.Response response;
-    Uri? uri;
-    String? body;
+    String uri;
+    Map<String, dynamic>? body;
     if (accettato == true) {
-      uri = Uri.parse(urlAppointmentSpecific + "/acceptAppointment");
-      body = jsonEncode(appointment.toJson("Accettato"));
+      uri = urlAppointmentSpecific + "/acceptAppointment";
+      body = appointment.toJson("Accettato");
     } else {
-      uri = Uri.parse(urlAppointmentSpecific + "/declineAppointment");
-      body = jsonEncode(appointment.toJson("Rifiutato"));
+      uri = urlAppointmentSpecific + "/declineAppointment";
+      body = appointment.toJson("Rifiutato");
     }
+
     bool esito = false;
+    print(uri);
     print(body);
-    try {
-      print(uri);
-      // Fai la richiesta HTTP
-      response = await http.post(
-        uri,
-        headers: {
-          "Content-Type": "application/json",
-          // Aggiungi altri header se necessario (es: token auth)
-        },
-        body: body, // Codifica l'oggetto in JSON
-      ); //as http.Response;
-    } catch (e) {
+
+    http.Response? response = await Connection.makePostRequest(body, uri);
+    if (response == null) {
       MyApp.mostraPopUpWarining(
           context, "Errore", "Qualcosa è adato storto durante l'operazione");
       return esito;
     }
+    // try {
+    //   print(uri);
+    //   // Fai la richiesta HTTP
+    //   response = await http.post(
+    //     uri,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       // Aggiungi altri header se necessario (es: token auth)
+    //     },
+    //     body: body, // Codifica l'oggetto in JSON
+    //   ); //as http.Response;
+    // } catch (e) {
+    //   MyApp.mostraPopUpWarining(
+    //       context, "Errore", "Qualcosa è adato storto durante l'operazione");
+    //   return esito;
+    // }
 
     dynamic ris;
 
     try {
       ris = json.decode(utf8.decode(response.bodyBytes));
+      print("DBUG RIS: ${ris['code']}");
       if (ris['code'] == 0) {
+        print("DEBUG in ris code 0");
         MyApp.mostraPopUpInformativo(context, "Riuscito", ris['message']);
         esito = true;
       } else {
         MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
+        
       }
     } catch (e) {
       return esito;
