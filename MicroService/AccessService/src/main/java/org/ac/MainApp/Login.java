@@ -11,7 +11,6 @@ import org.dao.Interfacce.UtenteDAO;
 
 import org.dao.postgre.UtentePostgreDAO;
 import org.exc.DietiEstateException;
-import org.exc.DietiEstateMicroServiceException.DietiEstateMicroSercviceException;
 import org.exc.DietiEstateMicroServiceException.ErrorValidateTokenGoogle;
 import org.exc.DietiEstateMicroServiceException.TokenIsNull;
 import org.md.Utente.Utente;
