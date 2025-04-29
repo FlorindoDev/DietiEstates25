@@ -177,7 +177,8 @@ services:
       - "8445:8445"
       - "8003:8003"
       - "8004:8004"
-
+    volumes:
+      - ./API Gateway/DBLess:/kong/
 
 
 networks:

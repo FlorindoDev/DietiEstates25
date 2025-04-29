@@ -24,7 +24,8 @@ services:
       - "8003:8003"
       - "8004:8004"
     volumes:
-      - ./kong.yaml:/kong/kong.yaml   # Usa un volume per passare il file nel container (se non usi Dockerfile)
+      - ./:/kong/
+      
 
 networks:
   kong-net:
