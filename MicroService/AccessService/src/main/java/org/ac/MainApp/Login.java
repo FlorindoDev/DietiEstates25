@@ -12,7 +12,6 @@ import org.dao.Interfacce.UtenteDAO;
 import org.dao.postgre.UtentePostgreDAO;
 import org.exc.DietiEstateException;
 import org.exc.DietiEstateMicroServiceException.DietiEstateMicroSercviceException;
-import org.md.Utente.Acquirente;
 import org.md.Utente.Utente;
 
 import java.util.Collections;
