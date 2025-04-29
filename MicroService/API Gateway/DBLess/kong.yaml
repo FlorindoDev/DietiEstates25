@@ -123,7 +123,8 @@ services:
     id: 7a8f9c1d-2b3e-4f5a-9b8c-1234567890ab   # <- replace with your own UUID
     enabled: true
     protocol: http
-    url: http://localhost:7006
+    host: appointmentService
+    port: 7006
     retries: 5
     connect_timeout: 60000
     write_timeout: 60000
@@ -136,9 +137,10 @@ services:
           - https
         methods:
           - GET
+          - POST
         paths:
           - /api
-        strip_path: true
+        strip_path: false
         plugins:
           - name: jwt
             protocols:
