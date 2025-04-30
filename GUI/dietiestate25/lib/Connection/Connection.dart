@@ -3,6 +3,10 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:dietiestate25/Logger/logger.dart';
+
+final logger = MyLogger.getIstance();
+
 class Connection {
   // static final Uri url = Uri.parse('http://localhost:8000/'); // KONG URL
   static final String baseUrl = 'http://10.0.2.2:8000';
@@ -20,58 +24,57 @@ class Connection {
         String content = await storage.readAsString();
         dynamic json = jsonDecode(content);
         jwt = json['JWT']; // Assegna il JWT alla variabile statica
-        print("JWT letto dallo storage: $jwt");
+        logger.d("JWT letto dallo storage: $jwt");
         return true;
       } else {
-        print("JWT letto dallo storage: nessun file trovato");
+        logger.d("JWT letto dallo storage: nessun file trovato");
         return false;
       }
     } catch (e) {
-      print("Errore durante l'inizializzazione: $e");
+      logger.e("Errore durante l'inizializzazione: $e");
       return false;
     }
   }
 
-  static Future<http.Response?> makePostRequest(
-      Map<String, dynamic>? body, String? path) async {
-    print("JWT in POST request $jwt");
+  static Future<http.Response?> makePostRequest(Map<String, dynamic>? body, String? path) async {
+    logger.d("JWT in POST request $jwt");
     try {
       String fullUrl = baseUrl;
       if (path != null && path.isNotEmpty) {
         fullUrl += path.startsWith('/') ? path : '/$path';
       }
-      print("POST REQUEST: ${fullUrl}");
-      // Fai la richiesta HTTP con il JWT nell'header
+      logger.d("POST REQUEST: ${fullUrl}");
+      
       final response = await http.post(
         Uri.parse(fullUrl),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer $jwt", // Aggiunto il token Bearer
+          "Authorization": "Bearer $jwt",
         },
         body: jsonEncode(body),
       );
 
-      // Controlla se la richiesta ha avuto successo (200-299)
+      // Controllo se la richiesta ha avuto successo (200-299)
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return response;
       } else {
-        print("Errore HTTP: ${response.statusCode} - ${response.body}");
+        logger.e("Errore HTTP: ${response.statusCode} - ${response.body}");
         return null;
       }
     } catch (e) {
-      print("Errore durante la richiesta: $e");
+      logger.e("Errore durante la richiesta: $e");
       return null;
     }
   }
 
   static Future<http.Response?> makeGetRequest(String? path) async {
-    print("JWT in GET request $jwt");
+    logger.d("JWT in GET request $jwt");
     try {
       String fullUrl = baseUrl;
       if (path != null && path.isNotEmpty) {
         fullUrl += path.startsWith('/') ? path : '/$path';
       }
-      print("GET REQUEST: ${fullUrl}");
+      logger.d("GET REQUEST: ${fullUrl}");
       // Fai la richiesta HTTP con il JWT nell'header
       final response = await http.get(
         Uri.parse(fullUrl),
@@ -85,11 +88,11 @@ class Connection {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return response;
       } else {
-        print("Errore HTTP: ${response.statusCode} - ${response.body}");
+        logger.e("Errore HTTP: ${response.statusCode} - ${response.body}");
         return null;
       }
     } catch (e) {
-      print("Errore durante la richiesta: $e");
+      logger.e("Errore durante la richiesta: $e");
       return null;
     }
   }
@@ -142,7 +145,7 @@ class Connection {
   }
 
   static Future<http.Response?> validateNewJwtRequest(String newJwt) async {
-    print("JWT in JWT request $newJwt");
+    logger.d("JWT in JWT request $newJwt");
 
     try {
       final response = await http.get(
@@ -157,18 +160,16 @@ class Connection {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return response;
       } else {
-        print("Errore HTTP: ${response.statusCode} - ${response.body}");
+        logger.e("Errore HTTP: ${response.statusCode} - ${response.body}");
         return null;
       }
     } catch (e) {
-      print("Errore durante la richiesta: $e");
+      logger.e("Errore durante la richiesta: $e");
       return null;
     }
   }
 
   static Future<bool> init() async {
-    print("init connection");
     return _initialize(); // Attende che l'inizializzazione statica sia completata
-    // print("end init connection");
   }
 }

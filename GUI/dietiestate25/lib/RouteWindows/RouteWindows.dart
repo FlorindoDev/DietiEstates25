@@ -1,15 +1,22 @@
+import 'package:flutter/material.dart';
+
 import 'package:dietiestate25/AccessClass/AccessController.dart';
 import 'package:dietiestate25/AccessClass/LoginWindow.dart';
 import 'package:dietiestate25/Home/HomeController.dart';
 import 'package:dietiestate25/Home/HomeWindow.dart';
 import 'package:dietiestate25/AgentHome/AgentHomeWindow.dart';
 import 'package:dietiestate25/main.dart';
-import 'package:flutter/material.dart';
+import 'package:dietiestate25/Logger/logger.dart';
+
+final logger = MyLogger.getIstance();
 
 class RouteWindows {
+  // No logged windows
   static const loginWindow = '/LoginWindow';
   static const singUpWindow = '/SingUpWindow';
   static const createAgencyWindow = '/CreateAgencyWindow';
+
+  // Main Windows
   static const homeWindow = '/HomeWindow';
   static const agentHomeWindow = '/AgentHomeWindow';
 
@@ -28,7 +35,7 @@ class RouteWindows {
   }
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    print("[settings name] ${settings.name}");
+    logger.d("[Route Settings] ${settings.name}");
 
     if (settings.name != '/') {
       switch (settings.name) {
@@ -43,13 +50,14 @@ class RouteWindows {
 
         case RouteWindows.homeWindow:
           return MaterialPageRoute(
-              builder: (_) => HomeWindow(appbar: MyApp.appBarNotBackable));
+              builder: (_) => HomeWindow(appbar: MyApp.smallAppBar));
+
         case RouteWindows.agentHomeWindow:
           return MaterialPageRoute(
-              builder: (_) => AgentHomeWindow(appbar: MyApp.appBarNotBackable));
+              builder: (_) => AgentHomeWindow(appbar: MyApp.smallAppBar));
       }
     } else {
-      print("[d] not initilaized route");
+      logger.d("[Route Settings] not initilaized route");
     }
 
     return MaterialPageRoute(

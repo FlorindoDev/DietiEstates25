@@ -24,3 +24,8 @@ class ProfileController{
 
 
 }
+
+// Gli utenti devono poter modificare i loro dati personali: nome, cognome, e-mail, password. Gli 
+// agenti immobiliari devono avere un profilo più dettagliato, con informazioni professionali (e.g.: una 
+// breve biografia) e magari una valutazione lasciata dai clienti. È gradita la possibilità di aggiungere 
+// anche delle foto per gli agenti immobiliari, per rendere i profili più “umani”. 
