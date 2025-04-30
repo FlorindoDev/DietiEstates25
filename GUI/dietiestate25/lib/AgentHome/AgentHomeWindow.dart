@@ -1,10 +1,11 @@
 import 'package:dietiestate25/AgentHome/AgentHomeController.dart';
+import 'package:dietiestate25/ManagementAccount/ProfileAgentWindow.dart';
 import 'package:dietiestate25/Model/Estate/Estate.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/AgentHome/NotificationAgentWindow.dart';
 import 'package:dietiestate25/AgentHome/AgentAppointmentWindow.dart';
-import 'package:dietiestate25/ManagementAccount/ProfileWindow.dart';
+import 'package:dietiestate25/ManagementAccount/ProfileAgentWindow.dart';
 import 'package:dietiestate25/Booking/BookingWindow.dart';
 
 class AgentHomeWindow extends StatefulWidget {
@@ -20,13 +21,13 @@ class _AgentHomeWindowState extends State<AgentHomeWindow> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    ProfileWindow(),
+    BookingWindow(),
     //HomeScreen(),
     NotificationAgentWindow(),
     AgentAppointmentWindow(),
     //ProfileAgentWindow(),
     //ProfileWindow(),
-    BookingWindow(),
+    ProfileAgentWindow(),
   ];
 
   @override

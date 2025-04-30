@@ -70,6 +70,31 @@ class MyApp extends StatelessWidget {
     ),
   );
 
+  static AppBar smallAppBar = AppBar(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    // leading: BackButton(color: Colors.black),
+    // title: Text('Profilo', style: TextStyle(color: Colors.black)),
+    actions: [
+      const Icon(Icons.home, color: MyApp.celeste),
+      const SizedBox(width: 4),
+      RichText(
+        text: const TextSpan(
+          text: 'DietiEstates',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+          children: [
+            TextSpan(text: '25', style: TextStyle(color: MyApp.rosso)),
+          ],
+        ),
+      ),
+      SizedBox(width: 16),
+    ],
+  );
+
   static void mostraPopUpInformativo(
       dynamic context, String titolo, String messaggio) {
     showDialog(

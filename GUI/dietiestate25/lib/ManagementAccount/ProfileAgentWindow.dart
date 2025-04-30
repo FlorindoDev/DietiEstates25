@@ -3,9 +3,9 @@ import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/main.dart';
 
-class ProfileWindow extends StatefulWidget {
+class ProfileAgentWindow extends StatefulWidget {
   @override
-  State<ProfileWindow> createState() => _ProfileWindowState();
+  State<ProfileAgentWindow> createState() => _ProfileAgentWindowState();
 }
 
 Widget _buildSubSwitch({
@@ -24,7 +24,7 @@ Widget _buildSubSwitch({
   );
 }
 
-class _ProfileWindowState extends State<ProfileWindow> {
+class _ProfileAgentWindowState extends State<ProfileAgentWindow> {
   bool _notificationsEnabled = true; // switch principale
   bool _emailNotif = true;
   bool _pushNotif = false;
@@ -44,10 +44,21 @@ class _ProfileWindowState extends State<ProfileWindow> {
         ),
         child: Column(
           children: [
+            const SizedBox(height: 24),
+            CircleAvatar(
+              radius: 48,
+              backgroundColor: Colors.grey.shade300,
+              child: Icon(Icons.person, size: 48, color: Colors.white),
+            ),
             const SizedBox(height: 16),
             Expanded(
               child: ListView(
                 children: [
+                  ListTile(
+                    leading: Icon(Icons.history_edu, color: Colors.green),
+                    title: Text("Sono Domenico e agg perz a cap"),
+                  ),
+                  Divider(),
                   ListTile(
                     leading: Icon(Icons.info, color: Colors.red),
                     title: Text("Tipo Account: Agente"),

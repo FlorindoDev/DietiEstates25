@@ -19,6 +19,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:dietiestate25/Connection/Connection.dart';
 
+import 'package:dietiestate25/Logger/logger.dart';
+
+final logger = MyLogger.getIstance();
+
 class AccessController {
   //static final url = Uri.parse("http://api.florindodev.site/makeLogin");
   //static final url = Uri.parse("http://127.0.0.1:7001/login/makeLogin");
@@ -51,7 +55,6 @@ class AccessController {
   static bool toLogin(Utente utente, dynamic context) {
     valida.validateEmail(utente.email);
     valida.validatePassword(utente.password);
-    print("eseguo prova");
 
     richiestaLogin(utente).then((risultato) {
       //risultato = json.decode(risultato);
@@ -69,7 +72,6 @@ class AccessController {
       }
     });
 
-    print("finito prova");
     return false;
   }
 
@@ -77,7 +79,7 @@ class AccessController {
     final jwtPlayload = payload(risultato['message'].split('.')[1]);
     utente.email = jwtPlayload["sub"];
     scriviJWTInFile(risultato['message']);
-    print(jwtPlayload["kid"]);
+    logger.d("Tipo di Utente Loggato è ${jwtPlayload["kid"]}");
     if (jwtPlayload["kid"] == "acquirente") {
       HomeController.utente = utente;
       Navigator.of(context).pop();
@@ -88,9 +90,7 @@ class AccessController {
       Navigator.of(context).pushNamed(RouteWindows.agentHomeWindow);
     }
 
-    print('12');
     MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
-    print('13');
   }
 
   static Map payload(String jwt) {
@@ -108,29 +108,18 @@ class AccessController {
   }
 
   static Future<void> scriviJWTInFile(jwt) async {
-    print('2');
+
     final directory = await getApplicationDocumentsDirectory();
-    print('2');
     final file = File('${directory.path}/dietiEstate25.json');
-    print('3');
     if ((await file.exists())) {
-      print('4');
       String content = await file.readAsString();
-      print('5');
       dynamic json = jsonDecode(content);
-      print('6: json old salvato');
       print(jsonEncode(json));
-      print('7');
       json['JWT'] = jwt;
-      print('8: json new salvato');
-      print(jsonEncode(json));
-      print('9');
+      logger.d("JWT salvato: ${json}");
       await file.writeAsString(jsonEncode(json));
-      print('10');
     } else {}
-    print('11');
     await file.writeAsString("{ \"JWT\":\"$jwt\" }");
-    print('12: termine salvataggio su file');
   }
 
   static void toSignUp(Utente utente) {
@@ -176,8 +165,7 @@ class AccessController {
         body = response.body;
         code = response.statusCode;
       }
-      print(
-          "status code ${response!.statusCode} RICHIESTA PRE LOGIN EFFETTUATA: $body $code");
+      print("status code ${response!.statusCode} RICHIESTA PRE LOGIN EFFETTUATA: $body $code");
 
       if (response != null && response.statusCode == 200) {
         // Dividi il token in 3 parti
@@ -274,7 +262,6 @@ class AccessController {
             context, 'Errore Google Login', body['message']);
       }
     } catch (error) {
-      print("QUIIIII");
       MyApp.mostraPopUpWarining(
           context, 'Errore Google Login', error.toString());
     }
