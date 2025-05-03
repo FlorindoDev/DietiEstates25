@@ -1,7 +1,6 @@
 package org.ma.API.Interface;
 
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
