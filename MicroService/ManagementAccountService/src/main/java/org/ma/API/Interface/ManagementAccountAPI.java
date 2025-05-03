@@ -1,5 +1,7 @@
 package org.ma.API.Interface;
 
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
@@ -12,9 +14,9 @@ public interface ManagementAccountAPI {
 
     String applyChangeAdmin(Admin utente);
 
-    String getAccountAcquirente(Acquirente utente);
+    String getAccountAcquirente(@QueryParam("email") String email);
 
-    String getAccountAdmin(Admin utente);
+    String getAccountAdmin(@QueryParam("email") String email);
 
-    String getAccountAgent(Agent utente);
+    String getAccountAgent(@QueryParam("email") String email);
 }

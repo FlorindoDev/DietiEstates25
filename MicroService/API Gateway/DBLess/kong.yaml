@@ -130,7 +130,7 @@ services:
     write_timeout: 60000
     read_timeout: 60000
     routes:
-      - name: appointments
+      - name: appointments-route
         id: f1e2d3c4-b5a6-7890-1234-abcdef123456   # <- your own UUID
         protocols:
           - http
@@ -140,6 +140,48 @@ services:
           - POST
         paths:
           - /api
+        strip_path: false
+        plugins:
+          - name: jwt
+            protocols:
+              - http
+              - https
+            config:
+              run_on_preflight: true
+              anonymous: null
+              secret_is_base64: true
+              header_names:
+                - authorization
+              cookie_names: []
+              uri_param_names:
+                - jwt
+              key_claim_name: kid
+              maximum_expiration: 0
+              claims_to_verify:
+                - exp
+              realm: null
+
+  - name: ManagementAccountService
+    id: 7a8f9c1d-2b3e-4f5a-9b8c-1234567899aa   # <- replace with your own UUID
+    enabled: true
+    protocol: http
+    host: managementAccountService
+    port: 7007
+    retries: 5
+    connect_timeout: 60000
+    write_timeout: 60000
+    read_timeout: 60000
+    routes:
+      - name: managementAccount-route
+        id: 50705c08-0dc2-460d-a2b6-7fe46b135381   # <- your own UUID
+        protocols:
+          - http
+          - https
+        methods:
+          - GET
+          - POST
+        paths:
+          - /ManagementAccount
         strip_path: false
         plugins:
           - name: jwt

@@ -1,5 +1,7 @@
 package org.ma.MainApp;
 
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.QueryParam;
 import org.dao.postgre.AcquirentePostgreDAO;
 import org.dao.postgre.AdminPostgreDAO;
 import org.dao.postgre.AgentPostgreDAO;

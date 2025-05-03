@@ -9,7 +9,10 @@ final logger = MyLogger.getIstance();
 
 class Connection {
   // static final Uri url = Uri.parse('http://localhost:8000/'); // KONG URL
-  static final String baseUrl = 'http://10.0.2.2:8000';
+  static final String baseUrl = 'http://10.0.2.2:8000'; 
+
+  static final String getAcquirentProfileUrl =
+      '/ManagementAccount/getAccountAcquirente';
 
   static String? jwt;
 
@@ -36,7 +39,8 @@ class Connection {
     }
   }
 
-  static Future<http.Response?> makePostRequest(Map<String, dynamic>? body, String? path) async {
+  static Future<http.Response?> makePostRequest(
+      Map<String, dynamic>? body, String? path) async {
     logger.d("JWT in POST request $jwt");
     try {
       String fullUrl = baseUrl;
@@ -44,7 +48,7 @@ class Connection {
         fullUrl += path.startsWith('/') ? path : '/$path';
       }
       logger.d("POST REQUEST: ${fullUrl}");
-      
+
       final response = await http.post(
         Uri.parse(fullUrl),
         headers: {
@@ -121,7 +125,7 @@ class Connection {
   }
 
   static Future<http.Response?> validateJwtRequest() async {
-    print("STO VALIDANDO IL JWT $jwt mando a kong");
+    logger.d("Sto validando il JWT: $jwt tramite KONG");
     try {
       final response = await http.get(
         Uri.parse("$baseUrl/jwt"),
@@ -135,11 +139,11 @@ class Connection {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return response;
       } else {
-        print("Errore HTTP: ${response.statusCode} - ${response.body}");
+        logger.e("Errore HTTP: ${response.statusCode} - ${response.body}");
         return null;
       }
     } catch (e) {
-      print("Errore durante la richiesta: $e");
+      logger.e("Errore durante la richiesta: $e");
       return null;
     }
   }

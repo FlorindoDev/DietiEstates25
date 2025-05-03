@@ -10,7 +10,7 @@ import java.net.URI;
 
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    private static final String BASE_URI = "http://localhost:7003/";
+    private static final String BASE_URI = "http://0.0.0.0:7007/";
     private static final String RESOURCE = "org.ma.API.Resource";
 
     public static void startServer() {
@@ -21,10 +21,11 @@ public class Main {
         GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
 
+
     public static void main(String[] args){
         startServer();
 
-        System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
+        System.out.println(String.format("(ManagementAccountService) Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
 
     }
 }
