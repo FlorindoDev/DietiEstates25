@@ -8,8 +8,18 @@
 
 - `curl -i -X POST http://localhost:8001/config --data-binary "@kong.yaml" -H "Content-Type: application/yaml"` # per aggiornare dinamicamente king.yml #da eseguire nella dire di kong.yml
 
+# Dev knowleg
 
-# Google
+## Flutter
+- Esiste una variabile globale loggedUser
+ - Assegnata durante l'accesso
+ - eventuali riferimenti ad essa nei controller possono essere tolti ma rimasti per compatibilità
+
+- La classe Connection contiene anche i path per cong accessibili tramite i suoi campi
+
+- Utilizzare La classe Logger per errori ed informazioni utili per debug ed eliminare le restanti print
+
+## Google
 `android/app/src/main/AndroidManifest.xml`
 Va messo dentro il tag `<application>` e non dentro `<activity>`:
 ```xml
