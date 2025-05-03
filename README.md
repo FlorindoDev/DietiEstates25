@@ -12,10 +12,10 @@
 
 ## Flutter
 - Esiste una variabile globale loggedUser
- - Assegnata durante l'accesso
- - eventuali riferimenti ad essa nei controller possono essere tolti ma rimasti per compatibilità
+  - Assegnata durante l'accesso
+  - eventuali riferimenti ad essa nei controller possono essere tolti ma rimasti per compatibilità
 
-- La classe Connection contiene anche i path per cong accessibili tramite i suoi campi
+- La classe Connection contiene anche i path per kong accessibili tramite i suoi campi
 
 - Utilizzare La classe Logger per errori ed informazioni utili per debug ed eliminare le restanti print
 
