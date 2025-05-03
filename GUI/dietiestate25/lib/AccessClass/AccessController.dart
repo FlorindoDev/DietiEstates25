@@ -80,12 +80,15 @@ class AccessController {
     utente.email = jwtPlayload["sub"];
     scriviJWTInFile(risultato['message']);
     logger.d("Tipo di Utente Loggato è ${jwtPlayload["kid"]}");
+    // MyApp.user = utente;
+    loggedUser = utente;
+    logger.d("[AccessController] User: ${loggedUser.toJson()}");
     if (jwtPlayload["kid"] == "acquirente") {
-      HomeController.utente = utente;
+      // HomeController.utente = utente;
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.homeWindow);
     } else if (jwtPlayload["kid"] == "agent") {
-      AgentHomeController.utente = utente;
+      // AgentHomeController.utente = utente;
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.agentHomeWindow);
     }
@@ -108,7 +111,6 @@ class AccessController {
   }
 
   static Future<void> scriviJWTInFile(jwt) async {
-
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/dietiEstate25.json');
     if ((await file.exists())) {
@@ -159,13 +161,7 @@ class AccessController {
     try {
       http.Response? response = await Connection.validateJwtRequest();
 
-      String? body;
-      int? code;
-      if (response != null) {
-        body = response.body;
-        code = response.statusCode;
-      }
-      print("status code ${response!.statusCode} RICHIESTA PRE LOGIN EFFETTUATA: $body $code");
+      logger.d("[AccessController] RICHIESTA PRE LOGIN: \nbody: ${response?.body}\nhead: ${response?.headers}\ncode: ${response?.statusCode}");
 
       if (response != null && response.statusCode == 200) {
         // Dividi il token in 3 parti
@@ -175,20 +171,19 @@ class AccessController {
         }
 
         String payloadBase64 = parts[1];
-
         String normalized = base64Url.normalize(payloadBase64);
         String decoded = utf8.decode(base64Url.decode(normalized));
-
         Map<String, dynamic> payloadMap = json.decode(decoded);
 
         String email = payloadMap["sub"];
         Utente utente = Utente.builder.setId("").setEmail(email).build();
-        print(payloadMap["kid"]);
+        logger.d("Tipo di Utente Loggato è ${payloadMap["kid"]}");
+        loggedUser = utente;
         if (payloadMap["kid"] == "acquirente") {
-          HomeController.utente = utente;
+          // HomeController.utente = utente;
           return "HomeWindow";
         } else if (payloadMap["kid"] == "agent") {
-          AgentHomeController.utente = utente;
+          // AgentHomeController.utente = utente;
           return "AgentHomeWindow";
         }
 
@@ -197,7 +192,7 @@ class AccessController {
         return "false";
       }
     } catch (e) {
-      print("Errore: $e");
+      logger.e("Errore: $e");
       return "false";
     }
   }

@@ -1,16 +1,13 @@
-import 'package:dietiestate25/Connection/Connection.dart';
 import 'package:flutter/material.dart';
-import 'package:dietiestate25/AccessClass/LoginWindow.dart';
-import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
-import 'package:dietiestate25/AccessClass/AccessController.dart';
-// import 'package:dietiestate25/Home/HomeController.dart';
-import 'package:dietiestate25/AgentHome/AgentHomeWindow.dart';
-import 'package:dietiestate25/Home/HomeWindow.dart';
+
 import 'package:dietiestate25/Connection/Connection.dart';
+import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
+import 'package:dietiestate25/Model/Utente/Utente.dart';
+
+Utente loggedUser = Utente.builder.setId("").setEmail("").build();
 
 void main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Assicura l'inizializzazione di Flutter
+  WidgetsFlutterBinding.ensureInitialized(); // Assicura l'inizializzazione di Flutter
   await Connection.init();
   String initialRoute = await RouteWindows.checkLogin();
   print("[debug] Effettuato check login, initial doute: $initialRoute");
@@ -18,6 +15,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+
+  // static Utente user = Utente.builder.setId("").setEmail("").build();
+
   final String initialRoute;
 
   static const String fontApp = 'Goldbill-XLBold';

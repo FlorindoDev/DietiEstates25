@@ -51,11 +51,15 @@ public class ManagementAccountRestFulAPI implements ManagementAccountAPI {
     }
 
     @Override
-    @POST
+    @GET
     @Path("getAccountAcquirente")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAccountAcquirente(Acquirente utente) {
+    public String getAccountAcquirente(@QueryParam("email") String email) {
+
+        Acquirente utente = new Acquirente();
+        utente.setEmail(email);
+
         managementAccount = new ManagementAccount();
         String response = managementAccount.getAccountAcquirente(utente);
         managementAccount.close();
@@ -63,11 +67,15 @@ public class ManagementAccountRestFulAPI implements ManagementAccountAPI {
     }
 
     @Override
-    @POST
+    @GET
     @Path("getAccountAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAccountAdmin(Admin utente) {
+    public String getAccountAdmin(@QueryParam("email") String email) {
+
+        Admin utente = new Admin();
+        utente.setEmail(email);
+
         managementAccount = new ManagementAccount();
         String response = managementAccount.getAccountAdmin(utente);
         managementAccount.close();
@@ -75,14 +83,19 @@ public class ManagementAccountRestFulAPI implements ManagementAccountAPI {
     }
 
     @Override
-    @POST
+    @GET
     @Path("getAccountAgent")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAccountAgent(Agent utente) {
+    public String getAccountAgent(@QueryParam("email") String email) {
+
+        Agent utente = new Agent();
+        utente.setEmail(email);
+
         managementAccount = new ManagementAccount();
         String response = managementAccount.getAccountAgent(utente);
         managementAccount.close();
         return response;
     }
+
 }

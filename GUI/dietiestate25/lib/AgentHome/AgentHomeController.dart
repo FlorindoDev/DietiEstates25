@@ -27,7 +27,8 @@ class AgentHomeController {
   static final String urlAppointmentUpdate =
       'http://10.0.2.2:7006/api/appointments';
 
-  static late Utente utente;
+  // static Utente utente = MyApp.user;
+  static Utente utente = loggedUser;
 
   static Future<List<Estate>> getEstate(dynamic context) async {
     http.Response response;
@@ -70,6 +71,8 @@ class AgentHomeController {
   }
 
   static Future<List<Notify>> getNotify(dynamic context) async {
+    logger.d("[getNotify] ${utente.toJson()}");
+
     http.Response response;
     Uri uri =
         Uri.parse(urlNotify + '?email=' + utente.email + '&orderbydate=true');
@@ -251,7 +254,6 @@ class AgentHomeController {
         esito = true;
       } else {
         MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
-        
       }
     } catch (e) {
       return esito;

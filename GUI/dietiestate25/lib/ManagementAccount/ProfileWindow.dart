@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:dietiestate25/Model/Utente/Utente.dart';
 import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/main.dart';
@@ -8,27 +10,18 @@ class ProfileWindow extends StatefulWidget {
   State<ProfileWindow> createState() => _ProfileWindowState();
 }
 
-Widget _buildSubSwitch({
-  required String label,
-  required bool value,
-  required ValueChanged<bool> onChanged,
-}) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 72.0, right: 16.0),
-    child: ListTile(
-      contentPadding: EdgeInsets.zero,
-      title: Text(label),
-      trailing: Switch(value: value, onChanged: onChanged),
-      onTap: () => onChanged(!value),
-    ),
-  );
-}
-
 class _ProfileWindowState extends State<ProfileWindow> {
   bool _notificationsEnabled = true; // switch principale
   bool _emailNotif = true;
   bool _pushNotif = false;
   bool _smsNotif = false;
+
+  Utente? profileBuff;
+  @override
+  void initState() {
+    super.initState();
+    ProfileController().fetchProfile();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +101,22 @@ class _ProfileWindowState extends State<ProfileWindow> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSubSwitch({
+    required String label,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 72.0, right: 16.0),
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        title: Text(label),
+        trailing: Switch(value: value, onChanged: onChanged),
+        onTap: () => onChanged(!value),
       ),
     );
   }
