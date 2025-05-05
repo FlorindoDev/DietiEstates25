@@ -1,18 +1,21 @@
+import 'package:dietiestate25/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:dietiestate25/Logger/logger.dart';
+// import 'package:dietiestate25/Logger/logger.dart';
 
-final logger = MyLogger.getIstance();
+// final logger = MyLogger.getIstance();
 
 class Connection {
   // static final Uri url = Uri.parse('http://localhost:8000/'); // KONG URL
-  static final String baseUrl = 'http://10.0.2.2:8000'; 
+  static final String baseUrl = 'http://10.0.2.2:8000';
 
-  static final String getAcquirentProfileUrl =
-      '/ManagementAccount/getAccountAcquirente';
+  static final Map<UserType, String> getAccountProfileUrl = {
+    UserType.acquirente:'/ManagementAccount/getAccountAcquirente',
+    UserType.agent: '/ManagementAccount/getAccountAgent'
+  };
 
   static String? jwt;
 
