@@ -10,8 +10,7 @@ import 'package:dietiestate25/Model/Notify/Notify.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:dietiestate25/Model/Appointment/Appointment.dart';
 import 'package:dietiestate25/Model/Appointment/AppointmentAccept.dart';
-import 'package:dietiestate25/Model/Appointment/AppointmentPending.dart'
-    as Model;
+import 'package:dietiestate25/Model/Appointment/AppointmentPending.dart' as Model;
 import 'package:dietiestate25/Model/Appointment/AppointmentReject.dart';
 
 class AgentHomeController {

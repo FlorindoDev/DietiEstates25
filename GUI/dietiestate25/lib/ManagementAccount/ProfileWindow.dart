@@ -20,7 +20,7 @@ class _ProfileWindowState extends State<ProfileWindow> {
   @override
   void initState() {
     super.initState();
-    ProfileController().fetchProfile();
+    // ProfileController().fetchProfile();
   }
 
   @override

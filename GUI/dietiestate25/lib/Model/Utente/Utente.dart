@@ -1,6 +1,11 @@
+library utenti;
 import 'package:dietiestate25/Json/JSONConvertable.dart';
+import 'dart:convert'; // usato in AgenteImmobiliare
+import 'dart:typed_data';
 
-import 'dart:convert';
+part './AgenteImmobiliare.dart';
+part './Acquirente.dart';
+part './Amministratore.dart';
 
 class Utente implements Jsonconvertable {
   String _idUser = "";
@@ -85,6 +90,11 @@ class UtenteBuilder {
 
   UtenteBuilder setName(String nome) {
     _nome = nome;
+    return this;
+  }
+
+  UtenteBuilder setCognome(String cognome) {
+    _cognome = cognome;
     return this;
   }
 

@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:dietiestate25/AgentHome/AgentHomeController.dart';
 import 'package:dietiestate25/Home/HomeController.dart';
 import 'package:dietiestate25/Home/HomeWindow.dart';
+import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -45,6 +47,7 @@ class AccessController {
     print(jsonEncode(utente.toJson()));
 
     http.Response? response = await Connection.makeLogin(utente.toJson());
+    // response: JWT
 
     if (response != null) {
       return json.decode(response.body);
@@ -77,21 +80,29 @@ class AccessController {
 
   static void screenShooser(risultato, Utente utente, context) {
     final jwtPlayload = payload(risultato['message'].split('.')[1]);
-    utente.email = jwtPlayload["sub"];
+    String email = jwtPlayload["sub"];
     scriviJWTInFile(risultato['message']);
-    logger.d("Tipo di Utente Loggato è ${jwtPlayload["kid"]}");
+
+    logger.d("Email: $email\nTipo di Utente Loggato è ${jwtPlayload["kid"]}");
     // MyApp.user = utente;
-    loggedUser = utente;
-    logger.d("[AccessController] User: ${loggedUser.toJson()}");
+    // loggedUser = utente;
+    logger.e("[AccessController] User: ${loggedUser.toJson()}");
     if (jwtPlayload["kid"] == "acquirente") {
       // HomeController.utente = utente;
+      loggedUserType = UserType.acquirente;
+      // ProfileController.getProfile(email);
+      // loggedUser = Acquirente.builder.setEmail(email).build();
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.homeWindow);
     } else if (jwtPlayload["kid"] == "agent") {
       // AgentHomeController.utente = utente;
+      loggedUserType = UserType.agent;
+      // ProfileController.getProfile(email);
+      // loggedUser = AgenteImmobiliare.builder.setEmail(email).build();
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.agentHomeWindow);
     }
+    ProfileController.getProfile(email);
 
     MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
   }
@@ -161,7 +172,8 @@ class AccessController {
     try {
       http.Response? response = await Connection.validateJwtRequest();
 
-      logger.d("[AccessController] RICHIESTA PRE LOGIN: \nbody: ${response?.body}\nhead: ${response?.headers}\ncode: ${response?.statusCode}");
+      logger.d(
+          "[AccessController] RICHIESTA PRE LOGIN: \nbody: ${response?.body}\nhead: ${response?.headers}\ncode: ${response?.statusCode}");
 
       if (response != null && response.statusCode == 200) {
         // Dividi il token in 3 parti
@@ -176,14 +188,21 @@ class AccessController {
         Map<String, dynamic> payloadMap = json.decode(decoded);
 
         String email = payloadMap["sub"];
-        Utente utente = Utente.builder.setId("").setEmail(email).build();
-        logger.d("Tipo di Utente Loggato è ${payloadMap["kid"]}");
-        loggedUser = utente;
+        // Utente utente = Utente.builder.setId("").setEmail(email).build();
+        logger.d("Email: $email\nTipo di Utente Loggato è ${payloadMap["kid"]}");
+        // loggedUser = utente;
+
         if (payloadMap["kid"] == "acquirente") {
           // HomeController.utente = utente;
+          loggedUserType = UserType.acquirente;
+          ProfileController.getProfile(email);
+          // loggedUser = Acquirente.builder.setEmail(email).build();
           return "HomeWindow";
         } else if (payloadMap["kid"] == "agent") {
           // AgentHomeController.utente = utente;
+          loggedUserType = UserType.agent;
+          ProfileController.getProfile(email);
+          // loggedUser = AgenteImmobiliare.builder.setEmail(email).build();
           return "AgentHomeWindow";
         }
 

@@ -10,6 +10,8 @@
 
 # Dev knowleg
 
+- Ricorda di controllare anche i codici proprietari del nostro dominio
+
 ## Flutter
 - Esiste una variabile globale loggedUser
   - Assegnata durante l'accesso

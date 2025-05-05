@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 
 import 'package:dietiestate25/Connection/Connection.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
-import 'package:dietiestate25/Model/Utente/Utente.dart';
+// import 'package:dietiestate25/Model/Utente/Utente.dart';
+import 'package:dietiestate25/Logger/logger.dart';
 
-Utente loggedUser = Utente.builder.setId("").setEmail("").build();
+final logger = MyLogger.getIstance();
+
+enum LoadState { loading, success, error }
+
+enum UserType { acquirente, agent, admin }
+
+dynamic loggedUser;
+UserType loggedUserType = UserType.acquirente; // settare in access controller
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Assicura l'inizializzazione di Flutter
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Assicura l'inizializzazione di Flutter
   await Connection.init();
   String initialRoute = await RouteWindows.checkLogin();
   print("[debug] Effettuato check login, initial doute: $initialRoute");
@@ -15,7 +24,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
   // static Utente user = Utente.builder.setId("").setEmail("").build();
 
   final String initialRoute;
