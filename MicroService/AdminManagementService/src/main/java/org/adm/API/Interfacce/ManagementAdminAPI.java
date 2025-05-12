@@ -1,5 +1,7 @@
 package org.adm.API.Interfacce;
 
+import jakarta.ws.rs.BeanParam;
+import jakarta.ws.rs.core.Response;
 import org.md.Agency.Agency;
 import org.md.Utente.Admin;
 
@@ -15,7 +17,7 @@ public interface ManagementAdminAPI {
 
     public String downgradeSupport(Admin admin);
 
-    public String loadAdmin(Agency agency);
+    public Response loadAdmin(@BeanParam Agency agency);
 
 
 }

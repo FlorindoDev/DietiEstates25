@@ -29,7 +29,7 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
     @Override
     public Indirizzo getIndirizzoFromId(int idindirizzo) throws DietiEstateException {
 
-        String query = "SELECT * FROM"+TABLE+"WHERE idindirizzo = ?";
+        String query = "SELECT * FROM "+TABLE+" WHERE idindirizzo = ?";
 
         PreparedStatement stmt = connection.getStatment(query);
 
