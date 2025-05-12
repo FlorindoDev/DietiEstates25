@@ -42,13 +42,11 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @Path("getAgents")
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public Response getAgents(@BeanParam AgentQuery query) {
+    public Response getAgents(@BeanParam Agency agency) {
 
-        if(query.getCodicePartitaIVA().equals("")){
+        if(agency.getCodicePartitaIVA().equals("")){
             return Response.ok("{\"code\":-1, \"error\": \"codicePartitaIVA parameter is required\"}").build();
         }
-
-        Agency agency = new Agency.Builder(query.getCodicePartitaIVA()).setSede(query.getSede()).setNome(query.getNome()).build();
 
         String result = managementAgent.getAgents(agency);
         managementAgent.close();
@@ -60,13 +58,11 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @Path("getEstates")
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public Response getEstates(@BeanParam AgentQuery query) {
+    public Response getEstates(@BeanParam Agency agency) {
 
-        if(query.getCodicePartitaIVA().equals("")){
+        if(agency.getCodicePartitaIVA().equals("")){
             return Response.ok("{\"code\":-1, \"error\": \"codicePartitaIVA parameter is required\"}").build();
         }
-
-        Agency agency = new Agency.Builder(query.getCodicePartitaIVA()).setSede(query.getSede()).setNome(query.getNome()).build();
 
         String result = managementAgent.getEstates(agency);
         managementAgent.close();

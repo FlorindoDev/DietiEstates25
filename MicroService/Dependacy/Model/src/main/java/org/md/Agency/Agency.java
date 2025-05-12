@@ -1,5 +1,7 @@
 package org.md.Agency;
 
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.QueryParam;
 import org.md.Serializzazione.Translate;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
@@ -8,9 +10,15 @@ import java.util.ArrayList;
 
 
 public class Agency extends Translate {
+
+    @QueryParam("codicePartitaIVA")
+    @DefaultValue("")
     protected String codicePartitaIVA;
 
+    @QueryParam("nome")
     protected String nome;
+
+    @QueryParam("sede")
     protected String sede;
 
     protected ArrayList<Admin> admins;

@@ -63,13 +63,12 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Path("loadAdmin")
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public Response loadAdmin(@BeanParam AdminQuery query) {
+    public Response loadAdmin(@BeanParam Agency agency) {
 
-        if(query.getCodicePartitaIVA().equals("")){
+        if(agency.getCodicePartitaIVA().equals("")){
             return Response.ok("{\"code\":-1, \"error\": \"codicePartitaIVA parameter is required\"}").build();
         }
 
-        Agency agency = new Agency.Builder(query.getCodicePartitaIVA()).setSede(query.getSede()).setNome(query.getNome()).build();
 
         String result = managementAdmin.getAdmins(agency);
         managementAdmin.close();
