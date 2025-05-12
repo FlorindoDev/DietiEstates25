@@ -48,7 +48,7 @@ class AccessController {
 
     http.Response? response = await Connection.makeLogin(utente.toJson());
     // response: JWT
-
+    
     if (response != null) {
       return json.decode(response.body);
     }
@@ -58,6 +58,8 @@ class AccessController {
   static bool toLogin(Utente utente, dynamic context) {
     valida.validateEmail(utente.email);
     valida.validatePassword(utente.password);
+    
+    
 
     richiestaLogin(utente).then((risultato) {
       //risultato = json.decode(risultato);
@@ -81,12 +83,15 @@ class AccessController {
   static void screenShooser(risultato, Utente utente, context) {
     final jwtPlayload = payload(risultato['message'].split('.')[1]);
     String email = jwtPlayload["sub"];
+    
     scriviJWTInFile(risultato['message']);
+    
 
     logger.d("Email: $email\nTipo di Utente Loggato è ${jwtPlayload["kid"]}");
     // MyApp.user = utente;
     // loggedUser = utente;
-    logger.e("[AccessController] User: ${loggedUser.toJson()}");
+    // logger.e("[AccessController] User: ${loggedUser.toJson()}");print("\n\n PAUROSA SUPER SEXY BABYYYYY\n\n");
+    
     if (jwtPlayload["kid"] == "acquirente") {
       // HomeController.utente = utente;
       loggedUserType = UserType.acquirente;
@@ -101,6 +106,11 @@ class AccessController {
       // loggedUser = AgenteImmobiliare.builder.setEmail(email).build();
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.agentHomeWindow);
+    } else if (jwtPlayload["kid"] == "admin") {
+      loggedUserType = UserType.admin;
+      Navigator.of(context).pop();
+      Navigator.of(context).pushNamed(RouteWindows.adminHomeWindow);
+
     }
     ProfileController.getProfile(email);
 
@@ -204,6 +214,12 @@ class AccessController {
           ProfileController.getProfile(email);
           // loggedUser = AgenteImmobiliare.builder.setEmail(email).build();
           return "AgentHomeWindow";
+        } else if (payloadMap["kid"] == "admin") {
+          // AgentHomeController.utente = utente;
+          loggedUserType = UserType.admin;
+          ProfileController.getProfile(email);
+          // loggedUser = AgenteImmobiliare.builder.setEmail(email).build();
+          return "AdminHomeWindow";
         }
 
         return "false";
