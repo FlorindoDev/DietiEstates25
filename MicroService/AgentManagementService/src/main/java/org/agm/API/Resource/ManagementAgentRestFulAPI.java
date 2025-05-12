@@ -55,16 +55,22 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
         return Response.ok(result).build();
     }
 
-    //todo GET
-    @POST
+
+    @GET
     @Path("getEstates")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String getEstates(Agency agency) {
+    public Response getEstates(@BeanParam AgentQuery query) {
+
+        if(query.getCodicePartitaIVA().equals("")){
+            return Response.ok("{\"code\":-1, \"error\": \"codicePartitaIVA parameter is required\"}").build();
+        }
+
+        Agency agency = new Agency.Builder(query.getCodicePartitaIVA()).setSede(query.getSede()).setNome(query.getNome()).build();
+
         String result = managementAgent.getEstates(agency);
         managementAgent.close();
-        return result;
+        return Response.ok(result).build();
     }
 
     @POST

@@ -15,7 +15,7 @@ public interface ManagmementAgentAPI {
 
     Response getAgents(@BeanParam AgentQuery query);
 
-    String getEstates(Agency agency);
+    Response getEstates(@BeanParam AgentQuery query);
 
     String updateEstateAgent(Estate estate);
 
