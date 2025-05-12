@@ -59,7 +59,6 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
         return result;
     }
 
-    //todo GET
     @GET
     @Path("loadAdmin")
     @Produces(MediaType.APPLICATION_JSON)
