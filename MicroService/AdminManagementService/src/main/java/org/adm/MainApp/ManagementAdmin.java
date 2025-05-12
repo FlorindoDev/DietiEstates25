@@ -94,7 +94,7 @@ public class ManagementAdmin implements ManagmentAdminService {
             agencyDAO.isAgencyPresent(agency);
 
             List<Admin> admins = agencyDAO.getAdmins(agency);
-            String json = "{\"code\": 0, \"message\": \"success of action admin upgraded\", \"admins\": [";
+            String json = "{\"code\": 0, \"message\": \"success of action load admin\", \"admins\": [";
 
             for (Admin admin : admins){
                 json = json.concat(admin.TranslateToJson());

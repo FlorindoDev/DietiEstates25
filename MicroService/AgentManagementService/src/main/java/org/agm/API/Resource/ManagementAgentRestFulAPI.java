@@ -39,6 +39,7 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
         return result;
     }
 
+    //todo GET
     @POST
     @Path("getAgents")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -50,6 +51,7 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
         return result;
     }
 
+    //todo GET
     @POST
     @Path("getEstates")
     @Consumes(MediaType.APPLICATION_JSON)

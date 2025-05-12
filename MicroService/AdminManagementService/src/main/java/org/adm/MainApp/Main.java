@@ -32,11 +32,11 @@ public class Main {
                 .setNome("Pico Pallina")
                 .build();
 
-        Admin acquirente = new Admin.Builder(1,"utente1@email.com")
-                .setPassword("ciao")
-                .setName("Paolo")
-                .setCognome("Paoli")
-                .setIsSupport(false)
+        Admin acquirente = new Admin.Builder(1,"astrubalearabi@email.com")
+                .setPassword("ciaociao")
+                .setName("Mimmo")
+                .setCognome("Mimmetto")
+                .setIsSupport(true)
                 .setAgency(agency)
                 .build();
 

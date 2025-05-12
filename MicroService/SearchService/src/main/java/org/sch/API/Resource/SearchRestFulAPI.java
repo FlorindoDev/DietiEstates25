@@ -24,6 +24,7 @@ public class SearchRestFulAPI implements SearchAPI {
         return result;
     }
 
+    //todo GET
     @Path("suggestionCities")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -35,6 +36,7 @@ public class SearchRestFulAPI implements SearchAPI {
         return result;
     }
 
+    // todo GET
     @Path("coordinatesEstates")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -45,6 +47,7 @@ public class SearchRestFulAPI implements SearchAPI {
 
     }
 
+    //todo GET
     @Path("estatesSerachFromCity")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

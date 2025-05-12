@@ -1,10 +1,8 @@
 package org.adm.API.Resource;
 
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.adm.API.Interfacce.ManagementAdminAPI;
 import org.adm.MainApp.Interfacce.ManagmentAdminService;
 import org.adm.MainApp.ManagementAdmin;
@@ -61,14 +59,21 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
         return result;
     }
 
-    @POST
+    //todo GET
+    @GET
     @Path("loadAdmin")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String loadAdmin(Agency agency) {
+    public Response loadAdmin(@BeanParam AdminQuery query) {
+
+        if(query.getCodicePartitaIVA().equals("")){
+            return Response.ok("{\"code\":-1, \"error\": \"codicePartitaIVA parameter is required\"}").build();
+        }
+
+        Agency agency = new Agency.Builder(query.getCodicePartitaIVA()).setSede(query.getSede()).setNome(query.getNome()).build();
+
         String result = managementAdmin.getAdmins(agency);
         managementAdmin.close();
-        return result;
+        return Response.ok(result).build();
     }
 }
