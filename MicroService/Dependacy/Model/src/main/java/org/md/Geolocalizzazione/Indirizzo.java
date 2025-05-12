@@ -1,17 +1,33 @@
 package org.md.Geolocalizzazione;
 
 
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.QueryParam;
 import org.md.Serializzazione.Translate;
 
 
 public class Indirizzo extends Translate {
 
+    @QueryParam("codicePartitaIVA")
+    @DefaultValue("0")
     private int idIndirizzo = 0;
+
+    @QueryParam("stato")
     private String stato = "";
+
+    @QueryParam("citta")
     private String citta = "";
+
+    @QueryParam("quartiere")
     private String quartiere = "";
+
+    @QueryParam("via")
     private String via = "";
+
+    @QueryParam("numeroCivico")
     private String numeroCivico = "";
+
+    @QueryParam("cap")
     private int cap = 0;
 
 
