@@ -2,6 +2,7 @@ package org.sch.API.Resource;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.md.Estate.Estate;
 import org.md.Geolocalizzazione.Indirizzo;
 import org.sch.API.Interfacce.SearchAPI;
@@ -15,7 +16,6 @@ public class SearchRestFulAPI implements SearchAPI {
 
     @Path("allCity")
     @GET
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String allCity() {
@@ -24,20 +24,25 @@ public class SearchRestFulAPI implements SearchAPI {
         return result;
     }
 
+
     @Path("suggestionCities")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String suggestionCities(Indirizzo indirizzo) {
+    public Response suggestionCities(@BeanParam Indirizzo indirizzo) {
+
+        if( indirizzo.getCitta() == null && indirizzo.getQuartiere() == null && indirizzo.getStato() == null && indirizzo.getVia() == null){
+            return Response.ok("{\"code\":-1, \"error\": \"A indication parameter is required\"}").build();
+        }
+
         String result = searchService.suggestionCities(indirizzo);
         searchService.close();
-        return result;
+        return Response.ok(result).build();
     }
 
+    // todo GET
     @Path("coordinatesEstates")
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
     public String coordinatesEstates(Estate estate) {
@@ -45,14 +50,19 @@ public class SearchRestFulAPI implements SearchAPI {
 
     }
 
+
     @Path("estatesSerachFromCity")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String estatesSerachFromCity(Indirizzo indirizzo) {
+    public Response estatesSerachFromCity(@BeanParam Indirizzo indirizzo) {
+
+        if(indirizzo.getCitta() == null){
+            return Response.ok("{\"code\":-1, \"error\": \"City parameter is required\"}").build();
+        }
+
         String result = searchService.estatesSerachFromCity(indirizzo);
         searchService.close();
-        return result;
+        return Response.ok(result).build();
     }
 }

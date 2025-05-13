@@ -89,7 +89,7 @@ public class ManagementAgent implements ManagmentAgentService {
     @Override
     public String getEstates(Agency agency) {
         try{
-            //TODO agencyDAO.isAgencyPresent(admin);
+            agencyDAO.isAgencyPresent(agency);
 
             List<Estate> estates = agencyDAO.getEstates(agency);
             String json = "{\"code\": 0, \"message\": \"success of action get estate\", \"Estates\": [";

@@ -12,7 +12,7 @@ import org.md.Utente.Admin;
 
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    private static final String BASE_URI = "http://localhost:7001/";
+    private static final String BASE_URI = "http://0.0.0.0:7003/";
     private static final String RESOURCE = "org.adm.API.Resource";
 
     public static void startServer() {
@@ -32,11 +32,11 @@ public class Main {
                 .setNome("Pico Pallina")
                 .build();
 
-        Admin acquirente = new Admin.Builder(1,"utente1@email.com")
-                .setPassword("ciao")
-                .setName("Paolo")
-                .setCognome("Paoli")
-                .setIsSupport(false)
+        Admin acquirente = new Admin.Builder(1,"astrubalearabi@email.com")
+                .setPassword("ciaociao")
+                .setName("Mimmo")
+                .setCognome("Mimmetto")
+                .setIsSupport(true)
                 .setAgency(agency)
                 .build();
 
