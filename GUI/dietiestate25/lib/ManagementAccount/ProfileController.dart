@@ -73,16 +73,21 @@ class ProfileController {
       logger.d("[getProfile]: row user: ${response.body}");
 
       switch (typeToUse) {
-        case AgenteImmobiliare:
-          loggedUser = AgenteImmobiliare.fromJson(jsonDecode(response.body));
-
         case Acquirente:
           loggedUser = Acquirente.fromJson(jsonDecode(response.body));
 
+        case AgenteImmobiliare:
+          loggedUser = AgenteImmobiliare.fromJson(jsonDecode(response.body));
+
+        case Amministratore:
+          loggedUser = Amministratore.fromJson(jsonDecode(response.body));
+
         default:
           logger.e("sometyng gone wrong");
-          return false;
       }
+
+      logger.i(response.body);
+      logger.i(loggedUser.toJson());
 
       cached = true;
       cacheExpired = false;
@@ -105,14 +110,21 @@ class ProfileController {
     }
 
     switch (loggedUser.runtimeType) {
+      case Acquirente:
+        loggedUser = Acquirente.fromJson(jsonDecode(response.body));
+
       case AgenteImmobiliare:
         loggedUser = AgenteImmobiliare.fromJson(jsonDecode(response.body));
-        logger.i(response.body);
-        logger.i(loggedUser.toJson());
+
+      case Amministratore:
+        loggedUser = Amministratore.fromJson(jsonDecode(response.body));
 
       default:
         logger.e("sometyng gone wrong");
     }
+
+    logger.i(response.body);
+    logger.i(loggedUser.toJson());
 
     cached = true;
     cacheExpired = false;
@@ -121,16 +133,16 @@ class ProfileController {
   }
 
   static Future<bool> updateProfile(Utente user) async {
-    
     final Map<String, dynamic> userMap = user.toJson();
     userMap.remove('sensitivity');
     logger.i("Update Profile ${userMap}");
 
     http.Response? response = await Connection.makePostRequest(
-        userMap,
-        Connection.updateAccountProfileUrl[loggedUser.runtimeType]);
+        userMap, Connection.updateAccountProfileUrl[loggedUser.runtimeType]);
 
     if (response == null) return false;
+
+    cacheExpired = true;
 
     return true;
   }
