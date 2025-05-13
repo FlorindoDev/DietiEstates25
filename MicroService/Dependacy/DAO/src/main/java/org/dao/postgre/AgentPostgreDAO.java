@@ -109,7 +109,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
             stmt.setString(1, agent.getEmail());
             connection.makeQuery(stmt);
             connection.nextRow();
-            agent.setIdUser(connection.extractInt("idagente"));
+            agent.setIdUser(connection.extractInt(ID_DB_FIELD));
         } catch (SQLException e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
