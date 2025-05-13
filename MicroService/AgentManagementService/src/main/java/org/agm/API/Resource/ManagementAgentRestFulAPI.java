@@ -1,10 +1,8 @@
 package org.agm.API.Resource;
 
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.md.Estate.Estate;
 import org.agm.API.Interfacce.ManagmementAgentAPI;
 import org.agm.MainApp.Interfacce.ManagmentAgentService;
@@ -39,26 +37,36 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
         return result;
     }
 
-    @POST
+
+    @GET
     @Path("getAgents")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String getAgents(Agency agency) {
+    public Response getAgents(@BeanParam Agency agency) {
+
+        if(agency.getCodicePartitaIVA().equals("")){
+            return Response.ok("{\"code\":-1, \"error\": \"codicePartitaIVA parameter is required\"}").build();
+        }
+
         String result = managementAgent.getAgents(agency);
         managementAgent.close();
-        return result;
+        return Response.ok(result).build();
     }
 
-    @POST
+
+    @GET
     @Path("getEstates")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String getEstates(Agency agency) {
+    public Response getEstates(@BeanParam Agency agency) {
+
+        if(agency.getCodicePartitaIVA().equals("")){
+            return Response.ok("{\"code\":-1, \"error\": \"codicePartitaIVA parameter is required\"}").build();
+        }
+
         String result = managementAgent.getEstates(agency);
         managementAgent.close();
-        return result;
+        return Response.ok(result).build();
     }
 
     @POST

@@ -48,7 +48,7 @@ class AccessController {
 
     http.Response? response = await Connection.makeLogin(utente.toJson());
     // response: JWT
-
+    
     if (response != null) {
       return json.decode(response.body);
     }
@@ -58,6 +58,8 @@ class AccessController {
   static bool toLogin(Utente utente, dynamic context) {
     valida.validateEmail(utente.email);
     valida.validatePassword(utente.password);
+    
+    
 
     richiestaLogin(utente).then((risultato) {
       //risultato = json.decode(risultato);
@@ -81,7 +83,9 @@ class AccessController {
   static void screenShooser(risultato, Utente utente, context) {
     final jwtPlayload = payload(risultato['message'].split('.')[1]);
     String email = jwtPlayload["sub"];
+    
     scriviJWTInFile(risultato['message']);
+    
 
     logger.d("Email: $email\nTipo di Utente Loggato è ${jwtPlayload["kid"]}");
 
@@ -95,6 +99,12 @@ class AccessController {
       ProfileController.getProfile(email, AgenteImmobiliare);
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.agentHomeWindow);
+    } else if (jwtPlayload["kid"] == "admin") {
+      
+      ProfileController.getProfile(email, Amministratore);
+      Navigator.of(context).pop();
+      Navigator.of(context).pushNamed(RouteWindows.adminHomeWindow);
+
     }
 
     MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
@@ -194,6 +204,10 @@ class AccessController {
           ProfileController.getProfile(email, AgenteImmobiliare);
           return "AgentHomeWindow";
 
+        } else if (payloadMap["kid"] == "admin") {
+
+          ProfileController.getProfile(email, Amministratore);
+          return "AdminHomeWindow";
         }
 
         return "false";

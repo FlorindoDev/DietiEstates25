@@ -1,3 +1,4 @@
+import 'package:dietiestate25/Admin/AdminHomeWindow.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dietiestate25/main.dart';
@@ -19,6 +20,7 @@ class RouteWindows {
   // Main Windows
   static const homeWindow = '/HomeWindow';
   static const agentHomeWindow = '/AgentHomeWindow';
+  static const adminHomeWindow = '/AdminHomeWindow';
 
   static Future<String> checkLogin() async {
     String isLoggedIn = await AccessController.checkLogin();
@@ -27,6 +29,8 @@ class RouteWindows {
         return homeWindow;
       } else if (isLoggedIn == "AgentHomeWindow") {
         return agentHomeWindow;
+      } else if (isLoggedIn == "AdminHomeWindow") {
+        return adminHomeWindow;
       }
     } else {
       return loginWindow;
@@ -55,6 +59,10 @@ class RouteWindows {
         case RouteWindows.agentHomeWindow:
           return MaterialPageRoute(
               builder: (_) => AgentHomeWindow(appbar: MyApp.smallAppBar));
+        
+        case RouteWindows.adminHomeWindow:
+          return MaterialPageRoute(
+              builder: (_) => AdminHomeWindow(appbar: MyApp.appBarNotBackable));
       }
     } else {
       logger.d("[Route Settings] not initilaized route");
