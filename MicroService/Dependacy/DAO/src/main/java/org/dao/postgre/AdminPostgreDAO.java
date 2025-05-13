@@ -1,6 +1,9 @@
 package org.dao.postgre;
 
-import DBLib.Postgres.CommunicationWithPostgre;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+
 import org.dao.Interfacce.AdminDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
@@ -8,9 +11,7 @@ import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
 import org.md.Utente.Admin;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.logging.Logger;
+import DBLib.Postgres.CommunicationWithPostgre;
 
 public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
@@ -44,7 +45,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
             throw new ErrorExecutingQuery();
         }
 
-        admin = new Admin.Builder(connection.extractInt("idamministratore"), connection.extractString("email"))
+        admin = new Admin.Builder(connection.extractInt(ID_DB_FIELD), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))

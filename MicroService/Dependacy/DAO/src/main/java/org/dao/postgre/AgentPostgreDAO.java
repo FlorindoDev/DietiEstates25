@@ -86,7 +86,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
     }
 
     private Agent buildAgentFromConnection(Agency agency) {
-        return new Agent.Builder(connection.extractInt("idagente"), connection.extractString("email"))
+        return new Agent.Builder(connection.extractInt(ID_DB_FIELD), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))
