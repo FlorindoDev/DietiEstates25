@@ -1,265 +1,63 @@
 import 'dart:convert';
-import 'dart:ffi';
-import 'package:dietiestate25/Connection/Connection.dart';
-import 'package:dietiestate25/Model/Appointment/AppointmentNotification.dart';
-import 'package:dietiestate25/Model/Notify/AppointmentPending.dart';
-import 'package:dietiestate25/Model/Estate/Estate.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:dietiestate25/Model/Utente/Utente.dart';
-import 'package:dietiestate25/Model/Notify/Notify.dart';
 import 'package:dietiestate25/main.dart';
-import 'package:dietiestate25/Model/Appointment/Appointment.dart';
-import 'package:dietiestate25/Model/Appointment/AppointmentAccept.dart';
-import 'package:dietiestate25/Model/Appointment/AppointmentPending.dart' as Model;
-import 'package:dietiestate25/Model/Appointment/AppointmentReject.dart';
+
 
 class AdminHomeController {
   //static final String urlEstates = 'http://10.0.2.2:7004/api/';
-  static final String urlEstates = 'http://127.0.0.1:7004/api/'; //Per Mimmo
+  static final String urlAdmin = 'http://127.0.0.1:7003/ManagementAdmin/'; //Per Mimmo
   
-
-  //static final String urlNotify = 'http://10.0.2.2:7008/api/notifies/admin';
-  static final String urlNotify = 'http://127.0.0.1:7008/api/notifies/admin'; //Per Mimmo
-
-  //static final String urlAppointment ='http://10.0.2.2:7006/api/appointments/admin';
-  static final String urlAppointment ='http://127.0.0.1:7006/api/appointments/admin'; //Per Mimmo
-
-  static final String urlAppointmentSpecific = '/api/appointments';
-
-  //static final String urlAppointmentUpdate = 'http://10.0.2.2:7006/api/appointments';
-  static final String urlAppointmentUpdate = 'http://127.0.0.1:7006/api/appointments'; //Per Mimmo
-
   // static Utente utente = MyApp.user;
-  static Utente utente = loggedUser;
+  static Amministratore utente = loggedUser;
 
-  static Future<List<Estate>> getEstate(dynamic context) async {
+    static final ButtonStyle clickable_style_button = ButtonStyle(
+    backgroundColor: WidgetStateProperty.all(MyApp.blu),
+    foregroundColor: WidgetStateProperty.all(Colors.white),
+  );
+
+  static final ButtonStyle not_clickable_style_button = ButtonStyle(
+    backgroundColor: WidgetStateProperty.all(MyApp.celeste),
+    foregroundColor: WidgetStateProperty.all(Colors.white),
+  );
+
+
+  static Future<List<Amministratore>> getAmministratori(dynamic context, String quary) async{
     http.Response response;
-    Uri uri = Uri.parse(urlEstates);
-
+    print("\n\nCIAOOO\n\n");
+    Uri uri = Uri.parse(
+      urlAdmin + 'loadAdmin?codicePartitaIVA=' + (utente.partitaiva ?? "0") + quary
+    );
+    print("\n\MERDAAA\n\n");
     try {
+      print('\n\n\n\n');
       print(uri);
-      // Fai la richiesta HTTP
+      print('\n\n\n\n');
       response = await http.get(
         uri, // URL valido
         headers: {"Content-Type": "application/json"},
-      ); //as http.Response;
-    } catch (e) {
-      return List<Estate>.empty();
+      ); 
+    }catch (e) {
+      return List<Amministratore>.empty();
     }
 
-    List<Estate> estates = [];
-    return estates;
-    /*
-    // Controlla se lo statusCode non è 200 (OK)
     dynamic ris;
-    List<Notify> notifies = [];
+    List<Amministratore> amministratori = [];
     try {
       ris = json.decode(utf8.decode(response.bodyBytes));
       if (ris['code'] == 0) {
-        for (int i = 0; i < ris['Notify'].length; i++) {
-          if (ris['Notify'][i]['tipo'] == 'Appuntamento Accettato') {
-            notifies.add(Appoitmentaccepted.fromJson(ris['Notify'][i]));
-          } else if (ris['Notify'][i]['tipo'] == 'Appuntamento Rifiutato') {
-            notifies.add(Appointmentrejected.fromJson(ris['Notify'][i]));
-          }
-        }
-      } else {
-        MyApp.mostraPopUpInformativo(context, "Errore", ris['message']);
-      }
-    } catch (e) {
-      return List<Notify>.empty();
-    }
-    return notifies;*/
-  }
-
-  static Future<List<Notify>> getNotify(dynamic context) async {
-    logger.d("[getNotify] ${utente.toJson()}");
-
-    http.Response response;
-    Uri uri =
-        Uri.parse(urlNotify + '?email=' + utente.email + '&orderbydate=true');
-
-    print(uri);
-    try {
-      print(uri);
-      // Fai la richiesta HTTP
-      response = await http.get(
-        uri, // URL valido
-        headers: {"Content-Type": "application/json"},
-      ); //as http.Response;
-    } catch (e) {
-      return List<Notify>.empty();
-    }
-
-    // Controlla se lo statusCode non è 200 (OK)
-    dynamic ris;
-    List<Notify> notifies = [];
-    try {
-      ris = json.decode(utf8.decode(response.bodyBytes));
-      if (ris['code'] == 0) {
-        for (int i = 0; i < ris['Notify'].length; i++) {
-          if (ris['Notify'][i]['tipo'] == 'Appuntamento Da Confermare') {
-            ris['Notify'][i]['message'] =
-                "Questo appuntamento deve essere confermato";
-            notifies.add(AppointmentPending.fromJson(ris['Notify'][i]));
-          }
+        for (int i = 0; i < ris['admins'].length; i++) {
+          amministratori.add(Amministratore.fromJson(ris['admins'][i]));
         }
       } else {
         MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
       }
     } catch (e) {
-      return List<Notify>.empty();
+      return List<Amministratore>.empty();
     }
-    return notifies;
+    return amministratori;
   }
 
-  static Future<List<Appointment>> getAppointment(
-      dynamic context, String query) async {
-    http.Response response;
-    Uri uri = Uri.parse(urlAppointment +
-        '?email=' +
-        utente.email +
-        '&orderbydate=true' +
-        query);
-
-    try {
-      print(uri);
-      // Fai la richiesta HTTP
-      response = await http.get(
-        uri, // URL valido
-        headers: {"Content-Type": "application/json"},
-      ); //as http.Response;
-    } catch (e) {
-      return List<Appointment>.empty();
-    }
-
-    // Controlla se lo statusCode non è 200 (OK)
-    dynamic ris;
-    List<Appointment> Appointments = [];
-    try {
-      ris = json.decode(utf8.decode(response.bodyBytes));
-      if (ris['code'] == 0) {
-        for (int i = 0; i < ris['Appointments'].length; i++) {
-          if (ris['Appointments'][i]['esito'] == 'Da decidere') {
-            Appointments.add(
-                Model.AppointmentPending.fromJson(ris['Appointments'][i]));
-          } else if (ris['Appointments'][i]['esito'] == 'Rifiutato') {
-            Appointments.add(
-                AppointmentReject.fromJson(ris['Appointments'][i]));
-          } else if (ris['Appointments'][i]['esito'] == 'Accettato') {
-            Appointments.add(
-                AppointmentAccept.fromJson(ris['Appointments'][i]));
-          }
-        }
-      } else {
-        MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
-      }
-    } catch (e) {
-      return List<Appointment>.empty();
-    }
-    return Appointments;
-  }
-
-  static Future<AppointmentNotification> getAppointmentSpecific(
-      dynamic context, String idAppointment) async {
-    AppointmentNotification Appointments = new AppointmentNotification(
-        idAppointment: 0,
-        data: "0",
-        esito: "0",
-        dataRichesta: "0",
-        idAcquirente: 0,
-        idEstate: 0,
-        nomeEcognome: "0",
-        viaEstate: "0");
-
-    // Uri uri = Uri.parse(
-    //     urlAppointmentSpecific + '?id=' + idAppointment + '&extended=true');
-    http.Response? response = await Connection.makeGetRequest(
-        urlAppointmentSpecific + '?id=' + idAppointment + '&extended=true');
-
-    // try {
-    //   // print(uri);
-    //   // Fai la richiesta HTTP
-    //   response = await http.get(
-    //     uri, // URL valido
-    //     headers: {"Content-Type": "application/json"},
-    //   ); //as http.Response;
-    // } catch (e) {
-    //   return Appointments;
-    // }
-
-    // Controlla se lo statusCode non è 200 (OK)
-    dynamic ris;
-
-    if (response != null) {
-      try {
-        ris = json.decode(utf8.decode(response.bodyBytes));
-        if (ris['code'] == 0) {
-          Appointments = AppointmentNotification.fromJson(ris['Appointment']);
-        } else {
-          MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
-        }
-      } catch (e) {
-        return Appointments;
-      }
-    }
-    return Appointments;
-  }
-
-  static Future<bool> updateAppointment(
-      dynamic context, bool accettato, Appointment appointment) async {
-    String uri;
-    Map<String, dynamic>? body;
-    if (accettato == true) {
-      uri = urlAppointmentSpecific + "/acceptAppointment";
-      body = appointment.toJson("Accettato");
-    } else {
-      uri = urlAppointmentSpecific + "/declineAppointment";
-      body = appointment.toJson("Rifiutato");
-    }
-
-    bool esito = false;
-    print(uri);
-    print(body);
-
-    http.Response? response = await Connection.makePostRequest(body, uri);
-    if (response == null) {
-      MyApp.mostraPopUpWarining(
-          context, "Errore", "Qualcosa è adato storto durante l'operazione");
-      return esito;
-    }
-    // try {
-    //   print(uri);
-    //   // Fai la richiesta HTTP
-    //   response = await http.post(
-    //     uri,
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       // Aggiungi altri header se necessario (es: token auth)
-    //     },
-    //     body: body, // Codifica l'oggetto in JSON
-    //   ); //as http.Response;
-    // } catch (e) {
-    //   MyApp.mostraPopUpWarining(
-    //       context, "Errore", "Qualcosa è adato storto durante l'operazione");
-    //   return esito;
-    // }
-
-    dynamic ris;
-
-    try {
-      ris = json.decode(utf8.decode(response.bodyBytes));
-      print("DBUG RIS: ${ris['code']}");
-      if (ris['code'] == 0) {
-        print("DEBUG in ris code 0");
-        MyApp.mostraPopUpInformativo(context, "Riuscito", ris['message']);
-        esito = true;
-      } else {
-        MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
-      }
-    } catch (e) {
-      return esito;
-    }
-    return esito;
-  }
+ 
 }

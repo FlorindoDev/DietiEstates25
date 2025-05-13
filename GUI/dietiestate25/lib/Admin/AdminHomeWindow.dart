@@ -1,5 +1,8 @@
+import 'package:dietiestate25/Admin/AdminHomeController.dart';
+import 'package:dietiestate25/Admin/ManageAdminWindow.dart';
 import 'package:dietiestate25/Admin/NotificationAdminWindow.dart';
 import 'package:dietiestate25/main.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/material.dart';
 
 
@@ -99,7 +102,132 @@ class _HomeScreen extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("Ciao Admin sei nella home"),
+      
+      body: Container(
+        padding: const EdgeInsets.only(top: 20),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: MyApp.celeste,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+            bottomLeft: Radius.circular(0),
+            bottomRight: Radius.circular(0),
+          ),
+        ),
+        child: Column(
+        
+        children: [
+          Container(
+          width: 800,
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildSection(
+                icon: LucideIcons.users,
+                title: 'Agenti',
+                buttons: [
+                  _buildButton(
+                    'Crea Agente', 
+                    () {
+                      
+                    }
+                  ),
+                  
+                  _buildButton(
+                    'Gestisci Agenti', 
+                    () {
+                      
+                    }
+                  ),
+                  
+                ],
+              ),
+              const SizedBox(height: 20),
+              _buildSection(
+                icon: LucideIcons.userCog2,
+                title: 'Amministratori',
+                buttons: [
+                  _buildButton('Crea Amministratore', () {}),
+                  _buildButton('Gestisci Amministratori', () {
+
+                      
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => new ManageAdminWindow(
+                            appbar: MyApp.smallAppBar,
+            
+                          ),
+                        ),
+                      );
+
+                  }),
+                ],
+              ),
+            ],
+          ),
+        ),
+        ],
+      ),
+
+      ), 
+      
+        
+    );
+  }
+
+  Widget _buildSection({required IconData icon, required String title, required List<Widget> buttons}) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      elevation: 3,
+      child: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, size: 24, color: MyApp.blu),
+                const SizedBox(width: 10),
+                Text(
+                  title,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const Divider(height: 20, thickness: 1),
+            Column(children: buttons),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButton(String label, VoidCallback onPressed) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: MyApp.blu,
+          foregroundColor: Colors.white,
+          minimumSize: const Size(double.infinity, 40),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+        child: Text(label),
+      ),
     );
   }
 }

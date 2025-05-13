@@ -12,6 +12,8 @@ class Amministratore extends Utente {
     partitaiva = builder._partitaiva;
   }
 
+ 
+
   static AmministratoreBuilder get builder => AmministratoreBuilder();
 
   @override
@@ -22,6 +24,21 @@ class Amministratore extends Utente {
       'issupportoammi': issupportoammi,
       'partitaiva': partitaiva,
     };
+  }
+
+
+   factory Amministratore.fromJson(Map<String, dynamic> json) {
+    
+    Amministratore amministratore = Amministratore.builder
+        .setId(json['idUser'])
+        .setName(json['nome'])
+        .setEmail(json['email'])
+        .setPassword(json['password'])
+        .setNotify(json['idPushNotify'])
+        .setIssupportoammi(json['support'])
+        .build();
+
+    return amministratore;
   }
 }
 
