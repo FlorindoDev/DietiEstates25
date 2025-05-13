@@ -1,6 +1,9 @@
 package org.dao.postgre;
 
-import DBLib.Postgres.CommunicationWithPostgre;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+
 import org.dao.Interfacce.AdminDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
@@ -8,14 +11,13 @@ import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
 import org.md.Utente.Admin;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.logging.Logger;
+import DBLib.Postgres.CommunicationWithPostgre;
 
 public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
     private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private static final String TABLE = "amministratore";
+    private static final String ID_DB_FIELD = "idamministratore";
 
 
     private static final Logger logger = Logger.getLogger(AdminPostgreDAO.class.getName());
@@ -43,7 +45,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
             throw new ErrorExecutingQuery();
         }
 
-        admin = new Admin.Builder(connection.extractInt("idamministratore"), connection.extractString("email"))
+        admin = new Admin.Builder(connection.extractInt(ID_DB_FIELD), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))
@@ -83,7 +85,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
     @Override
     public void updateUser(Admin utente) throws DietiEstateException {
-        super.updateUser(utente, TABLE);
+        super.updateUser(utente, TABLE, ID_DB_FIELD);
     }
 
     @Override

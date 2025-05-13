@@ -1,15 +1,13 @@
 part of './Utente.dart';
 
 class AgenteImmobiliare extends Utente {
-  // int? idagente;
   String? biografia;
-  Uint8List? immagineprofile;
+  String? immagineprofile;
   String? partitaiva;
   String? sensitivity;
   bool? notifyAppointment;
 
   AgenteImmobiliare._builder(AgenteImmobiliareBuilder builder) : super._builder(builder) {
-    // idagente = builder._idagente;
     biografia = builder._biografia;
     immagineprofile = builder._immagineprofile;
     partitaiva = builder._partitaiva;
@@ -23,6 +21,7 @@ class AgenteImmobiliare extends Utente {
         .setName(json['nome'] as String? ?? '')
         .setEmail(json['email'] as String? ?? '')
         .setCognome(json['cognome'] as String? ?? '')
+        .setImmagineprofile(json['profilePic'] as String? ?? '')
         .setPassword(json['password'] as String? ?? '')
         .setBiografia(json['biografia'] as String? ?? '')
         .setPartitaiva(json['agency']?['codicePartitaIVA'] as String? ?? '')
@@ -36,10 +35,11 @@ class AgenteImmobiliare extends Utente {
   Map<String, dynamic> toJson() {
     return {
       ...super.toJson(),
-      // 'idagente': idagente,
       'biografia': biografia,
-      'immagineprofile': immagineprofile,
-      'partitaiva': partitaiva,
+      'immagineprofilo': immagineprofile,
+      'agency': {
+        'codicePartitaIVA': partitaiva,
+      },
       'sensitivity': sensitivity,
       'notifyAppointment': notifyAppointment,
     };
@@ -47,9 +47,8 @@ class AgenteImmobiliare extends Utente {
 }
 
 class AgenteImmobiliareBuilder extends UtenteBuilder {
-  // int? _idagente;
   String? _biografia;
-  Uint8List? _immagineprofile;
+  String? _immagineprofile;
   String? _partitaiva;
   String? _sensitivity;
   bool? _notifyAppointment;
@@ -96,7 +95,7 @@ class AgenteImmobiliareBuilder extends UtenteBuilder {
     return this;
   }
 
-  AgenteImmobiliareBuilder setImmagineprofile(Uint8List value) {
+  AgenteImmobiliareBuilder setImmagineprofile(String value) {
     _immagineprofile = value;
     return this;
   }
