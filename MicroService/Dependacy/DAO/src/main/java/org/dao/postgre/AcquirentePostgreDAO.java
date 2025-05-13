@@ -1,6 +1,9 @@
 package org.dao.postgre;
 
-import DBLib.Postgres.CommunicationWithPostgre;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+
 import org.dao.Interfacce.AcquirenteDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
@@ -8,9 +11,7 @@ import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
 import org.md.Utente.Acquirente;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.logging.Logger;
+import DBLib.Postgres.CommunicationWithPostgre;
 
 public class AcquirentePostgreDAO extends UtentePostgreDAO implements AcquirenteDAO {
 
@@ -44,7 +45,7 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
             throw new ErrorExecutingQuery();
         }
 
-        return new Acquirente.Builder(connection.extractInt("idacquirente"), connection.extractString("email"))
+        return new Acquirente.Builder(connection.extractInt(ID_DB_FIELD), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))
