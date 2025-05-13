@@ -16,7 +16,7 @@ class _NotificationAdminWindowState extends State<NotificationAdminWindow> {
 
   void initState() {
     super.initState();
-    notifications = AdminHomeController.getNotify(context);
+    //notifications = AdminHomeController.getNotify(context);
   }
 
   @override

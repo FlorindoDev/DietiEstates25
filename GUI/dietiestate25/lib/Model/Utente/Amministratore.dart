@@ -10,6 +10,7 @@ class Amministratore extends Utente {
     partitaiva = builder._partitaiva;
   }
 
+ 
   factory Amministratore.fromJson(Map<String, dynamic> json) {
     return Amministratore.builder
         .setId(json['idUser']?.toString() ?? '')
@@ -18,10 +19,13 @@ class Amministratore extends Utente {
         .setCognome(json['cognome'] as String? ?? '')
         .setPassword(json['password'] as String? ?? '')
         .setPartitaiva(json['agency']?['codicePartitaIVA'] as String? ?? '')
+        .setIssupportoammi(json['support'])
+        .setNotify(json['idPushNotify'])
         // .setIssupportoammi(value)
         // .setNotifyAppointm(json['notifyAppointment'] as bool? ?? false)
         .build();
   }
+
 
   static AmministratoreBuilder get builder => AmministratoreBuilder();
 
@@ -34,6 +38,8 @@ class Amministratore extends Utente {
       'partitaiva': partitaiva,
     };
   }
+
+
 }
 
 class AmministratoreBuilder extends UtenteBuilder {
