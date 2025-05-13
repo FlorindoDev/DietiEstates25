@@ -84,25 +84,18 @@ class AccessController {
     scriviJWTInFile(risultato['message']);
 
     logger.d("Email: $email\nTipo di Utente Loggato è ${jwtPlayload["kid"]}");
-    // MyApp.user = utente;
-    // loggedUser = utente;
-    logger.e("[AccessController] User: ${loggedUser.toJson()}");
+
     if (jwtPlayload["kid"] == "acquirente") {
-      // HomeController.utente = utente;
-      loggedUserType = UserType.acquirente;
-      // ProfileController.getProfile(email);
-      // loggedUser = Acquirente.builder.setEmail(email).build();
+      ProfileController.getProfile(email, Acquirente);
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.homeWindow);
+
     } else if (jwtPlayload["kid"] == "agent") {
-      // AgentHomeController.utente = utente;
-      loggedUserType = UserType.agent;
-      // ProfileController.getProfile(email);
-      // loggedUser = AgenteImmobiliare.builder.setEmail(email).build();
+
+      ProfileController.getProfile(email, AgenteImmobiliare);
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.agentHomeWindow);
     }
-    ProfileController.getProfile(email);
 
     MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
   }
@@ -188,22 +181,19 @@ class AccessController {
         Map<String, dynamic> payloadMap = json.decode(decoded);
 
         String email = payloadMap["sub"];
-        // Utente utente = Utente.builder.setId("").setEmail(email).build();
+
         logger.d("Email: $email\nTipo di Utente Loggato è ${payloadMap["kid"]}");
-        // loggedUser = utente;
 
         if (payloadMap["kid"] == "acquirente") {
-          // HomeController.utente = utente;
-          loggedUserType = UserType.acquirente;
-          ProfileController.getProfile(email);
-          // loggedUser = Acquirente.builder.setEmail(email).build();
+
+          ProfileController.getProfile(email, Acquirente);
           return "HomeWindow";
+
         } else if (payloadMap["kid"] == "agent") {
-          // AgentHomeController.utente = utente;
-          loggedUserType = UserType.agent;
-          ProfileController.getProfile(email);
-          // loggedUser = AgenteImmobiliare.builder.setEmail(email).build();
+
+          ProfileController.getProfile(email, AgenteImmobiliare);
           return "AgentHomeWindow";
+
         }
 
         return "false";

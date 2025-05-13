@@ -1,26 +1,33 @@
 package org.dao.postgre;
 
-import DBLib.Postgres.CommunicationWithPostgre;
-import org.dao.Interfacce.UtenteDAO;
-import org.exc.DataBaseException.*;
-import org.exc.DietiEstateException;
-import org.json.JSONObject;
-import org.md.Utente.Acquirente;
-import org.md.Utente.Admin;
-import org.md.Utente.Agent;
-import org.md.Utente.Utente;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.dao.Interfacce.UtenteDAO;
+import org.exc.DataBaseException.ErrorCreateStatment;
+import org.exc.DataBaseException.ErrorExecutingQuery;
+import org.exc.DataBaseException.UserAlreadyExists;
+import org.exc.DataBaseException.UserNotExists;
+import org.exc.DataBaseException.UserNotFoundException;
+import org.exc.DietiEstateException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.md.Utente.Acquirente;
+import org.md.Utente.Admin;
+import org.md.Utente.Agent;
+import org.md.Utente.Utente;
+
+import DBLib.Postgres.CommunicationWithPostgre;
+
 public class UtentePostgreDAO implements UtenteDAO {
 
     private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private static final String ID_USER_COLUMN = "id_user";
     private static final String EMAIL_COLUMN = "email";
+    private static final String PASSWORD_COLUMN = "password";
     protected final CommunicationWithPostgre connection;
     private static final Logger logger = Logger.getLogger(UtentePostgreDAO.class.getName());
 
@@ -156,7 +163,24 @@ public class UtentePostgreDAO implements UtenteDAO {
     }
 
 
-    public void updateUser(Utente changes, String tabella) throws DietiEstateException {
+    public void updateUser(Utente changes, String tabella, String idFiled) throws DietiEstateException {
+
+        // mappa JSON key → SQL column name
+//        private static final Map<String, String> JSON_TO_COLUMN = Map.ofEntries(
+//                Map.entry("nome",              "nome"),
+//                Map.entry("cognome",           "cognome"),
+//                Map.entry("email",             "email"),
+//                Map.entry("password",          "password"),
+//                Map.entry("notifyAppointment", "notify_appointment"),
+//                Map.entry("idPushNotify",      "id_push_notify"),
+//                Map.entry("biografia",         "biografia"),
+//                Map.entry("profilePic",        "immagineprofilo"),
+//                // se hai altri campi…
+//                // Map.entry("xyzJson",       "xyz_col")
+//        );
+
+        final String ID_USER_COLUMN = "idUser";
+        String keycrypt = connection.getKeyCrypt();
 
         JSONObject jsonObject = new JSONObject(changes.TranslateToJson());
         if (!jsonObject.isEmpty()) { // per evitare di fare update a vuoto
@@ -166,16 +190,34 @@ public class UtentePostgreDAO implements UtenteDAO {
             for (String key : jsonObject.keySet()) {
                 Object value = jsonObject.get(key);
 
-                if (!ID_USER_COLUMN.equals(key) && !EMAIL_COLUMN.equals(key) && !"null".equals(value.toString())) {
+                // Salta tutte le mappe/oggetti JSON annidati
+                if (value instanceof JSONObject || value instanceof JSONArray) {
+                    continue;
+                }
+
+                if (!ID_USER_COLUMN.equals(key) && !"null".equals(value.toString()) && !PASSWORD_COLUMN.equals(key)) {
                     query.append(key).append(" = ?, ");
+                    parameters.add(value);
+                }
+
+                if (PASSWORD_COLUMN.equals(key)){
+                    query.append(key).append(" = crypt( ? , '").append(keycrypt).append("'), ");
                     parameters.add(value);
                 }
 
             }
 
+            if (jsonObject.has("agency")) {
+                JSONObject ag = jsonObject.getJSONObject("agency");
+                if (ag.has("codicePartitaIVA")) {
+                    query.append("codicePartitaIVA = ?, ");
+                    parameters.add(ag.getString("codicePartitaIVA"));
+                }
+            }
+
             query.setLength(query.length() - 2);
 
-            query.append(" where email = ?");
+            query.append(" where "+idFiled+" = ?");
 
             PreparedStatement stmt = connection.getStatment(String.valueOf(query));
             try {
@@ -184,9 +226,12 @@ public class UtentePostgreDAO implements UtenteDAO {
                     stmt.setObject(index++, param); //parte da 1
                 }
 
-                stmt.setString(index, changes.getEmail());
+                stmt.setInt(index, changes.getIdUser());
 
-                connection.makeQueryUpdate(stmt);
+                if (connection.makeQueryUpdate(stmt) == 0) {
+                    throw new DietiEstateException("Utente con email " + changes.getEmail() + " non trovato");
+                }
+
             }catch (SQLException e){
                 logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
                 throw new ErrorExecutingQuery();

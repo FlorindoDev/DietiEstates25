@@ -10,7 +10,7 @@ public interface UtenteDAO {
 
     Utente getUser(Utente utente) throws DietiEstateException;
 
-    void updateUser(Utente changes, String tabella) throws DietiEstateException;
+    void updateUser(Utente changes, String tabella, String idFiled) throws DietiEstateException;
 
     boolean isUserAbsent(Utente acquirente, String table) throws DietiEstateException;
 

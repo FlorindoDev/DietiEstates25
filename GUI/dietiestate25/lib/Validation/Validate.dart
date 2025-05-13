@@ -38,7 +38,37 @@ class Validate implements Validator {
 
   @override
   bool validatePartitalVA(String partialVA) {
-    // TODO: implementa la logica di validazione
+    // 1) Controllo formato: esattamente 11 cifre
+    if (!RegExp(r'^\d{11}$').hasMatch(partialVA)) {
+      throw Exception('La Partita IVA deve contenere esattamente 11 cifre numeriche.');
+    }
+
+    // 2) Estrazione delle cifre
+    List<int> digits = partialVA.split('').map(int.parse).toList();
+
+    // 3) Calcolo del checksum
+    int sum = 0;
+    for (int i = 0; i < 10; i++) {
+      int d = digits[i];
+      if (i % 2 == 0) {
+        // posizioni dispari (1ª, 3ª, …) - indice 0,2,4…
+        sum += d;
+      } else {
+        // posizioni pari (2ª, 4ª, …) - indice 1,3,5…
+        int doubled = d * 2;
+        sum += (doubled > 9) ? doubled - 9 : doubled;
+      }
+    }
+
+    // 4) Ricavo la cifra di controllo attesa
+    int expectedCheck = (10 - (sum % 10)) % 10;
+
+    // 5) Confronto con l'ultima cifra
+    if (digits[10] != expectedCheck) {
+      throw Exception('Checksum non valido per la Partita IVA fornita.');
+    }
+
+    // Se siamo qui, è valido
     return true;
   }
 

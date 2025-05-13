@@ -3,15 +3,14 @@ package org.ma.MainApp;
 import org.dao.postgre.AcquirentePostgreDAO;
 import org.dao.postgre.AdminPostgreDAO;
 import org.dao.postgre.AgentPostgreDAO;
-
 import org.exc.DietiEstateException;
 import org.ma.MainApp.Interface.ManagementAccountService;
-import org.va.Validator;
-import org.va.Validate;
 import org.md.Utente.Acquirente;
 import org.md.Utente.Admin;
 import org.md.Utente.Agent;
 import org.md.Utente.Utente;
+import org.va.Validate;
+import org.va.Validator;
 
 public class ManagementAccount implements ManagementAccountService {
 
@@ -41,11 +40,9 @@ public class ManagementAccount implements ManagementAccountService {
         acquirenteDAO = new AcquirentePostgreDAO();
 
         try {
-            acquirenteDAO.isUserPresent(utente);
+//            acquirenteDAO.isUserPresent(utente);
 
             validateData(utente);
-
-            //TODO contollare path immagine profilo & STOREGE delle stesse
 
             acquirenteDAO.updateUser(utente);
 

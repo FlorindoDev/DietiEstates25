@@ -16,6 +16,7 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
 
     private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private static final String TABLE = "acquirente";
+    private static final String ID_DB_FIELD = "idacquirente";
 
     private static final Logger logger = Logger.getLogger(AcquirentePostgreDAO.class.getName());
 
@@ -85,7 +86,7 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
     @Override
     public void updateUser(Acquirente utente) throws DietiEstateException {
 
-        super.updateUser(utente, TABLE);
+        super.updateUser(utente, TABLE, ID_DB_FIELD);
 
     }
 

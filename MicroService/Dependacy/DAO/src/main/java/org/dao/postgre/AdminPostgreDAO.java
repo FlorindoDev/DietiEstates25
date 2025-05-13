@@ -16,6 +16,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
     private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private static final String TABLE = "amministratore";
+    private static final String ID_DB_FIELD = "idamministratore";
 
 
     private static final Logger logger = Logger.getLogger(AdminPostgreDAO.class.getName());
@@ -83,7 +84,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
 
     @Override
     public void updateUser(Admin utente) throws DietiEstateException {
-        super.updateUser(utente, TABLE);
+        super.updateUser(utente, TABLE, ID_DB_FIELD);
     }
 
     @Override

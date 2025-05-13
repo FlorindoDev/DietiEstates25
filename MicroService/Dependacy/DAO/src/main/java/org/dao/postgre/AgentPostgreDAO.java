@@ -1,6 +1,11 @@
 package org.dao.postgre;
 
-import DBLib.Postgres.CommunicationWithPostgre;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 import org.dao.Interfacce.AgentDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
@@ -9,16 +14,13 @@ import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.md.Utente.Agent;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
+import DBLib.Postgres.CommunicationWithPostgre;
 
 public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
 
     private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private static final String TABLE = "agenteimmobiliare";
+    private static final String ID_DB_FIELD = "idagente";
 
 
     private static final Logger logger = Logger.getLogger(AgentPostgreDAO.class.getName());
@@ -89,7 +91,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))
                 .setBiografia(connection.extractString("biografia"))
-                .setBiografia(connection.extractString("ImmagineProfilo"))
+                .setProfilePic(connection.extractString("ImmagineProfilo"))
                 .setIdPushNotify(connection.extractString("idPushNoitfy"))
                 .setNotifyAppointment(connection.extractBoolean("notify_appointment"))
                 .setAgency(agency)
@@ -153,7 +155,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
 
     @Override
     public void updateUser(Agent utente) throws DietiEstateException{
-        super.updateUser(utente, TABLE);
+        super.updateUser(utente, TABLE, ID_DB_FIELD);
     }
 
     @Override
