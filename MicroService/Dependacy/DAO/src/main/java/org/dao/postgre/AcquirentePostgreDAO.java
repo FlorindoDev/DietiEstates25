@@ -1,6 +1,9 @@
 package org.dao.postgre;
 
-import DBLib.Postgres.CommunicationWithPostgre;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+
 import org.dao.Interfacce.AcquirenteDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
@@ -8,14 +11,13 @@ import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
 import org.md.Utente.Acquirente;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.logging.Logger;
+import DBLib.Postgres.CommunicationWithPostgre;
 
 public class AcquirentePostgreDAO extends UtentePostgreDAO implements AcquirenteDAO {
 
     private static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
     private static final String TABLE = "acquirente";
+    private static final String ID_DB_FIELD = "idacquirente";
 
     private static final Logger logger = Logger.getLogger(AcquirentePostgreDAO.class.getName());
 
@@ -43,7 +45,7 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
             throw new ErrorExecutingQuery();
         }
 
-        return new Acquirente.Builder(connection.extractInt("idacquirente"), connection.extractString("email"))
+        return new Acquirente.Builder(connection.extractInt(ID_DB_FIELD), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))
@@ -85,7 +87,7 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
     @Override
     public void updateUser(Acquirente utente) throws DietiEstateException {
 
-        super.updateUser(utente, TABLE);
+        super.updateUser(utente, TABLE, ID_DB_FIELD);
 
     }
 

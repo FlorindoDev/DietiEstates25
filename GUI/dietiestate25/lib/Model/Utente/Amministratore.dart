@@ -1,18 +1,31 @@
 part of './Utente.dart';
 
 class Amministratore extends Utente {
-  // int? idamministrator;
   bool? issupportoammi;
   String? partitaiva;
 
   Amministratore._builder(AmministratoreBuilder builder)
       : super._builder(builder) {
-    // idamministrator = builder._idamministrator;
     issupportoammi = builder._issupportoammi;
     partitaiva = builder._partitaiva;
   }
 
  
+  factory Amministratore.fromJson(Map<String, dynamic> json) {
+    return Amministratore.builder
+        .setId(json['idUser']?.toString() ?? '')
+        .setName(json['nome'] as String? ?? '')
+        .setEmail(json['email'] as String? ?? '')
+        .setCognome(json['cognome'] as String? ?? '')
+        .setPassword(json['password'] as String? ?? '')
+        .setPartitaiva(json['agency']?['codicePartitaIVA'] as String? ?? '')
+        .setIssupportoammi(json['support'])
+        .setNotify(json['idPushNotify'])
+        // .setIssupportoammi(value)
+        // .setNotifyAppointm(json['notifyAppointment'] as bool? ?? false)
+        .build();
+  }
+
 
   static AmministratoreBuilder get builder => AmministratoreBuilder();
 
@@ -27,30 +40,11 @@ class Amministratore extends Utente {
   }
 
 
-   factory Amministratore.fromJson(Map<String, dynamic> json) {
-    
-    Amministratore amministratore = Amministratore.builder
-        .setId(json['idUser'])
-        .setName(json['nome'])
-        .setEmail(json['email'])
-        .setPassword(json['password'])
-        .setNotify(json['idPushNotify'])
-        .setIssupportoammi(json['support'])
-        .build();
-
-    return amministratore;
-  }
 }
 
 class AmministratoreBuilder extends UtenteBuilder {
-  // int? _idamministrator;
   bool? _issupportoammi;
   String? _partitaiva;
-
-  // AmministratoreBuilder setIdamministrator(int id) {
-  //   _idamministrator = id;
-  //   return this;
-  // }
 
   AmministratoreBuilder setIssupportoammi(bool value) {
     _issupportoammi = value;
@@ -67,7 +61,6 @@ class AmministratoreBuilder extends UtenteBuilder {
     return Amministratore._builder(this);
   }
 
-  // Override parent methods to return AmministratoreBuilder
   @override
   AmministratoreBuilder setId(String idUser) {
     super.setId(idUser);
@@ -77,6 +70,12 @@ class AmministratoreBuilder extends UtenteBuilder {
   @override
   AmministratoreBuilder setName(String nome) {
     super.setName(nome);
+    return this;
+  }
+
+  @override
+  AmministratoreBuilder setCognome(String cognome) {
+    super.setCognome(cognome);
     return this;
   }
 

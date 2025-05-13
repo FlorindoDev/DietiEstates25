@@ -3,19 +3,21 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:convert';
-
-// import 'package:dietiestate25/Logger/logger.dart';
-
-// final logger = MyLogger.getIstance();
+import 'package:dietiestate25/Model/Utente/Utente.dart';
 
 class Connection {
   // static final Uri url = Uri.parse('http://localhost:8000/'); // KONG URL
   static final String baseUrl = 'http://127.0.0.1:8000'; // Per Mimmo
   //static final String baseUrl = 'http://10.0.2.2:8000';
 
-  static final Map<UserType, String> getAccountProfileUrl = {
-    UserType.acquirente:'/ManagementAccount/getAccountAcquirente',
-    UserType.agent: '/ManagementAccount/getAccountAgent'
+  static final Map<Type, String> getAccountProfileUrl = {
+    Acquirente: '/ManagementAccount/getAccountAcquirente',
+    AgenteImmobiliare: '/ManagementAccount/getAccountAgent'
+  };
+
+  static final Map<Type, String> updateAccountProfileUrl = {
+    Acquirente: '/ManagementAccount/applyChangeAcquirente',
+    AgenteImmobiliare: '/ManagementAccount/applyChangeAgent'
   };
 
   static String? jwt;
@@ -96,7 +98,7 @@ class Connection {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return response;
       } else {
-        logger.e("Errore HTTP: ${response.statusCode} - ${response.body}");
+        logger.e("Errore HTTP: ${response.statusCode} - ${response.body} \n${fullUrl}");
         return null;
       }
     } catch (e) {

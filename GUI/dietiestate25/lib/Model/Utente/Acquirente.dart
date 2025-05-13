@@ -1,16 +1,25 @@
 part of './Utente.dart';
 
 class Acquirente extends Utente {
-  // int? idacquirente;
   bool? notify_appointment;
   bool? notify_new_estate;
   bool? change_price_notify;
 
   Acquirente._builder(AcquirenteBuilder builder) : super._builder(builder) {
-    // idacquirente = builder._idacquirente;
     notify_appointment = builder._notify_appointment;
     notify_new_estate = builder._notify_new_estate;
     change_price_notify = builder._change_price_notify;
+  }
+
+  factory Acquirente.fromJson(Map<String, dynamic> json) {
+    return Acquirente.builder
+        .setId(json['idUser']?.toString() ?? '')
+        .setName(json['nome'] as String? ?? '')
+        .setEmail(json['email'] as String? ?? '')
+        .setCognome(json['cognome'] as String? ?? '')
+        .setPassword(json['password'] as String? ?? '')
+        .setNotifyAppointm(json['notifyAppointment'] as bool? ?? false)
+        .build();
   }
 
   static AcquirenteBuilder get builder => AcquirenteBuilder();
@@ -28,17 +37,41 @@ class Acquirente extends Utente {
 }
 
 class AcquirenteBuilder extends UtenteBuilder {
-  // int? _idacquirente;
   bool? _notify_appointment;
   bool? _notify_new_estate;
   bool? _change_price_notify;
 
-  // AcquirenteBuilder setIdacquirente(int id) {
-  //   _idacquirente = id;
-  //   return this;
-  // }
+  @override
+  AcquirenteBuilder setId(String idUser) {
+    super.setId(idUser);
+    return this;
+  }
 
-  AcquirenteBuilder setNotifyAppointr(bool value) {
+  @override
+  AcquirenteBuilder setName(String nome) {
+    super.setName(nome);
+    return this;
+  }
+
+  @override
+  AcquirenteBuilder setCognome(String cognome) {
+    super.setCognome(cognome);
+    return this;
+  }
+
+  @override
+  AcquirenteBuilder setEmail(String email) {
+    super.setEmail(email);
+    return this;
+  }
+
+  @override
+  AcquirenteBuilder setPassword(String password) {
+    super.setPassword(password);
+    return this;
+  }
+
+  AcquirenteBuilder setNotifyAppointm(bool value) {
     _notify_appointment = value;
     return this;
   }
@@ -56,12 +89,6 @@ class AcquirenteBuilder extends UtenteBuilder {
   @override
   Acquirente build() {
     return Acquirente._builder(this);
-  }
-
-  @override
-  AcquirenteBuilder setId(String idUser) {
-    super.setId(idUser);
-    return this;
   }
 
 }

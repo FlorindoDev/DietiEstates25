@@ -2,21 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:dietiestate25/Connection/Connection.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
-// import 'package:dietiestate25/Model/Utente/Utente.dart';
 import 'package:dietiestate25/Logger/logger.dart';
 
 final logger = MyLogger.getIstance();
 
 enum LoadState { loading, success, error }
 
-enum UserType { acquirente, agent, admin }
-
 dynamic loggedUser;
-UserType loggedUserType = UserType.acquirente; // settare in access controller
 
 void main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Assicura l'inizializzazione di Flutter
+  WidgetsFlutterBinding.ensureInitialized(); // Assicura l'inizializzazione di Flutter
   await Connection.init();
   String initialRoute = await RouteWindows.checkLogin();
   print("[debug] Effettuato check login, initial doute: $initialRoute");
@@ -24,7 +19,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // static Utente user = Utente.builder.setId("").setEmail("").build();
 
   final String initialRoute;
 
@@ -103,9 +97,31 @@ class MyApp extends StatelessWidget {
     ],
   );
 
-  static void mostraPopUpInformativo(
-      dynamic context, String titolo, String messaggio) {
-    showDialog(
+  static Future mostraPopUpSuccess(dynamic context, String titolo, String? messaggio) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(titolo),
+          icon: Icon(
+            color: Colors.green, 
+            Icons.check_circle),
+          content: messaggio != null ? Text(messaggio) : null,
+          actions: <Widget>[
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Chiude il dialogo
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static Future mostraPopUpInformativo(dynamic context, String titolo, String messaggio) async {
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -125,9 +141,9 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  static void mostraPopUpWarining(
-      dynamic context, String titolo, String messaggio) {
-    showDialog(
+  static Future mostraPopUpWarining (
+      dynamic context, String titolo, String messaggio) async {
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
