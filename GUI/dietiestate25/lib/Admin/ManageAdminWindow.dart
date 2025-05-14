@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dietiestate25/Admin/AdminHomeController.dart';
 import 'package:dietiestate25/Model/Utente/Utente.dart';
 import 'package:dietiestate25/main.dart';
@@ -23,7 +26,7 @@ class _ManageAdminWindowState extends State<ManageAdminWindow> {
   @override
   void initState() {
     super.initState();
-    print("\n\n UEUEUEEUE \n\n");
+    
     amministratori = AdminHomeController.getAmministratori(context,"");
     _scrollController = ScrollController();
     _scrollController.addListener(() {
@@ -50,12 +53,22 @@ class _ManageAdminWindowState extends State<ManageAdminWindow> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: widget.appbar,
-      body: FutureBuilder<List<Amministratore>>(
+      body: 
+      Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: MyApp.celeste,
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+        ),
+        padding: const EdgeInsets.only(top: 20,left: 20, right: 20),
+        child:FutureBuilder<List<Amministratore>>(
         future: amministratori,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-                    child: CircularProgressIndicator(strokeWidth: 5),
+                    child: CircularProgressIndicator(strokeWidth: 5,
+                      color: Colors.white,
+                    ),
                   );
           } else if (snapshot.hasError) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -76,15 +89,56 @@ class _ManageAdminWindowState extends State<ManageAdminWindow> {
               itemCount: amministratori.length,
               itemBuilder: (context, index) {
                 Amministratore admin = amministratori[index];
-                return ListTile(
-                  title: Text(admin.nome + " " + admin.cognome),
-                  subtitle: Text(admin.email),
+            
+                return Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Set your desired background color here
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListTile(
+                    
+                    title: Text('${admin.nome} ${admin.cognome}'),
+                    subtitle: Text(admin.email),
+                    leading: (admin.issupportoammi == true) ? const Icon(Icons.account_circle_rounded, color: MyApp.blu,) : const Icon(Icons.manage_accounts_rounded, color: MyApp.blu,),
+                 
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    trailing: MenuBar(
+                      children:[
+                        SubmenuButton(
+                          menuChildren: [
+                            MenuItemButton(
+                              onPressed: () { },
+                              child: const Text('Elimina'),
+                            ),
+                            MenuItemButton(
+                              onPressed: (admin.issupportoammi == true) ? () { 
+                                // AdminHomeController.promoteAdmin(context, admin);
+                              } : null,
+                              child: const Text('Promuovi'),
+                            ),
+                            MenuItemButton(
+                              onPressed: (admin.issupportoammi == false) ? () { 
+                                // AdminHomeController.promoteAdmin(context, admin);
+                              } : null,
+                              child: const Text('Retrocedi'),
+                            ),
+                          ],
+                          child: const Icon(Icons.menu),
+                        ), 
+                      ], 
+                    ),
+                  ),
                 );
               },
             );
           
         },
       ),
+      ),
+      
     );
   }
 }

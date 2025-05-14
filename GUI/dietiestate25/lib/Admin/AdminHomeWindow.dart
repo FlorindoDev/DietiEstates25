@@ -156,7 +156,7 @@ class _HomeScreen extends State<HomeScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              _buildSection(
+              AdminHomeController.isSupporto() ? const Center() : _buildSection(
                 icon: LucideIcons.userCog2,
                 title: 'Amministratori',
                 buttons: [

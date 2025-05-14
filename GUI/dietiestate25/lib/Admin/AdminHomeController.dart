@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 // import 'package:dietiestate25/Model/loggedUser/loggedUser.dart';
@@ -8,9 +9,10 @@ import 'package:dietiestate25/Connection/Connection.dart';
 
 class AdminHomeController {
   //static final String urlEstates = 'http://10.0.2.2:7004/api/';
-  static final String urlAdmin =
-      'http://10.0.2.2:8000/ManagementAdmin/'; //Per Mimmo
-
+  static final String urlAdmin = 'http://127.0.0.1:8000/ManagementAdmin/'; //Per Mimmo
+  // static final String urlAdmin = 'http://10.0.2.2:8000/ManagementAdmin/'; //Per Mimmo
+  
+  
   static final ButtonStyle clickable_style_button = ButtonStyle(
     backgroundColor: WidgetStateProperty.all(MyApp.blu),
     foregroundColor: WidgetStateProperty.all(Colors.white),
@@ -23,14 +25,13 @@ class AdminHomeController {
 
   static Future<List<Amministratore>> getAmministratori(
       dynamic context, String quary) async {
-    print("\n\nCIAOOO\n\n");
+
     http.Response response;
-    logger.e(loggedUser?.toJson());
+    print(loggedUser);
     Uri uri = Uri.parse(urlAdmin +
         'loadAdmin?codicePartitaIVA=' +
         (loggedUser.partitaiva ?? "0") +
         quary);
-    print("\n\MERDAAA\n\n");
 
     try {
       // response = await Connection.makeGetRequest(urlAdmin +
@@ -71,5 +72,12 @@ class AdminHomeController {
       return List<Amministratore>.empty();
     }
     return amministratori;
+  }
+
+  static bool isSupporto() {
+    print("\n\n\n\n");
+    print(loggedUser);
+    print("\n\n\n\n");
+    return loggedUser.issupportoammi;
   }
 }
