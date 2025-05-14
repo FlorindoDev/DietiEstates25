@@ -21,7 +21,6 @@ class Amministratore extends Utente {
         .setPartitaiva(json['agency']?['codicePartitaIVA'] as String? ?? '')
         .setIssupportoammi(json['support'])
         .setNotify(json['idPushNotify'])
-        // .setIssupportoammi(value)
         // .setNotifyAppointm(json['notifyAppointment'] as bool? ?? false)
         .build();
   }

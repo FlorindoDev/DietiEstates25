@@ -232,3 +232,45 @@ services:
               claims_to_verify:
                 - exp
               realm: null
+
+  - name: AdminManagementService
+    id: 3d5022d0-fd14-4b92-9680-ab2d8590d9de
+    enabled: true
+    protocol: http
+    host: adminManagementService
+    port: 7003
+    retries: 5
+    connect_timeout: 60000
+    write_timeout: 60000
+    read_timeout: 60000
+    routes:
+      - name: AdminManagement-route
+        id: 3d5022d0-fd14-4b92-9680-ab2d8590d8de
+        protocols:
+          - http
+          - https
+        methods:
+          - GET
+          - POST
+        paths:
+          - /ManagementAdmin
+        strip_path: false
+        plugins:
+          - name: jwt
+            protocols:
+              - http
+              - https
+            config:
+              run_on_preflight: true
+              anonymous: null
+              secret_is_base64: true
+              header_names:
+                - authorization
+              cookie_names: []
+              uri_param_names:
+                - jwt
+              key_claim_name: kid
+              maximum_expiration: 0
+              claims_to_verify:
+                - exp
+              realm: null

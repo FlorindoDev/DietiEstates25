@@ -7,17 +7,19 @@ import 'package:dietiestate25/Model/Utente/Utente.dart';
 
 class Connection {
   // static final Uri url = Uri.parse('http://localhost:8000/'); // KONG URL
-  static final String baseUrl = 'http://127.0.0.1:8000'; // Per Mimmo
-  //static final String baseUrl = 'http://10.0.2.2:8000';
+  // static final String baseUrl = 'http://127.0.0.1:8000'; // Per Windows
+  static final String baseUrl = 'http://10.0.2.2:8000'; // Per Andorid
 
   static final Map<Type, String> getAccountProfileUrl = {
     Acquirente: '/ManagementAccount/getAccountAcquirente',
-    AgenteImmobiliare: '/ManagementAccount/getAccountAgent'
+    AgenteImmobiliare: '/ManagementAccount/getAccountAgent',
+    Amministratore: '/ManagementAccount/getAccountAdmin'
   };
 
   static final Map<Type, String> updateAccountProfileUrl = {
     Acquirente: '/ManagementAccount/applyChangeAcquirente',
-    AgenteImmobiliare: '/ManagementAccount/applyChangeAgent'
+    AgenteImmobiliare: '/ManagementAccount/applyChangeAgent',
+    Amministratore: '/ManagementAccount/applyChangeAdmin'
   };
 
   static String? jwt;
