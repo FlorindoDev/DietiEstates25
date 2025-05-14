@@ -20,6 +20,7 @@ class ProfileController {
   // [OK] la password non viene criptata prima di fare l'update nel DAO
   // [OK] eliminare loggedUserType e usare loggedUser.runtimeType
   // infinite loading
+  // at restart setExpiered false-
 
   ProfileController._(); // Blocca l'istanziazione
 

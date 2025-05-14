@@ -9,6 +9,7 @@ import org.exc.DataBaseException.ErrorCreateStatment;
 import org.exc.DataBaseException.ErrorExecutingQuery;
 import org.exc.DataBaseException.UserNotExists;
 import org.exc.DietiEstateException;
+import org.md.Agency.Agency;
 import org.md.Utente.Admin;
 
 import DBLib.Postgres.CommunicationWithPostgre;
@@ -45,11 +46,13 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
             throw new ErrorExecutingQuery();
         }
 
+        Agency agency = new Agency.Builder<>(connection.extractString("partitaiva")).build();
         admin = new Admin.Builder(connection.extractInt(ID_DB_FIELD), connection.extractString("email"))
                 .setName(connection.extractString("nome"))
                 .setCognome(connection.extractString("cognome"))
                 .setPassword(connection.extractString("password"))
                 .setIsSupport(connection.extractBoolean("IsSupportoAmministratore"))
+                .setAgency(agency)
                 .build();
 
         return admin;
