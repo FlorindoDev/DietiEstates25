@@ -77,13 +77,13 @@ class Connection {
         body: jsonEncode(body),
       );
       
-      // Controllo se la richiesta ha avuto successo (200-299)
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        return response;
-      } else {
-        logger.e("Errore HTTP: ${response.statusCode} - ${response.body}");
-        return null;
-      }
+      if (response.statusCode < 200 && response.statusCode >= 300) {
+        logger.e("Status Code HTTP: ${response.statusCode}\nBody: ${response.body}");
+        throw HttpException(response.statusCode, response.body);
+      } 
+      
+      return response;
+      
     } catch (e) {
       logger.e("Errore durante la richiesta: $e");
       return null;
