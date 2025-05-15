@@ -82,7 +82,7 @@ public class ManagementAdmin implements ManagmentAdminService {
             adminDAO.isUserPresent(admin);
 
             adminDAO.downgradeSupport(admin);
-            return "{\"code\": 0, \"message\": \"success of action admin upgraded\"}";
+            return "{\"code\": 0, \"message\": \"success of action admin downgrade\"}";
         }catch (DietiEstateException e){
             return e.getMessage();
         }

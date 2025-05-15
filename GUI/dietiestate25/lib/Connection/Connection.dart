@@ -7,8 +7,8 @@ import 'package:dietiestate25/Model/Utente/Utente.dart';
 
 class Connection {
   // static final Uri url = Uri.parse('http://localhost:8000/'); // KONG URL
-  // static final String baseUrl = 'http://127.0.0.1:8000'; // Per Windows
-  static final String baseUrl = 'http://10.0.2.2:8000'; // Per Andorid
+  static final String baseUrl = 'http://127.0.0.1:8000'; // Per Windows
+  // static final String baseUrl = 'http://10.0.2.2:8000'; // Per Andorid
 
   static final Map<Type, String> getAccountProfileUrl = {
     Acquirente: '/ManagementAccount/getAccountAcquirente',
@@ -65,7 +65,7 @@ class Connection {
         },
         body: jsonEncode(body),
       );
-
+      
       // Controllo se la richiesta ha avuto successo (200-299)
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return response;
@@ -87,6 +87,7 @@ class Connection {
         fullUrl += path.startsWith('/') ? path : '/$path';
       }
       logger.d("GET REQUEST: ${fullUrl}");
+      logger.d('Il JWT e $jwt');
       // Fai la richiesta HTTP con il JWT nell'header
       final response = await http.get(
         Uri.parse(fullUrl),

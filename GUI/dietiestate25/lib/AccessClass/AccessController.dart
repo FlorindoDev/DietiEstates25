@@ -80,7 +80,7 @@ class AccessController {
     return false;
   }
 
-  static void screenShooser(risultato, Utente utente, context) {
+  static Future<void> screenShooser(risultato, Utente utente, context) async {
     final jwtPlayload = payload(risultato['message'].split('.')[1]);
     String email = jwtPlayload["sub"];
     
@@ -90,18 +90,18 @@ class AccessController {
     logger.d("Email: $email\nTipo di Utente Loggato è ${jwtPlayload["kid"]}");
 
     if (jwtPlayload["kid"] == "acquirente") {
-      ProfileController.getProfile(email, Acquirente);
+      await ProfileController.getProfile(email, Acquirente);
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.homeWindow);
 
     } else if (jwtPlayload["kid"] == "agent") {
 
-      ProfileController.getProfile(email, AgenteImmobiliare);
+      await ProfileController.getProfile(email, AgenteImmobiliare);
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.agentHomeWindow);
     } else if (jwtPlayload["kid"] == "admin") {
       
-      ProfileController.getProfile(email, Amministratore);
+      await ProfileController.getProfile(email, Amministratore);
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.adminHomeWindow);
 
@@ -125,6 +125,7 @@ class AccessController {
   }
 
   static Future<void> scriviJWTInFile(jwt) async {
+    Connection.jwt = jwt;
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/dietiEstate25.json');
     if ((await file.exists())) {
@@ -196,17 +197,17 @@ class AccessController {
 
         if (payloadMap["kid"] == "acquirente") {
 
-          ProfileController.getProfile(email, Acquirente);
+          await ProfileController.getProfile(email, Acquirente);
           return "HomeWindow";
 
         } else if (payloadMap["kid"] == "agent") {
 
-          ProfileController.getProfile(email, AgenteImmobiliare);
+          await ProfileController.getProfile(email, AgenteImmobiliare);
           return "AgentHomeWindow";
 
         } else if (payloadMap["kid"] == "admin") {
 
-          ProfileController.getProfile(email, Amministratore);
+          await ProfileController.getProfile(email, Amministratore);
           return "AdminHomeWindow";
         }
 
