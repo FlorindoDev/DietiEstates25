@@ -89,18 +89,21 @@ class AccessController {
 
     logger.d("Email: $email\nTipo di Utente Loggato è ${jwtPlayload["kid"]}");
 
+    ProfileController.resetCache(); // don't touch
+
     if (jwtPlayload["kid"] == "acquirente") {
+      ProfileController.resetCache(); // don't touch
       await ProfileController.getProfile(email, Acquirente);
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.homeWindow);
 
     } else if (jwtPlayload["kid"] == "agent") {
-
+      ProfileController.resetCache(); // don't touch
       await ProfileController.getProfile(email, AgenteImmobiliare);
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.agentHomeWindow);
     } else if (jwtPlayload["kid"] == "admin") {
-      
+      ProfileController.resetCache(); // don't touch
       await ProfileController.getProfile(email, Amministratore);
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.adminHomeWindow);
@@ -195,6 +198,7 @@ class AccessController {
 
         logger.d("Email: $email\nTipo di Utente Loggato è ${payloadMap["kid"]}");
 
+        ProfileController.resetCache();
         if (payloadMap["kid"] == "acquirente") {
 
           await ProfileController.getProfile(email, Acquirente);
@@ -244,15 +248,15 @@ class AccessController {
       final body = jsonDecode(response.body);
       print(response.body);
       if (body['code'] == 0) {
-        MyApp.mostraPopUpInformativo(
+        await MyApp.mostraPopUpInformativo(
             context, 'Google SignUp eseguito con Successo!', body['message']);
         // salva il JWT e proced
       } else {
-        MyApp.mostraPopUpWarining(
+        await MyApp.mostraPopUpWarining(
             context, 'Errore Google SignUp', body['message']);
       }
     } catch (error) {
-      MyApp.mostraPopUpWarining(
+      await MyApp.mostraPopUpWarining(
           context, 'Errore Google SignUp', error.toString());
     }
   }
@@ -277,11 +281,11 @@ class AccessController {
         Utente utente = Utente.builder.build();
         screenShooser(body, utente, context);
       } else {
-        MyApp.mostraPopUpWarining(
+        await MyApp.mostraPopUpWarining(
             context, 'Errore Google Login', body['message']);
       }
     } catch (error) {
-      MyApp.mostraPopUpWarining(
+      await MyApp.mostraPopUpWarining(
           context, 'Errore Google Login', error.toString());
     }
   }

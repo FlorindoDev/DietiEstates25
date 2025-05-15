@@ -31,9 +31,6 @@ Uint8List base64ToBytes(String b64) => base64Decode(b64);
 
 class _ProfileAgentWindowState extends State<ProfileAgentWindow> {
   bool _notificationsEnabled = true; // switch principale
-  // bool? _emailNotif;
-  // bool? _pushNotif;
-  // bool? _smsNotif;
 
   LoadState _loadState = LoadState.loading;
   @override
@@ -182,13 +179,16 @@ class _ProfileAgentWindowState extends State<ProfileAgentWindow> {
                         icon: Icons.edit,
                         iconColor: Colors.blue,
                         text: 'Modifica Account',
-                        onTap: () {
-                          Navigator.push(
+                        onTap: () async {
+                          final didUpdate = await Navigator.push<bool>(
                             context,
                             MaterialPageRoute(
                               builder: (_) => EditProfileAgentPage(),
                             ),
                           );
+                          if (didUpdate == true) { // se true, ricarico il profilo
+                            _refresh();
+                          }
                         },
                       ),
                       Divider(),
@@ -211,18 +211,24 @@ class _ProfileAgentWindowState extends State<ProfileAgentWindow> {
                                 _buildSubSwitch(
                                   label: 'Notifiche Appuntamenti',
                                   value: loggedUser.notifyAppointment,
-                                  onChanged: (v) => setState(
-                                      () => loggedUser.notifyAppointment = v),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 72.0, right: 16.0),
-                                  child: ListTile(
-                                    contentPadding: EdgeInsets.zero,
-                                    title: Text("Alias Notifiche Appuntamenti"),
-                                    // trailing: Switch(value: loggedUser.notify_appointment, onChanged: onChanged),
-                                    // onTap: () => onChanged(!value),
-                                  ),
+                                  onChanged: // (v) => setState(() => loggedUser.notifyAppointment = v),
+                                  (bool newValue) async {
+                                      final oldValue = loggedUser.notifyAppointment;
+                                      // 1) aggiorno subito la UI
+                                      setState(() => loggedUser.notifyAppointment = newValue);
+
+                                      // 2) persisto su server
+                                      final success = await ProfileController.updateProfile(loggedUser);
+
+                                      if (!success) {
+                                        // 3a) mostro un messaggio di errore
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text('Impossibile aggiornare le notifiche'))
+                                        );
+                                        // 3b) ripristino lo stato precedente
+                                        setState(() => loggedUser.notifyAppointment = oldValue);
+                                      }
+                                    },
                                 ),
                               ]
                             : [],
