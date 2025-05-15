@@ -1,18 +1,19 @@
 package org.md.Utente;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.md.Agency.Agency;
 
 public class Agent extends Utente{
 
     private String biografia = "";
-    private String profilePic = "";
+    private String immagineprofilo = "";
     private Agency agency;
     public Agent() {}
 
     protected Agent(Builder builder) {
         super(builder);
         this.biografia = builder.biografia;
-        this.profilePic = builder.profilePic;
+        this.immagineprofilo = builder.immagineprofilo;
         this.agency = builder.agency;
     }
 
@@ -20,16 +21,18 @@ public class Agent extends Utente{
         return biografia;
     }
 
+    @JsonProperty("immagineprofilo")
     public String getProfilePic() {
-        return profilePic;
+        return immagineprofilo;
     }
 
     public void setBiografia(String biografia) {
         this.biografia = biografia;
     }
 
+    @JsonProperty("immagineprofilo")
     public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
+        this.immagineprofilo = profilePic;
     }
 
     public Agency getAgency() {
@@ -42,7 +45,7 @@ public class Agent extends Utente{
 
     public static class Builder extends Utente.Builder<Agent.Builder>{
         private String biografia;
-        private String profilePic;
+        private String immagineprofilo;
 
         private Agency agency;
 
@@ -55,8 +58,8 @@ public class Agent extends Utente{
             return this;
         }
 
-        public Builder setProfilePic(String profilePic){
-            this.profilePic = profilePic;
+        public Builder setProfilePic(String immagineprofilo){
+            this.immagineprofilo = immagineprofilo;
             return this;
         }
 

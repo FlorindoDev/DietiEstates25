@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:dietiestate25/main.dart';
 import 'package:dietiestate25/Connection/Connection.dart';
 import 'package:path_provider/path_provider.dart';
@@ -13,14 +11,15 @@ import 'package:dietiestate25/Logger/logger.dart';
 final logger = MyLogger.getIstance();
 
 class ProfileController {
-  static bool cached = false;
-  static bool cacheExpired = true;
+  static bool _cached = false;
+  static bool _cacheExpired = true;
   static String? email;
 
   // [OK] la password non viene criptata prima di fare l'update nel DAO
   // [OK] eliminare loggedUserType e usare loggedUser.runtimeType
   // infinite loading
-  // at restart setExpiered false-
+  // Mod biografia
+  // mod Img
 
   ProfileController._(); // Blocca l'istanziazione
 
@@ -49,13 +48,18 @@ class ProfileController {
     }
   }
 
+  static void resetCache(){
+    _cached = false;
+    _cacheExpired = true;
+  }
+
   static Future<bool> getProfile(String emailIn, [Type? userType]) async {
-    logger.d("[getProfile]: cached: $cached - expired: $cacheExpired");
-    if (!cached || cacheExpired) {
+    logger.d("[getProfile]: cached: $_cached - expired: $_cacheExpired");
+    if (!_cached || _cacheExpired) {
       email = emailIn;
       logger.d("[getProfile]: executing");
 
-      final Type? typeToUse = loggedUser?.runtimeType ?? userType;
+      final Type? typeToUse = userType ?? loggedUser?.runtimeType;
 
       if (typeToUse == null) {
         logger.e(
@@ -90,8 +94,8 @@ class ProfileController {
       logger.i(response.body);
       logger.i(loggedUser.toJson());
 
-      cached = true;
-      cacheExpired = false;
+      _cached = true;
+      _cacheExpired = false;
     } else {
       logger.i("No need fetch, cached data are fetched");
     }
@@ -127,8 +131,8 @@ class ProfileController {
     logger.i(response.body);
     logger.i(loggedUser.toJson());
 
-    cached = true;
-    cacheExpired = false;
+    _cached = true;
+    _cacheExpired = false;
 
     return true;
   }
@@ -143,7 +147,14 @@ class ProfileController {
 
     if (response == null) return false;
 
-    cacheExpired = true;
+    Map<String, dynamic> jsonBody = jsonDecode(response.body) as Map<String, dynamic>;
+
+    if (jsonBody.containsKey('code') && jsonBody["code"] != 0) {
+      logger.e(jsonBody["message"]);
+      return false;
+    }
+
+    _cacheExpired = true;
 
     return true;
   }

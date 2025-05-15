@@ -19,6 +19,7 @@ dependencies:
   google_sign_in: ^6.0.0
   logger: ^2.0.2
   lucide_icons: ^0.257.0
+  image_picker: ^0.8.6
 
 
 dev_dependencies:

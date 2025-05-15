@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
 import 'package:dietiestate25/Validation/Validate.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:dietiestate25/Model/Utente/Utente.dart';
 import 'package:dietiestate25/Validation/Validetor.dart';
@@ -10,6 +14,8 @@ import 'package:dietiestate25/Logger/logger.dart';
 
 final logger = MyLogger.getIstance();
 
+Uint8List base64ToBytes(String b64) => base64Decode(b64);
+
 class EditProfileAgentPage extends StatefulWidget {
   @override
   _EditProfileAgentPageState createState() => _EditProfileAgentPageState();
@@ -17,6 +23,8 @@ class EditProfileAgentPage extends StatefulWidget {
 
 class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
   final _formKey = GlobalKey<FormState>();
+
+  final ImagePicker _picker = ImagePicker();
 
   late TextEditingController _emailController;
   String? _emailError;
@@ -45,8 +53,21 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
     _partitaIvaController = TextEditingController(text: copyAgent.partitaiva);
   }
 
+  Future<void> _pickImage() async {
+    final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
+    if (file == null) return;
+    final bytes = await file.readAsBytes();
+    final newBase64 = base64Encode(bytes);
+
+    setState(() {
+      // Aggiorno direttamente la stringa base64
+      copyAgent.immagineprofile = newBase64;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    Uint8List imgBytes = base64Decode(loggedUser.immagineprofile);
     return Scaffold(
       appBar: AppBar(
         title: Text('Modifica Generalità'),
@@ -57,6 +78,24 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
           key: _formKey,
           child: ListView(
             children: [
+
+//
+
+              GestureDetector(
+                onTap: _pickImage,
+                child: CircleAvatar(
+                  radius: 48,
+                  backgroundImage: MemoryImage(imgBytes),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: Icon(Icons.camera_alt, color: Colors.white),
+                  ),
+                ),
+              ),
+              SizedBox(height: 24),
+
+//
+
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -119,6 +158,7 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
         setState(() {
           _emailError = e.toString();
         });
+        setState(() => _isLoading = false);
         return;
       }
 
@@ -130,6 +170,7 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
         setState(() {
           _nameError = e.toString();
         });
+        setState(() => _isLoading = false);
         return;
       }
 
@@ -141,6 +182,7 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
         setState(() {
           _surnameError = e.toString();
         });
+        setState(() => _isLoading = false);
         return;
       }
 
@@ -152,6 +194,7 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
         setState(() {
           _partitaIVAError = e.toString();
         });
+        setState(() => _isLoading = false);
         return;
       }
 
@@ -168,14 +211,13 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
 
       if (exitState) {
         await MyApp.mostraPopUpSuccess(context, "Dati aggiornati con successo", null);
-
+        loggedUser = copyAgent;
+        setState(() => _isLoading = false);
+        Navigator.pop(context, true);
       } else {
         await MyApp.mostraPopUpWarining(context, "Dati non aggiornati", "Non è stto possibile aggiornare i dati del profilo");
+        Navigator.pop(context, false);
       }
-
-      Navigator.pop(context);
-
-      setState(() => _isLoading = false);
     }
   }
 }

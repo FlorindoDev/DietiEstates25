@@ -21,7 +21,7 @@ class AgenteImmobiliare extends Utente {
         .setName(json['nome'] as String? ?? '')
         .setEmail(json['email'] as String? ?? '')
         .setCognome(json['cognome'] as String? ?? '')
-        .setImmagineprofile(json['profilePic'] as String? ?? '')
+        .setImmagineprofile(json['immagineprofilo'] as String? ?? '')
         .setPassword(json['password'] as String? ?? '')
         .setBiografia(json['biografia'] as String? ?? '')
         .setPartitaiva(json['agency']?['codicePartitaIVA'] as String? ?? '')

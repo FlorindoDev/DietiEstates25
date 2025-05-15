@@ -40,8 +40,6 @@ public class ManagementAccount implements ManagementAccountService {
         acquirenteDAO = new AcquirentePostgreDAO();
 
         try {
-//            acquirenteDAO.isUserPresent(utente);
-
             validateData(utente);
 
             acquirenteDAO.updateUser(utente);
@@ -59,8 +57,6 @@ public class ManagementAccount implements ManagementAccountService {
         agentDAO = new AgentPostgreDAO();
 
         try {
-            agentDAO.isUserPresent(utente);
-
             validateData(utente);
 
             agentDAO.updateUser(utente);
@@ -78,8 +74,6 @@ public class ManagementAccount implements ManagementAccountService {
         adminDAO = new AdminPostgreDAO();
 
         try {
-            adminDAO.isUserPresent(utente);
-
             validateData(utente);
 
             adminDAO.updateUser(utente);

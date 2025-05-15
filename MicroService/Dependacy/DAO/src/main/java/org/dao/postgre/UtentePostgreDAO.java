@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.dao.Interfacce.UtenteDAO;
@@ -164,53 +165,51 @@ public class UtentePostgreDAO implements UtenteDAO {
 
 
     public void updateUser(Utente changes, String tabella, String idFiled) throws DietiEstateException {
-
-        // mappa JSON key → SQL column name
-//        private static final Map<String, String> JSON_TO_COLUMN = Map.ofEntries(
-//                Map.entry("nome",              "nome"),
-//                Map.entry("cognome",           "cognome"),
-//                Map.entry("email",             "email"),
-//                Map.entry("password",          "password"),
-//                Map.entry("notifyAppointment", "notify_appointment"),
-//                Map.entry("idPushNotify",      "id_push_notify"),
-//                Map.entry("biografia",         "biografia"),
-//                Map.entry("profilePic",        "immagineprofilo"),
-//                // se hai altri campi…
-//                // Map.entry("xyzJson",       "xyz_col")
-//        );
+        // Acquirente OK
+        // Agent OK
+        // Admin
 
         final String ID_USER_COLUMN = "idUser";
         String keycrypt = connection.getKeyCrypt();
 
+        Map<String, String> alias = Map.of(
+                "notifyAppointment", "notify_appointment",
+                "notifyNewEstate",   "notify_new_estate",
+                "changePriceNotify", "change_price_notify"
+        );
+
         JSONObject jsonObject = new JSONObject(changes.TranslateToJson());
         if (!jsonObject.isEmpty()) { // per evitare di fare update a vuoto
-
+            logger.info("JSON: " + jsonObject);
             StringBuilder query = new StringBuilder("UPDATE "+tabella+" SET ");
             List<Object> parameters = new ArrayList<>();
+
             for (String key : jsonObject.keySet()) {
                 Object value = jsonObject.get(key);
 
                 // Salta tutte le mappe/oggetti JSON annidati
-                if (value instanceof JSONObject || value instanceof JSONArray) {
-                    continue;
-                }
+                if (value instanceof JSONObject || value instanceof JSONArray) continue;
 
-                if (!ID_USER_COLUMN.equals(key) && !"null".equals(value.toString()) && !PASSWORD_COLUMN.equals(key)) {
-                    query.append(key).append(" = ?, ");
-                    parameters.add(value);
-                }
+                if (value == null || "null".equals(value.toString())) continue;
+
+                if (ID_USER_COLUMN.equals(key)) continue;
 
                 if (PASSWORD_COLUMN.equals(key)){
                     query.append(key).append(" = crypt( ? , '").append(keycrypt).append("'), ");
                     parameters.add(value);
+                    continue;
                 }
+
+                String column = alias.getOrDefault(key, key);
+                query.append(column).append(" = ?, ");
+                parameters.add(value);
 
             }
 
             if (jsonObject.has("agency")) {
                 JSONObject ag = jsonObject.getJSONObject("agency");
-                if (ag.has("codicePartitaIVA")) {
-                    query.append("codicePartitaIVA = ?, ");
+                if (ag.has("codicePartitaIVA") && ag.getString("codicePartitaIVA") != null) {
+                    query.append("partitaiva = ?, ");
                     parameters.add(ag.getString("codicePartitaIVA"));
                 }
             }
