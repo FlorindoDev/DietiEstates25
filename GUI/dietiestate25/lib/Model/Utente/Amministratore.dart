@@ -33,8 +33,11 @@ class Amministratore extends Utente {
     return {
       ...super.toJson(),
       // 'idamministrator': idamministrator,
-      'issupportoammi': issupportoammi,
-      'partitaiva': partitaiva,
+      'support': issupportoammi,
+      'agency': {
+        'codicePartitaIVA': partitaiva,
+      },
+    
     };
   }
 

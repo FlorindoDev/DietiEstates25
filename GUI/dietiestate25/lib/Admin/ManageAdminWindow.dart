@@ -23,6 +23,12 @@ class _ManageAdminWindowState extends State<ManageAdminWindow> {
 
   bool isScrolled = false;
 
+  void reload() {
+    setState(() {
+      amministratori = AdminHomeController.getAmministratori(context, "");
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -114,14 +120,16 @@ class _ManageAdminWindowState extends State<ManageAdminWindow> {
                               child: const Text('Elimina'),
                             ),
                             MenuItemButton(
-                              onPressed: (admin.issupportoammi == true) ? () { 
-                                // AdminHomeController.promoteAdmin(context, admin);
+                              onPressed: (admin.issupportoammi == true) ? () async { 
+                                await AdminHomeController.promoteAdmin(context, admin, "");
+                                reload();
                               } : null,
                               child: const Text('Promuovi'),
                             ),
                             MenuItemButton(
-                              onPressed: (admin.issupportoammi == false) ? () { 
-                                // AdminHomeController.promoteAdmin(context, admin);
+                              onPressed: (admin.issupportoammi == false) ? () async { 
+                                await AdminHomeController.unPromoteAdmin(context, admin, "");
+                                reload();
                               } : null,
                               child: const Text('Retrocedi'),
                             ),

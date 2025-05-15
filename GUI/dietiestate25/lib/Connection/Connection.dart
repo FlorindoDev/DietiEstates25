@@ -65,7 +65,7 @@ class Connection {
         },
         body: jsonEncode(body),
       );
-
+      
       // Controllo se la richiesta ha avuto successo (200-299)
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return response;
