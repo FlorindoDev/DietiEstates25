@@ -11,7 +11,7 @@ public interface ManagementAdminAPI {
 
     public String addAdmin(Admin admin);
 
-    public String removeAdmin(Admin admin);
+    public Response removeAdmin(Admin admin);
 
     public String upgradeSupportAdmin(Admin admin);
 

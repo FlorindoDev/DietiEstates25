@@ -116,7 +116,10 @@ class _ManageAdminWindowState extends State<ManageAdminWindow> {
                         SubmenuButton(
                           menuChildren: [
                             MenuItemButton(
-                              onPressed: () { },
+                              onPressed: () async {
+                                await AdminHomeController.removeAdmin(context, admin, "");
+                                reload();
+                               },
                               child: const Text('Elimina'),
                             ),
                             MenuItemButton(

@@ -61,8 +61,11 @@ class AdminHomeController {
       // if (response != null) {
         ris = json.decode(utf8.decode(response.bodyBytes));
         if (ris['code'] == 0) {
-          for (int i = 0; i < ris['admins'].length; i++) {
-            amministratori.add(Amministratore.fromJson(ris['admins'][i]));
+          for (int i = 0; i < ris['admins'].length; i++) {     
+            if(ris['admins'][i]['email'] != loggedUser.email){
+              amministratori.add(Amministratore.fromJson(ris['admins'][i]));
+            }
+            
           }
         } else {
           MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
@@ -180,6 +183,62 @@ class AdminHomeController {
       MyApp.mostraPopUpWarining(context, "Errore", e.toString());
     }
 
+
+  }
+
+  static removeAdmin(BuildContext context, Amministratore admin, String s) async {
+    http.Response response;
+    print("\n\n\n\n");
+    print(admin.toJson());
+    Uri uri = Uri.parse(urlAdmin +
+        'removeAdmin?email=${admin.email}');
+
+    
+    try {
+      // response = await Connection.makeGetRequest(urlAdmin +
+      //     'loadAdmin?codicePartitaIVA=' +
+      //     (loggedUser.partitaiva ?? "0") +
+      //     quary);
+
+      // logger.e(response?.statusCode);
+
+      print('\n\n\n\n');
+      print(uri);
+      print('\n\n\n\n');
+      response = await http.delete(
+        uri, // URL valido
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${Connection.jwt}",
+        },
+        
+        
+      );
+
+      print('\n\n\n\n');
+      print(response.body);
+    
+      if (response.statusCode == 200) {
+        // La richiesta è andata a buon fine
+        var responseData = json.decode(utf8.decode(response.bodyBytes));
+        if (responseData['code'] == 0) {
+          MyApp.mostraPopUpSuccess(context, "Successo", responseData['message']);
+         
+        } else {
+          MyApp.mostraPopUpWarining(context, "Errore", responseData['message']);
+        }
+      } else {
+        // La richiesta non è andata a buon fine
+        MyApp.mostraPopUpWarining(context, "Errore", "Errore di rete");
+      }
+    } catch (e) {
+      MyApp.mostraPopUpWarining(context, "Errore", e.toString());
+    }
+
+
+
+
+  
 
   }
 }
