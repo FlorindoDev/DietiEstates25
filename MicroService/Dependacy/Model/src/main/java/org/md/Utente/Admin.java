@@ -1,9 +1,15 @@
 package org.md.Utente;
 
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.QueryParam;
 import org.md.Agency.Agency;
 
 public class Admin extends Utente{
+
+    @QueryParam("isSupport")
     private Boolean isSupport;
+
+    @QueryParam("agency")
     private Agency agency;
 
     public Admin() {}

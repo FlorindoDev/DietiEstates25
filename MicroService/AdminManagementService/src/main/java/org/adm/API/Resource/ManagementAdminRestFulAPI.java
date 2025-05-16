@@ -26,12 +26,11 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
         return result;
     }
 
-    @POST
+    @DELETE
     @Path("removeAdmin")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String removeAdmin(Admin admin) {
+    public String removeAdmin(@BeanParam Admin admin) {
         String result = managementAdmin.removeAdmin(admin);
         managementAdmin.close();
         return result;
