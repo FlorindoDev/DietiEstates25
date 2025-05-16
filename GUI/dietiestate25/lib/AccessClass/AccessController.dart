@@ -1,11 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:dietiestate25/AgentHome/AgentHomeController.dart';
-import 'package:dietiestate25/Home/HomeController.dart';
-import 'package:dietiestate25/Home/HomeWindow.dart';
 import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
-import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -200,17 +196,17 @@ class AccessController {
 
         ProfileController.resetCache();
         if (payloadMap["kid"] == "acquirente") {
-
+          ProfileController.resetCache(); // don't touch
           await ProfileController.getProfile(email, Acquirente);
           return "HomeWindow";
 
         } else if (payloadMap["kid"] == "agent") {
-
+          ProfileController.resetCache(); // don't touch
           await ProfileController.getProfile(email, AgenteImmobiliare);
           return "AgentHomeWindow";
 
         } else if (payloadMap["kid"] == "admin") {
-
+          ProfileController.resetCache(); // don't touch
           await ProfileController.getProfile(email, Amministratore);
           return "AdminHomeWindow";
         }

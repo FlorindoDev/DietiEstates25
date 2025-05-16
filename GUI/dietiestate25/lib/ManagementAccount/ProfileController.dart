@@ -139,8 +139,9 @@ class ProfileController {
 
   static Future<bool> updateProfile(Utente user) async {
     final Map<String, dynamic> userMap = user.toJson();
-    userMap.remove('sensitivity');
-    logger.i("Update Profile ${userMap}");
+    // userMap.remove('sensitivity');
+    userMap.remove('password');
+    logger.i("${loggedUser.runtimeType} Update Profile ${userMap}");
 
     http.Response? response = await Connection.makePostRequest(
         userMap, Connection.updateAccountProfileUrl[loggedUser.runtimeType]);

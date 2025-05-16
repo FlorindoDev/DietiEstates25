@@ -39,3 +39,13 @@ Va creato il file se non esiste, altrimenti va aggiunto il tag `<string>` dentro
 </resources>
 
 ```
+
+# Utenti test
+
+Agent
+filix820zec@gmail.com
+ciaociao
+
+Acqirente
+flors@gmail.com
+123456789

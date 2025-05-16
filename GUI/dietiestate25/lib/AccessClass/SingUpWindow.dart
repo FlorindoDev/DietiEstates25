@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:dietiestate25/AccessClass/AccessController.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
 
 class SingUpWindow extends StatefulWidget {
   const SingUpWindow({super.key, required this.appbar});
