@@ -1,6 +1,5 @@
 package org.md.Utente;
 
-import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.QueryParam;
 import org.md.Agency.Agency;
 
