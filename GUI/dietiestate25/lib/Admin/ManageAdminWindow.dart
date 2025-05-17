@@ -67,7 +67,8 @@ class _ManageAdminWindowState extends State<ManageAdminWindow> {
           borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
         ),
         padding: const EdgeInsets.only(top: 20,left: 20, right: 20),
-        child:FutureBuilder<List<Amministratore>>(
+        child:
+        FutureBuilder<List<Amministratore>>(
         future: amministratori,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -102,7 +103,11 @@ class _ManageAdminWindowState extends State<ManageAdminWindow> {
                     color: Colors.white, // Set your desired background color here
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: ListTile(
+                  child: 
+                  
+
+                  
+                  ListTile(
                     
                     title: Text('${admin.nome} ${admin.cognome}'),
                     subtitle: Text(admin.email),
@@ -116,7 +121,10 @@ class _ManageAdminWindowState extends State<ManageAdminWindow> {
                         SubmenuButton(
                           menuChildren: [
                             MenuItemButton(
-                              onPressed: () { },
+                              onPressed: () async {
+                                await AdminHomeController.removeAdmin(context, admin, "");
+                                reload();
+                               },
                               child: const Text('Elimina'),
                             ),
                             MenuItemButton(

@@ -1,5 +1,7 @@
 package org.md.Utente;
 
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.QueryParam;
 import org.md.Serializzazione.Translate;
 
 
@@ -13,12 +15,23 @@ public class Utente extends Translate {
 
     protected int idUser;
 
+    @QueryParam("nome")
     protected String nome;
 
+    @QueryParam("email")
+    @DefaultValue("")
     protected String email;
+
+    @QueryParam("cognome")
     protected String cognome;
+
+    @QueryParam("password")
     protected String password;
+
+    @QueryParam("notifyAppointment")
     protected Boolean notifyAppointment;
+
+    @QueryParam("idPushNotify")
     protected String idPushNotify;
 
 

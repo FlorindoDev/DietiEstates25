@@ -200,7 +200,7 @@ class _LoginWindowState extends State<LoginWindow> {
                       : null,
                   style: ButtonStyle(
                     backgroundColor: coloreBottoneAccedi,
-                    foregroundColor: MaterialStateProperty.all(Colors.white),
+                    foregroundColor: WidgetStateProperty.all(Colors.white),
                   ),
                   child: const Text('Accedi'),
                 ),

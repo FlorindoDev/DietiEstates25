@@ -3,6 +3,7 @@ import 'package:dietiestate25/Admin/ManageAdminWindow.dart';
 import 'package:dietiestate25/Admin/NotificationAdminWindow.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:dietiestate25/Admin/CreateAdminWindow.dart';
 import 'package:flutter/material.dart';
 
 
@@ -160,7 +161,18 @@ class _HomeScreen extends State<HomeScreen> {
                 icon: LucideIcons.userCog2,
                 title: 'Amministratori',
                 buttons: [
-                  _buildButton('Crea Amministratore', () {}),
+                  _buildButton('Crea Amministratore', () {
+
+
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => new CreateAdminWindow( 
+                                              
+                            appbar: MyApp.smallAppBar,
+            
+                          ),
+                        ),
+                      );}),
                   _buildButton('Gestisci Amministratori', () {
 
                       
