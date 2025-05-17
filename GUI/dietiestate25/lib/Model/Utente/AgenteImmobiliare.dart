@@ -4,14 +4,14 @@ class AgenteImmobiliare extends Utente {
   String? biografia;
   String? immagineprofile;
   String? partitaiva;
-  String? sensitivity;
+  // String? sensitivity;
   bool? notifyAppointment;
 
   AgenteImmobiliare._builder(AgenteImmobiliareBuilder builder) : super._builder(builder) {
     biografia = builder._biografia;
     immagineprofile = builder._immagineprofile;
     partitaiva = builder._partitaiva;
-    sensitivity = builder._sensitivity;
+    // sensitivity = builder._sensitivity;
     notifyAppointment = builder._notifyAppointment;
   }
 
@@ -40,7 +40,7 @@ class AgenteImmobiliare extends Utente {
       'agency': {
         'codicePartitaIVA': partitaiva,
       },
-      'sensitivity': sensitivity,
+      // 'sensitivity': sensitivity,
       'notifyAppointment': notifyAppointment,
     };
   }
@@ -50,7 +50,7 @@ class AgenteImmobiliareBuilder extends UtenteBuilder {
   String? _biografia;
   String? _immagineprofile;
   String? _partitaiva;
-  String? _sensitivity;
+  // String? _sensitivity;
   bool? _notifyAppointment;
 
 
@@ -105,10 +105,10 @@ class AgenteImmobiliareBuilder extends UtenteBuilder {
     return this;
   }
 
-  AgenteImmobiliareBuilder setSensitivity(String value) {
-    _sensitivity = value;
-    return this;
-  }
+  // AgenteImmobiliareBuilder setSensitivity(String value) {
+  //   _sensitivity = value;
+  //   return this;
+  // }
 
   AgenteImmobiliareBuilder setNotifyAppointm(bool value) {
     _notifyAppointment = value;
