@@ -1,11 +1,7 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
 import 'package:dietiestate25/Validation/Validate.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'package:dietiestate25/Model/Utente/Utente.dart';
 import 'package:dietiestate25/Validation/Validetor.dart';
@@ -14,17 +10,13 @@ import 'package:dietiestate25/Logger/logger.dart';
 
 final logger = MyLogger.getIstance();
 
-Uint8List base64ToBytes(String b64) => base64Decode(b64);
-
-class EditProfileAgentPage extends StatefulWidget {
+class EditProfilePage extends StatefulWidget {
   @override
-  _EditProfileAgentPageState createState() => _EditProfileAgentPageState();
+  _EditProfilePageState createState() => _EditProfilePageState();
 }
 
-class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
+class _EditProfilePageState extends State<EditProfilePage> {
   final _formKey = GlobalKey<FormState>();
-
-  final ImagePicker _picker = ImagePicker();
 
   late TextEditingController _emailController;
   String? _emailError;
@@ -32,10 +24,8 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
   String? _nameError;
   late TextEditingController _cognomeController;
   String? _surnameError;
-  late TextEditingController _partitaIvaController;
-  String? _partitaIVAError;
 
-  late AgenteImmobiliare copyAgent;
+  late Acquirente copyAgent;
 
   final Validator validator = Validate();
 
@@ -45,29 +35,17 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
   void initState() {
     super.initState();
 
-    copyAgent = AgenteImmobiliare.fromJson(loggedUser.toJson());
+    copyAgent = Acquirente.fromJson(loggedUser.toJson());
 
     _emailController = TextEditingController(text: copyAgent.email);
     _nomeController = TextEditingController(text: copyAgent.nome);
     _cognomeController = TextEditingController(text: copyAgent.cognome);
-    _partitaIvaController = TextEditingController(text: copyAgent.partitaiva);
-  }
 
-  Future<void> _pickImage() async {
-    final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
-    if (file == null) return;
-    final bytes = await file.readAsBytes();
-    final newBase64 = base64Encode(bytes);
-
-    setState(() {
-      // Aggiorno direttamente la stringa base64
-      copyAgent.immagineprofile = newBase64;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    Uint8List imgBytes = base64Decode(loggedUser.immagineprofile);
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Modifica Generalità'),
@@ -78,23 +56,7 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
           key: _formKey,
           child: ListView(
             children: [
-
-//
-
-              GestureDetector(
-                onTap: _pickImage,
-                child: CircleAvatar(
-                  radius: 48,
-                  backgroundImage: MemoryImage(imgBytes),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: Icon(Icons.camera_alt, color: Colors.white),
-                  ),
-                ),
-              ),
-              SizedBox(height: 24),
-
-//
+              const SizedBox(height: 24),
 
               TextFormField(
                 controller: _emailController,
@@ -121,16 +83,6 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
                 ),
                 validator: (value) => value == null || value.isEmpty
                     ? 'Inserisci il cognome'
-                    : null,
-              ),
-              TextFormField(
-                controller: _partitaIvaController,
-                decoration: InputDecoration(
-                  labelText: 'Partita IVA',
-                  errorText: _partitaIVAError,
-                ),
-                validator: (value) => value == null || value.isEmpty
-                    ? 'Inserisci la partita IVA'
                     : null,
               ),
               SizedBox(height: 24),
@@ -186,22 +138,9 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
         return;
       }
 
-      try {
-        // partita iva
-        _partitaIVAError = null;
-        validator.validatePartitalVA(_partitaIvaController.text);
-      } on Exception catch (e) {
-        setState(() {
-          _partitaIVAError = e.toString();
-        });
-        setState(() => _isLoading = false);
-        return;
-      }
-
       copyAgent.email = _emailController.text;
       copyAgent.nome = _nomeController.text;
       copyAgent.cognome = _cognomeController.text;
-      copyAgent.partitaiva = _partitaIvaController.text;
 
       // await Future.delayed(Duration(seconds: 5));
 
@@ -209,10 +148,10 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
 
       logger.e(exitState);
 
+      setState(() => _isLoading = false);
       if (exitState) {
         await MyApp.mostraPopUpSuccess(context, "Dati aggiornati con successo", null);
         loggedUser = copyAgent;
-        setState(() => _isLoading = false);
         Navigator.pop(context, true);
       } else {
         await MyApp.mostraPopUpWarining(context, "Dati non aggiornati", "Non è stto possibile aggiornare i dati del profilo");

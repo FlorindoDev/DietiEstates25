@@ -19,6 +19,8 @@ class Acquirente extends Utente {
         .setCognome(json['cognome'] as String? ?? '')
         .setPassword(json['password'] as String? ?? '')
         .setNotifyAppointm(json['notifyAppointment'] as bool? ?? false)
+        .setChangePriceN(json['changePriceNotify'] as bool? ?? false)
+        .setNotifyNewEsta(json['notifyNewEstate'] as bool? ?? false)
         .build();
   }
 
@@ -28,12 +30,12 @@ class Acquirente extends Utente {
   Map<String, dynamic> toJson() {
     return {
       ...super.toJson(),
-      // 'idacquirente': idacquirente,
-      'notify_appointment': notify_appointment,
-      'notify_new_estate': notify_new_estate,
-      'change_price_notify': change_price_notify,
+      'notifyAppointment': notify_appointment,
+      'notifyNewEstate': notify_new_estate,
+      'changePriceNotify': change_price_notify,
     };
   }
+
 }
 
 class AcquirenteBuilder extends UtenteBuilder {

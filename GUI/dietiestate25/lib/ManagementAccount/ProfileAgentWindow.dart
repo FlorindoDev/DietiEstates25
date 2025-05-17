@@ -2,9 +2,8 @@ import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
-import './EditProfileAgent.dart';
-
-import 'package:dietiestate25/Model/Utente/Utente.dart';
+import 'EditProfileAgentWidow.dart';
+import 'EditPasswordWidow.dart';
 
 import 'dart:convert';
 import 'dart:typed_data';
@@ -195,8 +194,15 @@ class _ProfileAgentWindowState extends State<ProfileAgentWindow> {
                       _buildTile(
                         icon: Icons.lock_reset,
                         iconColor: Colors.amber,
-                        text: 'Ripristina Password',
-                        onTap: () {},
+                        text: 'Moddifica Password',
+                        onTap: () {
+                          Navigator.push<bool>(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => EditPasswordPage(),
+                            ),
+                          );
+                        },
                       ),
                       Divider(),
                       ExpansionTile(
