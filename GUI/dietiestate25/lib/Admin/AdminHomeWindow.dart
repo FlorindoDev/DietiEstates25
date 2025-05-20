@@ -1,6 +1,7 @@
 import 'package:dietiestate25/Admin/AdminHomeController.dart';
 import 'package:dietiestate25/Admin/ManageAdminWindow.dart';
 import 'package:dietiestate25/Admin/NotificationAdminWindow.dart';
+import 'package:dietiestate25/AgentHome/ManageAgentWindow.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:dietiestate25/Admin/CreateAdminWindow.dart';
@@ -150,7 +151,15 @@ class _HomeScreen extends State<HomeScreen> {
                   _buildButton(
                     'Gestisci Agenti', 
                     () {
-                      
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => new ManageAgentWindow( 
+                                              
+                            appbar: MyApp.smallAppBar,
+            
+                          ),
+                        ),
+                      );
                     }
                   ),
                   
@@ -172,7 +181,9 @@ class _HomeScreen extends State<HomeScreen> {
             
                           ),
                         ),
-                      );}),
+                      );
+                    }
+                  ),
                   _buildButton('Gestisci Amministratori', () {
 
                       

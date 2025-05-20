@@ -204,7 +204,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
     }
 
     @Override
-    public void removeAdmin(Agent agent) throws DietiEstateException {
+    public void removeAgent(Agent agent) throws DietiEstateException {
         String query= "DELETE FROM agenteimmobiliare WHERE email = ?";
         PreparedStatement stmt = connection.getStatment(query);
         try {

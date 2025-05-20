@@ -26,15 +26,20 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
         return result;
     }
 
-    @POST
+    @DELETE
     @Path("removeAgent")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String removeAgent(Agent agent) {
+    public Response removeAgent(@BeanParam Agent agent) {
+
+        if(agent.getEmail().equals("")){
+            return Response.ok("{\"code\":-1, \"error\": \"email parameter is required\"}").build();
+
+        }
+
         String result = managementAgent.removeAgent(agent);
         managementAgent.close();
-        return result;
+        return Response.ok(result).build();
     }
 
 

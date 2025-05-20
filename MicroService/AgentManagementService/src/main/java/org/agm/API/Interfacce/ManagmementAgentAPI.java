@@ -10,7 +10,7 @@ public interface ManagmementAgentAPI {
 
     String addAgent(Agent agent);
 
-    String removeAgent(Agent agent);
+    Response removeAgent(@BeanParam Agent agent);
 
     Response getAgents(@BeanParam Agency query);
 
