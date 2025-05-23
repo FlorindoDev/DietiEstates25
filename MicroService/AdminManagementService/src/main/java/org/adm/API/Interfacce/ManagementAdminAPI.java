@@ -15,7 +15,7 @@ public interface ManagementAdminAPI {
 
     public String upgradeSupportAdmin(Admin admin);
 
-    public String downgradeSupport(Admin admin);
+    public String downgradeSupportAdmin(Admin admin);
 
     public Response loadAdmin(@BeanParam Agency agency);
 

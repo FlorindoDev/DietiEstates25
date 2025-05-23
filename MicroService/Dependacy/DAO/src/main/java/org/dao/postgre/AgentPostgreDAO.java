@@ -92,7 +92,7 @@ public class AgentPostgreDAO extends UtentePostgreDAO implements AgentDAO {
                 .setPassword(connection.extractString("password"))
                 .setBiografia(connection.extractString("biografia"))
                 .setProfilePic(connection.extractString("ImmagineProfilo"))
-                .setIdPushNotify(connection.extractString("idPushNoitfy"))
+                .setIdPushNotify(connection.extractString("idpushnotify"))
                 .setNotifyAppointment(connection.extractBoolean("notify_appointment"))
                 .setAgency(agency)
                 .build();

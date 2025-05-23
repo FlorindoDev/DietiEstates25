@@ -54,11 +54,11 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     }
 
     @POST
-    @Path("downgradeSupport")
+    @Path("downgradeSupportAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String downgradeSupport(Admin admin) {
+    public String downgradeSupportAdmin(Admin admin) {
         String result = managementAdmin.downgradeSupport(admin);
         managementAdmin.close();
         return result;

@@ -116,7 +116,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     @Override
     public void upgradeSupportAdmin(Admin admin) throws DietiEstateException {
 
-        String query= "UPDATE amministratore SET issupportoamministratore = 'TRUE' WHERE email = ? ";
+        String query= "UPDATE amministratore SET issupportoamministratore = 'FALSE' WHERE email = ? ";
 
         PreparedStatement stmt = makeAdminQuery(admin, query);
 
@@ -139,7 +139,7 @@ public class AdminPostgreDAO extends UtentePostgreDAO implements AdminDAO {
     @Override
     public void downgradeSupport(Admin admin) throws  DietiEstateException{
 
-        String query= "UPDATE amministratore SET issupportoamministratore = 'FALSE' WHERE email = ? ";
+        String query= "UPDATE amministratore SET issupportoamministratore = 'TRUE' WHERE email = ? ";
 
         PreparedStatement stmt = makeAdminQuery(admin, query);
 

@@ -1,6 +1,7 @@
 import 'package:dietiestate25/Admin/AdminHomeController.dart';
 import 'package:dietiestate25/Admin/ManageAdminWindow.dart';
 import 'package:dietiestate25/Admin/NotificationAdminWindow.dart';
+import 'package:dietiestate25/AgentHome/CreateAgentWindow.dart';
 import 'package:dietiestate25/AgentHome/ManageAgentWindow.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -144,6 +145,15 @@ class _HomeScreen extends State<HomeScreen> {
                   _buildButton(
                     'Crea Agente', 
                     () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => new CreateAgentWindow( 
+                                              
+                            appbar: MyApp.smallAppBar,
+            
+                          ),
+                        ),
+                      );
                       
                     }
                   ),
