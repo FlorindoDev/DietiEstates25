@@ -15,17 +15,21 @@ import 'package:dietiestate25/Model/Appointment/AppointmentPending.dart' as Mode
 import 'package:dietiestate25/Model/Appointment/AppointmentReject.dart';
 
 class AgentHomeController {
-  static final String urlEstates = 'http://127.0.0.1:7004/api/';
+  static final String urlEstates = 'http://127.0.0.1:7004/api/'; // Per Windows
+  //static final String urlEstates = 'http://10.0.2.2:7004/api/'; // Per Android
+  
+  static final String urlNotify = 'http://127.0.0.1:7008/api/notifies/agent'; // Per Windows
+  // static final String urlNotify = 'http://10.0.2.2:7008/api/notifies/agent'; // Per Android 
 
-  static final String urlNotify = 'http://127.0.0.1:7008/api/notifies/agent';
-
-  static final String urlAppointment = 'http://127.0.0.1:7006/api/appointments/agent';
-
+  static final String urlAppointment = 'http://127.0.0.1:7006/api/appointments/agent'; // Per Windows
+  // static final String urlAppointment = 'http://10.0.2.2:7006/api/appointments/agent';  // Per Android 
+  
   static final String urlAppointmentSpecific = '/api/appointments';
 
-  static final String urlAppointmentUpdate = 'http://127.0.0.1:7006/api/appointments';
+  static final String urlAppointmentUpdate = 'http://127.0.0.1:7006/api/appointments'; // Per Windows
+  // static final String urlAppointmentUpdate = 'http://10.0.2.2:7006/api/appointments'; // Per Android
 
-  static final String urlAgenti = 'http://127.0.0.1:8000/ManagementAgent';
+  static final String urlAgenti = 'ManagementAgent';  // Per Windows 
 
   // static Utente utente = MyApp.user;
   static Utente utente = loggedUser;
@@ -261,38 +265,13 @@ class AgentHomeController {
     return esito;
   }
 
-  static Future<List<AgenteImmobiliare>> getAgenti(
-      dynamic context, String quary) async {
+  static Future<List<AgenteImmobiliare>> getAgenti(dynamic context, String quary) async {
 
-    
-    	
-    http.Response response;
-    print(loggedUser);
-    Uri uri = Uri.parse(urlAgenti +
-        '/getAgents?codicePartitaIVA=' +
-        (loggedUser.partitaiva ?? "0") +
-        quary);
-
-    try {
-      // response = await Connection.makeGetRequest(urlAdmin +
-      //     'loadAdmin?codicePartitaIVA=' +
-      //     (loggedUser.partitaiva ?? "0") +
-      //     quary);
-
-      // logger.e(response?.statusCode);
-
-      print('\n\n\n\n');
-      print(uri);
-      print('\n\n\n\n');
-      response = await http.get(
-        uri, // URL valido
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${Connection.jwt}",
-        },
-      );
-    } catch (e) {
+    http.Response? response = await Connection.makeGetRequest(urlAgenti +'/getAgents?codicePartitaIVA=' + (loggedUser.partitaiva ?? "0") +  quary);
+    if(response == null){
       return List<AgenteImmobiliare>.empty();
+    }else{
+
     }
 
     dynamic ris;
@@ -318,57 +297,48 @@ class AgentHomeController {
     return agenti;
   }
 
-  static removeAgent(BuildContext context, AgenteImmobiliare agente, String s) async{
+  static removeAgent(BuildContext context, AgenteImmobiliare agente, String quary) async{
 
-    http.Response response;
-    print("\n\n\n\n");
-    print(agente.toJson());
-    Uri uri = Uri.parse(urlAgenti +
-        '/removeAgent?email=${agente.email}');
+    http.Response? response = await Connection.makeDeleteRequest(urlAgenti +'/removeAgent?email=${agente.email}' + quary);
 
-
-    try {
-      // response = await Connection.makeGetRequest(urlAdmin +
-      //     'loadAdmin?codicePartitaIVA=' +
-      //     (loggedUser.partitaiva ?? "0") +
-      //     quary);
-
-      // logger.e(response?.statusCode);
-
-      print('\n\n\n\n');
-      print(uri);
-      print('\n\n\n\n');
-      response = await http.delete(
-        uri, // URL valido
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${Connection.jwt}",
-        },
-        
-        
-      );
-
-      print('\n\n\n\n');
-      print(response.body);
-    
-      if (response.statusCode == 200) {
-        // La richiesta è andata a buon fine
-        var responseData = json.decode(utf8.decode(response.bodyBytes));
-        if (responseData['code'] == 0) {
-          MyApp.mostraPopUpSuccess(context, "Successo", responseData['message']);
-         
-        } else {
-          MyApp.mostraPopUpWarining(context, "Errore", responseData['message']);
-        }
-      } else {
-        // La richiesta non è andata a buon fine
-        MyApp.mostraPopUpWarining(context, "Errore", "Errore di rete");
-      }
-    } catch (e) {
-      MyApp.mostraPopUpWarining(context, "Errore", e.toString());
+    if(response == null){
+      MyApp.mostraPopUpWarining(context, "Errore", "Qualcosa è andato storto");
+      return;
+    }else{
+      manageResponse(response, context);
+   
     }
+  }
 
+  static void manageResponse(http.Response response, BuildContext context) {
+    var responseData = json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      // La richiesta è andata a buon fine
+      
+      if (responseData['code'] == 0) {
+        MyApp.mostraPopUpSuccess(context, "Successo", responseData['message']);
+       
+      } else {
+        MyApp.mostraPopUpWarining(context, "Errore", responseData['message']);
+      }
+    } else {
+      // La richiesta non è andata a buon fine
+      MyApp.mostraPopUpWarining(context, "Errore", responseData['message']);
+    }
+  }
 
+  static void createAgent(BuildContext context, AgenteImmobiliare agent, String s) async{
+   
+    final Map<String, dynamic> userMap = agent.toJson();
+    http.Response? response = await Connection.makePostRequest(userMap, urlAgenti +'/addAgent');
+    if(response == null) {
+      MyApp.mostraPopUpWarining(context, "Errore", "Errore di rete");
+      return;
+    }else{
+      
+      manageResponse(response, context);
+    }
+    
   }
 
 }
