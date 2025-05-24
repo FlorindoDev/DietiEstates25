@@ -1,4 +1,5 @@
 import 'package:dietiestate25/ManagementAccount/ProfileWindow.dart';
+import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
 
@@ -80,7 +81,10 @@ class HomeScreen extends StatelessWidget {
               spacing: 10,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                            .pushNamed(RouteWindows.searchHomeWindow);
+                  },
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
                     Icon(
                       Icons.location_on_rounded,

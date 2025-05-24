@@ -1,4 +1,6 @@
 import 'package:dietiestate25/Admin/AdminHomeWindow.dart';
+import 'package:dietiestate25/Search/SearchCityWindow.dart';
+import 'package:dietiestate25/Search/SearchHome.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dietiestate25/main.dart';
@@ -21,6 +23,9 @@ class RouteWindows {
   static const homeWindow = '/HomeWindow';
   static const agentHomeWindow = '/AgentHomeWindow';
   static const adminHomeWindow = '/AdminHomeWindow';
+
+  static const searchCityWindow = '/SearchCityWindow';
+  static const searchHomeWindow = '/SearchHomeWindow';
 
   static Future<String> checkLogin() async {
     String isLoggedIn = await AccessController.checkLogin();
@@ -54,7 +59,7 @@ class RouteWindows {
 
         case RouteWindows.homeWindow:
           return MaterialPageRoute(
-              builder: (_) => HomeWindow(appbar: MyApp.smallAppBar));
+              builder: (_) => HomeWindow(appbar: MyApp.appBarNotBackable));
 
         case RouteWindows.agentHomeWindow:
           return MaterialPageRoute(
@@ -63,6 +68,14 @@ class RouteWindows {
         case RouteWindows.adminHomeWindow:
           return MaterialPageRoute(
               builder: (_) => AdminHomeWindow(appbar: MyApp.appBarNotBackable));
+
+        case RouteWindows.searchCityWindow:
+          return MaterialPageRoute(
+              builder: (_) => SearchCityWindow(appbar: MyApp.smallAppBar));
+
+        case RouteWindows.searchHomeWindow:
+          return MaterialPageRoute(
+              builder: (_) => SearchHomeWindow(appbar: MyApp.smallAppBar));
       }
     } else {
       logger.d("[Route Settings] not initilaized route");
