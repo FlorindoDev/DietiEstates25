@@ -6,6 +6,7 @@ import 'package:dietiestate25/AgentHome/ManageAgentWindow.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:dietiestate25/Admin/CreateAdminWindow.dart';
+import 'package:dietiestate25/ManagementAccount/ProfileAdminWindow.dart';
 import 'package:flutter/material.dart';
 
 
@@ -74,16 +75,6 @@ class _AdminHomeWindowState extends State<AdminHomeWindow> {
   }
 }
 
-class ProfileAdminWindow extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text("Profile Admin Window"),
-      ),
-    );
-  }
-}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
