@@ -9,13 +9,13 @@ import org.md.Utente.Admin;
 
 public interface ManagementAdminAPI {
 
-    public String addAdmin(Admin admin);
+    public Response addAdmin(Admin admin);
 
     public Response removeAdmin(Admin admin);
 
-    public String upgradeSupportAdmin(Admin admin);
+    public Response upgradeSupportAdmin(Admin admin);
 
-    public String downgradeSupportAdmin(Admin admin);
+    public Response downgradeSupportAdmin(Admin admin);
 
     public Response loadAdmin(@BeanParam Agency agency);
 

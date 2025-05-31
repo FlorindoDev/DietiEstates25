@@ -8,7 +8,7 @@ import org.md.Utente.Agent;
 
 public interface ManagmementAgentAPI {
 
-    String addAgent(Agent agent);
+    Response addAgent(Agent agent);
 
     Response removeAgent(@BeanParam Agent agent);
 
@@ -16,7 +16,7 @@ public interface ManagmementAgentAPI {
 
     Response getEstates(@BeanParam Agency query);
 
-    String updateEstateAgent(Estate estate);
+    Response updateEstateAgent(Estate estate);
 
 
 }

@@ -20,10 +20,10 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String addAgent(Agent agent) {
+    public Response addAgent(Agent agent) {
         String result = managementAgent.addAgent(agent);
         managementAgent.close();
-        return result;
+        return Response.ok(result).build();
     }
 
     @DELETE
@@ -79,10 +79,10 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String updateEstateAgent(Estate estate) {
+    public Response updateEstateAgent(Estate estate) {
         String result = managementAgent.updateEstateAgent(estate,estate.getAgente());
         managementAgent.close();
-        return result;
+        return Response.ok(result).build();
     }
 
 }

@@ -18,10 +18,10 @@ public class SearchRestFulAPI implements SearchAPI {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String allCity() {
+    public Response allCity() {
         String result = searchService.allCity();
         searchService.close();
-        return result;
+        return Response.ok(result).build();
     }
 
 
@@ -45,8 +45,8 @@ public class SearchRestFulAPI implements SearchAPI {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String coordinatesEstates(Estate estate) {
-        return "";
+    public Response coordinatesEstates(Estate estate) {
+        return null;
 
     }
 

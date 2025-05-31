@@ -6,11 +6,11 @@ import org.md.Geolocalizzazione.Indirizzo;
 
 public interface SearchAPI {
 
-    public String allCity();
+    public Response allCity();
 
     public Response suggestionCities(Indirizzo indirizzo );
 
-    public String coordinatesEstates(Estate estate );
+    public Response coordinatesEstates(Estate estate );
 
     public Response estatesSerachFromCity(Indirizzo indirizzo);
 
