@@ -85,6 +85,14 @@ class HomeScreen extends StatelessWidget {
                     Navigator.of(context)
                             .pushNamed(RouteWindows.searchHomeWindow);
                   },
+                  style: ButtonStyle(
+                    padding: WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 20, horizontal: 10)),
+                    backgroundColor: WidgetStateProperty.all(MyApp.rosso),
+                    foregroundColor: WidgetStateProperty.all(Colors.white),
+                    shape: WidgetStateProperty.all(
+                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+                    ),
+                  ),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
                     Icon(
                       Icons.location_on_rounded,
@@ -96,14 +104,6 @@ class HomeScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 25),
                     )
                   ]),
-                  style: ButtonStyle(
-                    padding: WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 20, horizontal: 10)),
-                    backgroundColor: WidgetStateProperty.all(MyApp.rosso),
-                    foregroundColor: WidgetStateProperty.all(Colors.white),
-                    shape: WidgetStateProperty.all(
-                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-                    ),
-                  ),
                 ),
                 Expanded(
                   child: Container(

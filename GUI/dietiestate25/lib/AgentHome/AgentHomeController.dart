@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:dietiestate25/Connection/Connection.dart';
 import 'package:dietiestate25/Model/Appointment/AppointmentNotification.dart';
 import 'package:dietiestate25/Model/Notify/AppointmentPending.dart';
 import 'package:dietiestate25/Model/Estate/Estate.dart';
+import 'package:dietiestate25/Validation/Validate.dart';
+import 'package:dietiestate25/Validation/Validetor.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart' as http;
 import 'package:dietiestate25/Model/Utente/Utente.dart';
@@ -29,7 +30,9 @@ class AgentHomeController {
   static final String urlAppointmentUpdate = 'http://127.0.0.1:7006/api/appointments'; // Per Windows
   // static final String urlAppointmentUpdate = 'http://10.0.2.2:7006/api/appointments'; // Per Android
 
-  static final String urlAgenti = 'ManagementAgent';  // Per Windows 
+  static final String urlAgenti = 'ManagementAgent';  
+
+  static Validator valida = Validate();
 
   // static Utente utente = MyApp.user;
   static Utente utente = loggedUser;
@@ -328,7 +331,17 @@ class AgentHomeController {
   }
 
   static void createAgent(BuildContext context, AgenteImmobiliare agent, String s) async{
-   
+    
+    try{
+      valida.validateEmail(agent.email);
+      valida.validatePassword(agent.password);
+      valida.validateName(agent.nome);
+      valida.validateSurname(agent.cognome);
+    }catch(e){
+      MyApp.mostraPopUpWarining(context, "Errore",e.toString());
+      return;
+    }
+
     final Map<String, dynamic> userMap = agent.toJson();
     http.Response? response = await Connection.makePostRequest(userMap, urlAgenti +'/addAgent');
     if(response == null) {

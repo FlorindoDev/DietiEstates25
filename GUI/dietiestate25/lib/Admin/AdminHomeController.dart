@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dietiestate25/Validation/Validate.dart';
+import 'package:dietiestate25/Validation/Validetor.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 // import 'package:dietiestate25/Model/loggedUser/loggedUser.dart';
@@ -10,6 +12,7 @@ import 'package:dietiestate25/Connection/Connection.dart';
 class AdminHomeController {
   //static final String urlEstates = 'http://10.0.2.2:7004/api/';
   static final String urlAdmin = 'ManagementAdmin/'; //Per Mimmo
+  static Validator valida = Validate();
 
   
   
@@ -127,7 +130,16 @@ class AdminHomeController {
   }
 
   static void createAdmin(BuildContext context, Amministratore admin, String s) async{
-   
+    try{
+      valida.validateEmail(admin.email);
+      valida.validatePassword(admin.password);
+      valida.validateName(admin.nome);
+      valida.validateSurname(admin.cognome);
+    }catch(e){
+      MyApp.mostraPopUpWarining(context, "Errore",e.toString());
+      return;
+    }
+    
     final Map<String, dynamic> userMap = admin.toJson();
     http.Response? response = await Connection.makePostRequest(userMap, urlAdmin +'addAdmin');
     if(response == null) {

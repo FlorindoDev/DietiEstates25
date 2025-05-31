@@ -17,7 +17,7 @@ class SearchController {
       return List.empty();
     }
 
-    Uri uri = Uri.parse(baseUrl + 'suggestionCities?citta=' + city + '&quartiere=' + city + '&stato=' + city+ '&via=' + city);
+    Uri uri = Uri.parse('${baseUrl}suggestionCities?citta=$city&quartiere=$city&stato=$city&via=$city');
 
     // Fai la richiesta HTTP
     http.Response response;

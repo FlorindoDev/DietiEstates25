@@ -77,7 +77,7 @@ class _AdminHomeWindowState extends State<AdminHomeWindow> {
 
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreen();
@@ -120,7 +120,7 @@ class _HomeScreen extends State<HomeScreen> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 10,
                 offset: const Offset(0, 5),
               ),
@@ -138,7 +138,7 @@ class _HomeScreen extends State<HomeScreen> {
                     () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => new CreateAgentWindow( 
+                          builder: (context) => CreateAgentWindow( 
                                               
                             appbar: MyApp.smallAppBar,
             
@@ -154,7 +154,7 @@ class _HomeScreen extends State<HomeScreen> {
                     () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => new ManageAgentWindow( 
+                          builder: (context) => ManageAgentWindow( 
                                               
                             appbar: MyApp.smallAppBar,
             
@@ -176,7 +176,7 @@ class _HomeScreen extends State<HomeScreen> {
 
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => new CreateAdminWindow( 
+                          builder: (context) => CreateAdminWindow( 
                                               
                             appbar: MyApp.smallAppBar,
             
@@ -190,7 +190,7 @@ class _HomeScreen extends State<HomeScreen> {
                       
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => new ManageAdminWindow(
+                          builder: (context) => ManageAdminWindow(
                             appbar: MyApp.smallAppBar,
             
                           ),

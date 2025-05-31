@@ -36,7 +36,7 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
                     onPressed: () async {
                       final res = await my_search_controller.SearchController.searchCity(context, city);
                       print(res.length);
-                      if (res.length == 0) {
+                      if (res.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
 
                           SnackBar(
