@@ -10,6 +10,7 @@ import org.md.Agency.Agency;
 import org.md.Estate.ClasseEnergetica.ConverterEnergeticClass;
 import org.md.Estate.ClasseEnergetica.EnergeticClass;
 import org.md.Estate.Estate;
+import org.md.Estate.EstateFilter;
 import org.md.Estate.Mode.ConverterMode;
 import org.md.Estate.Mode.Mode;
 import org.md.Estate.Status.ConverterStatus;
@@ -20,8 +21,7 @@ import org.md.Utente.Agent;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class EstatePostgreDAO implements EstateDAO {
@@ -291,54 +291,7 @@ public class EstatePostgreDAO implements EstateDAO {
 
             ArrayList<Estate> estates = new ArrayList<>();
 
-            do{
-                connection.nextRow();
-
-                Indirizzo fulIndirizzo = new Indirizzo.Builder<>(connection.extractInt("idindirizzo"))
-                        .setStato(connection.extractString("stato"))
-                        .setCitta(connection.extractString("citta"))
-                        .setVia(connection.extractString("via"))
-                        .setNumeroCivico(connection.extractString("numerocivico"))
-                        .setCap(connection.extractInt("cap"))
-                        .setQuartiere(connection.extractString("quartiere"))
-                        .build();
-
-                Estate estate = new Estate.Builder<>(connection.extractInt("idimmobile"))
-                        .setIndirizzoBuilder(fulIndirizzo)
-                        .setElevatorBuilder(connection.extractBoolean("ascensore"))
-                        .setAgenteBuilder(null)
-                        .setClasseEnergeticaBuilder(null)
-                        .setDescrizioneBuilder(connection.extractString("descrizione"))
-                        .setFloorBuilder(connection.extractInt("piano"))
-                        .setFotoBuilder(connection.extractString("foto"))
-                        .setGarageBuilder(connection.extractInt("garage"))
-                        .setModeBuilder(null)
-                        .setRoomsBuilder(connection.extractInt("stanze"))
-                        .setPriceBuilder(connection.extractInt("prezzo"))
-                        .setWcBuilder(connection.extractInt("bagni"))
-                        .setSpaceBuilder(connection.extractInt("dimensioni"))
-                        .setStatoBuilder(null)
-                        .setAgenziaBuilder(null)
-                        .build();
-
-                EnergeticClass classe = ConverterEnergeticClass.traslateFromString(connection.extractString("classeenergetica"));
-                Mode mode = ConverterMode.traslateFromString(connection.extractString("modalita"));
-                Status status = ConverterStatus.traslateFromString(connection.extractString("stato"));
-
-
-
-                Agent agent = new Agent.Builder(connection.extractInt("idagente"),"").build();
-                agent = agentDAO.getAgentFromId(agent);
-
-                estate.setAgenzia(agent.getAgency());
-                estate.setAgente(agent);
-                estate.setClasseEnergetica(classe);
-                estate.setMode(mode);
-                estate.setStato(status);
-
-
-                estates.add(estate);
-            }while(connection.hasNextRow());
+            buildEstates(estates);
 
             return estates;
         } catch (SQLException e) {
@@ -348,10 +301,228 @@ public class EstatePostgreDAO implements EstateDAO {
 
     }
 
+    private void buildEstates(List<Estate> estates) throws DietiEstateException {
+        try {
+        do{
+            connection.nextRow();
+
+            Indirizzo fulIndirizzo = new Indirizzo.Builder<>(connection.extractInt("idindirizzo"))
+                    .setStato(connection.extractString("stato"))
+                    .setCitta(connection.extractString("citta"))
+                    .setVia(connection.extractString("via"))
+                    .setNumeroCivico(connection.extractString("numerocivico"))
+                    .setCap(connection.extractInt("cap"))
+                    .setQuartiere(connection.extractString("quartiere"))
+                    .build();
+
+            Estate estate = new Estate.Builder<>(connection.extractInt("idimmobile"))
+                    .setIndirizzoBuilder(fulIndirizzo)
+                    .setElevatorBuilder(connection.extractBoolean("ascensore"))
+                    .setAgenteBuilder(null)
+                    .setClasseEnergeticaBuilder(null)
+                    .setDescrizioneBuilder(connection.extractString("descrizione"))
+                    .setFloorBuilder(connection.extractInt("piano"))
+                    .setFotoBuilder(connection.extractString("foto"))
+                    .setGarageBuilder(connection.extractInt("garage"))
+                    .setModeBuilder(null)
+                    .setRoomsBuilder(connection.extractInt("stanze"))
+                    .setPriceBuilder(connection.extractInt("prezzo"))
+                    .setWcBuilder(connection.extractInt("bagni"))
+                    .setSpaceBuilder(connection.extractInt("dimensioni"))
+                    .setStatoBuilder(null)
+                    .setAgenziaBuilder(null)
+                    .build();
+
+            EnergeticClass classe = ConverterEnergeticClass.traslateFromString(connection.extractString("classeenergetica"));
+            Mode mode = ConverterMode.traslateFromString(connection.extractString("modalita"));
+            Status status = ConverterStatus.traslateFromString(connection.extractString("stato"));
+
+
+
+            Agent agent = new Agent.Builder(connection.extractInt("idagente"),"").build();
+            agent = agentDAO.getAgentFromId(agent);
+
+            estate.setAgenzia(agent.getAgency());
+            estate.setAgente(agent);
+            estate.setClasseEnergetica(classe);
+            estate.setMode(mode);
+            estate.setStato(status);
+
+
+            estates.add(estate);
+        }while(connection.hasNextRow());
+        } catch (SQLException e) {
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+    }
+
     @Override
     public void close(){
         if(connection != null)connection.close();
         agentDAO.close();
+    }
+
+    @Override
+    public List<Estate> search(EstateFilter filter) throws DietiEstateException {
+        PreparedStatement stmt = generateStmtSearch(filter);
+
+        try {
+            connection.makeQuery(stmt);
+            if(!connection.hasNextRow()) throw new EstateNotExists();
+            ArrayList<Estate> estates = new ArrayList<>();
+
+            buildEstates(estates);
+            return estates;
+        } catch (SQLException e) {
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+    }
+
+    private PreparedStatement generateStmtSearch(EstateFilter filter) throws ErrorCreateStatment {
+        PreparedStatement stmt;
+        String query= "SELECT * FROM immobile INNER JOIN indirizzo ON immobile.idindirizzo = indirizzo.idindirizzo ";
+
+        Map<Integer,String> presenzeString = new HashMap<>();
+        Map<Integer,Integer> presenzeInteger = new HashMap<>();
+        Map<Integer,Double> presenzeDouble = new HashMap<>();
+        Map<Integer,Boolean> presenzeBoolean = new HashMap<>();
+        int i = 1;
+        boolean primo = true;
+
+        if(filter.getStato() != null && !filter.getStato().equals("")){
+            query += " WHERE indirizzo.stato LIKE ? ";
+            presenzeString.put(i, filter.getStato());
+            i++;
+            primo = false;
+        }
+
+        if(filter.getCitta() != null && !filter.getCitta().equals("")){
+            query += primo ? " WHERE citta LIKE ? " : " AND citta LIKE ? ";
+            presenzeString.put(i, filter.getCitta());
+            i++;
+            primo = false;
+
+        }
+
+        if(filter.getQuartiere() != null && !filter.getQuartiere().equals("")){
+            query += primo ? " WHERE quartiere LIKE ? " : " AND quartiere LIKE ? ";
+            presenzeString.put(i, filter.getQuartiere());
+            i++;
+            primo = false;
+
+        }
+
+        if(filter.getVia() != null && !filter.getVia().equals("")){
+            query += primo ? " WHERE via LIKE ? " : " AND via LIKE ? ";
+            presenzeString.put(i, filter.getVia());
+            i++;
+            primo = false;
+
+        }
+
+        if(filter.getState() != null && !filter.getState().equals("")){
+            query += primo ? " WHERE immobile.stato LIKE ? " : " AND immobile.stato LIKE ? ";
+            presenzeString.put(i, filter.getState());
+            i++;
+            primo = false;
+        }
+
+        if(filter.getMinRooms() != null){
+            query += primo ? " WHERE immobile.stanze >= ? " : " AND immobile.stanze >= ? ";
+            presenzeInteger.put(i, filter.getMinRooms());
+            i++;
+            primo = false;
+        }
+
+        if(filter.getMaxRooms() != null){
+            query += primo ? " WHERE immobile.stanze <= ? " : " AND immobile.stanze <= ? ";
+            presenzeInteger.put(i, filter.getMaxRooms());
+            i++;
+            primo = false;
+        }
+
+        if(filter.getWc() != null){
+            query += primo ? " WHERE immobile.wc = ? " : " AND immobile.wc = ? ";
+            presenzeInteger.put(i, filter.getWc());
+            i++;
+            primo = false;
+        }
+
+        if(filter.getGarage() != null){
+            query += primo ? " WHERE immobile.garage = ? " : " AND immobile.garage = ? ";
+            presenzeInteger.put(i, filter.getGarage());
+            i++;
+            primo = false;
+        }
+
+        if(filter.getMinPrice() != null){
+            query += primo ? " WHERE immobile.prezzo >= ? " : " AND immobile.prezzo >= ? ";
+            presenzeDouble.put(i, filter.getMinPrice());
+            i++;
+            primo = false;
+        }
+
+        if(filter.getMaxPrice() != null){
+            query += primo ? " WHERE immobile.prezzo <= ? " : " AND immobile.prezzo <= ? ";
+            presenzeDouble.put(i, filter.getMaxPrice());
+            i++;
+            primo = false;
+        }
+
+        if(filter.getMinSpace() != null){
+            query += primo ? " WHERE immobile.dimensione >= ? " : " AND immobile.dimensione >= ? ";
+            presenzeDouble.put(i, filter.getMinSpace());
+            i++;
+            primo = false;
+        }
+
+        if(filter.getMaxSpace() != null){
+            query += primo ? " WHERE immobile.dimensione <= ? " : " AND immobile.dimensione <= ? ";
+            presenzeDouble.put(i, filter.getMinSpace());
+            i++;
+            primo = false;
+        }
+
+        if(filter.getElevator() != null){
+            query += primo ? " WHERE immobile.ascensore = ? " : " AND immobile.ascensore = ? ";
+            presenzeBoolean.put(i, filter.getElevator());
+            i++;
+            primo = false;
+        }
+
+
+        query += " ORDER BY ? DESC OFFSET ? LIMIT ? ";
+
+        presenzeString.put(i++, filter.getSort());
+        presenzeInteger.put(i++, filter.getPage() - 1);
+        presenzeInteger.put(i++, filter.getLimit());
+
+        try {
+            stmt = connection.getStatment(query);
+
+            for(Integer j: presenzeString.keySet()){
+                stmt.setString(j, presenzeString.get(j));
+            }
+            for(Integer j: presenzeInteger.keySet()){
+                stmt.setInt(j, presenzeInteger.get(j));
+            }
+            for(Integer j: presenzeDouble.keySet()){
+                stmt.setDouble(j, presenzeDouble.get(j));
+            }
+            for(Integer j: presenzeBoolean.keySet()){
+                stmt.setBoolean(j, presenzeBoolean.get(j));
+            }
+
+
+
+        } catch (Exception e) {
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorCreateStatment();
+        }
+
+        return stmt;
     }
 
 
