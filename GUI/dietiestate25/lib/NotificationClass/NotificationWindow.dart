@@ -79,7 +79,7 @@ class _NotificationWindowState extends State<NotificationWindow> {
                             Row(
                               children: [
                                 Text(
-                                  'Data appuntamento: ' + snapshot.data![index].data,
+                                  'Data appuntamento: ${snapshot.data![index].data}',
                                   style: TextStyle(fontSize: 14),
                                 ),
                               ],

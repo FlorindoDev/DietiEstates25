@@ -1,25 +1,30 @@
 import 'dart:convert';
+import 'package:dietiestate25/Connection/Connection.dart';
 import 'package:dietiestate25/Model/Appointment/Appointment.dart';
 import 'package:dietiestate25/Model/Appointment/AppointmentNotification.dart';
 import 'package:dietiestate25/Model/Appointment/AppointmentAccept.dart';
 import 'package:dietiestate25/Model/Appointment/AppointmentPending.dart';
 import 'package:dietiestate25/Model/Appointment/AppointmentReject.dart';
+import 'package:dietiestate25/Model/Estate/Estate.dart';
 import 'package:dietiestate25/Model/Notify/AppointmentRejected.dart';
 import 'package:dietiestate25/Model/Notify/AppoitmentAccepted.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart' as http;
 import 'package:dietiestate25/Model/Utente/Utente.dart';
 import 'package:dietiestate25/Model/Notify/Notify.dart';
 import 'package:dietiestate25/main.dart';
 
 class HomeController {
-  static final String urlNotify =
-      'http://10.0.2.2:7008/api/notifies/acquirente';
+  // static final String urlNotify = 'http://10.0.2.2:7008/api/notifies/acquirente'; // Per Android
+  static final String urlNotify = 'http://127.0.0.1:7008/api/notifies/acquirente'; // Per Windows
 
-  static final String urlAppointment =
-      'http://10.0.2.2:7006/api/appointments/acquirente';
+  // static final String urlAppointment = 'http://10.0.2.2:7006/api/appointments/acquirente'; // Per Android
+  static final String urlAppointment = 'http://127.0.0.1:7006/api/appointments/acquirente'; // Per Windows
 
-  static final String urlAppointmentSpecific =
-      'http://10.0.2.2:7006/api/appointments';
+  // static final String urlAppointmentSpecific ='http://10.0.2.2:7006/api/appointments'; // Per Android
+  static final String urlAppointmentSpecific ='http://127.0.0.1:7006/api/appointments'; // Per Windows 
+
+  static final String urlSearch = "Search";
 
   // static Utente utente = MyApp.user;
   static Utente utente = loggedUser;
@@ -154,5 +159,48 @@ class HomeController {
       return Appointments;
     }
     return Appointments;
+  }
+
+  static Future<List<Estate>> getEstatesHome(BuildContext context, String quary) async{
+
+
+    http.Response? response = await Connection.makeGetRequest(urlSearch +  '/estates?sort=idimmobile' + quary);
+
+
+    if (response == null) {
+      return List<Estate>.empty();
+    }
+
+
+
+    dynamic ris;
+    List<Estate> estates = [];
+    try {
+      // if (response != null) {
+      
+        
+        ris = json.decode(utf8.decode(response.bodyBytes));
+        if (ris['code'] == 0) {
+          for (int i = 0; i < ris['Estates'].length; i++) {  
+              print('\n\nMsg ricevuto : \n${ris['Estates'][i]}\n\n');
+              estates.add(Estate.fromJson(ris['Estates'][i]));
+            
+            
+          }
+        } else {
+          MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
+        }
+      // }
+    } catch (e) {
+      return List<Estate>.empty();
+    }
+    print("\n\n\n\nCiaooooo");
+    print(estates);
+    print("\n\n\n\nCiaooooo");
+    return estates;
+
+
+
+
   }
 }

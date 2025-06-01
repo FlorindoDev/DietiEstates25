@@ -14,8 +14,8 @@ class HttpException implements Exception {
 
 class Connection {
   // static final Uri url = Uri.parse('http://localhost:8000/'); // KONG URL
-  // static final String baseUrl = 'http://127.0.0.1:8000'; // Per Windows
-  static final String baseUrl = 'http://10.0.2.2:8000'; // Per Andorid
+  static final String baseUrl = 'http://127.0.0.1:8000'; // Per Windows
+  // static final String baseUrl = 'http://10.0.2.2:8000'; // Per Andorid
 
   static final Map<Type, String> getAccountProfileUrl = {
     Acquirente: '/ManagementAccount/getAccountAcquirente',
@@ -122,6 +122,40 @@ class Connection {
       return null;
     }
   }
+
+  static Future<http.Response?> makeDeleteRequest(String? path) async {
+    logger.d("JWT in DELETE request $jwt");
+    try {
+
+      Uri fullUrl = _buildFullUriUrl(baseUrl, path);
+
+      logger.d("""
+        DELETE REQUEST\n
+        JWT: $jwt\n
+        REQUEST: $fullUrl""" 
+      );
+
+      final response = await http.delete(
+        fullUrl,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $jwt", // Aggiunto il token Bearer
+        },
+      );
+
+      if (response.statusCode < 200 && response.statusCode >= 300) {
+        logger.e("Status Code HTTP: ${response.statusCode}\nBody: ${response.body}");
+        throw HttpException(response.statusCode, response.body);
+      } 
+      
+      return response;
+
+    } catch (e) {
+      logger.e("Errore durante la richiesta: $e");
+      return null;
+    }
+  }
+
 
   static Future<http.Response?> makeLogin(Map<String, dynamic>? body) async {
 

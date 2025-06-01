@@ -4,6 +4,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.md.Estate.Estate;
+import org.md.Estate.EstateFilter;
 import org.md.Geolocalizzazione.Indirizzo;
 import org.sch.API.Interfacce.SearchAPI;
 import org.sch.MainApp.Interfacce.SearchService;
@@ -18,10 +19,10 @@ public class SearchRestFulAPI implements SearchAPI {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String allCity() {
+    public Response allCity() {
         String result = searchService.allCity();
         searchService.close();
-        return result;
+        return Response.ok(result).build();
     }
 
 
@@ -45,8 +46,8 @@ public class SearchRestFulAPI implements SearchAPI {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String coordinatesEstates(Estate estate) {
-        return "";
+    public Response coordinatesEstates(Estate estate) {
+        return null;
 
     }
 
@@ -65,4 +66,17 @@ public class SearchRestFulAPI implements SearchAPI {
         searchService.close();
         return Response.ok(result).build();
     }
+
+
+    @Path("estates")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Override
+    public Response estates(@BeanParam EstateFilter filter) {
+
+        String result = searchService.search(filter);
+        searchService.close();
+        return Response.ok(result).build();
+    }
+
 }

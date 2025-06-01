@@ -1,4 +1,7 @@
+import 'package:dietiestate25/Home/HomeController.dart';
 import 'package:dietiestate25/ManagementAccount/ProfileWindow.dart';
+import 'package:dietiestate25/Model/Estate/Estate.dart';
+import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
 
@@ -66,21 +69,63 @@ class _HomeWindowState extends State<HomeWindow> {
   }
 }
 
-// Pagine separate che verranno visualizzate
-class HomeScreen extends StatelessWidget {
+
+class HomeScreen extends StatefulWidget {
+
+  const HomeScreen({super.key});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  late Future<List<Estate>> estates;
+
+
+  bool isScrolled = false;
+
+  void reload() {
+    setState(() {
+      estates = HomeController.getEstatesHome(context, "");
+      
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    
+    estates = HomeController.getEstatesHome(context,"");
+  
+  }
+
+   @override
+  void dispose() {
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-            width: double.infinity,
-            child: Expanded(
-                child: Column(
+    return Scaffold( body:  Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               spacing: 10,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                            .pushNamed(RouteWindows.searchHomeWindow);
+                  },
+                  style: ButtonStyle(
+                    padding: WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 20, horizontal: 10)),
+                    backgroundColor: WidgetStateProperty.all(MyApp.rosso),
+                    foregroundColor: WidgetStateProperty.all(Colors.white),
+                    shape: WidgetStateProperty.all(
+                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+                    ),
+                  ),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
                     Icon(
                       Icons.location_on_rounded,
@@ -92,14 +137,6 @@ class HomeScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 25),
                     )
                   ]),
-                  style: ButtonStyle(
-                    padding: WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 20, horizontal: 10)),
-                    backgroundColor: WidgetStateProperty.all(MyApp.rosso),
-                    foregroundColor: WidgetStateProperty.all(Colors.white),
-                    shape: WidgetStateProperty.all(
-                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-                    ),
-                  ),
                 ),
                 Expanded(
                   child: Container(
@@ -113,96 +150,115 @@ class HomeScreen extends StatelessWidget {
                           bottomRight: Radius.circular(0),
                         ),
                       ),
-                      child: Expanded(
-                        child: Column(
-                          children: [
-                            Text('Home Page, oh yessssssssssssssssss baby', style: TextStyle(fontSize: 24)),
-                            Scrollbar(
-                                thickness: 20,
-                                thumbVisibility: true,
-                                trackVisibility: true,
-                                child: Expanded(
-                                    child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal, // Scroll orizzontale
-                                        child: Row(
-                                          children: [
-                                            Card(
-                                              color: Colors.white,
-                                              child: Icon(
-                                                Icons.home,
-                                                size: 200,
+                  
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(padding: EdgeInsets.only(left: 20,top: 10), child:  Text('Nuovi Annunci', style: TextStyle(fontSize: 32 ), textAlign: TextAlign.left, )),
+                          FutureBuilder<List<Estate>>(
+                            future: estates,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const Center(
+                                        child: CircularProgressIndicator(strokeWidth: 5,
+                                          color: Colors.white,
+                                        ),
+                                      );
+                              } else if (snapshot.hasError) {
+                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                        MyApp.mostraPopUpWarining(
+                                            context, 'Error', "Errore riprova più tardi");
+                                      });
+                                return const Center();
+                              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                        MyApp.mostraPopUpWarining(
+                                            context, 'Error', "Nessun estates trovato");
+                                      });
+                                return const Center();
+                              } 
+                                List<Estate> estates = snapshot.data!;
+                                return Flexible(
+                                  
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: estates.length,
+                                    itemBuilder: (context, index) {
+                                      Estate estate = estates[index];
+                                      return SizedBox( // Imposta una larghezza fissa o vincolata
+                                        width: 200,
+                                        child: Card(
+                                          elevation: 10,
+                                          clipBehavior: Clip.hardEdge,
+                                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              const Icon(Icons.home, size: 100,),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10),
+                                                child: Text(
+                                                  '€ ${estate.price}',
+                                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                                ),
                                               ),
-                                            ),
-                                            Card(
-                                              color: Colors.white,
-                                              child: Icon(
-                                                Icons.home,
-                                                size: 200,
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10),
+                                                child: Text(
+                                                  '${estate.mode} - ${estate.indirizzo?.citta} ${estate.indirizzo?.quartiere} - ${estate.indirizzo?.via} ${estate.indirizzo?.numeroCivico}',
+                                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Card(
-                                              color: Colors.white,
-                                              child: Icon(
-                                                Icons.home,
-                                                size: 200,
-                                              ),
-                                            ),
-                                            Card(
-                                              color: Colors.white,
-                                              child: Icon(
-                                                Icons.home,
-                                                size: 200,
-                                              ),
-                                            ),
-                                            Card(
-                                              color: Colors.white,
-                                              child: Icon(
-                                                Icons.home,
-                                                size: 200,
-                                              ),
-                                            ),
-                                            Card(
-                                              color: Colors.white,
-                                              child: Icon(
-                                                Icons.home,
-                                                size: 200,
-                                              ),
-                                            ),
-                                            Card(
-                                              color: Colors.white,
-                                              child: Icon(
-                                                Icons.home,
-                                                size: 200,
-                                              ),
-                                            ),
-                                            Card(
-                                              color: Colors.white,
-                                              child: Icon(
-                                                Icons.home,
-                                                size: 200,
-                                              ),
-                                            ),
-                                            Card(
-                                              color: Colors.white,
-                                              child: Icon(
-                                                Icons.home,
-                                                size: 200,
-                                              ),
-                                            ),
-                                            Card(
-                                              color: Colors.white,
-                                              child: Icon(
-                                                Icons.home,
-                                                size: 200,
-                                              ),
-                                            ),
-                                          ],
-                                        ))))
-                          ],
-                        ),
-                      )),
-                )
-              ],
-            ))));
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10),
+                                                child:Row(
+                                                spacing: 50,
+                                                children: [
+                                                  Row(children: [
+                                                    Icon(Icons.border_all_outlined, size: 40,),
+                                                    Text('${estate.floor} m2')
+                                                  ],
+                                                  
+                                                  ),
+                                                  Row(children: [
+                                                    Icon(Icons.meeting_room_rounded, size: 40,),
+                                                    Text('${estate.rooms}')
+                                                  ],
+                                                  
+                                                  ),
+                                                  Row(children: [
+                                                    Icon(Icons.bathtub, size: 40,),
+                                                    Text('${estate.wc}')
+                                                  ],
+                                                  
+                                                  ),
+                                                  Row(children: [
+                                                    Icon(Icons.garage, size: 40,),
+                                                    Text('${estate.garage}')
+                                                  ],
+                                                  
+                                                  ),
+                                                ],
+                                              ),),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+
+                        },
+                      ),
+                    ],
+                  ),
+                      
+              ),
+            )
+          ],
+        
+    ),
+    );
   }
 }

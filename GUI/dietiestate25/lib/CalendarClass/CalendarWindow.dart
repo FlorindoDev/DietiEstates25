@@ -84,7 +84,7 @@ class _CalendarWindowState extends State<CalendarWindow> {
                     ),
                     child: const Text(
                       'Da confermare',
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                   ElevatedButton(
@@ -103,7 +103,7 @@ class _CalendarWindowState extends State<CalendarWindow> {
                     ),
                     child: const Text(
                       'Accettate',
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                   ElevatedButton(
@@ -122,7 +122,7 @@ class _CalendarWindowState extends State<CalendarWindow> {
                     ),
                     child: const Text(
                       'Rifiutate',
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                   ElevatedButton(
@@ -141,7 +141,7 @@ class _CalendarWindowState extends State<CalendarWindow> {
                     ),
                     child: const Text(
                       'Tutte',
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ],

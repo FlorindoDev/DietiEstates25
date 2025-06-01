@@ -1,9 +1,12 @@
 import 'package:dietiestate25/Admin/AdminHomeController.dart';
 import 'package:dietiestate25/Admin/ManageAdminWindow.dart';
 import 'package:dietiestate25/Admin/NotificationAdminWindow.dart';
+import 'package:dietiestate25/AgentHome/CreateAgentWindow.dart';
+import 'package:dietiestate25/AgentHome/ManageAgentWindow.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:dietiestate25/Admin/CreateAdminWindow.dart';
+import 'package:dietiestate25/ManagementAccount/ProfileAdminWindow.dart';
 import 'package:flutter/material.dart';
 
 
@@ -72,19 +75,9 @@ class _AdminHomeWindowState extends State<AdminHomeWindow> {
   }
 }
 
-class ProfileAdminWindow extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text("Profile Admin Window"),
-      ),
-    );
-  }
-}
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreen();
@@ -127,7 +120,7 @@ class _HomeScreen extends State<HomeScreen> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 10,
                 offset: const Offset(0, 5),
               ),
@@ -143,6 +136,15 @@ class _HomeScreen extends State<HomeScreen> {
                   _buildButton(
                     'Crea Agente', 
                     () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => CreateAgentWindow( 
+                                              
+                            appbar: MyApp.smallAppBar,
+            
+                          ),
+                        ),
+                      );
                       
                     }
                   ),
@@ -150,7 +152,15 @@ class _HomeScreen extends State<HomeScreen> {
                   _buildButton(
                     'Gestisci Agenti', 
                     () {
-                      
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ManageAgentWindow( 
+                                              
+                            appbar: MyApp.smallAppBar,
+            
+                          ),
+                        ),
+                      );
                     }
                   ),
                   
@@ -166,19 +176,21 @@ class _HomeScreen extends State<HomeScreen> {
 
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => new CreateAdminWindow( 
+                          builder: (context) => CreateAdminWindow( 
                                               
                             appbar: MyApp.smallAppBar,
             
                           ),
                         ),
-                      );}),
+                      );
+                    }
+                  ),
                   _buildButton('Gestisci Amministratori', () {
 
                       
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => new ManageAdminWindow(
+                          builder: (context) => ManageAdminWindow(
                             appbar: MyApp.smallAppBar,
             
                           ),

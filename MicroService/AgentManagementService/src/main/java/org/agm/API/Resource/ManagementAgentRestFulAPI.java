@@ -20,21 +20,26 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String addAgent(Agent agent) {
+    public Response addAgent(Agent agent) {
         String result = managementAgent.addAgent(agent);
         managementAgent.close();
-        return result;
+        return Response.ok(result).build();
     }
 
-    @POST
+    @DELETE
     @Path("removeAgent")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String removeAgent(Agent agent) {
+    public Response removeAgent(@BeanParam Agent agent) {
+
+        if(agent.getEmail().equals("")){
+            return Response.ok("{\"code\":-1, \"error\": \"email parameter is required\"}").build();
+
+        }
+
         String result = managementAgent.removeAgent(agent);
         managementAgent.close();
-        return result;
+        return Response.ok(result).build();
     }
 
 
@@ -74,10 +79,10 @@ public class ManagementAgentRestFulAPI implements ManagmementAgentAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String updateEstateAgent(Estate estate) {
+    public Response updateEstateAgent(Estate estate) {
         String result = managementAgent.updateEstateAgent(estate,estate.getAgente());
         managementAgent.close();
-        return result;
+        return Response.ok(result).build();
     }
 
 }
