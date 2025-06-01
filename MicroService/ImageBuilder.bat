@@ -12,7 +12,7 @@ docker build -t management_account_service:1.0.0 .\ManagementAccountService
 docker build -t notify_service:1.0.0 .\NotifyService
 
 REM Per escludere il build di SearchService, lasciamo il comando commentato:
-REM docker build -t search_service:1.0.0 .\SearchService
+docker build -t search_service:1.0.0 .\SearchService
 
 echo Script completato!
 pause
