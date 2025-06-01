@@ -9,12 +9,14 @@ import org.md.Geolocalizzazione.Indirizzo;
 import org.md.Serializzazione.Translate;
 import org.md.Utente.Agent;
 
+import java.util.Collections;
+import java.util.List;
+
 public class Estate extends Translate {
     private int idEstate = 0;
     private Agent agente;
     private Indirizzo indirizzo;
     private Agency agenzia;
-    private String foto = "";
     private String descrizione = "";
     private double price = 0;
     private double space = 0;
@@ -26,6 +28,7 @@ public class Estate extends Translate {
     private EnergeticClass classeEnergetica;
     private Mode mode;
     private Status stato;
+    private List<String> foto;
 
     public Estate() {}
 
@@ -80,11 +83,11 @@ public class Estate extends Translate {
         this.agenzia = agenzia;
     }
 
-    public String getFoto() {
+    public List<String> getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(List<String> foto) {
         this.foto = foto;
     }
 
@@ -202,7 +205,7 @@ public class Estate extends Translate {
         private Agent agenteBuilder;
         private Indirizzo indirizzoBuilder;
         private Agency agenziaBuilder;
-        private String fotoBuilder = "";
+        private List<String> fotoBuilder;
         private String descrizioneBuilder = "";
         private double priceBuilder = 0;
         private double spaceBuilder = 0;
@@ -235,7 +238,7 @@ public class Estate extends Translate {
             return self();
         }
 
-        public typeBuilder setFotoBuilder(String fotoBuilder) {
+        public typeBuilder setFotoBuilder(List<String> fotoBuilder) {
             this.fotoBuilder = fotoBuilder;
             return self();
         }

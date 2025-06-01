@@ -291,7 +291,6 @@ public class AgencyPostgreDAO implements AgencyDAO {
                         .setClasseEnergeticaBuilder(null)
                         .setDescrizioneBuilder(connection.extractString("descrizione"))
                         .setFloorBuilder(connection.extractInt("piano"))
-                        .setFotoBuilder(connection.extractString("foto"))
                         .setGarageBuilder(connection.extractInt("garage"))
                         .setModeBuilder(null)
                         .setIndirizzoBuilder(null)

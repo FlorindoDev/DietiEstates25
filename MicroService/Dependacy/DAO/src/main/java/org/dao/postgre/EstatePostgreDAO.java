@@ -85,7 +85,7 @@ public class EstatePostgreDAO implements EstateDAO {
             stmt.setInt(++index, newEstate.getAgente().getIdUser());
             stmt.setInt(++index, idAddress);
             stmt.setString(++index, newEstate.getAgenzia().getCodicePartitaIVA());
-            stmt.setString(++index, newEstate.getFoto());
+
             stmt.setString(++index, newEstate.getDescrizione());
             stmt.setDouble(++index, newEstate.getPrice());
             stmt.setDouble(++index, newEstate.getSpace());
@@ -322,7 +322,6 @@ public class EstatePostgreDAO implements EstateDAO {
                     .setClasseEnergeticaBuilder(null)
                     .setDescrizioneBuilder(connection.extractString("descrizione"))
                     .setFloorBuilder(connection.extractInt("piano"))
-                    .setFotoBuilder(connection.extractString("foto"))
                     .setGarageBuilder(connection.extractInt("garage"))
                     .setModeBuilder(null)
                     .setRoomsBuilder(connection.extractInt("stanze"))
@@ -347,6 +346,7 @@ public class EstatePostgreDAO implements EstateDAO {
             estate.setClasseEnergetica(classe);
             estate.setMode(mode);
             estate.setStato(status);
+            estate.setFoto(takeFoto(estate.getIdEstate()));
 
 
             estates.add(estate);
@@ -355,6 +355,27 @@ public class EstatePostgreDAO implements EstateDAO {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
+    }
+
+    private List<String> takeFoto(int idEstate) throws DietiEstateException{
+        String query= "SELECT * FROM (immobile INNER JOIN fotoimmobile ON immobile.idimmobile = fotoimmobile.idimmobile) ";
+        PreparedStatement stmt = connection.getStatment(query);
+        ArrayList<String> foto = new ArrayList<>();
+        try {
+            connection.makeQuery(stmt);
+            while(connection.hasNextRow()){
+                connection.nextRow();
+                String elem = connection.extractString("foto");
+
+                foto.add(elem);
+            }
+        } catch (SQLException e) {
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            throw new ErrorExecutingQuery();
+        }
+
+
+        return foto;
     }
 
     @Override
@@ -382,7 +403,7 @@ public class EstatePostgreDAO implements EstateDAO {
 
     private PreparedStatement generateStmtSearch(EstateFilter filter) throws ErrorCreateStatment {
         PreparedStatement stmt;
-        String query= "SELECT * FROM immobile INNER JOIN indirizzo ON immobile.idindirizzo = indirizzo.idindirizzo ";
+        String query= "SELECT * FROM (immobile INNER JOIN indirizzo ON immobile.idindirizzo = indirizzo.idindirizzo) ";
 
         Map<Integer,String> presenzeString = new HashMap<>();
         Map<Integer,Integer> presenzeInteger = new HashMap<>();
@@ -391,14 +412,14 @@ public class EstatePostgreDAO implements EstateDAO {
         int i = 1;
         boolean primo = true;
 
-        if(filter.getStato() != null && !filter.getStato().equals("")){
+        if(filter.getStato() != null && !filter.getStato().isEmpty()){
             query += " WHERE indirizzo.stato LIKE ? ";
             presenzeString.put(i, filter.getStato());
             i++;
             primo = false;
         }
 
-        if(filter.getCitta() != null && !filter.getCitta().equals("")){
+        if(filter.getCitta() != null && !filter.getCitta().isEmpty()){
             query += primo ? " WHERE citta LIKE ? " : " AND citta LIKE ? ";
             presenzeString.put(i, filter.getCitta());
             i++;
@@ -406,7 +427,7 @@ public class EstatePostgreDAO implements EstateDAO {
 
         }
 
-        if(filter.getQuartiere() != null && !filter.getQuartiere().equals("")){
+        if(filter.getQuartiere() != null && !filter.getQuartiere().isEmpty()){
             query += primo ? " WHERE quartiere LIKE ? " : " AND quartiere LIKE ? ";
             presenzeString.put(i, filter.getQuartiere());
             i++;
@@ -414,7 +435,7 @@ public class EstatePostgreDAO implements EstateDAO {
 
         }
 
-        if(filter.getVia() != null && !filter.getVia().equals("")){
+        if(filter.getVia() != null && !filter.getVia().isEmpty()){
             query += primo ? " WHERE via LIKE ? " : " AND via LIKE ? ";
             presenzeString.put(i, filter.getVia());
             i++;
@@ -422,7 +443,7 @@ public class EstatePostgreDAO implements EstateDAO {
 
         }
 
-        if(filter.getState() != null && !filter.getState().equals("")){
+        if(filter.getState() != null && !filter.getState().isEmpty()){
             query += primo ? " WHERE immobile.stato LIKE ? " : " AND immobile.stato LIKE ? ";
             presenzeString.put(i, filter.getState());
             i++;
@@ -489,33 +510,34 @@ public class EstatePostgreDAO implements EstateDAO {
             query += primo ? " WHERE immobile.ascensore = ? " : " AND immobile.ascensore = ? ";
             presenzeBoolean.put(i, filter.getElevator());
             i++;
-            primo = false;
+
         }
 
 
-        query += " ORDER BY ? DESC OFFSET ? LIMIT ? ";
+        query += " ORDER BY ? " + (Boolean.TRUE.equals(filter.getDesc())? "DESC" : "ASC") + " OFFSET ? LIMIT ? ";
 
         presenzeString.put(i++, filter.getSort());
         presenzeInteger.put(i++, filter.getPage() - 1);
-        presenzeInteger.put(i++, filter.getLimit());
+        presenzeInteger.put(i, filter.getLimit());
 
         try {
             stmt = connection.getStatment(query);
 
-            for(Integer j: presenzeString.keySet()){
-                stmt.setString(j, presenzeString.get(j));
-            }
-            for(Integer j: presenzeInteger.keySet()){
-                stmt.setInt(j, presenzeInteger.get(j));
-            }
-            for(Integer j: presenzeDouble.keySet()){
-                stmt.setDouble(j, presenzeDouble.get(j));
-            }
-            for(Integer j: presenzeBoolean.keySet()){
-                stmt.setBoolean(j, presenzeBoolean.get(j));
+            for (Map.Entry<Integer,String> entry : presenzeString.entrySet()) {
+                stmt.setString(entry.getKey(), entry.getValue());
             }
 
+            for (Map.Entry<Integer,Integer> entry : presenzeInteger.entrySet()) {
+                stmt.setInt(entry.getKey(), entry.getValue());
+            }
 
+            for (Map.Entry<Integer,Boolean> entry : presenzeBoolean.entrySet()) {
+                stmt.setBoolean(entry.getKey(), entry.getValue());
+            }
+
+            for (Map.Entry<Integer,Double> entry : presenzeDouble.entrySet()) {
+                stmt.setDouble(entry.getKey(), entry.getValue());
+            }
 
         } catch (Exception e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());

@@ -17,6 +17,10 @@ public class EstateFilter {
     @DefaultValue("prezzo")
     private String sort = "prezzo";
 
+    @QueryParam("desc")
+    @DefaultValue("false")
+    private Boolean desc = false;
+
     @QueryParam("stato")
     private String stato = "";
 
@@ -61,6 +65,14 @@ public class EstateFilter {
 
     @QueryParam("energeticClass")
     private String energeticClass = "";
+
+    public Boolean getDesc() {
+        return desc;
+    }
+
+    public void setDesc(Boolean desc) {
+        this.desc = desc;
+    }
 
     public Integer getPage() {
         return page;
