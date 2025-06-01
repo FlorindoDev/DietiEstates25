@@ -28,7 +28,7 @@ public class EstatePostgreDAO implements EstateDAO {
 
     private static final String TABLE = "immobile";
     protected static final String ERROR_EXECUTING_QUERY = "[-] Error executing query: ";
-
+    private int numberParamsOfFilter = 1;
     private CommunicationWithPostgre connection;
 
     private static final Logger logger = Logger.getLogger(EstatePostgreDAO.class.getName());
@@ -197,7 +197,7 @@ public class EstatePostgreDAO implements EstateDAO {
 
             return new Agent.Builder(connection.extractInt("idagente"),connection.extractString("email"))
                     .setName(connection.extractString("nome"))
-                    .setCognome(connection.extractString("nome"))
+                    .setCognome(connection.extractString("cognome"))
                     .setBiografia(connection.extractString("biografia"))
                     .setProfilePic(connection.extractString("immagineprofilo"))
                     .setAgency(agency)
@@ -346,11 +346,16 @@ public class EstatePostgreDAO implements EstateDAO {
             estate.setClasseEnergetica(classe);
             estate.setMode(mode);
             estate.setStato(status);
-            estate.setFoto(takeFoto(estate.getIdEstate()));
+
 
 
             estates.add(estate);
         }while(connection.hasNextRow());
+
+        for (Estate elem : estates) {
+            elem.setFoto(takeFoto(elem.getIdEstate()));
+        }
+
         } catch (SQLException e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
@@ -358,10 +363,11 @@ public class EstatePostgreDAO implements EstateDAO {
     }
 
     private List<String> takeFoto(int idEstate) throws DietiEstateException{
-        String query= "SELECT * FROM (immobile INNER JOIN fotoimmobile ON immobile.idimmobile = fotoimmobile.idimmobile) ";
+        String query= "SELECT * FROM (immobile INNER JOIN fotoimmobile ON immobile.idimmobile = fotoimmobile.idimmobile) WHERE immobile.idimmobile = ?";
         PreparedStatement stmt = connection.getStatment(query);
         ArrayList<String> foto = new ArrayList<>();
         try {
+            stmt.setInt(1, idEstate);
             connection.makeQuery(stmt);
             while(connection.hasNextRow()){
                 connection.nextRow();
@@ -401,124 +407,35 @@ public class EstatePostgreDAO implements EstateDAO {
         }
     }
 
+    private boolean checkNullOrEmptyString(String string){
+        return string != null && !string.isEmpty();
+    }
+
     private PreparedStatement generateStmtSearch(EstateFilter filter) throws ErrorCreateStatment {
         PreparedStatement stmt;
-        String query= "SELECT * FROM (immobile INNER JOIN indirizzo ON immobile.idindirizzo = indirizzo.idindirizzo) ";
-
+        numberParamsOfFilter = 1;
         Map<Integer,String> presenzeString = new HashMap<>();
         Map<Integer,Integer> presenzeInteger = new HashMap<>();
         Map<Integer,Double> presenzeDouble = new HashMap<>();
         Map<Integer,Boolean> presenzeBoolean = new HashMap<>();
-        int i = 1;
-        boolean primo = true;
 
-        if(filter.getStato() != null && !filter.getStato().isEmpty()){
-            query += " WHERE indirizzo.stato LIKE ? ";
-            presenzeString.put(i, filter.getStato());
-            i++;
-            primo = false;
-        }
-
-        if(filter.getCitta() != null && !filter.getCitta().isEmpty()){
-            query += primo ? " WHERE citta LIKE ? " : " AND citta LIKE ? ";
-            presenzeString.put(i, filter.getCitta());
-            i++;
-            primo = false;
-
-        }
-
-        if(filter.getQuartiere() != null && !filter.getQuartiere().isEmpty()){
-            query += primo ? " WHERE quartiere LIKE ? " : " AND quartiere LIKE ? ";
-            presenzeString.put(i, filter.getQuartiere());
-            i++;
-            primo = false;
-
-        }
-
-        if(filter.getVia() != null && !filter.getVia().isEmpty()){
-            query += primo ? " WHERE via LIKE ? " : " AND via LIKE ? ";
-            presenzeString.put(i, filter.getVia());
-            i++;
-            primo = false;
-
-        }
-
-        if(filter.getState() != null && !filter.getState().isEmpty()){
-            query += primo ? " WHERE immobile.stato LIKE ? " : " AND immobile.stato LIKE ? ";
-            presenzeString.put(i, filter.getState());
-            i++;
-            primo = false;
-        }
-
-        if(filter.getMinRooms() != null){
-            query += primo ? " WHERE immobile.stanze >= ? " : " AND immobile.stanze >= ? ";
-            presenzeInteger.put(i, filter.getMinRooms());
-            i++;
-            primo = false;
-        }
-
-        if(filter.getMaxRooms() != null){
-            query += primo ? " WHERE immobile.stanze <= ? " : " AND immobile.stanze <= ? ";
-            presenzeInteger.put(i, filter.getMaxRooms());
-            i++;
-            primo = false;
-        }
-
-        if(filter.getWc() != null){
-            query += primo ? " WHERE immobile.wc = ? " : " AND immobile.wc = ? ";
-            presenzeInteger.put(i, filter.getWc());
-            i++;
-            primo = false;
-        }
-
-        if(filter.getGarage() != null){
-            query += primo ? " WHERE immobile.garage = ? " : " AND immobile.garage = ? ";
-            presenzeInteger.put(i, filter.getGarage());
-            i++;
-            primo = false;
-        }
-
-        if(filter.getMinPrice() != null){
-            query += primo ? " WHERE immobile.prezzo >= ? " : " AND immobile.prezzo >= ? ";
-            presenzeDouble.put(i, filter.getMinPrice());
-            i++;
-            primo = false;
-        }
-
-        if(filter.getMaxPrice() != null){
-            query += primo ? " WHERE immobile.prezzo <= ? " : " AND immobile.prezzo <= ? ";
-            presenzeDouble.put(i, filter.getMaxPrice());
-            i++;
-            primo = false;
-        }
-
-        if(filter.getMinSpace() != null){
-            query += primo ? " WHERE immobile.dimensione >= ? " : " AND immobile.dimensione >= ? ";
-            presenzeDouble.put(i, filter.getMinSpace());
-            i++;
-            primo = false;
-        }
-
-        if(filter.getMaxSpace() != null){
-            query += primo ? " WHERE immobile.dimensione <= ? " : " AND immobile.dimensione <= ? ";
-            presenzeDouble.put(i, filter.getMinSpace());
-            i++;
-            primo = false;
-        }
-
-        if(filter.getElevator() != null){
-            query += primo ? " WHERE immobile.ascensore = ? " : " AND immobile.ascensore = ? ";
-            presenzeBoolean.put(i, filter.getElevator());
-            i++;
-
-        }
+        String query= "SELECT * FROM (immobile INNER JOIN indirizzo ON immobile.idindirizzo = indirizzo.idindirizzo) ";
 
 
-        query += " ORDER BY ? " + (Boolean.TRUE.equals(filter.getDesc())? "DESC" : "ASC") + " OFFSET ? LIMIT ? ";
+        query = genereteQuerySringFilter(filter, query, presenzeString);
 
-        presenzeString.put(i++, filter.getSort());
-        presenzeInteger.put(i++, filter.getPage() - 1);
-        presenzeInteger.put(i, filter.getLimit());
+        query = genereteQueryIntegerFilter(filter, query, presenzeInteger);
+
+        query = genereteQueryDoubleFilter(filter, query, presenzeDouble);
+
+        query = genereteQueryBooleanFilter(filter, query, presenzeBoolean);
+
+
+        query += " ORDER BY " + filter.getSort() +" " + (Boolean.TRUE.equals(filter.getDesc()) ? "DESC" : "ASC") + " OFFSET ? LIMIT ? ";
+
+
+        presenzeInteger.put(numberParamsOfFilter++, filter.getPage() - 1);
+        presenzeInteger.put(numberParamsOfFilter, filter.getLimit());
 
         try {
             stmt = connection.getStatment(query);
@@ -545,6 +462,110 @@ public class EstatePostgreDAO implements EstateDAO {
         }
 
         return stmt;
+    }
+
+    private String genereteQueryBooleanFilter(EstateFilter filter, String query, Map<Integer, Boolean> presenzeBoolean) {
+        if(filter.getElevator() != null){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.ascensore = ? " : " AND immobile.ascensore = ? ";
+            presenzeBoolean.put(numberParamsOfFilter, filter.getElevator());
+            numberParamsOfFilter++;
+
+        }
+        return query;
+    }
+
+    private String genereteQueryDoubleFilter(EstateFilter filter, String query, Map<Integer, Double> presenzeDouble) {
+        if(filter.getMinPrice() != null){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.prezzo >= ? " : " AND immobile.prezzo >= ? ";
+            presenzeDouble.put(numberParamsOfFilter, filter.getMinPrice());
+            numberParamsOfFilter++;
+
+        }
+
+        if(filter.getMaxPrice() != null){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.prezzo <= ? " : " AND immobile.prezzo <= ? ";
+            presenzeDouble.put(numberParamsOfFilter, filter.getMaxPrice());
+            numberParamsOfFilter++;
+        }
+
+        if(filter.getMinSpace() != null){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.dimensione >= ? " : " AND immobile.dimensione >= ? ";
+            presenzeDouble.put(numberParamsOfFilter, filter.getMinSpace());
+            numberParamsOfFilter++;
+
+        }
+
+        if(filter.getMaxSpace() != null){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.dimensione <= ? " : " AND immobile.dimensione <= ? ";
+            presenzeDouble.put(numberParamsOfFilter, filter.getMinSpace());
+            numberParamsOfFilter++;
+        }
+        return query;
+    }
+
+    private String genereteQueryIntegerFilter(EstateFilter filter, String query, Map<Integer, Integer> presenzeInteger) {
+        if(filter.getMinRooms() != null){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.stanze >= ? " : " AND immobile.stanze >= ? ";
+            presenzeInteger.put(numberParamsOfFilter, filter.getMinRooms());
+            numberParamsOfFilter++;
+        }
+
+        if(filter.getMaxRooms() != null){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.stanze <= ? " : " AND immobile.stanze <= ? ";
+            presenzeInteger.put(numberParamsOfFilter, filter.getMaxRooms());
+            numberParamsOfFilter++;
+        }
+
+        if(filter.getWc() != null){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.wc = ? " : " AND immobile.wc = ? ";
+            presenzeInteger.put(numberParamsOfFilter, filter.getWc());
+            numberParamsOfFilter++;
+        }
+
+        if(filter.getGarage() != null){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.garage = ? " : " AND immobile.garage = ? ";
+            presenzeInteger.put(numberParamsOfFilter, filter.getGarage());
+            numberParamsOfFilter++;
+
+        }
+        return query;
+    }
+
+    private String genereteQuerySringFilter(EstateFilter filter, String query, Map<Integer, String> presenzeString) {
+        if(checkNullOrEmptyString(filter.getStato())){
+            query += " WHERE indirizzo.stato LIKE ? ";
+            presenzeString.put(numberParamsOfFilter, filter.getStato());
+            numberParamsOfFilter++;
+        }
+
+        if(checkNullOrEmptyString(filter.getCitta())){
+            query += (numberParamsOfFilter == 1) ? " WHERE citta LIKE ? " : " AND citta LIKE ? ";
+            presenzeString.put(numberParamsOfFilter, filter.getCitta());
+            numberParamsOfFilter++;
+
+        }
+
+        if(checkNullOrEmptyString(filter.getQuartiere())){
+            query += (numberParamsOfFilter == 1) ? " WHERE quartiere LIKE ? " : " AND quartiere LIKE ? ";
+            presenzeString.put(numberParamsOfFilter, filter.getQuartiere());
+            numberParamsOfFilter++;
+
+        }
+
+        if(checkNullOrEmptyString(filter.getVia())){
+            query += (numberParamsOfFilter == 1) ? " WHERE via LIKE ? " : " AND via LIKE ? ";
+            presenzeString.put(numberParamsOfFilter, filter.getVia());
+            numberParamsOfFilter++;
+
+        }
+
+        if(checkNullOrEmptyString(filter.getState())){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.stato LIKE ? " : " AND immobile.stato LIKE ? ";
+            presenzeString.put(numberParamsOfFilter, filter.getState());
+            numberParamsOfFilter++;
+
+        }
+        return query;
     }
 
 

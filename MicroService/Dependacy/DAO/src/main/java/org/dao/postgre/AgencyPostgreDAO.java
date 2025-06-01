@@ -221,7 +221,7 @@ public class AgencyPostgreDAO implements AgencyDAO {
 
                 Agent agent = new Agent.Builder(1,connection.extractString(EMAIL_COLUMN))
                         .setName(connection.extractString("nome"))
-                        .setCognome(connection.extractString("cognome"))
+                        .setCognome(connection.extractString(COGNOME_COLUMN))
                         .setPassword(connection.extractString("password"))
                         .setBiografia(connection.extractString("biografia"))
                         .setProfilePic(connection.extractString("ImmagineProfilo"))

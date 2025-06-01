@@ -8,8 +8,6 @@ import org.md.Estate.Status.Status;
 import org.md.Geolocalizzazione.Indirizzo;
 import org.md.Serializzazione.Translate;
 import org.md.Utente.Agent;
-
-import java.util.Collections;
 import java.util.List;
 
 public class Estate extends Translate {
