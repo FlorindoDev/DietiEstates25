@@ -418,6 +418,7 @@ public class EstatePostgreDAO implements EstateDAO {
         Map<Integer,Integer> presenzeInteger = new HashMap<>();
         Map<Integer,Double> presenzeDouble = new HashMap<>();
         Map<Integer,Boolean> presenzeBoolean = new HashMap<>();
+        Map<Integer,Object> presenzeObject = new HashMap<>();
 
         String query= "SELECT * FROM (immobile INNER JOIN indirizzo ON immobile.idindirizzo = indirizzo.idindirizzo) ";
 
@@ -429,6 +430,13 @@ public class EstatePostgreDAO implements EstateDAO {
         query = genereteQueryDoubleFilter(filter, query, presenzeDouble);
 
         query = genereteQueryBooleanFilter(filter, query, presenzeBoolean);
+
+        if(checkNullOrEmptyString(filter.getMode())){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.modalita = ?::Modalita " : " AND immobile.modalita = ?::Modalita ";
+            presenzeObject.put(numberParamsOfFilter, filter.getMode());
+            numberParamsOfFilter++;
+
+        }
 
 
         query += " ORDER BY " + filter.getSort() +" " + (Boolean.TRUE.equals(filter.getDesc()) ? "DESC" : "ASC") + " OFFSET ? LIMIT ? ";
@@ -454,6 +462,10 @@ public class EstatePostgreDAO implements EstateDAO {
 
             for (Map.Entry<Integer,Double> entry : presenzeDouble.entrySet()) {
                 stmt.setDouble(entry.getKey(), entry.getValue());
+            }
+
+            for (Map.Entry<Integer,Object> entry : presenzeObject.entrySet()) {
+                stmt.setObject(entry.getKey(), entry.getValue());
             }
 
         } catch (Exception e) {
@@ -549,12 +561,7 @@ public class EstatePostgreDAO implements EstateDAO {
 
         }
 
-        if(checkNullOrEmptyString(filter.getMode())){
-            query += (numberParamsOfFilter == 1) ? " WHERE immobile.modalita LIKE ? " : " AND immobile.modalita LIKE ? ";
-            presenzeString.put(numberParamsOfFilter, filter.getMode());
-            numberParamsOfFilter++;
 
-        }
 
         return query;
     }
