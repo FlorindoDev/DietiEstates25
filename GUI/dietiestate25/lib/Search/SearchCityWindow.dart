@@ -1,3 +1,4 @@
+import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/Search/SearchController.dart' as my_search_controller;
@@ -92,8 +93,10 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
                       onTap: () {
                         // Azione quando si clicca su una città
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Hai selezionato: ${itemCity['name']}')),
+                          SnackBar(content: Text('Hai selezionato: ${itemCity['name']}')),                       
                         );
+                        RouteWindows.citta = itemCity['name'];
+                        Navigator.of(context).pushNamed(RouteWindows.searchFilterWindow);
                       },
                     ),
                   );

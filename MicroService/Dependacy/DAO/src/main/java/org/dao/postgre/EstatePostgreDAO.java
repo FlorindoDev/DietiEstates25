@@ -532,6 +532,34 @@ public class EstatePostgreDAO implements EstateDAO {
     }
 
     private String genereteQuerySringFilter(EstateFilter filter, String query, Map<Integer, String> presenzeString) {
+
+        query = genereteQueryAddressSStringFilter(filter, query, presenzeString);
+
+        if(checkNullOrEmptyString(filter.getState())){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.stato LIKE ? " : " AND immobile.stato LIKE ? ";
+            presenzeString.put(numberParamsOfFilter, filter.getState());
+            numberParamsOfFilter++;
+
+        }
+
+        if(checkNullOrEmptyString(filter.getEnergeticClass())){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.classeenergetica LIKE ? " : " AND immobile.classeenergetica LIKE ? ";
+            presenzeString.put(numberParamsOfFilter, filter.getEnergeticClass());
+            numberParamsOfFilter++;
+
+        }
+
+        if(checkNullOrEmptyString(filter.getMode())){
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.modalita LIKE ? " : " AND immobile.modalita LIKE ? ";
+            presenzeString.put(numberParamsOfFilter, filter.getMode());
+            numberParamsOfFilter++;
+
+        }
+
+        return query;
+    }
+
+    private String genereteQueryAddressSStringFilter(EstateFilter filter, String query, Map<Integer, String> presenzeString) {
         if(checkNullOrEmptyString(filter.getStato())){
             query += " WHERE indirizzo.stato LIKE ? ";
             presenzeString.put(numberParamsOfFilter, filter.getStato());
@@ -555,13 +583,6 @@ public class EstatePostgreDAO implements EstateDAO {
         if(checkNullOrEmptyString(filter.getVia())){
             query += (numberParamsOfFilter == 1) ? " WHERE via LIKE ? " : " AND via LIKE ? ";
             presenzeString.put(numberParamsOfFilter, filter.getVia());
-            numberParamsOfFilter++;
-
-        }
-
-        if(checkNullOrEmptyString(filter.getState())){
-            query += (numberParamsOfFilter == 1) ? " WHERE immobile.stato LIKE ? " : " AND immobile.stato LIKE ? ";
-            presenzeString.put(numberParamsOfFilter, filter.getState());
             numberParamsOfFilter++;
 
         }

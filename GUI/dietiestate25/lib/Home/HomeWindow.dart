@@ -142,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                       //width: double.infinity,
                       decoration: BoxDecoration(
-                        color: MyApp.celeste,
+                        color: MyApp.celesteSfumato,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30),
                           topRight: Radius.circular(30),
@@ -187,32 +187,37 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Estate estate = estates[index];
                                       return SizedBox( // Imposta una larghezza fissa o vincolata
                                         width: 200,
-                                        child: Card(
+                                        child: 
+                                        InkWell(
+                                          onTap: (){
+                                            print(estate);
+                                          },
+                                          child : Card(
                                           elevation: 10,
                                           clipBehavior: Clip.hardEdge,
                                           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                          child: Column(
+                                          child: Padding(
+                                                padding: const EdgeInsets.only(left: 10,bottom: 10),
+                                                child: Column(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               const Icon(Icons.home, size: 100,),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 10),
-                                                child: Text(
+                                               Text(
                                                   '€ ${estate.price}',
                                                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 10),
-                                                child: Text(
+                                              
+                                              
+                                                
+                                                Text(
                                                   '${estate.mode} - ${estate.indirizzo?.citta} ${estate.indirizzo?.quartiere} - ${estate.indirizzo?.via} ${estate.indirizzo?.numeroCivico}',
                                                   style: const TextStyle(fontWeight: FontWeight.bold),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 10),
-                                                child:Row(
+                                              
+                                              
+                                                
+                                                Row(
                                                 spacing: 50,
                                                 children: [
                                                   Row(children: [
@@ -240,10 +245,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   
                                                   ),
                                                 ],
-                                              ),),
+                                              ),
                                             ],
+                                            ),
                                           ),
                                         ),
+                                        ),
+                                          
                                       );
                                     },
                                   ),
