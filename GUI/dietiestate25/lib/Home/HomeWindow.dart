@@ -189,8 +189,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         width: 200,
                                         child: 
                                         InkWell(
+                                          splashColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
                                           onTap: (){
-                                            print(estate);
+                                            RouteWindows.selectedEstate = estate;
+                                            Navigator.of(context).pushNamed(RouteWindows.estateInfoWindow);
                                           },
                                           child : Card(
                                           elevation: 10,
