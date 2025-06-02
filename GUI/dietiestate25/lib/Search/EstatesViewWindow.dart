@@ -19,6 +19,10 @@ class EstatesViewWindow extends StatefulWidget {
 }
 
 class _EstatesViewWindowState extends State<EstatesViewWindow> {
+  int page = 1;
+
+  
+
  
   @override
   Widget build(BuildContext context) {
@@ -27,8 +31,13 @@ class _EstatesViewWindowState extends State<EstatesViewWindow> {
 
     return Scaffold(
       appBar: widget.appbar,
-      body: ListView.builder(
+      body: SingleChildScrollView(
+        child: 
+      
+        ListView.builder(
         scrollDirection: Axis.vertical,
+         shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(), 
         itemCount: widget.estates.length,
         itemBuilder: (context, index) {
           Estate estate = widget.estates[index];
@@ -101,8 +110,59 @@ class _EstatesViewWindowState extends State<EstatesViewWindow> {
               
           );
         },
-      ), 
-      
+      ),),
+      bottomSheet: 
+          Row(
+            spacing: 5,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                    onPressed: my_search_controller.SearchController.page == 1? null:() { setState(() { my_search_controller.SearchController.filteredSearch(
+                      context,
+                      my_search_controller.SearchController.page - 1,
+                      my_search_controller.SearchController.mode,
+                      my_search_controller.SearchController.minPrice,
+                      my_search_controller.SearchController.maxPrice,
+                      my_search_controller.SearchController.minDimensione,
+                      my_search_controller.SearchController.maxDimensione,
+                      my_search_controller.SearchController.minStanze,
+                      my_search_controller.SearchController.maxStanze,
+                      my_search_controller.SearchController.bagni,
+                      my_search_controller.SearchController.ascensore,
+                      my_search_controller.SearchController.stato,
+                      my_search_controller.SearchController.garage,
+                      my_search_controller.SearchController.opzioni,
+                      my_search_controller.SearchController.citta
+                    );}); },
+                    style: my_search_controller.SearchController.page == 1? AccessController.not_clickable_style_button :AccessController.clickable_style_button,
+                    child: const Text('Indietro'),
+                  ),
+              ElevatedButton(
+                    onPressed: () { setState(() { my_search_controller.SearchController.filteredSearch(
+                      context,
+                      my_search_controller.SearchController.page + 1,
+                      my_search_controller.SearchController.mode,
+                      my_search_controller.SearchController.minPrice,
+                      my_search_controller.SearchController.maxPrice,
+                      my_search_controller.SearchController.minDimensione,
+                      my_search_controller.SearchController.maxDimensione,
+                      my_search_controller.SearchController.minStanze,
+                      my_search_controller.SearchController.maxStanze,
+                      my_search_controller.SearchController.bagni,
+                      my_search_controller.SearchController.ascensore,
+                      my_search_controller.SearchController.stato,
+                      my_search_controller.SearchController.garage,
+                      my_search_controller.SearchController.opzioni,
+                      my_search_controller.SearchController.citta
+                    );
+                    
+                    }); },
+                    style:AccessController.clickable_style_button,
+                    child: const Text('Avanti'),
+                  ),
+            ],
+        
+      ),
         
     );
   }

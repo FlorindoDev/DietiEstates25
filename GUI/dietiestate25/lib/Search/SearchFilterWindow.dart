@@ -361,6 +361,7 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                     onPressed: () {
                     my_search_controller.SearchController.filteredSearch(
                       context,
+                      1,
                       mode,
                       minPrice,
                       maxPrice,

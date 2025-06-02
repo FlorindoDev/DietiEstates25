@@ -34,6 +34,12 @@ class SearchController {
   static int garage = 0;
   
   static String opzioni = "Tutto";
+  
+  static int page = 1;
+  
+  static String citta = "";
+  
+  static String mode = "Tutto";
 
   static Future<List> searchCity(BuildContext context, String city) async {
     
@@ -81,9 +87,11 @@ class SearchController {
 
   }
 
-  static void filteredSearch(BuildContext context,String mode, int minPrice, int maxPrice, int minDimensione, int maxDimensione, int minStanze, int maxStanze, int bagni, String ascensore, String stato, int garage, String opzioni, String city) async {
+  static void filteredSearch(BuildContext context,int page, String mode, int minPrice, int maxPrice, int minDimensione, int maxDimensione, int minStanze, int maxStanze, int bagni, String ascensore, String stato, int garage, String opzioni, String city) async {
     
-    String address = 'Search/estates?sort=idimmobile&desc=true&citta=$city&';
+    SearchController.citta = city;
+    SearchController.page = page;
+    String address = 'Search/estates?sort=idimmobile&desc=true&page=$page&citta=$city&';
 
     SearchController.minPrice = minPrice;
     if(minPrice != 0){
@@ -139,6 +147,8 @@ class SearchController {
     if(!opzioni.contains("Tutto")){
       address += 'energeticClass=$opzioni&';
     }
+
+    SearchController.mode = mode;
     
  
 
@@ -163,6 +173,9 @@ class SearchController {
             
           }
           RouteWindows.estates = estates;
+          if(page != 1){
+            Navigator.pop(context);
+          }
           Navigator.of(context).pushNamed(RouteWindows.estatesViewWindow);
         } else {
           MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
