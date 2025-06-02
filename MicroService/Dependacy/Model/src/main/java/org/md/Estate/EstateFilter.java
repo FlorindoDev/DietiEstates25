@@ -66,6 +66,17 @@ public class EstateFilter {
     @QueryParam("energeticClass")
     private String energeticClass = "";
 
+    @QueryParam("mode")
+    private String mode = "";
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
     public Boolean getDesc() {
         return desc;
     }
