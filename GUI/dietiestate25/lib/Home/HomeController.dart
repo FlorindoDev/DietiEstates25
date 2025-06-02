@@ -164,7 +164,7 @@ class HomeController {
   static Future<List<Estate>> getEstatesHome(BuildContext context, String quary) async{
 
 
-    http.Response? response = await Connection.makeGetRequest(urlSearch +  '/estates?sort=idimmobile' + quary);
+    http.Response? response = await Connection.makeGetRequest(urlSearch +  '/estates?sort=idimmobile&desc=true' + quary);
 
 
     if (response == null) {

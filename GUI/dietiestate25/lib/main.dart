@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
   static const Color rosso = Color(0xffE63746);
   static const Color blu = Color(0xff1D3558);
   static const Color celeste = Color(0xff447A9C);
+  static const Color celesteSfumato = Color.fromARGB(197, 68, 122, 156);
   static const Color panna = Color(0xfff6f6f6);
 
   static final TextStyle stile_testo_solo_nero = const TextStyle(
