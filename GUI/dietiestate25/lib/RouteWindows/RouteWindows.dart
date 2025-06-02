@@ -1,5 +1,6 @@
 import 'package:dietiestate25/Admin/AdminHomeWindow.dart';
 import 'package:dietiestate25/Model/Estate/Estate.dart';
+import 'package:dietiestate25/Search/EstateInfoWindow.dart';
 import 'package:dietiestate25/Search/EstatesViewWindow.dart';
 import 'package:dietiestate25/Search/SearchCityWindow.dart';
 import 'package:dietiestate25/Search/SearchFilterWindow.dart';
@@ -29,10 +30,15 @@ class RouteWindows {
   static const searchHomeWindow = '/SearchHomeWindow';
   static const searchFilterWindow = '/SearchFilterWindow';
   static const estatesViewWindow = '/EstatesViewWindow';
+  static const estateInfoWindow = '/EstateInfoWindow';
 
   static String citta = "";
 
   static List<Estate> estates = List.empty();
+
+  static Estate selectedEstate = Estate(idEstate: 0, descrizione: "", price: 0, space: 0, rooms: 0, floor: 0, wc: 0, garage: 0, elevator: false, agenzia: null, agente: null, stato: null, mode: null, classeEnergetica: "", indirizzo: null);
+
+ 
 
   
 
@@ -93,7 +99,12 @@ class RouteWindows {
         case RouteWindows.estatesViewWindow:
           return MaterialPageRoute(
               builder: (_) => EstatesViewWindow(appbar: MyApp.smallAppBar, estates : estates));
-      
+        
+        
+        case RouteWindows.estateInfoWindow:
+          return MaterialPageRoute(
+              builder: (_) => EstateInfoWindow(appbar: MyApp.smallAppBar, estate : selectedEstate));
+
       }
     } else {
       logger.d("[Route Settings] not initilaized route");

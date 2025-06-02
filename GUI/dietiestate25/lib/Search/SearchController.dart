@@ -39,7 +39,7 @@ class SearchController {
   
   static String citta = "";
   
-  static String mode = "Tutto";
+  static String mode = "Affitto";
 
   static Future<List> searchCity(BuildContext context, String city) async {
     
@@ -91,65 +91,65 @@ class SearchController {
     
     SearchController.citta = city;
     SearchController.page = page;
-    String address = 'Search/estates?sort=idimmobile&desc=true&page=$page&citta=$city&';
+    String address = 'Search/estates?sort=idimmobile&desc=true&page=$page&citta=$city';
 
     SearchController.minPrice = minPrice;
     if(minPrice != 0){
-      address += 'minPrice=$minPrice&';
+      address += '&minPrice=$minPrice';
     }
 
     SearchController.maxPrice = maxPrice;
     if(maxPrice != 0){
-      address += 'maxPrice=$maxPrice&';
+      address += '&maxPrice=$maxPrice';
     }
 
     SearchController.minDimensione = minDimensione;
     if(minDimensione != 0){
-      address += 'minSpace=$minDimensione&';
+      address += '&minSpace=$minDimensione';
     }
 
     SearchController.maxDimensione = maxDimensione;
     if(maxDimensione != 0){
-      address += 'maxSpace=$maxDimensione&';
+      address += '&maxSpace=$maxDimensione';
     }
 
     SearchController.minStanze = minStanze;
     if(minStanze != 0){
-      address += 'minRooms=$minStanze&';
+      address += '&minRooms=$minStanze';
     }
 
     SearchController.maxStanze = maxStanze;
     if(maxStanze != 0){
-      address += 'maxRooms=$maxStanze&';
+      address += '&maxRooms=$maxStanze';
     }
 
     SearchController.bagni = bagni;
     if(bagni != 0){
-      address += 'wc=$bagni&';
+      address += '&wc=$bagni';
     }
 
     SearchController.ascensore = ascensore;
     if(!ascensore.contains("Tutto")){
-      address += 'elevator=${ascensore == "Si"?true:false}&';
+      address += '&elevator=${ascensore == "Si"?true:false}';
     }
 
     SearchController.stato = stato;
     if(!stato.contains("Tutto")){
-      address += 'state=$stato&';
+      address += '&state=$stato';
     }
 
     SearchController.garage = garage;
     if(garage != 0){
-      address += 'garage=$garage&';
+      address += '&garage=$garage';
     }
 
     SearchController.opzioni = opzioni;
     if(!opzioni.contains("Tutto")){
-      address += 'energeticClass=$opzioni&';
+      address += '&energeticClass=$opzioni';
     }
 
     SearchController.mode = mode;
-    
+    address += '&mode=$mode';
  
 
     http.Response? response = await Connection.makeGetRequest(address);

@@ -18,7 +18,7 @@ class SearchFilterWindow extends StatefulWidget {
 }
 
 class _SearchFilterWindowState extends State<SearchFilterWindow> {
-  String mode = "Tutto";
+  String mode = "Affitto";
   int minPrice = 0;
   int maxPrice = 0;
   int minDimensione= 0;
@@ -51,14 +51,9 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
             spacing: 10,
             children: [
               ElevatedButton(
-                onPressed: mode == "Tutto"? null: () { setState(() {mode = "Tutto"; print(mode);}); },
-                style: mode == "Tutto"? AccessController.not_clickable_style_button : AccessController.clickable_style_button,
-                child: const Text('Tutto'),
-              ),
-              ElevatedButton(
-                onPressed: mode == "Vendita"? null: () { setState(() {mode = "Vendita"; print(mode);}); },
-                style: mode == "Vendita"? AccessController.not_clickable_style_button : AccessController.clickable_style_button,
-                child: const Text('Vendita'),
+                onPressed: mode == "Compra"? null: () { setState(() {mode = "Compra"; print(mode);}); },
+                style: mode == "Compra"? AccessController.not_clickable_style_button : AccessController.clickable_style_button,
+                child: const Text('Compra'),
               ),
     
               ElevatedButton(
@@ -90,8 +85,8 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                     itemHeight: 30,
                     value: minPrice,
                     minValue: 0,
-                    maxValue: 1 << 30,
-                    step: 10000,
+                    maxValue: mode.contains("Compra")? 5000000 : 8000,
+                    step: mode.contains("Compra")? 10000 : 50,
                     onChanged: (value) => setState(() => minPrice = value),
               
                   ),  
@@ -106,8 +101,8 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                     itemHeight: 30,
                     value: maxPrice,
                     minValue: 0,
-                    maxValue: 1 << 30,
-                    step: 10000,
+                    maxValue: mode.contains("Compra")? 5000000 : 8000,
+                    step: mode.contains("Compra")? 10000 : 50,
                     onChanged: (value) => setState(() => maxPrice = value),
                   ),  
                 ],
@@ -136,8 +131,8 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                     itemHeight: 30,
                     value: minDimensione,
                     minValue: 0,
-                    maxValue: 1 << 30,
-                    step: 1,
+                    maxValue: 1000,
+                    step: 20,
                     onChanged: (value) => setState(() => minDimensione = value),
                     
                   ),  
@@ -152,8 +147,8 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                     itemHeight: 30,
                     value: maxDimensione,
                     minValue: 0,
-                    maxValue: 1 << 30,
-                    step: 1,
+                    maxValue: 1000,
+                    step: 20,
                     onChanged: (value) => setState(() => maxDimensione = value),
                   ),  
                 ],
@@ -182,7 +177,7 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                     itemHeight: 30,
                     value: minStanze,
                     minValue: 0,
-                    maxValue: 1 << 30,
+                    maxValue: 5,
                     step: 1,
                     onChanged: (value) => setState(() => minStanze = value),
                     
@@ -198,7 +193,7 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                     itemHeight: 30,
                     value: maxStanze,
                     minValue: 0,
-                    maxValue: 1 << 30,
+                    maxValue: 5,
                     step: 1,
                     onChanged: (value) => setState(() => maxStanze = value),
                   ),  
