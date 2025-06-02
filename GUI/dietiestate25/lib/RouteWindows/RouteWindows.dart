@@ -1,5 +1,8 @@
 import 'package:dietiestate25/Admin/AdminHomeWindow.dart';
+import 'package:dietiestate25/Model/Estate/Estate.dart';
+import 'package:dietiestate25/Search/EstatesViewWindow.dart';
 import 'package:dietiestate25/Search/SearchCityWindow.dart';
+import 'package:dietiestate25/Search/SearchFilterWindow.dart';
 import 'package:dietiestate25/Search/SearchHome.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/main.dart';
@@ -24,6 +27,14 @@ class RouteWindows {
 
   static const searchCityWindow = '/SearchCityWindow';
   static const searchHomeWindow = '/SearchHomeWindow';
+  static const searchFilterWindow = '/SearchFilterWindow';
+  static const estatesViewWindow = '/EstatesViewWindow';
+
+  static String citta = "";
+
+  static List<Estate> estates = List.empty();
+
+  
 
   static Future<String> checkLogin() async {
     String isLoggedIn = await AccessController.checkLogin();
@@ -74,6 +85,15 @@ class RouteWindows {
         case RouteWindows.searchHomeWindow:
           return MaterialPageRoute(
               builder: (_) => SearchHomeWindow(appbar: MyApp.smallAppBar));
+        
+        case RouteWindows.searchFilterWindow:
+          return MaterialPageRoute(
+              builder: (_) => SearchFilterWindow(appbar: MyApp.smallAppBar, citta : citta));
+
+        case RouteWindows.estatesViewWindow:
+          return MaterialPageRoute(
+              builder: (_) => EstatesViewWindow(appbar: MyApp.smallAppBar, estates : estates));
+      
       }
     } else {
       logger.d("[Route Settings] not initilaized route");
@@ -82,4 +102,6 @@ class RouteWindows {
     return MaterialPageRoute(
         builder: (_) => LoginWindow(appbar: MyApp.appBarNotBackable));
   }
+
+  
 }
