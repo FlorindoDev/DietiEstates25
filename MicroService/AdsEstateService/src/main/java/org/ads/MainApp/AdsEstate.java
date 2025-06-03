@@ -1,18 +1,17 @@
 package org.ads.MainApp;
 
+import java.util.ArrayList;
+
 import org.ads.MainApp.Interface.AdsEstateService;
 import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.AgencyPostgreDAO;
 import org.dao.postgre.EstatePostgreDAO;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
-
 import org.md.Estate.Estate;
 import org.rab.Interfacce.ManagementSenderNotifyMQ;
 import org.rab.Resource.Senders.ManagementSenderNotifyRabbitMQ;
 import org.springframework.context.ApplicationContext;
-
-import java.util.ArrayList;
 
 public class AdsEstate implements AdsEstateService {
 

@@ -175,7 +175,7 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
     @Override
     public int getLastAddressId() throws DietiEstateException {
 
-        String query = "SELECT MAX(idindirizzo) FROM "+TABLE;
+        String query = "SELECT MAX(idindirizzo) AS idindirizzo FROM "+TABLE;
 
         PreparedStatement stmt = connection.getStatment(query);
 
