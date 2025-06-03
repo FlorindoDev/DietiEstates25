@@ -6,6 +6,9 @@
 .DS_Store
 .atom/
 .build/
+/macos/
+/linux/
+/ios/
 .buildlog/
 .history
 .svn/
@@ -34,6 +37,7 @@ migrate_working_dir/
 /build/
 pubspec.lock
 devtools_options.yaml
+
 
 # Symbolication related
 app.*.symbols

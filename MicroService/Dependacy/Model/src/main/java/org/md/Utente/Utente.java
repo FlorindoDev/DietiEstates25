@@ -16,23 +16,23 @@ public class Utente extends Translate {
     protected int idUser;
 
     @QueryParam("nome")
-    protected String nome;
+    protected String nome = "";
 
     @QueryParam("email")
     @DefaultValue("")
-    protected String email;
+    protected String email = "";
 
     @QueryParam("cognome")
-    protected String cognome;
+    protected String cognome = "";
 
     @QueryParam("password")
-    protected String password;
+    protected String password = "";
 
     @QueryParam("notifyAppointment")
-    protected Boolean notifyAppointment;
+    protected Boolean notifyAppointment = true;
 
     @QueryParam("idPushNotify")
-    protected String idPushNotify;
+    protected String idPushNotify = "";
 
 
 
@@ -114,7 +114,7 @@ public class Utente extends Translate {
         protected String email = "";
         protected String cognome = "";
         protected String password = "";
-        protected Boolean notifyAppointment = null;
+        protected Boolean notifyAppointment = true;
         protected String idPushNotify = "";
 
 

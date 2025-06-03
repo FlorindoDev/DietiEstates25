@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.md.Estate.Estate;
 import org.md.Geolocalizzazione.Indirizzo;
+import org.md.Estate.EstateFilter;
 import org.sch.MainApp.Interfacce.SearchService;
 
 
@@ -66,6 +67,10 @@ public class Search implements SearchService {
             return "{\"code\": 10, \"message\": \"There aren't estets in this city\"}";
         }
 
+        return buildJson(estates);
+    }
+
+    private static String buildJson(List<Estate> estates) {
         String json = "{\"code\": 0, \"message\": \"success of action get estate\", \"Estates\": [";
 
         for (Estate estate : estates){
@@ -76,12 +81,24 @@ public class Search implements SearchService {
 
 
         json = json + "]}";
-
         return json;
     }
 
     @Override
     public void close() {
         estateDAO.close();
+    }
+
+    @Override
+    public String search(EstateFilter filter) {
+        List<Estate> estates;
+
+        try {
+            estates = estateDAO.search(filter);
+        } catch (DietiEstateException e) {
+            return "{\"code\": 10, \"message\": \"There aren't estets in this city\"}";
+        }
+
+        return buildJson(estates);
     }
 }

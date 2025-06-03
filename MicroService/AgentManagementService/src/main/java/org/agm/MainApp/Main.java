@@ -64,7 +64,6 @@ public class Main {
                 .setDescrizioneBuilder("Bellissima")
                 .setElevatorBuilder(false)
                 .setFloorBuilder(1)
-                .setFotoBuilder("foto di casa al mare")
                 .setGarageBuilder(3)
                 .setModeBuilder(new Vendita())
                 .setPriceBuilder(1000000)

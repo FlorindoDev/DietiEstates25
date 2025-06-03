@@ -222,6 +222,11 @@ public class AgencyPostgreDAO implements AgencyDAO {
                 Agent agent = new Agent.Builder(1,connection.extractString(EMAIL_COLUMN))
                         .setName(connection.extractString("nome"))
                         .setCognome(connection.extractString(COGNOME_COLUMN))
+                        .setPassword(connection.extractString("password"))
+                        .setBiografia(connection.extractString("biografia"))
+                        .setProfilePic(connection.extractString("ImmagineProfilo"))
+                        .setIdPushNotify(connection.extractString("idPushNoitfy"))
+                        .setNotifyAppointment(connection.extractBoolean("notify_appointment"))
                         .setAgency(fullAgency)
                         .build();
 
@@ -286,7 +291,6 @@ public class AgencyPostgreDAO implements AgencyDAO {
                         .setClasseEnergeticaBuilder(null)
                         .setDescrizioneBuilder(connection.extractString("descrizione"))
                         .setFloorBuilder(connection.extractInt("piano"))
-                        .setFotoBuilder(connection.extractString("foto"))
                         .setGarageBuilder(connection.extractInt("garage"))
                         .setModeBuilder(null)
                         .setIndirizzoBuilder(null)

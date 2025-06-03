@@ -5,6 +5,27 @@ class Agenzia {
   String _sede = "";
   String _email = "";
 
+  Map<String, dynamic> toJson() {
+    return {
+      'codicePartitaIVA': _partitaIVA,
+      'nome': _nome_agenzia,
+      'sede': _sede,
+
+    };
+  }
+
+  factory Agenzia.fromJson(Map<String, dynamic> json) {
+    Agenzia agenzia = Agenzia();
+    agenzia._partitaIVA = json['codicePartitaIVA'];
+    agenzia._nome_agenzia = json['nome'];
+    agenzia._sede = json['sede'];
+    
+    return agenzia;
+  }
+
+
+  Agenzia(); 
+  
   Agenzia._builder(AgenziaBuilder builder)
       : _id_agency = builder._id_agency,
         _nome_agenzia = builder._nome_agenzia ?? '',

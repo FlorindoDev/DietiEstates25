@@ -317,3 +317,46 @@ services:
               claims_to_verify:
                 - exp
               realm: null
+        
+- name: SearchService
+    id: 5d1093d7-fd54-4b32-9680-ab2d8590d8de
+    enabled: true
+    protocol: http
+    host: searchService
+    port: 7012
+    retries: 5
+    connect_timeout: 60000
+    write_timeout: 60000
+    read_timeout: 60000
+    routes:
+      - name: SearchService-route
+        id: 5d1093d7-fd54-4b32-9680-ab2d8590d8de
+        protocols:
+          - http
+          - https
+        methods:
+          - GET
+          - POST
+          - DELETE
+        paths:
+          - /Search
+        strip_path: false
+        plugins:
+          - name: jwt
+            protocols:
+              - http
+              - https
+            config:
+              run_on_preflight: true
+              anonymous: null
+              secret_is_base64: true
+              header_names:
+                - authorization
+              cookie_names: []
+              uri_param_names:
+                - jwt
+              key_claim_name: kid
+              maximum_expiration: 0
+              claims_to_verify:
+                - exp
+              realm: null

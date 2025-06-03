@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dietiestate25/Validation/Validate.dart';
+import 'package:dietiestate25/Validation/Validetor.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 // import 'package:dietiestate25/Model/loggedUser/loggedUser.dart';
@@ -9,8 +11,9 @@ import 'package:dietiestate25/Connection/Connection.dart';
 
 class AdminHomeController {
   //static final String urlEstates = 'http://10.0.2.2:7004/api/';
-  static final String urlAdmin = 'http://127.0.0.1:8000/ManagementAdmin/'; //Per Mimmo
-  // static final String urlAdmin = 'http://10.0.2.2:8000/ManagementAdmin/'; //Per Mimmo
+  static final String urlAdmin = 'ManagementAdmin/'; //Per Mimmo
+  static Validator valida = Validate();
+
   
   
   static final ButtonStyle clickable_style_button = ButtonStyle(
@@ -23,37 +26,14 @@ class AdminHomeController {
     foregroundColor: WidgetStateProperty.all(Colors.white),
   );
 
-  static Future<List<Amministratore>> getAmministratori(
-      dynamic context, String quary) async {
+  static Future<List<Amministratore>> getAmministratori(dynamic context, String quary) async {
 
-    http.Response response;
-    print(loggedUser);
-    Uri uri = Uri.parse(urlAdmin +
-        'loadAdmin?codicePartitaIVA=' +
-        (loggedUser.partitaiva ?? "0") +
-        quary);
+    http.Response? response = await Connection.makeGetRequest(urlAdmin +  'loadAdmin?codicePartitaIVA=' + (loggedUser.partitaiva ?? "0") + quary);
 
-    try {
-      // response = await Connection.makeGetRequest(urlAdmin +
-      //     'loadAdmin?codicePartitaIVA=' +
-      //     (loggedUser.partitaiva ?? "0") +
-      //     quary);
-
-      // logger.e(response?.statusCode);
-
-      print('\n\n\n\n');
-      print(uri);
-      print('\n\n\n\n');
-      response = await http.get(
-        uri, // URL valido
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${Connection.jwt}",
-        },
-      );
-    } catch (e) {
+    if (response == null) {
       return List<Amministratore>.empty();
     }
+
 
     dynamic ris;
     List<Amministratore> amministratori = [];
@@ -85,156 +65,46 @@ class AdminHomeController {
   }
 
   static Future promoteAdmin(BuildContext context, Amministratore admin, String s) async{
-    http.Response response;
-    print("\n\n\n\n");
-    print(admin.toJson());
-    Uri uri = Uri.parse(urlAdmin +
-        'downgradeSupport');
 
 
-    try {
-      // response = await Connection.makeGetRequest(urlAdmin +
-      //     'loadAdmin?codicePartitaIVA=' +
-      //     (loggedUser.partitaiva ?? "0") +
-      //     quary);
-
-      // logger.e(response?.statusCode);
-
-      print('\n\n\n\n');
-      print(uri);
-      print('\n\n\n\n');
-      response = await http.post(
-        uri, // URL valido
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${Connection.jwt}",
-        },
-        body: jsonEncode(admin),
-      );
-
-      print('\n\n\n\n');
-      print(response.body);
-    
-      if (response.statusCode == 200) {
-        // La richiesta è andata a buon fine
-        var responseData = json.decode(utf8.decode(response.bodyBytes));
-        if (responseData['code'] == 0) {
-          MyApp.mostraPopUpSuccess(context, "Successo", responseData['message']);
-         
-        } else {
-          MyApp.mostraPopUpWarining(context, "Errore", responseData['message']);
-        }
-      } else {
-        // La richiesta non è andata a buon fine
-        MyApp.mostraPopUpWarining(context, "Errore", "Errore di rete");
-      }
-    } catch (e) {
-      MyApp.mostraPopUpWarining(context, "Errore", e.toString());
+    final Map<String, dynamic> userMap = admin.toJson();
+    http.Response? response = await Connection.makePostRequest(userMap, urlAdmin +'upgradeSupportAdmin');
+    if(response == null) {
+      MyApp.mostraPopUpWarining(context, "Errore", "Errore di rete");
+      return;
+    }else{
+      
+      manageResponse(response, context);
     }
 
 
   }
 
   static Future unPromoteAdmin(BuildContext context, Amministratore admin, String s) async {
-    http.Response response;
-    print("\n\n\n\n");
-    print(admin.toJson());
-    Uri uri = Uri.parse(urlAdmin +
-        'upgradeSupportAdmin');
-
-
-    try {
-      // response = await Connection.makeGetRequest(urlAdmin +
-      //     'loadAdmin?codicePartitaIVA=' +
-      //     (loggedUser.partitaiva ?? "0") +
-      //     quary);
-
-      // logger.e(response?.statusCode);
-
-      print('\n\n\n\n');
-      print(uri);
-      print('\n\n\n\n');
-      response = await http.post(
-        uri, // URL valido
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${Connection.jwt}",
-        },
-        body: jsonEncode(admin),
-      );
-
-      print('\n\n\n\n');
-      print(response.body);
-    
-      if (response.statusCode == 200) {
-        // La richiesta è andata a buon fine
-        var responseData = json.decode(utf8.decode(response.bodyBytes));
-        if (responseData['code'] == 0) {
-          MyApp.mostraPopUpSuccess(context, "Successo", responseData['message']);
-         
-        } else {
-          MyApp.mostraPopUpWarining(context, "Errore", responseData['message']);
-        }
-      } else {
-        // La richiesta non è andata a buon fine
-        MyApp.mostraPopUpWarining(context, "Errore", "Errore di rete");
-      }
-    } catch (e) {
-      MyApp.mostraPopUpWarining(context, "Errore", e.toString());
+    final Map<String, dynamic> userMap = admin.toJson();
+    http.Response? response = await Connection.makePostRequest(userMap, urlAdmin +'downgradeSupportAdmin');
+    if(response == null) {
+      MyApp.mostraPopUpWarining(context, "Errore", "Errore di rete");
+      return;
+    }else{
+      
+      manageResponse(response, context);
     }
-
+    
 
   }
 
   static removeAdmin(BuildContext context, Amministratore admin, String s) async {
-    http.Response response;
-    print("\n\n\n\n");
-    print(admin.toJson());
-    Uri uri = Uri.parse(urlAdmin +
-        'removeAdmin?email=${admin.email}');
 
-
-    try {
-      // response = await Connection.makeGetRequest(urlAdmin +
-      //     'loadAdmin?codicePartitaIVA=' +
-      //     (loggedUser.partitaiva ?? "0") +
-      //     quary);
-
-      // logger.e(response?.statusCode);
-
-      print('\n\n\n\n');
-      print(uri);
-      print('\n\n\n\n');
-      response = await http.delete(
-        uri, // URL valido
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${Connection.jwt}",
-        },
-        
-        
-      );
-
-      print('\n\n\n\n');
-      print(response.body);
-    
-      if (response.statusCode == 200) {
-        // La richiesta è andata a buon fine
-        var responseData = json.decode(utf8.decode(response.bodyBytes));
-        if (responseData['code'] == 0) {
-          MyApp.mostraPopUpSuccess(context, "Successo", responseData['message']);
-         
-        } else {
-          MyApp.mostraPopUpWarining(context, "Errore", responseData['message']);
-        }
-      } else {
-        // La richiesta non è andata a buon fine
-        MyApp.mostraPopUpWarining(context, "Errore", "Errore di rete");
-      }
-    } catch (e) {
-      MyApp.mostraPopUpWarining(context, "Errore", e.toString());
+    http.Response? response = await Connection.makeDeleteRequest(urlAdmin +'removeAdmin?email=' + admin.email);
+    if(response == null) {
+      MyApp.mostraPopUpWarining(context, "Errore", "Errore di rete");
+      return;
+    }else{
+      
+      manageResponse(response, context);
     }
-
+    
 
 
 
@@ -242,56 +112,43 @@ class AdminHomeController {
 
   }
 
-  static void createAdmin(BuildContext context, Amministratore admin, String s) async{
-    http.Response response;
-    print("\n\n\n\n");
-    print(admin.toJson());
-    Uri uri = Uri.parse(urlAdmin +
-        'addAdmin');
-
-
-    try {
-      // response = await Connection.makeGetRequest(urlAdmin +
-      //     'loadAdmin?codicePartitaIVA=' +
-      //     (loggedUser.partitaiva ?? "0") +
-      //     quary);
-
-      // logger.e(response?.statusCode);
-
-      print('\n\n\n\n');
-      print(uri);
-      print('\n\n\n\n');
-      response = await http.post(
-        uri, // URL valido
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${Connection.jwt}",
-        },
-        body: jsonEncode(admin),
-      );
-
-      print('\n\n\n\n');
-      print(response.body);
-    
-      if (response.statusCode == 200) {
-        // La richiesta è andata a buon fine
-        var responseData = json.decode(utf8.decode(response.bodyBytes));
-        if (responseData['code'] == 0) {
-          MyApp.mostraPopUpSuccess(context, "Successo", responseData['message']);
-         
-        } else {
-          MyApp.mostraPopUpWarining(context, "Errore", responseData['message']);
-        }
+  static void manageResponse(http.Response response, BuildContext context) {
+    var responseData = json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      // La richiesta è andata a buon fine
+      
+      if (responseData['code'] == 0) {
+        MyApp.mostraPopUpSuccess(context, "Successo", responseData['message']);
+       
       } else {
-        // La richiesta non è andata a buon fine
-        MyApp.mostraPopUpWarining(context, "Errore", "Errore di rete");
+        MyApp.mostraPopUpWarining(context, "Errore", responseData['message']);
       }
-    } catch (e) {
-      MyApp.mostraPopUpWarining(context, "Errore", e.toString());
+    } else {
+      // La richiesta non è andata a buon fine
+      MyApp.mostraPopUpWarining(context, "Errore", responseData['message']);
     }
+  }
 
-
-
-
+  static void createAdmin(BuildContext context, Amministratore admin, String s) async{
+    try{
+      valida.validateEmail(admin.email);
+      valida.validatePassword(admin.password);
+      valida.validateName(admin.nome);
+      valida.validateSurname(admin.cognome);
+    }catch(e){
+      MyApp.mostraPopUpWarining(context, "Errore",e.toString());
+      return;
+    }
+    
+    final Map<String, dynamic> userMap = admin.toJson();
+    http.Response? response = await Connection.makePostRequest(userMap, urlAdmin +'addAdmin');
+    if(response == null) {
+      MyApp.mostraPopUpWarining(context, "Errore", "Errore di rete");
+      return;
+    }else{
+      
+      manageResponse(response, context);
+    }
+    
   }
 }

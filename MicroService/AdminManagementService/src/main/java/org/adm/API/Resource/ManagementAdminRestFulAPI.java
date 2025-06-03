@@ -1,5 +1,4 @@
 package org.adm.API.Resource;
-
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -20,10 +19,10 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String addAdmin(Admin admin) {
+    public Response addAdmin(Admin admin) {
         String result = managementAdmin.addAdmin(admin,admin.getAgency());
         managementAdmin.close();
-        return result;
+        return Response.ok(result).build();
     }
 
     @DELETE
@@ -47,21 +46,21 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String upgradeSupportAdmin(Admin admin) {
+    public Response upgradeSupportAdmin(Admin admin) {
         String result = managementAdmin.upgradeSupportAdmin(admin);
         managementAdmin.close();
-        return result;
+        return Response.ok(result).build();
     }
 
     @POST
-    @Path("downgradeSupport")
+    @Path("downgradeSupportAdmin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public String downgradeSupport(Admin admin) {
+    public Response downgradeSupportAdmin(Admin admin) {
         String result = managementAdmin.downgradeSupport(admin);
         managementAdmin.close();
-        return result;
+        return Response.ok(result).build();
     }
 
     @GET

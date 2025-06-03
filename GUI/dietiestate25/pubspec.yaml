@@ -20,6 +20,8 @@ dependencies:
   logger: ^2.0.2
   lucide_icons: ^0.257.0
   image_picker: ^0.8.6
+  numberpicker: ^2.1.2
+
 
 
 dev_dependencies:

@@ -1,13 +1,20 @@
 package org.md.Utente;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.ws.rs.QueryParam;
 import org.md.Agency.Agency;
 
 public class Agent extends Utente{
 
+    @QueryParam("biografia")
     private String biografia = "";
+
+    @QueryParam("immagineprofilo")
     private String immagineprofilo = "";
+
+    @QueryParam("agency")
     private Agency agency;
+
     public Agent() {}
 
     protected Agent(Builder builder) {

@@ -55,7 +55,7 @@ public class ManagementAgent implements ManagmentAgentService {
     public String removeAgent(Agent agent) {
 
         try{
-            agentDAO.removeAdmin(agent);
+            agentDAO.removeAgent(agent);
             return "{\"code\": 0, \"message\": \"success of action admin remove\"}";
         }catch (DietiEstateException e){
             return e.getMessage();
@@ -69,7 +69,7 @@ public class ManagementAgent implements ManagmentAgentService {
             agencyDAO.isAgencyPresent(agency);
 
             List<Agent> agents = agencyDAO.getAgents(agency);
-            String json = "{\"code\": 0, \"message\": \"success of action get agent\", \"Agent\": [";
+            String json = "{\"code\": 0, \"message\": \"success of action get agent\", \"agents\": [";
 
             for (Agent agent : agents){
                 json = json.concat(agent.TranslateToJson());

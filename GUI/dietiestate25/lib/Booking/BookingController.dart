@@ -6,7 +6,9 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-final String url = 'http://10.0.2.2:7006/api/appointments/meteo?';
+//final String url = 'http://10.0.2.2:7006/api/appointments/meteo?'; // Per Android
+final String url = 'http://127.0.0.1:7006/api/appointments/meteo?'; // Per Windows
+
 
 class BookingController {
   // Constructor
