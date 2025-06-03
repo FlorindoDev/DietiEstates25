@@ -4,6 +4,7 @@ import org.ads.MainApp.Interface.AdsEstateService;
 import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.AgencyPostgreDAO;
 import org.dao.postgre.EstatePostgreDAO;
+import org.exc.DataBaseException.DietiEstateDBexception;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 

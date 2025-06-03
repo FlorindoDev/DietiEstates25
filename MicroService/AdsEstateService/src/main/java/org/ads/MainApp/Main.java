@@ -1,5 +1,7 @@
 package org.ads.MainApp;
 
+import java.net.URI;
+
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -8,11 +10,9 @@ import org.rab.MainSpringBoot.MainSenderNotify;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 
-import java.net.URI;
-
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    private static final String BASE_URI = "http://localhost:7005/";
+    private static final String BASE_URI = "http://0.0.0.0:7004/";
     private static final String RESOURCE = "org.ads.API.Resource";
 
     public static final ApplicationContext rabbitMQ = SpringApplication.run(MainSenderNotify.class);

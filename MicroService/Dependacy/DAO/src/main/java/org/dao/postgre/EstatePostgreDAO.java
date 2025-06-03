@@ -73,10 +73,10 @@ public class EstatePostgreDAO implements EstateDAO {
                 logger.severe(ERROR_EXECUTING_QUERY + e1.getMessage());
                 throw new ErrorExecutingQuery();
             }
+            logger.info("1");
             idAddress = connection.extractInt("idindirizzo");
+            logger.info("2");
         }
-
-
 
         try (PreparedStatement stmt = connection.getStatment(query)) {
 

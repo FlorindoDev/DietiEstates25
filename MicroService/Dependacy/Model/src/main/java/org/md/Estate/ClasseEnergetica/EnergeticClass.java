@@ -1,5 +1,6 @@
 package org.md.Estate.ClasseEnergetica;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -15,10 +16,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = E.class, name = "E"),
         @JsonSubTypes.Type(value = F.class, name = "F"),
 })
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public interface EnergeticClass {
 
-    public String getNome();
+    String getNome();
 
 }
 
