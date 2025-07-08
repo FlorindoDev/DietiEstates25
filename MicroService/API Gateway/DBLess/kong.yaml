@@ -318,7 +318,7 @@ services:
                 - exp
               realm: null
         
-- name: SearchService
+  - name: SearchService
     id: 5d1093d7-fd54-4b32-9680-ab2d8590d8de
     enabled: true
     protocol: http
