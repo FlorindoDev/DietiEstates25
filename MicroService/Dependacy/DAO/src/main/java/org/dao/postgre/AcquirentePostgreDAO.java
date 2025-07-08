@@ -58,9 +58,8 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
 
     @Override
     public void createUser(Acquirente acquirente) throws DietiEstateException {
-
-
-        String query="INSERT INTO acquirente(Email, Nome, Cognome, Password) VALUES(?,?,?,crypt( ? , '" +  connection.getKeyCrypt() +"'))";
+        String query = "INSERT INTO acquirente(Email, Nome, Cognome, Password, notify_appointment, notify_new_estate, change_price_notify) " +
+                "VALUES (?, ?, ?, crypt(?, '" + connection.getKeyCrypt() + "'), ?, ?, ?)";
 
         PreparedStatement stmt = connection.getStatment(query);
 
@@ -69,6 +68,9 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
             stmt.setString(2, acquirente.getNome());
             stmt.setString(3, acquirente.getCognome());
             stmt.setString(4, acquirente.getPassword());
+            stmt.setBoolean(5, false); // notify_appointment
+            stmt.setBoolean(6, false); // notify_new_estate
+            stmt.setBoolean(7, false); // change_price_notify
         } catch (SQLException e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorCreateStatment();
@@ -80,9 +82,9 @@ public class AcquirentePostgreDAO extends UtentePostgreDAO implements Acquirente
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
             throw new ErrorExecutingQuery();
         }
-
-
     }
+
+
 
     @Override
     public void updateUser(Acquirente utente) throws DietiEstateException {

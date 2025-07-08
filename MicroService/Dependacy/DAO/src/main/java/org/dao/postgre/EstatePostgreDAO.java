@@ -644,7 +644,7 @@ public class EstatePostgreDAO implements EstateDAO {
         }
 
 
-        query += " ORDER BY " + filter.getSort() +" " + (Boolean.TRUE.equals(filter.getDesc()) ? "DESC" : "ASC") + " OFFSET ? LIMIT ? ";
+        query += " ORDER BY immobile." + filter.getSort() +" " + (Boolean.TRUE.equals(filter.getDesc()) ? "DESC" : "ASC") + " OFFSET ? LIMIT ? ";
 
 
         presenzeInteger.put(numberParamsOfFilter++, filter.getPage() - 1);
