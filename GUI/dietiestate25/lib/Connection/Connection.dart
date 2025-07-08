@@ -14,8 +14,8 @@ class HttpException implements Exception {
 
 class Connection {
   // static final Uri url = Uri.parse('http://localhost:8000/'); // KONG URL
-  // static final String baseUrl = 'http://127.0.0.1:8000'; // Per Windows
-  static final String baseUrl = 'http://10.0.2.2:8000'; // Per Andorid
+  static final String baseUrl = 'http://127.0.0.1:8000'; // Per Windows
+  // static final String baseUrl = 'http://10.0.2.2:8000'; // Per Andorid
 
   static final Map<Type, String> getAccountProfileUrl = {
     Acquirente: '/ManagementAccount/getAccountAcquirente',
@@ -161,6 +161,40 @@ class Connection {
 
     try{
       http.Response? response = await makePostRequest(body, "/login");
+      return response;
+    }on HttpException{
+      rethrow;
+    } catch (e){
+      logger.e("Errore durante la richiesta: $e");
+      return null;
+    }
+
+    // try {
+    //   final response = await http.post(
+    //     Uri.parse("$baseUrl/login"),
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: jsonEncode(body),
+    //   );
+
+    //   // Controlla se la richiesta ha avuto successo (200-299)
+    //   if (response.statusCode >= 200 && response.statusCode < 300) {
+    //     return response;
+    //   } else {
+    //     print("Errore HTTP: ${response.statusCode} - ${response.body}");
+    //     return null;
+    //   }
+    // } catch (e) {
+    //   print("Errore durante la richiesta: $e");
+    //   return null;
+    // }
+  }
+
+    static Future<http.Response?> makeSignUp(Map<String, dynamic>? body) async {
+
+    try{
+      http.Response? response = await makePostRequest(body, "/signup");
       return response;
     }on HttpException{
       rethrow;
