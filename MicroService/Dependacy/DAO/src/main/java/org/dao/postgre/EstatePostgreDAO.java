@@ -361,7 +361,7 @@ public class EstatePostgreDAO implements EstateDAO {
         // inserire il fetch delle immagini con una nuova query
 
         // 6. Costruisco l'Estate via Builder
-        Estate estate = new Estate.Builder<>(idImmobile)
+        return new Estate.Builder<>(idImmobile)
                 .setAgenteBuilder(agente)
                 .setAgenziaBuilder(fullAgency)
                 .setDescrizioneBuilder(descr)
@@ -378,7 +378,6 @@ public class EstatePostgreDAO implements EstateDAO {
                 .setIndirizzoBuilder(indirizzo)
                 .build();
 
-        return estate;
     }
 
 
