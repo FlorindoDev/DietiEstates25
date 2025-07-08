@@ -181,4 +181,9 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
         }
     }
 
+    public ResultSet getResult(){
+        return this.result;
+    }
+
+
 }

@@ -1,13 +1,14 @@
 package org.ads.MainApp;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 import org.ads.MainApp.Interface.AdsEstateService;
 import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.AgencyPostgreDAO;
 import org.dao.postgre.EstatePostgreDAO;
 import org.exc.DietiEstateException;
-import org.md.Agency.Agency;
 import org.md.Estate.Estate;
 import org.rab.Interfacce.ManagementSenderNotifyMQ;
 import org.rab.Resource.Senders.ManagementSenderNotifyRabbitMQ;
@@ -55,12 +56,20 @@ public class AdsEstate implements AdsEstateService {
     }
 
     @Override
-    public String loadEstate(Agency agency) {
+    public String loadEstate(Integer idImmobile) {
 
         try {
-            agencyDao = new AgencyPostgreDAO();
-            ArrayList<Estate> estates = agencyDao.getEstates(agency);
-            return convertToJson(estates);
+            estateDao = new EstatePostgreDAO();
+
+            List<Estate> estates;
+            if (idImmobile == null) {// prendi tutti
+                estates = estateDao.getEstates();
+            } else { // prendo solo quello con id specifico (può lanciare eccezione se non esiste)
+                Estate e = estateDao.getEstateById(idImmobile);
+                estates = List.of(e);
+            }
+
+            return convertToJson(new ArrayList<>(estates));
         }catch (DietiEstateException e){
             return e.getMessage();
         }

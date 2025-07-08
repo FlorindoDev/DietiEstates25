@@ -22,4 +22,8 @@ public interface EstateDAO {
     void close();
 
     List<Estate> search(EstateFilter filter) throws DietiEstateException;
+
+    List<Estate> getEstates() throws DietiEstateException;
+
+    Estate getEstateById(Integer idImmobile) throws DietiEstateException;
 }
