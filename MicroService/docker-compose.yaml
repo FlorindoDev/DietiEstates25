@@ -168,7 +168,8 @@ services:
 
 
   kong-gateway:
-    image: dbless-kong-gateway
+    # image: dbless-kong-gateway
+    build: ./API Gateway/DBLess
     container_name: kong-gateway-dbless
     networks:
       - dieti-net
