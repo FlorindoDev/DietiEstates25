@@ -9,7 +9,6 @@ import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.AgencyPostgreDAO;
 import org.dao.postgre.EstatePostgreDAO;
 import org.exc.DietiEstateException;
-import org.md.Agency.Agency;
 import org.md.Estate.Estate;
 import org.rab.Interfacce.ManagementSenderNotifyMQ;
 import org.rab.Resource.Senders.ManagementSenderNotifyRabbitMQ;
@@ -21,7 +20,6 @@ public class AdsEstate implements AdsEstateService {
     EstateDAO estateDao;
 
     ManagementSenderNotifyMQ senderMQ;
-    private static final Logger logger = Logger.getLogger(EstatePostgreDAO.class.getName());
 
     public AdsEstate (ApplicationContext rabbitMQ){
         senderMQ = rabbitMQ.getBean(ManagementSenderNotifyRabbitMQ.class);
@@ -60,16 +58,13 @@ public class AdsEstate implements AdsEstateService {
     @Override
     public String loadEstate(Integer idImmobile) {
 
-        System.out.println("ADS Controller loadEstate call" + idImmobile);
         try {
             estateDao = new EstatePostgreDAO();
 
             List<Estate> estates;
             if (idImmobile == null) {// prendi tutti
-                System.out.println("NO ID");
                 estates = estateDao.getEstates();
             } else { // prendo solo quello con id specifico (può lanciare eccezione se non esiste)
-                System.out.println("ID: " + idImmobile);
                 Estate e = estateDao.getEstateById(idImmobile);
                 estates = List.of(e);
             }

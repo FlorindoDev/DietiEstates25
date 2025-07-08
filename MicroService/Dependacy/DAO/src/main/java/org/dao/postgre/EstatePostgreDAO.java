@@ -210,7 +210,7 @@ public class EstatePostgreDAO implements EstateDAO {
 
     @Override
     public List<Estate> getEstates() throws DietiEstateException{
-        System.out.println("HEREEEEEEEEEEEEEE");
+
         String query = """
             SELECT
               i.idimmobile AS i_idimmobile,
