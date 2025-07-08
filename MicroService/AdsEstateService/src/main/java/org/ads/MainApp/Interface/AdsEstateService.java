@@ -7,7 +7,7 @@ public interface AdsEstateService {
 
     String createEstate(Estate estate);
     String changeEstate(Estate estate);
-    String loadEstate(Agency estate);
+    String loadEstate(Integer idImmobile);
 
     void close();
 }

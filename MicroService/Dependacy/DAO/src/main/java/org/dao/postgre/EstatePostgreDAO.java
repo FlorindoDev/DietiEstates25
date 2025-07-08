@@ -1,10 +1,18 @@
 package org.dao.postgre;
 
-import DBLib.Postgres.CommunicationWithPostgre;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import org.dao.Interfacce.AgentDAO;
 import org.dao.Interfacce.EstateDAO;
-
-import org.exc.DataBaseException.*;
+import org.exc.DataBaseException.AddressAlreadyExists;
+import org.exc.DataBaseException.ErrorCreateStatment;
+import org.exc.DataBaseException.ErrorExecutingQuery;
+import org.exc.DataBaseException.EstateNotExists;
 import org.exc.DietiEstateException;
 import org.md.Agency.Agency;
 import org.md.Estate.ClasseEnergetica.ConverterEnergeticClass;
@@ -18,11 +26,7 @@ import org.md.Estate.Status.Status;
 import org.md.Geolocalizzazione.Indirizzo;
 import org.md.Utente.Agent;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.*;
-import java.util.logging.Logger;
+import DBLib.Postgres.CommunicationWithPostgre;
 
 public class EstatePostgreDAO implements EstateDAO {
 
@@ -40,12 +44,29 @@ public class EstatePostgreDAO implements EstateDAO {
         this.agentDAO = new AgentPostgreDAO();
     }
 
+    public void insertImg(int idEstate, String foto) throws SQLException{
+        String query = """
+          INSERT INTO fotoimmobile (foto, idimmobile)
+          VALUES (?, ?)
+        """;
+
+        try (PreparedStatement stmtFoto = connection.getStatment(query)) {
+            stmtFoto.setString(1, foto);
+            stmtFoto.setInt(2, idEstate);
+            stmtFoto.executeUpdate();
+        }
+
+    }
+
     @Override
     public void createEstate(Estate newEstate) throws DietiEstateException {
 
         String query = "INSERT INTO " + TABLE + " (" +
-                "idagente, idindirizzo, partitaIVA, foto, descrizione, prezzo, dimensioni, stanze, piano, bagni, garage, ascensore, classeenergetica, modalita, stato) VALUES (" +
-                "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "idagente, idindirizzo, partitaIVA, descrizione, prezzo, dimensioni, stanze, piano, bagni, garage, ascensore, classeenergetica, modalita, stato) VALUES (" +
+                "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +
+                "RETURNING idimmobile";
+
+        connection.setAutoCommit(false);
 
         IndirizzoPostgreDAO addrsDao = new IndirizzoPostgreDAO(connection);
         AgentPostgreDAO agentsDao = new AgentPostgreDAO();
@@ -58,55 +79,67 @@ public class EstatePostgreDAO implements EstateDAO {
         agentsDao.isUserPresent(newEstate.getAgente());
 
         int idAddress = 0;
-
         try {
-            addrsDao.isAddressNotExistsByALL(newEstate.getIndirizzo()); // vuole crearlo, verifico se gai esiste
-            // se non solleva eccezioni significa che non esiste, procedo a crarlo
-            addrsDao.createAddress(newEstate.getIndirizzo());
-            idAddress = addrsDao.getLastAddressId();
-
-        } catch (AddressAlreadyExists e) {
-            logger.info("sono nel catch");
             try {
-                connection.nextRow();
-            } catch (SQLException e1) {
-                logger.severe(ERROR_EXECUTING_QUERY + e1.getMessage());
+                addrsDao.isAddressNotExistsByALL(newEstate.getIndirizzo()); // vuole crearlo, verifico se gai esiste
+                // se non solleva eccezioni significa che non esiste, procedo a crarlo
+                addrsDao.createAddress(newEstate.getIndirizzo());
+                idAddress = addrsDao.getLastAddressId();
+
+            } catch (AddressAlreadyExists e) {
+                logger.info("sono nel catch");
+                try {
+                    connection.nextRow();
+                } catch (SQLException e1) {
+                    logger.severe(ERROR_EXECUTING_QUERY + e1.getMessage());
+                    throw new ErrorExecutingQuery();
+                }
+                logger.info("1");
+                idAddress = connection.extractInt("idindirizzo");
+                logger.info("2");
+            }
+
+            try (PreparedStatement stmt = connection.getStatment(query)) {
+
+                int index = 0;
+
+                stmt.setInt(++index, newEstate.getAgente().getIdUser());
+                stmt.setInt(++index, idAddress);
+                stmt.setString(++index, newEstate.getAgenzia().getCodicePartitaIVA());
+
+                stmt.setString(++index, newEstate.getDescrizione());
+                stmt.setDouble(++index, newEstate.getPrice());
+                stmt.setDouble(++index, newEstate.getSpace());
+                stmt.setInt(++index, newEstate.getRooms());
+                stmt.setInt(++index, newEstate.getFloor());
+                stmt.setInt(++index, newEstate.getWc());
+                stmt.setInt(++index, newEstate.getGarage());
+                stmt.setBoolean(++index, newEstate.getElevator());
+                stmt.setString(++index, newEstate.getClasseEnergetica().getNome());
+                stmt.setObject(++index, newEstate.getMode().getName(), Types.OTHER);
+                stmt.setObject(++index, newEstate.getStato().getName(), Types.OTHER);
+
+                ResultSet rs = stmt.executeQuery();
+                if (!rs.next()) throw new ErrorExecutingQuery();
+                newEstate.setIdEstate(rs.getInt("idimmobile"));
+
+                for (String foto : newEstate.getFoto()) {
+                    insertImg(newEstate.getIdEstate(), foto);
+                }
+
+                connection.commitActions();
+
+            } catch (SQLException e) {
+                logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
                 throw new ErrorExecutingQuery();
             }
-            logger.info("1");
-            idAddress = connection.extractInt("idindirizzo");
-            logger.info("2");
-        }
 
-        try (PreparedStatement stmt = connection.getStatment(query)) {
-
-            int index = 0;
-
-            stmt.setInt(++index, newEstate.getAgente().getIdUser());
-            stmt.setInt(++index, idAddress);
-            stmt.setString(++index, newEstate.getAgenzia().getCodicePartitaIVA());
-
-            stmt.setString(++index, newEstate.getDescrizione());
-            stmt.setDouble(++index, newEstate.getPrice());
-            stmt.setDouble(++index, newEstate.getSpace());
-            stmt.setInt(++index, newEstate.getRooms());
-            stmt.setInt(++index, newEstate.getFloor());
-            stmt.setInt(++index, newEstate.getWc());
-            stmt.setInt(++index, newEstate.getGarage());
-            stmt.setBoolean(++index, newEstate.getElevator());
-            stmt.setString(++index, newEstate.getClasseEnergetica().getNome());
-            stmt.setObject(++index, newEstate.getMode().getName(), Types.OTHER);
-            stmt.setObject(++index, newEstate.getStato().getName(), Types.OTHER);
-
-            connection.makeQueryUpdate(stmt);
-            connection.commitActions();
-
-        } catch (SQLException e) {
-            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
-             connection.rollBackAction();
+        }catch (Exception e){
+            connection.rollBackAction();
             throw new ErrorExecutingQuery();
+        }finally {
+            connection.setAutoCommit(true);
         }
-
 
     }
 
@@ -128,10 +161,10 @@ public class EstatePostgreDAO implements EstateDAO {
             query.append("partitaiva = ?, ");
             params.add(estate.getAgenzia().getCodicePartitaIVA());
         }
-        if (!estate.getFoto().isEmpty()) {
-            query.append("foto = ?, ");
-            params.add(estate.getFoto());
-        }
+        // if (!estate.getFoto().isEmpty()) {
+        //     query.append("foto = ?, ");
+        //     params.add(estate.getFoto());
+        // }
         if (!estate.getDescrizione().isEmpty()) {
             query.append("descrizione = ?, ");
             params.add(estate.getDescrizione());
@@ -176,6 +209,180 @@ public class EstatePostgreDAO implements EstateDAO {
     }
 
     @Override
+    public List<Estate> getEstates() throws DietiEstateException{
+        System.out.println("HEREEEEEEEEEEEEEE");
+        String query = """
+            SELECT
+              i.idimmobile AS i_idimmobile,
+              i.idagente AS i_idagente,
+              i.idindirizzo AS i_idindirizzo,
+              i.partitaiva AS i_partitaiva,
+              i.descrizione AS i_descrizione,
+              i.prezzo AS i_prezzo,
+              i.dimensioni AS i_dimensioni,
+              i.stanze AS i_stanze,
+              i.piano AS i_piano,
+              i.bagni AS i_bagni,
+              i.garage AS i_garage,
+              i.ascensore AS i_ascensore,
+              i.classeenergetica AS i_classeenergetica,
+              i.modalita AS i_modalita,
+              i.stato AS i_stato,
+            
+              a.idagente AS a_idagente,
+              a.email AS a_email,
+              a.biografia AS a_biografia,
+              a.immagineprofilo AS a_immagineprofilo,
+              a.nome AS a_nome,
+              a.cognome AS a_cognome,
+              a.password AS a_password,
+              a.partitaiva AS a_partitaiva,
+              a.idpushnotify AS a_idpushnotify,
+              a.notify_appointment AS a_notify_appointment,
+            
+              ag.partitaiva AS ag_partitaiva,
+              ag.nome AS ag_nome,
+              ag.sede AS ag_sede
+            
+            FROM immobile i
+            JOIN agenziaimmobiliare ag ON i.partitaiva = ag.partitaiva
+            JOIN agenteimmobiliare a ON i.idagente = a.idagente
+        """;
+
+        PreparedStatement stmt = connection.getStatment(query);
+        List<Estate> estates = new ArrayList<Estate>();
+        try{
+            connection.makeQuery(stmt);
+//            ResultSetMetaData md = connection.getResult().getMetaData();
+//            for (int i = 1; i <= md.getColumnCount(); i++) {
+//                System.out.println("COLUMN " + i + " -> label: " + md.getColumnLabel(i) +" value: " + connection.extractString(md.getColumnLabel(i)));
+//            }
+            return mapResultSetToEstates();
+        }catch (SQLException e){
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+        }
+
+        return estates;
+
+    }
+
+    @Override
+    public Estate getEstateById(Integer idImmobile) throws DietiEstateException {
+
+        String sql = """
+          SELECT i.*, a.*, ag.*
+          FROM immobile i
+          JOIN agenziaimmobiliare ag ON i.partitaiva = ag.partitaiva
+          JOIN agenteimmobiliare a ON i.idagente = a.idagente
+          WHERE i.idimmobile = ?
+        """;
+
+        PreparedStatement ps = connection.getStatment(sql);
+        try {
+            ps.setInt(1, idImmobile);
+            connection.makeQuery(ps);
+            ResultSetMetaData md = connection.getResult().getMetaData();
+            for (int i = 1; i <= md.getColumnCount(); i++) {
+                System.out.println("COLUMN " + i + " -> label: " + md.getColumnLabel(i));
+            }
+
+            if (!connection.hasNextRow()) throw new EstateNotExists();
+
+            connection.nextRow();
+            return mapCurrentRowToEstate();
+        }catch (SQLException e){
+            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            return null;
+        }
+
+    }
+
+    private List<Estate> mapResultSetToEstates() throws SQLException, DietiEstateException {
+        List<Estate> list = new ArrayList<>();
+        do {
+            connection.nextRow();
+            list.add(mapCurrentRowToEstate());
+        } while (connection.hasNextRow());
+        return list;
+    }
+
+    private Estate mapCurrentRowToEstate() throws SQLException, DietiEstateException {
+
+        Agency fullAgency = new Agency.Builder<>(
+                connection.extractString("ag_partitaiva"))
+                .setNome(connection.extractString("ag_nome"))
+                .setSede(connection.extractString("ag_sede"))
+                .build();
+        System.out.println("Agency Success");
+
+        Agent agente = new Agent.Builder(
+                connection.extractInt("a_idagente"),
+                connection.extractString("a_email"))
+                .setName(connection.extractString("a_nome"))
+                .setCognome(connection.extractString("a_cognome"))
+                .setBiografia(connection.extractString("a_biografia"))
+                .setProfilePic(connection.extractString("a_immagineprofilo"))
+                .setIdPushNotify(connection.extractString("a_idpushnotify"))
+                .setNotifyAppointment(connection.extractBoolean("a_notify_appointment"))
+                .setAgency(fullAgency)
+                .build();
+        System.out.println("Agent Success");
+
+
+        int idImmobile    = connection.extractInt("i_idimmobile");
+        String descr      = connection.extractString("i_descrizione");
+        double price      = connection.extractInt("i_prezzo");
+        double space      = connection.extractInt("i_dimensioni");
+        int rooms         = connection.extractInt("i_stanze");
+        int floor         = connection.extractInt("i_piano");
+        int wc            = connection.extractInt("i_bagni");
+        int garage        = connection.extractInt("i_garage");
+        boolean elevator  = connection.extractBoolean("i_ascensore");
+        String classeStr  = connection.extractString("i_classeenergetica");
+        String modeStr    = connection.extractString("i_modalita");
+        String statusStr  = connection.extractString("i_stato");
+        int idIndirizzo   = connection.extractInt("i_idindirizzo");
+
+        System.out.println("Fetch Estate Success: " + classeStr + modeStr + statusStr);
+
+        // 4. Converto stringhe di enum
+        EnergeticClass classe = ConverterEnergeticClass.traslateFromString(classeStr);
+        System.out.println("Extract Energetic Class Success");
+        Mode mode             = ConverterMode.traslateFromString(modeStr);
+        System.out.println("Extract Mode Success");
+        Status status         = ConverterStatus.traslateFromString(statusStr);
+        System.out.println("Extract Status Success");
+
+        System.out.println("Fetch Enum Success");
+
+        // 5. Carico l'indirizzo associato
+        Indirizzo indirizzo   = new IndirizzoPostgreDAO().getIndirizzoFromId(idIndirizzo);
+
+        // inserire il fetch delle immagini con una nuova query
+
+        // 6. Costruisco l'Estate via Builder
+        Estate estate = new Estate.Builder<>(idImmobile)
+                .setAgenteBuilder(agente)
+                .setAgenziaBuilder(fullAgency)
+                .setDescrizioneBuilder(descr)
+                .setPriceBuilder(price)
+                .setSpaceBuilder(space)
+                .setRoomsBuilder(rooms)
+                .setFloorBuilder(floor)
+                .setWcBuilder(wc)
+                .setGarageBuilder(garage)
+                .setElevatorBuilder(elevator)
+                .setClasseEnergeticaBuilder(classe)
+                .setModeBuilder(mode)
+                .setStatoBuilder(status)
+                .setIndirizzoBuilder(indirizzo)
+                .build();
+
+        return estate;
+    }
+
+
+    @Override
     public Agent getAgent(Estate estate) throws DietiEstateException{
 
         String query = "SELECT a.idagente,email,nome,cognome,biografia,immagineprofilo, a.partitaiva, notify_appointment " +
@@ -207,7 +414,6 @@ public class EstatePostgreDAO implements EstateDAO {
 
         }catch(SQLException e){
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
-
         }
 
         return null;

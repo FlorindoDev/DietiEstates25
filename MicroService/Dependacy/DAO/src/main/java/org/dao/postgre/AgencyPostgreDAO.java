@@ -20,6 +20,7 @@ import org.md.Utente.Agent;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class AgencyPostgreDAO implements AgencyDAO {

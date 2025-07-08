@@ -1,6 +1,8 @@
 package org.ads.MainApp;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 import org.ads.MainApp.Interface.AdsEstateService;
 import org.dao.Interfacce.EstateDAO;
@@ -19,6 +21,7 @@ public class AdsEstate implements AdsEstateService {
     EstateDAO estateDao;
 
     ManagementSenderNotifyMQ senderMQ;
+    private static final Logger logger = Logger.getLogger(EstatePostgreDAO.class.getName());
 
     public AdsEstate (ApplicationContext rabbitMQ){
         senderMQ = rabbitMQ.getBean(ManagementSenderNotifyRabbitMQ.class);
@@ -55,12 +58,23 @@ public class AdsEstate implements AdsEstateService {
     }
 
     @Override
-    public String loadEstate(Agency agency) {
+    public String loadEstate(Integer idImmobile) {
 
+        System.out.println("ADS Controller loadEstate call" + idImmobile);
         try {
-            agencyDao = new AgencyPostgreDAO();
-            ArrayList<Estate> estates = agencyDao.getEstates(agency);
-            return convertToJson(estates);
+            estateDao = new EstatePostgreDAO();
+
+            List<Estate> estates;
+            if (idImmobile == null) {// prendi tutti
+                System.out.println("NO ID");
+                estates = estateDao.getEstates();
+            } else { // prendo solo quello con id specifico (può lanciare eccezione se non esiste)
+                System.out.println("ID: " + idImmobile);
+                Estate e = estateDao.getEstateById(idImmobile);
+                estates = List.of(e);
+            }
+
+            return convertToJson(new ArrayList<>(estates));
         }catch (DietiEstateException e){
             return e.getMessage();
         }
