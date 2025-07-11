@@ -1,5 +1,5 @@
 import 'dart:ffi';
-
+import 'dart:convert';
 import 'package:dietiestate25/AccessClass/AccessController.dart';
 import 'package:dietiestate25/Model/Estate/Estate.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
@@ -89,9 +89,11 @@ class _PrenotazioniWindowState extends State<PrenotazioniWindow> {
 }
 class InfoScreen extends StatefulWidget {
 
-  const InfoScreen({super.key, required this.estate});
+  InfoScreen({super.key, required this.estate});
 
   final Estate estate;
+  int indexFoto = 0;
+  String fotoLoded = "";
 
   @override
   _InfoScreenState createState() => _InfoScreenState();
@@ -99,12 +101,52 @@ class InfoScreen extends StatefulWidget {
 
 class _InfoScreenState extends State<InfoScreen> {
 
+
+  void prevFoto(Estate estate) {
+
+      setState(() {
+        widget.indexFoto = widget.indexFoto - 1;
+        widget.fotoLoded = estate.foto![widget.indexFoto];
+      });
+    
+  }
+
+  void nextFoto(Estate estate) {
+
+      
+      setState(() {
+  
+        widget.indexFoto = widget.indexFoto + 1 ;
+        widget.fotoLoded = estate.foto![widget.indexFoto];
+      });
+
+      
+      
+    
+  }
+
+  void initState() {
+    super.initState();
+    // Inizializza fotoLoded e indexFoto per ogni estate
+    
+      if ( widget.estate.foto != null &&  widget.estate.foto!.isNotEmpty) {
+        widget.indexFoto = 0;
+        widget.fotoLoded =  widget.estate.foto![0];
+      } else {
+        widget.indexFoto = 0;
+        widget.fotoLoded = ""; // Nessuna foto
+      }
+   
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
       child: SizedBox(
-        //height: MediaQuery.of(context).size.height,
+
         width: double.infinity,
         child: 
           Column(
@@ -112,7 +154,27 @@ class _InfoScreenState extends State<InfoScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 20,
             children: [
-              Icon(Icons.home, size: 100),
+              widget.estate.foto != null && widget.estate.foto!.isNotEmpty
+                ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                onPressed: (widget.indexFoto) > 0 ? (){prevFoto(widget.estate);} : null, 
+                                icon: Icon(Icons.arrow_circle_left_rounded, size: 30,),),
+                              Image.memory(
+                                base64Decode(widget.fotoLoded),
+                                height: 300,
+                                width: 300,
+                                fit: BoxFit.cover,
+                              ),
+                              IconButton(
+                                onPressed: ((widget.indexFoto) + 1) < (widget.estate.foto?.length??0) ? (){nextFoto(widget.estate);} : null,  
+                                icon: Icon(Icons.arrow_circle_right_rounded, size: 30,),)
+                              ],
+                          )
+              
+              : Icon(Icons.home, size: 100),
               Padding(
                 padding: EdgeInsets.only(left: 20),
                 child: Column(
