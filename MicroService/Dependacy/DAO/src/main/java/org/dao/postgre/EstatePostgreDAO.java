@@ -605,6 +605,12 @@ public class EstatePostgreDAO implements EstateDAO {
             ArrayList<Estate> estates = new ArrayList<>();
 
             buildEstates(estates);
+
+            for (Estate elem : estates){
+                elem.setFoto(takeFoto(elem.getIdEstate()));
+            }
+
+
             return estates;
         } catch (SQLException e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());

@@ -167,9 +167,9 @@ class SearchController {
         ris = json.decode(utf8.decode(response.bodyBytes));
         if (ris['code'] == 0) {
           for (int i = 0; i < ris['Estates'].length; i++) {  
-              print('\n\nMsg ricevuto : \n${ris['Estates'][i]}\n\n');
+              // print('\n\nMsg ricevuto : \n${ris['Estates'][i]}\n\n');
               estates.add(Estate.fromJson(ris['Estates'][i]));
-            
+              print('\n\nMsg ricevuto : \n${estates[i]}\n\n');
             
           }
           RouteWindows.estates = estates;

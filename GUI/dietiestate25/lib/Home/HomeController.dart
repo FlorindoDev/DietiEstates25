@@ -182,7 +182,7 @@ class HomeController {
         ris = json.decode(utf8.decode(response.bodyBytes));
         if (ris['code'] == 0) {
           for (int i = 0; i < ris['Estates'].length; i++) {  
-              print('\n\nMsg ricevuto : \n${ris['Estates'][i]}\n\n');
+              //print('\n\nMsg ricevuto : \n${ris['Estates'][i]['foto']}\n\n');
               estates.add(Estate.fromJson(ris['Estates'][i]));
             
             
@@ -194,9 +194,9 @@ class HomeController {
     } catch (e) {
       return List<Estate>.empty();
     }
-    print("\n\n\n\nCiaooooo");
-    print(estates);
-    print("\n\n\n\nCiaooooo");
+    //print("\n\n\n\nCiaooooo");
+    //print(estates);
+    //print("\n\n\n\nCiaooooo");
     return estates;
 
 
