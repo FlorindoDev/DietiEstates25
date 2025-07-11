@@ -605,6 +605,12 @@ public class EstatePostgreDAO implements EstateDAO {
             ArrayList<Estate> estates = new ArrayList<>();
 
             buildEstates(estates);
+
+            for (Estate elem : estates){
+                elem.setFoto(takeFoto(elem.getIdEstate()));
+            }
+
+
             return estates;
         } catch (SQLException e) {
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
@@ -644,7 +650,7 @@ public class EstatePostgreDAO implements EstateDAO {
         }
 
 
-        query += " ORDER BY " + filter.getSort() +" " + (Boolean.TRUE.equals(filter.getDesc()) ? "DESC" : "ASC") + " OFFSET ? LIMIT ? ";
+        query += " ORDER BY immobile." + filter.getSort() +" " + (Boolean.TRUE.equals(filter.getDesc()) ? "DESC" : "ASC") + " OFFSET ? LIMIT ? ";
 
 
         presenzeInteger.put(numberParamsOfFilter++, filter.getPage() - 1);

@@ -1,10 +1,12 @@
+import 'dart:collection';
+
 import 'package:dietiestate25/Home/HomeController.dart';
 import 'package:dietiestate25/ManagementAccount/ProfileWindow.dart';
 import 'package:dietiestate25/Model/Estate/Estate.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:convert';
 import 'package:dietiestate25/NotificationClass/NotificationWindow.dart';
 import 'package:dietiestate25/CalendarClass/CalendarWindow.dart';
 
@@ -72,7 +74,10 @@ class _HomeWindowState extends State<HomeWindow> {
 
 class HomeScreen extends StatefulWidget {
 
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+  
+   final HashMap<Estate,int> indexFoto = HashMap();
+  final HashMap<Estate,String> fotoLoded = HashMap();
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -81,7 +86,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   late Future<List<Estate>> estates;
-
+  
 
   bool isScrolled = false;
 
@@ -95,7 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    
     estates = HomeController.getEstatesHome(context,"");
   
   }
@@ -178,6 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 return const Center();
                               } 
                                 List<Estate> estates = snapshot.data!;
+                                
                                 return Flexible(
                                   
                                   child: ListView.builder(
@@ -185,18 +190,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     itemCount: estates.length,
                                     itemBuilder: (context, index) {
                                       Estate estate = estates[index];
+                                      //widget.indexFoto[estate] = 0;
+                                      widget.fotoLoded[estate] = widget.fotoLoded[estate] ?? (estate.foto != null && estate.foto!.length > 0 ? estate.foto![0] : "");
                                       return SizedBox( // Imposta una larghezza fissa o vincolata
                                         width: 200,
                                         child: 
-                                        InkWell(
-                                          splashColor: Colors.transparent,
-                                          highlightColor: Colors.transparent,
-                                          hoverColor: Colors.transparent,
-                                          onTap: (){
-                                            RouteWindows.selectedEstate = estate;
-                                            Navigator.of(context).pushNamed(RouteWindows.estateInfoWindow);
-                                          },
-                                          child : Card(
+                                         Card(
                                           elevation: 10,
                                           clipBehavior: Clip.hardEdge,
                                           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -206,7 +205,67 @@ class _HomeScreenState extends State<HomeScreen> {
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              const Icon(Icons.home, size: 100,),
+                                              Padding(
+                                                padding: EdgeInsets.only(top : 10),
+                                                child: Center(
+                                                  child: 
+                                                  
+                                                
+                                                  estate.foto != null && estate.foto!.isNotEmpty
+                                                  ? Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        IconButton(
+                                                        onPressed: (widget.indexFoto[estate]??0) > 0 ? (){prevFoto(estate);} : null, 
+                                                        icon: Icon(Icons.arrow_circle_left_rounded, size: 30,),),
+                                                      InkWell(
+                                          splashColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          onTap: (){
+                                            RouteWindows.selectedEstate = estate;
+                                            Navigator.of(context).pushNamed(RouteWindows.estateInfoWindow);
+                                          },
+                                          child :Image.memory(
+                                                        base64Decode(widget.fotoLoded[estate]??""),
+                                                        height: 300,
+                                                        width: 300,
+                                                        fit: BoxFit.cover,
+                                                      ),),
+                                                      IconButton(
+                                                        onPressed: ((widget.indexFoto[estate]??0) + 1) < (estate.foto?.length??0) ? (){nextFoto(estate);} : null,  
+                                                        icon: Icon(Icons.arrow_circle_right_rounded, size: 30,),)
+
+                                                      ],
+                                                  )
+                                                  
+                                                    
+                                                  :  InkWell(
+                                          splashColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          onTap: (){
+                                            RouteWindows.selectedEstate = estate;
+                                            Navigator.of(context).pushNamed(RouteWindows.estateInfoWindow);
+                                          },
+                                          child :const Icon(Icons.home, size: 300,),),
+                                                ) 
+                                                
+                                              
+                                              ),
+                                              InkWell(
+                                          splashColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          onTap: (){
+                                            RouteWindows.selectedEstate = estate;
+                                            Navigator.of(context).pushNamed(RouteWindows.estateInfoWindow);
+                                          },
+                                          child :Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
                                                Text(
                                                   '€ ${estate.price}',
                                                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -252,7 +311,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                             ],
                                             ),
-                                          ),
+                                              ),
+                                            ],
+                                            ),
+                                        
                                         ),
                                         ),
                                           
@@ -272,5 +334,28 @@ class _HomeScreenState extends State<HomeScreen> {
         
     ),
     );
+  }
+  
+  void prevFoto(Estate estate) {
+
+      setState(() {
+        widget.indexFoto[estate] = widget.indexFoto[estate]! - 1;
+        widget.fotoLoded[estate] = estate.foto![widget.indexFoto[estate] ?? 0];
+      });
+    
+  }
+
+  void nextFoto(Estate estate) {
+
+      
+      setState(() {
+  
+        widget.indexFoto[estate] = widget.indexFoto[estate] != null ? widget.indexFoto[estate]! + 1 : 1;
+        widget.fotoLoded[estate] = estate.foto![widget.indexFoto[estate] ?? 0];
+      });
+
+      
+      
+    
   }
 }

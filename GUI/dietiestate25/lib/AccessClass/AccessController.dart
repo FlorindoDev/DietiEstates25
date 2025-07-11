@@ -138,11 +138,54 @@ class AccessController {
     await file.writeAsString("{ \"JWT\":\"$jwt\" }");
   }
 
-  static void toSignUp(Utente utente) {
+  static void toSignUp(Utente utente, dynamic context) {
     valida.validateName(utente.nome);
     valida.validateSurname(utente.cognome);
     valida.validateEmail(utente.email);
     valida.validatePassword(utente.password);
+    
+
+    Acquirente acquirente= new AcquirenteBuilder()
+      .setEmail(utente.email)
+      .setName(utente.nome)
+      .setCognome(utente.cognome)
+      .setPassword(utente.password)
+      .setNotifyNewEsta(true)
+      .setNotifyAppointm(true)
+      .build();
+
+    richiestaSignUp(acquirente).then((risultato) {
+      //risultato = json.decode(risultato);
+      if (risultato == null) {
+        MyApp.mostraPopUpWarining(context, "Attenzione",
+            "Servizio non attualmente disponibile, prova tra qualche minuto");
+        return false;
+      } else if (risultato['code'] == 1) {
+        MyApp.mostraPopUpWarining(context, "Attenzione", risultato['message']);
+        return false;
+      } else if (risultato['code'] == 0) {
+        Navigator.pop(context);
+        Navigator.of(context).pushNamed(RouteWindows.loginWindow);
+        MyApp.mostraPopUpSuccess(context, "Successo", "Registrazione fatta con successo");
+
+        return true;
+      }
+    });
+  
+  }
+
+  static Future<dynamic> richiestaSignUp(Acquirente utente) async {
+    print(jsonEncode(utente.toJson()));
+
+    http.Response? response = await Connection.makeSignUp(utente.toJson());
+    // response: JWT
+    print("\n\n\n");
+    print(response?.body);
+    print("\n\n\n");
+    if (response != null) {
+      return json.decode(response.body);
+    }
+    return null;
   }
 
   static void toCreateAgency(Agenzia agenzia) {

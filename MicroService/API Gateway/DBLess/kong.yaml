@@ -276,6 +276,50 @@ services:
                 - exp
               realm: null
 
+  - name: AgentManagementService
+    id: 2d1093d7-fd54-4b32-9680-ab2d8590d8de
+    enabled: true
+    protocol: http
+    host: agentManagementService
+    port: 7005
+    retries: 5
+    connect_timeout: 60000
+    write_timeout: 60000
+    read_timeout: 60000
+    routes:
+      - name: AgentManagement-route
+        id: 2d1093d7-fd54-4b32-9680-ab2d8590d8de
+        protocols:
+          - http
+          - https
+        methods:
+          - GET
+          - POST
+          - DELETE
+        paths:
+          - /ManagementAgent
+        strip_path: false
+        plugins:
+          - name: jwt
+            protocols:
+              - http
+              - https
+            config:
+              run_on_preflight: true
+              anonymous: null
+              secret_is_base64: true
+              header_names:
+                - authorization
+              cookie_names: []
+              uri_param_names:
+                - jwt
+              key_claim_name: kid
+              maximum_expiration: 0
+              claims_to_verify:
+                - exp
+              realm: null
+
+
   - name: AdsEstateService
     id: ef8895be-7f37-4bdf-8cd1-bc7cfa97177d
     enabled: true

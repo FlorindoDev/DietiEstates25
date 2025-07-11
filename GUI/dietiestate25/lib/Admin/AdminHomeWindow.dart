@@ -1,6 +1,5 @@
 import 'package:dietiestate25/Admin/AdminHomeController.dart';
 import 'package:dietiestate25/Admin/ManageAdminWindow.dart';
-import 'package:dietiestate25/Admin/NotificationAdminWindow.dart';
 import 'package:dietiestate25/AgentHome/CreateAgentWindow.dart';
 import 'package:dietiestate25/AgentHome/ManageAgentWindow.dart';
 import 'package:dietiestate25/main.dart';
@@ -25,7 +24,7 @@ class _AdminHomeWindowState extends State<AdminHomeWindow> {
   final List<Widget> _pages = [
     //BookingWindow(),
     HomeScreen(),
-    NotificationAdminWindow(),
+    // NotificationAdminWindow(),
     //AdminAppointmentWindow(),
     ProfileAdminWindow(),
     //ProfileWindow(),
@@ -46,10 +45,6 @@ class _AdminHomeWindowState extends State<AdminHomeWindow> {
           NavigationDestination(
             icon: Icon(Icons.house_rounded, color: Colors.white),
             label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.notifications, color: Colors.white),
-            label: 'Notifiche',
           ),
           NavigationDestination(
             icon: Icon(Icons.person, color: Colors.white),

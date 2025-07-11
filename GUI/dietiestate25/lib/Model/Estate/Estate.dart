@@ -44,10 +44,9 @@ class Estate {
   }
 
   factory Estate.fromJson(Map<String, dynamic> json) {
-
-    return Estate(
+    Estate estate = Estate(
       idEstate: json['idEstate'],
-      // foto: json['foto'],
+      
       descrizione: json['descrizione'],
       price: json['price'],
       space: json['space'],
@@ -63,6 +62,10 @@ class Estate {
       classeEnergetica : json['classeEnergetica']['nome'],
       indirizzo : Indirizzo.fromJson(json['indirizzo'])
     );
+    
+    estate.foto = List.from(json['foto']);
+
+    return estate;
   }
 
   Estate(
@@ -70,7 +73,7 @@ class Estate {
     //  required this.foto, 
      required this.descrizione, 
      required this.price, 
-     required this.space, 
+     required this.space,
      required this.rooms, 
      required this.floor,
      required this.wc, 
