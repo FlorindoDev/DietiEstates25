@@ -81,7 +81,7 @@ class Validate implements Validator {
   @override
   bool validateName(String name) {
     if(!_isValidName(name)){
-      throw Exception("Nome non valida");
+      throw Exception("Nome non valido");
     }
 
     return true;
@@ -91,7 +91,7 @@ class Validate implements Validator {
   @override
   bool validateSurname(String surname) {
     if(!_isValidName(surname)){
-      throw Exception("Cognome non valida");
+      throw Exception("Cognome non valido");
     }
     return true;
   }

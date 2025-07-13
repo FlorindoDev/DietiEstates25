@@ -175,10 +175,12 @@ public class UtentePostgreDAO implements UtenteDAO {
         Map<String, String> alias = Map.of(
                 "notifyAppointment", "notify_appointment",
                 "notifyNewEstate",   "notify_new_estate",
-                "changePriceNotify", "change_price_notify"
+                "changePriceNotify", "change_price_notify",
+                "support", "issupportoamministratore"
         );
 
         JSONObject jsonObject = new JSONObject(changes.TranslateToJson());
+
         if (!jsonObject.isEmpty()) { // per evitare di fare update a vuoto
             logger.info("JSON: " + jsonObject);
             StringBuilder query = new StringBuilder("UPDATE "+tabella+" SET ");
@@ -190,11 +192,12 @@ public class UtentePostgreDAO implements UtenteDAO {
                 // Salta tutte le mappe/oggetti JSON annidati
                 if (value instanceof JSONObject || value instanceof JSONArray) continue;
 
-                if (value == null || "null".equals(value.toString())) continue;
+                if (value == null || "null".equalsIgnoreCase(value.toString()) || "".equals(value.toString().trim())) continue;
 
                 if (ID_USER_COLUMN.equals(key)) continue;
 
                 if (PASSWORD_COLUMN.equals(key)){
+                    if (value.toString().isBlank()) continue;
                     query.append(key).append(" = crypt( ? , '").append(keycrypt).append("'), ");
                     parameters.add(value);
                     continue;

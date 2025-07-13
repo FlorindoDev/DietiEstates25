@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'EditProfileAgentWidow.dart';
-import 'EditPasswordWidow.dart';
 
 import 'dart:convert';
 import 'dart:typed_data';
@@ -12,19 +11,6 @@ class ProfileAgentWindow extends StatefulWidget {
   @override
   State<ProfileAgentWindow> createState() => _ProfileAgentWindowState();
 }
-
-// Uint8List hexStringToUint8List(String hexString) {
-//   hexString = hexString.replaceAll(' ', '');
-//   if (hexString.length % 2 != 0) {
-//     throw FormatException('Hex string must have an even number of characters');
-//   }
-//   List<int> bytes = [];
-//   for (int i = 0; i < hexString.length; i += 2) {
-//     String hexPair = hexString.substring(i, i + 2);
-//     bytes.add(int.parse(hexPair, radix: 16));
-//   }
-//   return Uint8List.fromList(bytes);
-// }
 
 Uint8List base64ToBytes(String b64) => base64Decode(b64);
 
@@ -188,20 +174,6 @@ class _ProfileAgentWindowState extends State<ProfileAgentWindow> {
                           if (didUpdate == true) { // se true, ricarico il profilo
                             _refresh();
                           }
-                        },
-                      ),
-                      Divider(),
-                      _buildTile(
-                        icon: Icons.lock_reset,
-                        iconColor: Colors.amber,
-                        text: 'Moddifica Password',
-                        onTap: () {
-                          Navigator.push<bool>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => EditPasswordPage(),
-                            ),
-                          );
                         },
                       ),
                       Divider(),

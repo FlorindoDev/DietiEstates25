@@ -23,7 +23,7 @@ public class ManagementAccount implements ManagementAccountService {
     public ManagementAccount(){validator = Validate.getInstance();}
 
     private void validateData(Utente utente) throws DietiEstateException {
-        if (utente.getPassword() != null) {
+        if (utente.getPassword() != null && !utente.getPassword().isEmpty()) {
             validator.validatePassword(utente.getPassword());
         }
         if (utente.getCognome() != null) {

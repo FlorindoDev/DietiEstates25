@@ -5,7 +5,6 @@ import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/main.dart';
 
 import 'EditProfileWidow.dart';
-import 'EditPasswordWidow.dart';
 
 class ProfileAdminWindow extends StatefulWidget {
   @override
@@ -27,6 +26,7 @@ class _ProfileAdminWindowState extends State<ProfileAdminWindow> {
     setState(() {
       _loadState = exitState ? LoadState.success : LoadState.error;
     });
+    print(loggedUser.toString());
   }
 
   Future<void> _refresh() async {
@@ -120,6 +120,9 @@ class _ProfileAdminWindowState extends State<ProfileAdminWindow> {
                             Text("Email: ${loggedUser.email}"),
                             Text("Nome: ${loggedUser.nome}"),
                             Text("Cognome: ${loggedUser.cognome}"),
+                            loggedUser.issupportoammi == true
+                                    ? Text("Tipologia amministratore: Supporto Amministratore")
+                                    : Text("Tipologia amministratore: Amministratore"),
                           ],
                         ),
                       ),
@@ -140,23 +143,7 @@ class _ProfileAdminWindowState extends State<ProfileAdminWindow> {
                             _refresh();
                           }
                         },
-                      ),
-                      Divider(),
-                      _buildTile(
-                        icon: Icons.lock_reset,
-                        iconColor: Colors.amber,
-                        text: 'Moddifica Password',
-                        onTap: () {
-                          Navigator.push<bool>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => EditPasswordPage(),
-                            ),
-                          );
-                        },
-                      ),
-                      
-                     
+                      ),               
                       Divider(),
                       _buildTile(
                           icon: Icons.update,
