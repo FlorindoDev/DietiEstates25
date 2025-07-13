@@ -29,7 +29,7 @@ public class Utente extends Translate {
     protected String password = "";
 
     @QueryParam("notifyAppointment")
-    protected Boolean notifyAppointment = true;
+    protected Boolean notifyAppointment;
 
     @QueryParam("idPushNotify")
     protected String idPushNotify = "";

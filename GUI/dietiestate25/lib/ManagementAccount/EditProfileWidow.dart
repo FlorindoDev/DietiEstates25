@@ -25,7 +25,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController _cognomeController;
   String? _surnameError;
 
-  late Acquirente copyAgent;
+  late Utente copyAgent;
 
   final Validator validator = Validate();
 
@@ -34,8 +34,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     super.initState();
+    
+    if (loggedUser is Amministratore) copyAgent = Amministratore.fromJson(loggedUser.toJson());
 
-    copyAgent = Acquirente.fromJson(loggedUser.toJson());
+    if (loggedUser is Acquirente) copyAgent = Acquirente.fromJson(loggedUser.toJson());
+    // copyAgent = Acquirente.fromJson(loggedUser.toJson());
 
     _emailController = TextEditingController(text: copyAgent.email);
     _nomeController = TextEditingController(text: copyAgent.nome);
@@ -106,9 +109,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
         // email
         _emailError = null;
         validator.validateEmail(_emailController.text);
-      } on Exception catch (e) {
+      } on Exception {
         setState(() {
-          _emailError = e.toString();
+          _emailError = "Email non valida";
         });
         setState(() => _isLoading = false);
         return;
@@ -118,9 +121,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
         // nome
         _nameError = null;
         validator.validateName(_nomeController.text);
-      } on Exception catch (e) {
+      } on Exception{
         setState(() {
-          _nameError = e.toString();
+          _nameError = "Nome non valido";
         });
         setState(() => _isLoading = false);
         return;
@@ -130,9 +133,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
         // cognome
         _surnameError = null;
         validator.validateSurname(_cognomeController.text);
-      } on Exception catch (e) {
+      } on Exception {
         setState(() {
-          _surnameError = e.toString();
+          _surnameError = "Cognome non valido";
         });
         setState(() => _isLoading = false);
         return;

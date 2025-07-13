@@ -5,7 +5,6 @@ import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/main.dart';
 
 import 'EditProfileWidow.dart';
-import 'EditPasswordWidow.dart';
 
 class ProfileWindow extends StatefulWidget {
   @override
@@ -139,20 +138,6 @@ class _ProfileWindowState extends State<ProfileWindow> {
                           if (didUpdate == true) { // se true, ricarico il profilo
                             _refresh();
                           }
-                        },
-                      ),
-                      Divider(),
-                      _buildTile(
-                        icon: Icons.lock_reset,
-                        iconColor: Colors.amber,
-                        text: 'Moddifica Password',
-                        onTap: () {
-                          Navigator.push<bool>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => EditPasswordPage(),
-                            ),
-                          );
                         },
                       ),
                       Divider(),

@@ -110,7 +110,6 @@ class ProfileController {
         "${Connection.getAccountProfileUrl[loggedUser.runtimeType]}?email=$email");
 
     if (response == null || response.statusCode != 200) {
-      logger.e("Stam a sott");
       return false;
     }
 
@@ -138,8 +137,9 @@ class ProfileController {
   }
 
   static Future<bool> updateProfile(Utente user) async {
+
     final Map<String, dynamic> userMap = user.toJson();
-    // userMap.remove('sensitivity');
+
     userMap.remove('password');
     logger.i("${loggedUser.runtimeType} Update Profile ${userMap}");
 

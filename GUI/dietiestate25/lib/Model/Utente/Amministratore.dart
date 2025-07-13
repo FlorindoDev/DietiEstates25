@@ -20,7 +20,7 @@ class Amministratore extends Utente {
         .setPassword(json['password'] as String? ?? '')
         .setPartitaiva(json['agency']?['codicePartitaIVA'] as String? ?? '')
         .setIssupportoammi(json['support'])
-        .setNotify(json['idPushNotify'])
+        // .setNotify(json['idPushNotify'])
         // .setNotifyAppointm(json['notifyAppointment'] as bool? ?? false)
         .build();
   }
@@ -30,15 +30,24 @@ class Amministratore extends Utente {
 
   @override
   Map<String, dynamic> toJson() {
-    return {
-      ...super.toJson(),
-      // 'idamministrator': idamministrator,
+    // campi base
+    final Map<String, dynamic> base = super.toJson();
+
+    // Rimuovo i campi che non servono per l'admin
+    base.remove('notifyAppointment');
+    base.remove('idPushNotify');
+    base.remove('notifyNewEstate');
+    base.remove('changePriceNotify');
+
+    // Aggiungi i campi specifici di Amministratore
+    base.addAll({
       'support': issupportoammi,
       'agency': {
         'codicePartitaIVA': partitaiva,
       },
-    
-    };
+    });
+
+    return base;
   }
 
 

@@ -176,9 +176,9 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
         // email
         _emailError = null;
         validator.validateEmail(_emailController.text);
-      } on Exception catch (e) {
+      } on Exception {
         setState(() {
-          _emailError = e.toString();
+          _emailError = "Email non valida";
         });
         setState(() => _isLoading = false);
         return;
@@ -188,9 +188,9 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
         // nome
         _nameError = null;
         validator.validateName(_nomeController.text);
-      } on Exception catch (e) {
+      } on Exception {
         setState(() {
-          _nameError = e.toString();
+          _nameError = "Nome non valido";
         });
         setState(() => _isLoading = false);
         return;
@@ -200,9 +200,9 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
         // cognome
         _surnameError = null;
         validator.validateSurname(_cognomeController.text);
-      } on Exception catch (e) {
+      } on Exception {
         setState(() {
-          _surnameError = e.toString();
+          _surnameError = "Cognome non valido";
         });
         setState(() => _isLoading = false);
         return;
@@ -227,7 +227,6 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
       copyAgent.biografia = _biografiaController.text;
 
       // await Future.delayed(Duration(seconds: 5));
-
       bool exitState = await ProfileController.updateProfile(copyAgent);
 
       logger.e(exitState);
