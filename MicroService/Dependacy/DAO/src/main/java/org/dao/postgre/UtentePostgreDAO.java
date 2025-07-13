@@ -180,7 +180,7 @@ public class UtentePostgreDAO implements UtenteDAO {
         );
 
         JSONObject jsonObject = new JSONObject(changes.TranslateToJson());
-        System.out.println("JSON: " + jsonObject);
+
         if (!jsonObject.isEmpty()) { // per evitare di fare update a vuoto
             logger.info("JSON: " + jsonObject);
             StringBuilder query = new StringBuilder("UPDATE "+tabella+" SET ");
