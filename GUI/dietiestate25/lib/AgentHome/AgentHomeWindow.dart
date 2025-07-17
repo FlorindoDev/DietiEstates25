@@ -20,8 +20,7 @@ class _AgentHomeWindowState extends State<AgentHomeWindow> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    BookingWindow(),
-    //HomeScreen(),
+    HomeScreen(),
     NotificationAgentWindow(),
     AgentAppointmentWindow(),
     //ProfileAgentWindow(),

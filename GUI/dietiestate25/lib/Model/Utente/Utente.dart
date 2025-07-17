@@ -1,4 +1,5 @@
 library utenti;
+
 import 'package:dietiestate25/Json/JSONConvertable.dart';
 import 'dart:convert'; // usato in AgenteImmobiliare
 import 'dart:typed_data';
