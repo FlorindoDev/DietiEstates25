@@ -21,6 +21,9 @@ dependencies:
   lucide_icons: ^0.257.0
   image_picker: ^0.8.6
   numberpicker: ^2.1.2
+  flutter_map: ^6.2.1
+  geolocator: ^10.1.1
+  latlong2: ^0.9.1
 
 
 
