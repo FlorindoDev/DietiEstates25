@@ -1,15 +1,16 @@
 import 'dart:ffi';
-
 import 'package:dietiestate25/AccessClass/AccessController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:dietiestate25/Search/SearchController.dart' as my_search_controller;
+import 'package:dietiestate25/Search/SearchController.dart'
+    as my_search_controller;
 import 'package:numberpicker/numberpicker.dart';
 
 class SearchFilterWindow extends StatefulWidget {
-  const SearchFilterWindow({super.key, required this.appbar, required this.citta});
+  const SearchFilterWindow(
+      {super.key, required this.appbar, required this.citta});
   final AppBar appbar;
   final String citta;
 
@@ -21,7 +22,7 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
   String mode = "Affitto";
   int minPrice = 0;
   int maxPrice = 0;
-  int minDimensione= 0;
+  int minDimensione = 0;
   int maxDimensione = 0;
   int minStanze = 0;
   int maxStanze = 0;
@@ -29,332 +30,150 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
   String ascensore = "Tutto";
   String stato = "Tutto";
   int garage = 0;
-  final List<String> opzioni = ['Tutto', 'A', 'A2', 'A3', 'A4', 'B', 'C', 'D', 'E', 'F'];
+  final List<String> opzioni = [
+    'Tutto',
+    'A',
+    'A2',
+    'A3',
+    'A4',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F'
+  ];
   double _sliderIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    
-    
-
     return Scaffold(
       appBar: widget.appbar,
       body: SingleChildScrollView(
-
-        child:  Column(
-          
-    
-        spacing: 20,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 10,
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
             children: [
+              /// Compra / Affitto
+              Wrap(
+                spacing: 10,
+                alignment: WrapAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: mode == "Compra"
+                        ? null
+                        : () {
+                            setState(() {
+                              mode = "Compra";
+                            });
+                          },
+                    style: mode == "Compra"
+                        ? AccessController.not_clickable_style_button
+                        : AccessController.clickable_style_button,
+                    child: const Text('Compra'),
+                  ),
+                  ElevatedButton(
+                    onPressed: mode == "Affitto"
+                        ? null
+                        : () {
+                            setState(() {
+                              mode = "Affitto";
+                            });
+                          },
+                    style: mode == "Affitto"
+                        ? AccessController.not_clickable_style_button
+                        : AccessController.clickable_style_button,
+                    child: const Text('Affitto'),
+                  ),
+                ],
+              ),
+
+              const Divider(color: Colors.grey, thickness: 1),
+
+              //Prezzo
+              _buildDualNumberPicker("Prezzo", "Min", "Max", minPrice, maxPrice,
+                  min: 0,
+                  max: mode == "Compra" ? 5000000 : 8000,
+                  step: mode == "Compra" ? 10000 : 50,
+                  onMinChanged: (v) => setState(() => minPrice = v),
+                  onMaxChanged: (v) => setState(() => maxPrice = v)),
+
+              const Divider(color: Colors.grey, thickness: 1),
+
+              //Superfice
+              _buildDualNumberPicker(
+                  "Superfice", "Min", "Max", minDimensione, maxDimensione,
+                  min: 0,
+                  max: 1000,
+                  step: 20,
+                  onMinChanged: (v) => setState(() => minDimensione = v),
+                  onMaxChanged: (v) => setState(() => maxDimensione = v)),
+
+              const Divider(color: Colors.grey, thickness: 1),
+
+              //Locali
+              _buildDualNumberPicker(
+                  "Locali", "Min", "Max", minStanze, maxStanze,
+                  min: 0,
+                  max: 5,
+                  step: 1,
+                  onMinChanged: (v) => setState(() => minStanze = v),
+                  onMaxChanged: (v) => setState(() => maxStanze = v)),
+
+              const Divider(color: Colors.grey, thickness: 1),
+
+              //Bagni
+              _buildSingleNumberPicker("Bagni", bagni,
+                  max: 10, onChanged: (v) => setState(() => bagni = v)),
+
+              const Divider(color: Colors.grey, thickness: 1),
+
+              //Ascensore
+              _buildButtonGroup("Ascensore", ["Tutto", "Si", "No"], ascensore,
+                  (value) => setState(() => ascensore = value)),
+
+              const Divider(color: Colors.grey, thickness: 1),
+
+              //Stato Immobile
+              _buildButtonGroup(
+                  "Stato Immobile",
+                  ["Tutto", "Nuovo", "Ottimo", "Buono", "Da ristrutturare"],
+                  stato,
+                  (value) => setState(() => stato = value)),
+
+              const Divider(color: Colors.grey, thickness: 1),
+
+              //Garage
+              _buildSingleNumberPicker("Garage", garage,
+                  max: 10, onChanged: (v) => setState(() => garage = v)),
+
+              const Divider(color: Colors.grey, thickness: 1),
+
+              //Classe Energetica
+              Column(
+                children: [
+                  const Text("Classe Energetica",
+                      style: TextStyle(fontSize: 24)),
+                  Slider(
+                    value: _sliderIndex,
+                    min: 0,
+                    max: (opzioni.length - 1).toDouble(),
+                    divisions: opzioni.length - 1,
+                    label: opzioni[_sliderIndex.round()],
+                    onChanged: (newIndex) {
+                      setState(() {
+                        _sliderIndex = newIndex;
+                      });
+                    },
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              /// Bottone Cerca
               ElevatedButton(
-                onPressed: mode == "Compra"? null: () { setState(() {mode = "Compra"; print(mode);}); },
-                style: mode == "Compra"? AccessController.not_clickable_style_button : AccessController.clickable_style_button,
-                child: const Text('Compra'),
-              ),
-    
-              ElevatedButton(
-                onPressed: mode == "Affitto"? null:() { setState(() {mode = "Affitto";print(mode);}); },
-                style: mode == "Affitto"? AccessController.not_clickable_style_button :AccessController.clickable_style_button,
-                child: const Text('Affitto'),
-              ),
-          
-
-            ],
-          ),
-          Divider(
-            color: Colors.grey,
-            thickness: 1,
-            height: 1, // spazio sopra e sotto
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 5,
-            children: [
-              Text("Prezzo",style: TextStyle(fontSize: 24),),  
-              Column(
-                children: [
-                  Text("Min",style: TextStyle(fontSize: 16),),
-                  NumberPicker(
-                    itemCount: 3,
-                    itemWidth: 200,
-                    itemHeight: 30,
-                    value: minPrice,
-                    minValue: 0,
-                    maxValue: mode.contains("Compra")? 5000000 : 8000,
-                    step: mode.contains("Compra")? 10000 : 50,
-                    onChanged: (value) => setState(() => minPrice = value),
-              
-                  ),  
-                ],
-              ),
-              Column(
-                children: [
-                  Text("Max",style: TextStyle(fontSize: 16),),
-                  NumberPicker(
-                    itemCount: 3,
-                    itemWidth: 200,
-                    itemHeight: 30,
-                    value: maxPrice,
-                    minValue: 0,
-                    maxValue: mode.contains("Compra")? 5000000 : 8000,
-                    step: mode.contains("Compra")? 10000 : 50,
-                    onChanged: (value) => setState(() => maxPrice = value),
-                  ),  
-                ],
-              ),    
-              
-              
-            ],
-          ),
-          Divider(
-            color: Colors.grey,
-            thickness: 1,
-            height: 1, // spazio sopra e sotto
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 5,
-            children: [
-              Text("Superfice",style: TextStyle(fontSize: 24),),  
-              Column(
-                children: [
-                  Text("Min",style: TextStyle(fontSize: 16),),
-                  NumberPicker(
-                    itemCount: 3,
-                    itemWidth: 200,
-                    itemHeight: 30,
-                    value: minDimensione,
-                    minValue: 0,
-                    maxValue: 1000,
-                    step: 20,
-                    onChanged: (value) => setState(() => minDimensione = value),
-                    
-                  ),  
-                ],
-              ),
-              Column(
-                children: [
-                  Text("Max",style: TextStyle(fontSize: 16),),
-                  NumberPicker(
-                    itemCount: 3,
-                    itemWidth: 200,
-                    itemHeight: 30,
-                    value: maxDimensione,
-                    minValue: 0,
-                    maxValue: 1000,
-                    step: 20,
-                    onChanged: (value) => setState(() => maxDimensione = value),
-                  ),  
-                ],
-              ),    
-              
-              
-            ],
-          ),
-          Divider(
-            color: Colors.grey,
-            thickness: 1,
-            height: 1, // spazio sopra e sotto
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 5,
-            children: [
-              Text("Locali",style: TextStyle(fontSize: 24),),  
-              Column(
-                children: [
-                  Text("Min",style: TextStyle(fontSize: 16),),
-                  NumberPicker(
-                    itemCount: 3,
-                    itemWidth: 200,
-                    itemHeight: 30,
-                    value: minStanze,
-                    minValue: 0,
-                    maxValue: 5,
-                    step: 1,
-                    onChanged: (value) => setState(() => minStanze = value),
-                    
-                  ),  
-                ],
-              ),
-              Column(
-                children: [
-                  Text("Max",style: TextStyle(fontSize: 16),),
-                  NumberPicker(
-                    itemCount: 3,
-                    itemWidth: 200,
-                    itemHeight: 30,
-                    value: maxStanze,
-                    minValue: 0,
-                    maxValue: 5,
-                    step: 1,
-                    onChanged: (value) => setState(() => maxStanze = value),
-                  ),  
-                ],
-              ),    
-              
-              
-            ],
-          ),
-          Divider(
-            color: Colors.grey,
-            thickness: 1,
-            height: 1, // spazio sopra e sotto
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 5,
-            children: [
-              Text("Bagni",style: TextStyle(fontSize: 24),),  
-              NumberPicker(
-                    itemCount: 3,
-                    itemWidth: 200,
-                    itemHeight: 30,
-                    value: bagni,
-                    minValue: 0,
-                    maxValue: 1 << 10,
-                    step: 1,
-                    onChanged: (value) => setState(() => bagni = value),
-               ),  
-              
-              
-            ],
-          ),
-          Divider(
-            color: Colors.grey,
-            thickness: 1,
-            height: 1, // spazio sopra e sotto
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 100,
-            children: [
-              Text("Ascensore",style: TextStyle(fontSize: 24),), 
-              Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: ascensore == "Tutto"? null:() { setState(() {ascensore = "Tutto";}); },
-                    style: ascensore == "Tutto"? AccessController.not_clickable_style_button :AccessController.clickable_style_button,
-                    child: const Text('Tutto'),
-                  ),
-                  ElevatedButton(
-                onPressed: ascensore == "Si"? null: () { setState(() {ascensore = "Si";}); },
-                style: ascensore == "Si"? AccessController.not_clickable_style_button : AccessController.clickable_style_button,
-                child: const Text('Si'),
-              ),
-    
-              ElevatedButton(
-                onPressed: ascensore == "No"? null:() { setState(() {ascensore = "No";}); },
-                style: ascensore == "No"? AccessController.not_clickable_style_button :AccessController.clickable_style_button,
-                child: const Text('No'),
-              ),
-                ],
-              )
-              
-          
-
-            ],
-          ),
-          Divider(
-            color: Colors.grey,
-            thickness: 1,
-            height: 1, // spazio sopra e sotto
-          ),
-          Column(
-            children: [
-              Text("Stato Immobile",style: TextStyle(fontSize: 24),), 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: stato == "Tutto"? null:() { setState(() {stato = "Tutto";}); },
-                    style: stato == "Tutto"? AccessController.not_clickable_style_button :AccessController.clickable_style_button,
-                    child: const Text('Tutto'),
-                  ),
-                  ElevatedButton(
-                    onPressed: stato == "Nuovo"? null:() { setState(() {stato = "Nuovo";}); },
-                    style: stato == "Nuovo"? AccessController.not_clickable_style_button :AccessController.clickable_style_button,
-                    child: const Text('Nuovo'),
-                  ),
-                  ElevatedButton(
-                    onPressed: stato == "Ottimo"? null:() { setState(() {stato = "Ottimo";}); },
-                    style: stato == "Ottimo"? AccessController.not_clickable_style_button :AccessController.clickable_style_button,
-                    child: const Text('Ottimo'),
-                  ),
-                  ElevatedButton(
-                    onPressed: stato == "Buono"? null:() { setState(() {stato = "Buono";}); },
-                    style: stato == "Buono"? AccessController.not_clickable_style_button :AccessController.clickable_style_button,
-                    child: const Text('Buono'),
-                  ),
-                  ElevatedButton(
-                    onPressed: stato == "Da ristrutturare"? null:() { setState(() {stato = "Da ristrutturare";}); },
-                    style: stato == "Da ristrutturare"? AccessController.not_clickable_style_button :AccessController.clickable_style_button,
-                    child: const Text('Da ristrutturare'),
-                  ),
-                ],
-              )
-            ],
-          ),
-          Divider(
-            color: Colors.grey,
-            thickness: 1,
-            height: 1, // spazio sopra e sotto
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 5,
-            children: [
-              Text("Garage",style: TextStyle(fontSize: 24),),  
-              NumberPicker(
-                    itemCount: 3,
-                    itemWidth: 200,
-                    itemHeight: 30,
-                    value: garage,
-                    minValue: 0,
-                    maxValue: 1 << 10,
-                    step: 1,
-                    onChanged: (value) => setState(() => garage = value),
-               ),  
-              
-              
-            ],
-          ),
-          Divider(
-            color: Colors.grey,
-            thickness: 1,
-            height: 1, // spazio sopra e sotto
-          ),
-          Column(
-            children: [
-              Text("Classe Energetica",style: TextStyle(fontSize: 24),),
-              Slider(
-                value: _sliderIndex,
-                min: 0,
-                max: (opzioni.length - 1).toDouble(),
-                divisions: opzioni.length - 1,
-                label: opzioni[_sliderIndex.round()],
-                onChanged: (newIndex) {
-                  setState(() {
-                    _sliderIndex = newIndex;
-                  });
-                },
-              )
-              
-            ],
-          ),
-
-          ElevatedButton(
-                    onPressed: () {
-                    my_search_controller.SearchController.filteredSearch(
+                onPressed: () {
+                  my_search_controller.SearchController.filteredSearch(
                       context,
                       1,
                       mode,
@@ -369,38 +188,138 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                       stato,
                       garage,
                       opzioni[_sliderIndex.round()],
-                      widget.citta
-                    );
-                  },
-                  style: ButtonStyle(
-                    padding: WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 20, horizontal: 10)),
-                    backgroundColor: WidgetStateProperty.all(MyApp.rosso),
-                    foregroundColor: WidgetStateProperty.all(Colors.white),
-                    shape: WidgetStateProperty.all(
-                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-                    ),
+                      widget.citta);
+                },
+                style: ButtonStyle(
+                  padding: WidgetStateProperty.all(
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 10)),
+                  backgroundColor: WidgetStateProperty.all(MyApp.rosso),
+                  foregroundColor: WidgetStateProperty.all(Colors.white),
+                  shape: WidgetStateProperty.all(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32)),
                   ),
-                  child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    Icon(
-                      Icons.location_on_rounded,
-                      color: Colors.white,
-                      size: 50,
-                    ),
-                    Text(
-                      "Cerca",
-                      style: TextStyle(fontSize: 25),
-                    )
-                  ]),
                 ),
-          SizedBox(width: 10,)
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Icon(Icons.location_on_rounded,
+                        color: Colors.white, size: 50),
+                    SizedBox(width: 10),
+                    Text("Cerca", style: TextStyle(fontSize: 25)),
+                  ],
+                ),
+              ),
 
-        ],
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
       ),
-      ) 
-      
-        
+    );
+  }
+
+  /// Widget due NumberPicker affiancati
+  Widget _buildDualNumberPicker(
+    String title,
+    String labelMin,
+    String labelMax,
+    int valueMin,
+    int valueMax, {
+    required int min,
+    required int max,
+    required int step,
+    required ValueChanged<int> onMinChanged,
+    required ValueChanged<int> onMaxChanged,
+  }) {
+    return Column(
+      children: [
+        Text(title, style: const TextStyle(fontSize: 24)),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              Column(
+                children: [
+                  Text(labelMin, style: const TextStyle(fontSize: 16)),
+                  NumberPicker(
+                    itemCount: 3,
+                    itemWidth: 100,
+                    itemHeight: 30,
+                    value: valueMin,
+                    minValue: min,
+                    maxValue: max,
+                    step: step,
+                    onChanged: onMinChanged,
+                  ),
+                ],
+              ),
+              const SizedBox(width: 20),
+              Column(
+                children: [
+                  Text(labelMax, style: const TextStyle(fontSize: 16)),
+                  NumberPicker(
+                    itemCount: 3,
+                    itemWidth: 100,
+                    itemHeight: 30,
+                    value: valueMax,
+                    minValue: min,
+                    maxValue: max,
+                    step: step,
+                    onChanged: onMaxChanged,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  /// Widget helper per un singolo NumberPicker
+  Widget _buildSingleNumberPicker(String title, int value,
+      {required int max, required ValueChanged<int> onChanged}) {
+    return Column(
+      children: [
+        Text(title, style: const TextStyle(fontSize: 24)),
+        NumberPicker(
+          itemCount: 3,
+          itemWidth: 100,
+          itemHeight: 30,
+          value: value,
+          minValue: 0,
+          maxValue: max,
+          step: 1,
+          onChanged: onChanged,
+        ),
+      ],
+    );
+  }
+
+  // per gruppi di bottoni
+  Widget _buildButtonGroup(String title, List<String> options,
+      String currentValue, ValueChanged<String> onSelected) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(title, style: const TextStyle(fontSize: 24)),
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 8,
+          runSpacing: 8,
+          children: options.map((option) {
+            return ElevatedButton(
+              onPressed:
+                  currentValue == option ? null : () => onSelected(option),
+              style: currentValue == option
+                  ? AccessController.not_clickable_style_button
+                  : AccessController.clickable_style_button,
+              child: Text(option),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 }
-
-
