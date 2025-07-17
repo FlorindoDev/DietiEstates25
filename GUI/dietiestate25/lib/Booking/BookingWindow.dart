@@ -4,9 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:dietiestate25/Model/Tempo/WeatherInfo.dart';
 import 'package:dietiestate25/Booking/BookingController.dart';
+import 'package:dietiestate25/Model/Estate/Estate.dart';
 
 class BookingWindow extends StatefulWidget {
-  const BookingWindow({Key? key}) : super(key: key);
+  final Estate estate;
+  const BookingWindow({Key? key, required this.estate}) : super(key: key);
 
   @override
   _BookingWindowState createState() => _BookingWindowState();
@@ -110,7 +112,7 @@ class _BookingWindowState extends State<BookingWindow> {
                 ),
               ),
               const SizedBox(height: 16),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +121,8 @@ class _BookingWindowState extends State<BookingWindow> {
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
                     SizedBox(height: 4),
-                    Text('Via del capo, 25, Napoli',
+                    Text(
+                        '${widget.estate.indirizzo?.via}, ${widget.estate.indirizzo?.numeroCivico}, ${widget.estate.indirizzo?.citta}, ${widget.estate.indirizzo?.cap}',
                         style: TextStyle(fontSize: 16, color: Colors.black54)),
                   ],
                 ),
@@ -431,7 +434,8 @@ class _BookingWindowState extends State<BookingWindow> {
                   child: ElevatedButton(
                     onPressed: _selectedDate != null
                         ? () {
-                            /* TODO Aggioungere creazione del  appointment */
+                            BookingController.makeAppointment(
+                                context, widget.estate, _selectedDate);
                           }
                         : null,
                     style: ElevatedButton.styleFrom(
