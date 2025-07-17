@@ -69,6 +69,27 @@ public class EstateFilter {
     @QueryParam("mode")
     private String mode = "";
 
+    @QueryParam("longCentroCirconferenza")
+    private Double longCentroCirconferenza = null;
+
+    @QueryParam("latCentroCirconferenza")
+    private Double latCentroCirconferenza = null;
+
+    @QueryParam("raggio")
+    private Double raggio = null;
+
+    public Double getLongCentroCirconferenza() { return longCentroCirconferenza; }
+
+    public void setLongCentroCirconferenza(Double longCentroCirconferenza) { this.longCentroCirconferenza = longCentroCirconferenza; }
+
+    public Double getLatCentroCirconferenza() { return latCentroCirconferenza; }
+
+    public void setLatCentroCirconferenza(Double latCentroCirconferenza) { this.latCentroCirconferenza = latCentroCirconferenza; }
+
+    public Double getRaggio() { return raggio; }
+
+    public void setRaggio(Double raggio) { this.raggio = raggio; }
+
     public String getMode() {
         return mode;
     }
