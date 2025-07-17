@@ -9,6 +9,7 @@ public interface CommunicationWithDataBase {
     boolean nextRow() throws SQLException;
  
     int extractInt(String columnName);
+    public double extractDouble(String column);
     String extractString(String columnName);
     boolean extractBoolean(String columnName);
     void setAutoCommit(boolean bool);
