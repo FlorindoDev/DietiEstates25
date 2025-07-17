@@ -30,6 +30,26 @@ public class Indirizzo extends Translate {
     @QueryParam("cap")
     private int cap = 0;
 
+    @QueryParam("latitudine")
+    private Double latitude = null;
+
+    @QueryParam("longitudine")
+    private Double longitude = null;
+
+    @QueryParam("raggio")
+    private Double radius = null;
+
+    public Double getLatitude() { return latitude; }
+
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
+
+    public Double getLongitude() { return longitude; }
+
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
+
+    public Double getRadius() { return radius; }
+
+    public void setRadius(Double radius) { this.radius = radius; }
 
     public int getIdIndirizzo() {
         return idIndirizzo;
@@ -97,7 +117,9 @@ public class Indirizzo extends Translate {
         this.stato = builder.stato;
         this.numeroCivico = builder.numeroCivico;
         this.via = builder.via;
-
+        this.latitude = builder.latitude;
+        this.longitude = builder.longitude;
+        this.radius = builder.radius;
 
     }
 
@@ -109,6 +131,10 @@ public class Indirizzo extends Translate {
         private String via = "";
         private String numeroCivico = "";
         private int cap = 0;
+        private Double latitude = null;
+        private Double longitude = null;
+        private Double radius = null;
+
 
         public Builder(int idIndirizzo) {
             this.idIndirizzo = idIndirizzo;
@@ -157,5 +183,22 @@ public class Indirizzo extends Translate {
             this.cap = cap;
             return self();
         }
+
+        public typeBuilder setRadius(Double radius) {
+            this.radius = radius;
+            return self();
+        }
+
+        public typeBuilder setLatitude(Double latitude) {
+            this.latitude = latitude;
+            return self();
+        }
+
+        public typeBuilder setLongitude(Double longitude) {
+            this.longitude = longitude;
+            return self();
+        }
+
+
     }
 }

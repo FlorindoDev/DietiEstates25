@@ -89,16 +89,49 @@ public class Search implements SearchService {
         estateDAO.close();
     }
 
+    private double haversineKm(double lat1, double lon1, double lat2, double lon2) {
+        final double R = 6371.0; // Raggio medio terrestre in km
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c; // distanza in chilometri
+    }
+
+
     @Override
     public String search(EstateFilter filter) {
         List<Estate> estates;
 
         try {
             estates = estateDAO.search(filter);
+            if (filter.getRaggio() != null && filter.getLongCentroCirconferenza() != null && filter.getLatCentroCirconferenza() != null) {
+                double latCentro = filter.getLatCentroCirconferenza();
+                double lonCentro = filter.getLongCentroCirconferenza();
+                double raggioKm = filter.getRaggio(); // raggio già in KM
+
+                estates = estates.stream()
+                        .filter(e -> {
+                            Double lat = e.getIndirizzo().getLatitude();
+                            Double lon = e.getIndirizzo().getLongitude();
+
+                            double distanzaKm = haversineKm(latCentro, lonCentro, lat, lon);
+                            return distanzaKm <= raggioKm;
+                        })
+                        .toList();
+
+            }
         } catch (DietiEstateException e) {
             return "{\"code\": 10, \"message\": \"There aren't estets in this city\"}";
         }
 
         return buildJson(estates);
     }
+
+
 }

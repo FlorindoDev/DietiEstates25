@@ -73,7 +73,6 @@ public class SearchRestFulAPI implements SearchAPI {
     @Produces(MediaType.APPLICATION_JSON)
     @Override
     public Response estates(@BeanParam EstateFilter filter) {
-
         String result = searchService.search(filter);
         searchService.close();
         return Response.ok(result).build();

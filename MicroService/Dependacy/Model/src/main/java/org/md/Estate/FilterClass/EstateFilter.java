@@ -4,7 +4,6 @@ package org.md.Estate.FilterClass;
 import org.md.Estate.ClasseEnergetica.EnergeticClass;
 import org.md.Estate.Mode.Mode;
 import org.md.Estate.Status.Status;
-import org.md.Geolocalizzazione.Circumference;
 import org.md.Serializzazione.Translate;
 
 public class EstateFilter extends Translate {
@@ -23,13 +22,11 @@ public class EstateFilter extends Translate {
     private int wc = 0;
     private EnergeticClass energeticClass = null;
     private Mode mode = null;
-    private Circumference circumference= null;
     private String citta = "";
 
     public EstateFilter() {}
 
     public EstateFilter(Builder builder) {
-        this.circumference = builder.circumferenceBuilder;
         this.mode = builder.modeBuilder;
         this.energeticClass = builder.energeticClassBuilder;
         this.wc = builder.wcBuilder;
@@ -169,14 +166,6 @@ public class EstateFilter extends Translate {
         this.mode = mode;
     }
 
-    public Circumference getCircumference() {
-        return circumference;
-    }
-
-    public void setCircumference(Circumference circumference) {
-        this.circumference = circumference;
-    }
-
     public String getCitta() {
         return citta;
     }
@@ -201,7 +190,6 @@ public class EstateFilter extends Translate {
         private int wcBuilder = 0;
         private EnergeticClass energeticClassBuilder = null;
         private Mode modeBuilder = null;
-        private Circumference circumferenceBuilder = null;
         private String cittaBuilder = "";
 
         public Builder(int idEstate) {
@@ -219,11 +207,6 @@ public class EstateFilter extends Translate {
 
         public typeBuilder setIdEstateBuilder(int idEstateBuilder) {
             this.idEstateBuilder = idEstateBuilder;
-            return self();
-        }
-
-        public typeBuilder setCircumferenceBuilder(Circumference circumferenceBuilder) {
-            this.circumferenceBuilder = circumferenceBuilder;
             return self();
         }
 

@@ -518,6 +518,9 @@ public class EstatePostgreDAO implements EstateDAO {
                     .setNumeroCivico(connection.extractString("numerocivico"))
                     .setCap(connection.extractInt("cap"))
                     .setQuartiere(connection.extractString("quartiere"))
+                    .setLatitude(connection.extractDouble("latitudine"))
+                    .setLongitude(connection.extractDouble("longitudine"))
+                    .setRadius(connection.extractDouble("raggio"))
                     .build();
 
             Estate estate = new Estate.Builder<>(connection.extractInt("idimmobile"))

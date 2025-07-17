@@ -89,6 +89,19 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
         return 0;
     }
 
+    public double extractDouble(String column) {
+        try {
+            if (this.result != null) {
+                double value = this.result.getDouble(column);
+                logger.info("Extracted integer value: " + value);
+                return value;
+            }
+        } catch (SQLException e) {
+            logger.severe("Error extracting double from column " + column + ": " + e.getMessage());
+        }
+        return 0;
+    }
+
     @Override
     public String extractString(String column) {
         try {
