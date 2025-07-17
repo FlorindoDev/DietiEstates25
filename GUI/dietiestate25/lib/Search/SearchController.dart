@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class SearchController {
   //static final String baseUrl = 'http://127.0.0.1:8000/Search/';
-  static final String baseUrl = 'http://10.0.2.2:8000/Search/';
+  //static final String baseUrl = 'http://10.0.2.2:8000/Search/';
 
   static int minPrice = 0;
 
@@ -45,22 +45,15 @@ class SearchController {
       return List.empty();
     }
 
-    Uri uri = Uri.parse(
-        '${baseUrl}suggestionCities?citta=$city&quartiere=$city&stato=$city&via=$city');
+    String address =
+        'Search/suggestionCities?citta=$city&quartiere=$city&stato=$city&via=$city';
+  
+     http.Response? response = await Connection.makeGetRequest(address);
 
-    // Fai la richiesta HTTP
-    http.Response response;
-    try {
-      response = await http.get(
-        uri, // URL valido
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": 'Bearer ${Connection.jwt}',
-        },
-      );
-    } catch (e) {
-      MyApp.mostraPopUpWarining(
-          context, "Errore", "Impossibile contattare il server");
+    if (response == null) {
+      MyApp.mostraPopUpWarining(context, "Errore",
+          "Impossibile contattare il server, riprova tra poco");
+
       return List.empty();
     }
 
