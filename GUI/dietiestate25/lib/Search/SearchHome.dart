@@ -151,11 +151,11 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
         children: [
           Container(
             width: double.infinity,
-            decoration: const BoxDecoration(
-              color: Colors.brown,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15),
               ),
             ),
             child: Padding(
