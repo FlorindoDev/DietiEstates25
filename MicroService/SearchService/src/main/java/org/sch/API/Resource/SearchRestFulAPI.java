@@ -1,14 +1,19 @@
 package org.sch.API.Resource;
 
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.json.JSONObject;
 import org.md.Estate.Estate;
 import org.md.Estate.EstateFilter;
 import org.md.Geolocalizzazione.Indirizzo;
 import org.sch.API.Interfacce.SearchAPI;
 import org.sch.MainApp.Interfacce.SearchService;
 import org.sch.MainApp.Search;
+
+import java.util.Base64;
 
 @Path("Search")
 public class SearchRestFulAPI implements SearchAPI {
@@ -72,10 +77,36 @@ public class SearchRestFulAPI implements SearchAPI {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public Response estates(@BeanParam EstateFilter filter) {
-        String result = searchService.search(filter);
+    public Response estates(@BeanParam EstateFilter filter, @Context HttpHeaders headers) {
+        String email = takeEmail(headers);
+        if(email == null) return Response.status(Response.Status.UNAUTHORIZED).build();
+
+
+        String result = searchService.search(filter,email);
         searchService.close();
         return Response.ok(result).build();
     }
+
+    private String takeEmail(HttpHeaders headers) {
+
+        String authHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
+        String email = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring("Bearer ".length());
+            String[] parts = token.split("\\.");
+            if (parts.length == 3) {
+                // Decodifica il payload (seconda parte del JWT)
+                String payloadJson = new String(Base64.getUrlDecoder().decode(parts[1]));
+                JSONObject payload = new JSONObject(payloadJson);
+
+                // Estrai il campo "sub" (email)
+                email = payload.optString("sub", null);
+
+                // Puoi anche usarla nella logica dell'app
+            }
+        }
+        return email;
+    }
+
 
 }
