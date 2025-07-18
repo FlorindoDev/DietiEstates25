@@ -1,71 +1,11 @@
-// import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
-// import 'package:dietiestate25/main.dart';
-// import 'package:flutter/material.dart';
-
-// class SearchHomeWindow extends StatefulWidget {
-//   const SearchHomeWindow({super.key, required this.appbar});
-//   final AppBar appbar;
-
-//   @override
-//   State<SearchHomeWindow> createState() => _SearchHomeWindowState();
-// }
-
-// class _SearchHomeWindowState extends State<SearchHomeWindow> {
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: widget.appbar,
-//       body: Column(
-//         children: [
-//           Container(
-//             width: double.infinity,
-//             decoration: BoxDecoration(
-//               color: Colors.brown,
-//               borderRadius: BorderRadius.only(
-//                 bottomLeft: Radius.circular(20),
-//                 bottomRight: Radius.circular(20),
-//               ),
-//             ),
-//             child: Padding(
-//               padding: const EdgeInsets.all(16.0),
-//               child: ElevatedButton(
-            
-//               style: ButtonStyle(
-//                 backgroundColor: WidgetStateProperty.all(MyApp.rosso),
-                
-//               ),
-//               onPressed: (){
-//                   Navigator.of(context).pushNamed(RouteWindows.searchCityWindow);
-
-                
-//               }, 
-//               child: Text(
-//                 "Cerca per città", 
-//                 style: TextStyle(
-//                   color: Colors.white,
-//                 ),
-//                 ),
-//               ),
-//             ), 
-            
-            
-//           ),
-//           // Add more widgets here as needed
-//         ],
-//       ),
-//     );
-//   }
-
-
-// }
-
+import 'package:dietiestate25/Search/SearchController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:dietiestate25/Search/SearchController.dart' as MySearchController;
 
 class SearchHomeWindow extends StatefulWidget {
   const SearchHomeWindow({super.key, required this.appbar});
@@ -77,9 +17,10 @@ class SearchHomeWindow extends StatefulWidget {
 
 class _SearchHomeWindowState extends State<SearchHomeWindow> {
   final MapController _mapController = MapController();
-  LatLng _currentPosition = LatLng(41.9028, 12.4964); // Roma come default
+  LatLng _currentPosition = LatLng(40.88333000, 14.41667000);
   double _searchRadius = 1000; // Raggio in metri
-  bool _isLoading = true;
+  bool _isLoadingLocation = true;
+  bool _isSearching = false;
 
   @override
   void initState() {
@@ -94,24 +35,24 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
         permission = await Geolocator.requestPermission();
       }
 
-      if (permission == LocationPermission.whileInUse || 
+      if (permission == LocationPermission.whileInUse ||
           permission == LocationPermission.always) {
         Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
         );
-        
+
         setState(() {
           _currentPosition = LatLng(position.latitude, position.longitude);
-          _isLoading = false;
+          _isLoadingLocation = false;
         });
       } else {
         setState(() {
-          _isLoading = false;
+          _isLoadingLocation = false;
         });
       }
     } catch (e) {
       setState(() {
-        _isLoading = false;
+        _isLoadingLocation = false;
       });
     }
   }
@@ -128,143 +69,181 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
     });
   }
 
-  void _performRadiusSearch() {
-    // Implementa qui la logica di ricerca
-    print('Ricerca nel raggio di $_searchRadius metri da $_currentPosition');
-    
-    // Esempio di navigazione con parametri
-    Navigator.of(context).pushNamed(
-      RouteWindows.searchCityWindow,
-      arguments: {
-        'latitude': _currentPosition.latitude,
-        'longitude': _currentPosition.longitude,
-        'radius': _searchRadius,
-      },
-    );
+  Future<void> _performRadiusSearch() async {
+    setState(() {
+      _isSearching = true;
+    });
+    try {
+      final results = await MySearchController.SearchController.radiusSearch(
+        _currentPosition.latitude,
+        _currentPosition.longitude,
+        _searchRadius,
+      );
+      if (results.isEmpty) {
+        MyApp.mostraPopUpWarining(
+            context, "Nessun risultato", "Nessuna casa trovata in quest'area");
+      } else {
+        RouteWindows.estates = results;
+        Navigator.of(context).pushNamed(RouteWindows.estatesViewWindow);
+      }
+    } catch (e) {
+      MyApp.mostraPopUpWarining(context, "Errore", e.toString());
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSearching = false;
+        });
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: widget.appbar,
-      body: Column(
+      body: Stack(
         children: [
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(MyApp.rosso),
+          Column(
+            children: [
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(15),
+                    bottomRight: Radius.circular(15),
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(RouteWindows.searchCityWindow);
-                },
-                child: const Text(
-                  "Cerca per città",
-                  style: TextStyle(
-                    color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          WidgetStateProperty.all(MyApp.rosso),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(RouteWindows.searchCityWindow);
+                    },
+                    child: const Text(
+                      "Cerca per città",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-          
-          // Controlli per il raggio di ricerca
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+              // Controlli per il raggio di ricerca
+              Container(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
                   children: [
-                    const Text(
-                      'Raggio di ricerca:',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Raggio di ricerca:',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '${(_searchRadius / 1000).toStringAsFixed(1)} km',
+                          style:
+                              TextStyle(fontSize: 16, color: MyApp.rosso),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '${(_searchRadius / 1000).toStringAsFixed(1)} km',
-                      style: TextStyle(fontSize: 16, color: MyApp.rosso),
+                    Slider(
+                      value: _searchRadius,
+                      min: 100,
+                      max: 50000,
+                      divisions: 100,
+                      activeColor: MyApp.celeste,
+                      onChanged: _updateSearchRadius,
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            WidgetStateProperty.all(MyApp.blu),
+                      ),
+                      onPressed: _isSearching ? null : _performRadiusSearch,
+                      child: const Text(
+                        'Cerca nell\'area selezionata',
+                        style: TextStyle(color: Colors.white),
+                        
+                      ),
                     ),
                   ],
                 ),
-                Slider(
-                  value: _searchRadius,
-                  min: 100,
-                  max: 50000,
-                  divisions: 100,
-                  activeColor: MyApp.rosso,
-                  onChanged: _updateSearchRadius,
+              ),
+
+              // Mappa
+              Expanded(
+                child: _isLoadingLocation
+                    ? const Center(child: CircularProgressIndicator())
+                    : FlutterMap(
+                        mapController: _mapController,
+                        options: MapOptions(
+                          center: _currentPosition,
+                          zoom: 14,
+                          onTap: _onMapTap,
+                          initialCenter: LatLng(40.8, 14.4),
+                          // initialCenter: LatLng(14.41667000, 40.88333000),
+                        ),
+                        children: [
+                          TileLayer(
+                            urlTemplate:
+                                'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png',
+                            subdomains: ['a', 'b', 'c', 'd'],
+                            userAgentPackageName:
+                                'com.example.dietiestate25',
+                            maxZoom: 19,
+                          ),
+                          CircleLayer(
+                            circles: [
+                              CircleMarker(
+                                point: _currentPosition,
+                                radius: _searchRadius,
+                                useRadiusInMeter: true,
+                                color: MyApp.rosso.withOpacity(0.2),
+                                borderColor: MyApp.rosso,
+                                borderStrokeWidth: 2,
+                              ),
+                            ],
+                          ),
+                          MarkerLayer(
+                            markers: [
+                              Marker(
+                                point: _currentPosition,
+                                width: 40,
+                                height: 40,
+                                child: Icon(
+                                  Icons.location_pin,
+                                  size: 40,
+                                  color: MyApp.rosso,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+              ),
+            ],
+          ),
+
+          // Loading overlay
+          if (_isSearching)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(MyApp.rosso),
-                  ),
-                  onPressed: _performRadiusSearch,
-                  child: const Text(
-                    'Cerca nell\'area selezionata',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-          
-          // Mappa
-          Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : FlutterMap(
-                    mapController: _mapController,
-                    options: MapOptions(
-                      center: _currentPosition,
-                      zoom: 14,
-                      onTap: _onMapTap,
-                    ),
-                    children: [
-                      TileLayer(
-                        urlTemplate: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-                        subdomains: ['a', 'b', 'c', 'd'],
-                        userAgentPackageName: 'com.example.dietiestate25',
-                        maxZoom: 19,
-                      ),
-                      CircleLayer(
-                        circles: [
-                          CircleMarker(
-                            point: _currentPosition,
-                            radius: _searchRadius,
-                            useRadiusInMeter: true,
-                            color: MyApp.rosso.withOpacity(0.2),
-                            borderColor: MyApp.rosso,
-                            borderStrokeWidth: 2,
-                          ),
-                        ],
-                      ),
-                      MarkerLayer(
-                        markers: [
-                          Marker(
-                            point: _currentPosition,
-                            width: 40,
-                            height: 40,
-                            child: Icon(
-                              Icons.location_pin,
-                              size: 40,
-                              color: MyApp.rosso,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-          ),
         ],
       ),
     );

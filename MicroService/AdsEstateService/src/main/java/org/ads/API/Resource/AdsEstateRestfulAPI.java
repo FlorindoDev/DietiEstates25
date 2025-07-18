@@ -42,7 +42,7 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String loadEstate(@QueryParam("id") Integer idImmobile) {
-        System.out.println("getEstate call");
+
         AdsEstate ads = new AdsEstate(Main.rabbitMQ);
         String response;
         if (idImmobile == null) {
