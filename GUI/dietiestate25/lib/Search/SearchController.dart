@@ -7,6 +7,10 @@ import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:dietiestate25/Logger/logger.dart';
+
+final logger = MyLogger.getIstance();
+
 class SearchController {
   //static final String baseUrl = 'http://127.0.0.1:8000/Search/';
   //static final String baseUrl = 'http://10.0.2.2:8000/Search/';
@@ -190,4 +194,40 @@ class SearchController {
       return;
     }
   }
+
+  static Future<List<Estate>> radiusSearch(double latitude, double longitude, double radius) async {
+    
+    // http://127.0.0.1:8000/Search/estates?longCentroCirconferenza=14.7680961&latCentroCirconferenza=40.6824408&raggio=2
+    final km = radius / 1000.0;
+    String address = '/Search/estates?longCentroCirconferenza=$longitude&latCentroCirconferenza=$latitude&raggio=$km';
+    
+    try{
+      http.Response? response = await Connection.makeGetRequest(address);
+
+      if (response != null) {
+        // MyApp.mostraPopUpWarining("Errore", "Impossibile contattare il server, riprova tra poco");
+        // return;
+        final body = utf8.decode(response.bodyBytes);
+        final ris = json.decode(body);
+        logger.i("Risposta della ricerca per raggio: $ris['Estates']");
+        if (ris['code'] == 0) {
+          List<Estate> estates = [];
+          for (int i = 0; i < ris['Estates'].length; ++i) {
+            estates.add(Estate.fromJson(ris['Estates'][i]));
+          }
+          return estates;
+        } else {
+          return [];
+        }
+      }else{
+        return [];
+      }
+
+    }catch (e) {
+      return [];
+      // print("Errore durante la ricerca per raggio: $e");
+      // MyApp.mostraPopUpWarining("Errore", "Errore durante la ricerca per raggio");
+    }
+  }
+    
 }

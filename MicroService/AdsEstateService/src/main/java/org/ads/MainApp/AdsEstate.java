@@ -22,7 +22,7 @@ public class AdsEstate implements AdsEstateService {
     ManagementSenderNotifyMQ senderMQ;
 
     public AdsEstate (ApplicationContext rabbitMQ){
-        senderMQ = rabbitMQ.getBean(ManagementSenderNotifyRabbitMQ.class);
+//        senderMQ = rabbitMQ.getBean(ManagementSenderNotifyRabbitMQ.class);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class AdsEstate implements AdsEstateService {
         try {
             estateDao = new EstatePostgreDAO();
             estateDao.createEstate(estate);
-            senderMQ.enQueueEstateNotify("{}");
+//            senderMQ.enQueueEstateNotify("{}");
         }catch (DietiEstateException e) {
             return e.getMessage();
         }
