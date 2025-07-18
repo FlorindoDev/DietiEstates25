@@ -84,7 +84,8 @@ class _AgentAppointmentWindowState extends State<AgentAppointmentWindow> {
                     ),
                     child: const Text(
                       'Da confermare',
-                      style: TextStyle(color: Colors.black),
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                     ),
                   ),
                   ElevatedButton(
@@ -103,7 +104,8 @@ class _AgentAppointmentWindowState extends State<AgentAppointmentWindow> {
                     ),
                     child: const Text(
                       'Accettate',
-                      style: TextStyle(color: Colors.black),
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                     ),
                   ),
                   ElevatedButton(
@@ -122,7 +124,8 @@ class _AgentAppointmentWindowState extends State<AgentAppointmentWindow> {
                     ),
                     child: const Text(
                       'Rifiutate',
-                      style: TextStyle(color: Colors.black),
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                     ),
                   ),
                   ElevatedButton(
@@ -141,7 +144,8 @@ class _AgentAppointmentWindowState extends State<AgentAppointmentWindow> {
                     ),
                     child: const Text(
                       'Tutte',
-                      style: TextStyle(color: Colors.black),
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                     ),
                   ),
                 ],
