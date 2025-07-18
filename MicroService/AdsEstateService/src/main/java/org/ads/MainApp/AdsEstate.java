@@ -2,7 +2,6 @@ package org.ads.MainApp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.ads.MainApp.Interface.AdsEstateService;
 import org.dao.Interfacce.EstateDAO;
@@ -11,7 +10,6 @@ import org.dao.postgre.EstatePostgreDAO;
 import org.exc.DietiEstateException;
 import org.md.Estate.Estate;
 import org.rab.Interfacce.ManagementSenderNotifyMQ;
-import org.rab.Resource.Senders.ManagementSenderNotifyRabbitMQ;
 import org.springframework.context.ApplicationContext;
 
 public class AdsEstate implements AdsEstateService {
@@ -22,7 +20,6 @@ public class AdsEstate implements AdsEstateService {
     ManagementSenderNotifyMQ senderMQ;
 
     public AdsEstate (ApplicationContext rabbitMQ){
-//        senderMQ = rabbitMQ.getBean(ManagementSenderNotifyRabbitMQ.class);
     }
 
     @Override
@@ -31,7 +28,6 @@ public class AdsEstate implements AdsEstateService {
         try {
             estateDao = new EstatePostgreDAO();
             estateDao.createEstate(estate);
-//            senderMQ.enQueueEstateNotify("{}");
         }catch (DietiEstateException e) {
             return e.getMessage();
         }
