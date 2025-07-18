@@ -6,6 +6,8 @@ class Indirizzo {
   final String via;
   final String numeroCivico;
   final int cap;
+  final double latitudine;
+  final double logitudine;
 
   Indirizzo({
     required this.idIndirizzo,
@@ -15,6 +17,8 @@ class Indirizzo {
     required this.via,
     required this.numeroCivico,
     required this.cap,
+    required this.latitudine,
+    required this.logitudine,
   });
 
   // Costruttore da JSON
@@ -27,6 +31,8 @@ class Indirizzo {
       via: json['via'],
       numeroCivico: json['numeroCivico'],
       cap: json['cap'],
+      latitudine: json['latitude'],
+      logitudine: json['longitude'],
     );
   }
 
@@ -40,6 +46,8 @@ class Indirizzo {
       'via': via,
       'numeroCivico': numeroCivico,
       'cap': cap,
+      'longitude': logitudine,
+      'latitude': latitudine
     };
   }
 }

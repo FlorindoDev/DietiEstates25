@@ -36,6 +36,7 @@ class Connection {
   static Future<bool> _initialize() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
+      print(directory.path);
       final storage = File('${directory.path}/dietiEstate25.json');
 
       if (await storage.exists()) {
@@ -62,11 +63,13 @@ class Connection {
     return Uri.parse(fullUrl);
   }
 
-  static Future<http.Response?> makePostRequest(Map<String, dynamic>? body, String? path) async {
+  static Future<http.Response?> makePostRequest(
+      Map<String, dynamic>? body, String? path) async {
     try {
       Uri fullUrl = _buildFullUriUrl(baseUrl, path);
 
-      logger.d("POST REQUEST\nJWT: $jwt\nURL: $fullUrl\nBody: ${jsonEncode(body).toString()}" );
+      logger.d(
+          "POST REQUEST\nJWT: $jwt\nURL: $fullUrl\nBody: ${jsonEncode(body).toString()}");
 
       final response = await http.post(
         fullUrl,
@@ -76,14 +79,14 @@ class Connection {
         },
         body: jsonEncode(body),
       );
-      
+
       if (response.statusCode < 200 && response.statusCode >= 300) {
-        logger.e("Status Code HTTP: ${response.statusCode}\nBody: ${response.body}");
+        logger.e(
+            "Status Code HTTP: ${response.statusCode}\nBody: ${response.body}");
         throw HttpException(response.statusCode, response.body);
-      } 
-      
+      }
+
       return response;
-      
     } catch (e) {
       logger.e("Errore durante la richiesta: $e");
       return null;
@@ -93,14 +96,13 @@ class Connection {
   static Future<http.Response?> makeGetRequest(String? path) async {
     logger.d("JWT in GET request $jwt");
     try {
-
       Uri fullUrl = _buildFullUriUrl(baseUrl, path);
 
       logger.d("""
         GET REQUEST\n
         JWT: $jwt\n
-        REQUEST: $fullUrl""" 
-      );
+        REQUEST: $fullUrl\n
+        """);
 
       final response = await http.get(
         fullUrl,
@@ -111,12 +113,12 @@ class Connection {
       );
 
       if (response.statusCode < 200 && response.statusCode >= 300) {
-        logger.e("Status Code HTTP: ${response.statusCode}\nBody: ${response.body}");
+        logger.e(
+            "Status Code HTTP: ${response.statusCode}\nBody: ${response.body}");
         throw HttpException(response.statusCode, response.body);
-      } 
-      
-      return response;
+      }
 
+      return response;
     } catch (e) {
       logger.e("Errore durante la richiesta: $e");
       return null;
@@ -126,14 +128,12 @@ class Connection {
   static Future<http.Response?> makeDeleteRequest(String? path) async {
     logger.d("JWT in DELETE request $jwt");
     try {
-
       Uri fullUrl = _buildFullUriUrl(baseUrl, path);
 
       logger.d("""
         DELETE REQUEST\n
         JWT: $jwt\n
-        REQUEST: $fullUrl""" 
-      );
+        REQUEST: $fullUrl""");
 
       final response = await http.delete(
         fullUrl,
@@ -144,27 +144,25 @@ class Connection {
       );
 
       if (response.statusCode < 200 && response.statusCode >= 300) {
-        logger.e("Status Code HTTP: ${response.statusCode}\nBody: ${response.body}");
+        logger.e(
+            "Status Code HTTP: ${response.statusCode}\nBody: ${response.body}");
         throw HttpException(response.statusCode, response.body);
-      } 
-      
-      return response;
+      }
 
+      return response;
     } catch (e) {
       logger.e("Errore durante la richiesta: $e");
       return null;
     }
   }
 
-
   static Future<http.Response?> makeLogin(Map<String, dynamic>? body) async {
-
-    try{
+    try {
       http.Response? response = await makePostRequest(body, "/login");
       return response;
-    }on HttpException{
+    } on HttpException {
       rethrow;
-    } catch (e){
+    } catch (e) {
       logger.e("Errore durante la richiesta: $e");
       return null;
     }
@@ -191,14 +189,13 @@ class Connection {
     // }
   }
 
-    static Future<http.Response?> makeSignUp(Map<String, dynamic>? body) async {
-
-    try{
+  static Future<http.Response?> makeSignUp(Map<String, dynamic>? body) async {
+    try {
       http.Response? response = await makePostRequest(body, "/signup");
       return response;
-    }on HttpException{
+    } on HttpException {
       rethrow;
-    } catch (e){
+    } catch (e) {
       logger.e("Errore durante la richiesta: $e");
       return null;
     }
@@ -228,16 +225,15 @@ class Connection {
   static Future<http.Response?> validateJwtRequest() async {
     logger.d("Sto validando il JWT: $jwt tramite KONG");
 
-    try{
+    try {
       http.Response? response = await Connection.makeGetRequest("/jwt");
       return response;
-    }on HttpException{
+    } on HttpException {
       rethrow;
-    } catch (e){
+    } catch (e) {
       logger.e("Errore durante la richiesta: $e");
       return null;
     }
-
 
     // try {
     //   final response = await http.get(
@@ -274,12 +270,12 @@ class Connection {
       );
 
       if (response.statusCode < 200 && response.statusCode >= 300) {
-        logger.e("Status Code HTTP: ${response.statusCode}\nBody: ${response.body}");
+        logger.e(
+            "Status Code HTTP: ${response.statusCode}\nBody: ${response.body}");
         throw HttpException(response.statusCode, response.body);
-      } 
-      
+      }
+
       return response;
-      
     } catch (e) {
       logger.e("Errore durante la richiesta: $e");
       return null;
