@@ -11,5 +11,7 @@ import java.util.List;
 public interface CronologiaRicercaDAO {
 
 
+    void close();
+
     void add(String queryParams, String email) throws DietiEstateException;
 }
