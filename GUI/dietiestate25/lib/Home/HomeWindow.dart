@@ -202,105 +202,52 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ? estate.foto![0]
                                     : "");
                             return SizedBox(
-                                // Imposta una larghezza fissa o vincolata
-                                width: 200,
-                                child: Card(
-                                  elevation: 10,
-                                  clipBehavior: Clip.hardEdge,
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, bottom: 10),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 10),
+                              // Imposta una larghezza fissa o vincolata
+                              width: 200,
+                              child: Card(
+                                elevation: 10,
+                                clipBehavior: Clip.hardEdge,
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 20),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, bottom: 10),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                          padding: EdgeInsets.only(top: 10),
                                           child: Center(
-                                            child:
-                                                estate.foto != null &&
-                                                        estate.foto!.isNotEmpty
-                                                    ? SingleChildScrollView(
-                                                        scrollDirection:
-                                                            Axis.horizontal,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            IconButton(
-                                                              onPressed:
-                                                                  (widget.indexFoto[estate] ??
-                                                                              0) >
-                                                                          0
-                                                                      ? () {
-                                                                          prevFoto(
-                                                                              estate);
-                                                                        }
-                                                                      : null,
-                                                              icon: const Icon(
-                                                                  Icons
-                                                                      .arrow_circle_left_rounded,
-                                                                  size: 30),
-                                                            ),
-                                                            InkWell(
-                                                              splashColor: Colors
-                                                                  .transparent,
-                                                              highlightColor:
-                                                                  Colors
-                                                                      .transparent,
-                                                              hoverColor: Colors
-                                                                  .transparent,
-                                                              onTap: () {
-                                                                RouteWindows
-                                                                        .selectedEstate =
-                                                                    estate;
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pushNamed(
-                                                                        RouteWindows
-                                                                            .estateInfoWindow);
-                                                              },
-                                                              child:
-                                                                  Image.memory(
-                                                                base64Decode(
-                                                                    widget.fotoLoded[
+                                            child: estate.foto != null &&
+                                                    estate.foto!.isNotEmpty
+                                                ? Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      IconButton(
+                                                        onPressed:
+                                                            (widget.indexFoto[
                                                                             estate] ??
-                                                                        ""),
-                                                                height: 250,
-                                                                width: 250,
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                              ),
-                                                            ),
-                                                            IconButton(
-                                                              onPressed: ((widget.indexFoto[estate] ??
-                                                                              0) +
-                                                                          1) <
-                                                                      (estate.foto
-                                                                              ?.length ??
-                                                                          0)
-                                                                  ? () {
-                                                                      nextFoto(
-                                                                          estate);
-                                                                    }
-                                                                  : null,
-                                                              icon: const Icon(
-                                                                  Icons
-                                                                      .arrow_circle_right_rounded,
-                                                                  size: 30),
-                                                            ),
-                                                          ],
+                                                                        0) >
+                                                                    0
+                                                                ? () {
+                                                                    prevFoto(
+                                                                        estate);
+                                                                  }
+                                                                : null,
+                                                        icon: Icon(
+                                                          Icons
+                                                              .arrow_circle_left_rounded,
+                                                          size: 30,
                                                         ),
-                                                      )
-                                                    : InkWell(
+                                                      ),
+                                                      InkWell(
                                                         splashColor:
                                                             Colors.transparent,
                                                         highlightColor:
@@ -316,111 +263,134 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   RouteWindows
                                                                       .estateInfoWindow);
                                                         },
-                                                        child: const Icon(
-                                                            Icons.home,
-                                                            size: 250),
+                                                        child: Image.memory(
+                                                          base64Decode(
+                                                              widget.fotoLoded[
+                                                                      estate] ??
+                                                                  ""),
+                                                          height: 300,
+                                                          width: 300,
+                                                          fit: BoxFit.cover,
+                                                        ),
                                                       ),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          splashColor: Colors.transparent,
-                                          highlightColor: Colors.transparent,
-                                          hoverColor: Colors.transparent,
-                                          onTap: () {
-                                            RouteWindows.selectedEstate =
-                                                estate;
-                                            Navigator.of(context).pushNamed(
-                                                RouteWindows.estateInfoWindow);
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 10, right: 10),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '€ ${estate.price}',
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
-                                                ),
-                                                SizedBox(height: 5),
-                                                Text(
-                                                  '${estate.mode} - ${estate.indirizzo?.citta} ${estate.indirizzo?.quartiere} - ${estate.indirizzo?.via} ${estate.indirizzo?.numeroCivico}',
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                                const SizedBox(height: 10),
-                                                SingleChildScrollView(
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  child: Row(
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          const Icon(
-                                                              Icons
-                                                                  .border_all_outlined,
-                                                              size: 30),
-                                                          const SizedBox(
-                                                              width: 5),
-                                                          Text(
-                                                              '${estate.floor} m2'),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(width: 20),
-                                                      Row(
-                                                        children: [
-                                                          const Icon(
-                                                              Icons
-                                                                  .meeting_room_rounded,
-                                                              size: 30),
-                                                          const SizedBox(
-                                                              width: 5),
-                                                          Text(
-                                                              '${estate.rooms}'),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(width: 20),
-                                                      Row(
-                                                        children: [
-                                                          const Icon(
-                                                              Icons.bathtub,
-                                                              size: 30),
-                                                          const SizedBox(
-                                                              width: 5),
-                                                          Text('${estate.wc}'),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(width: 20),
-                                                      Row(
-                                                        children: [
-                                                          const Icon(
-                                                              Icons.garage,
-                                                              size: 30),
-                                                          const SizedBox(
-                                                              width: 5),
-                                                          Text(
-                                                              '${estate.garage}'),
-                                                        ],
-                                                      ),
+                                                      IconButton(
+                                                        onPressed: ((widget.indexFoto[
+                                                                            estate] ??
+                                                                        0) +
+                                                                    1) <
+                                                                (estate.foto
+                                                                        ?.length ??
+                                                                    0)
+                                                            ? () {
+                                                                nextFoto(
+                                                                    estate);
+                                                              }
+                                                            : null,
+                                                        icon: Icon(
+                                                          Icons
+                                                              .arrow_circle_right_rounded,
+                                                          size: 30,
+                                                        ),
+                                                      )
                                                     ],
+                                                  )
+                                                : InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    onTap: () {
+                                                      RouteWindows
+                                                              .selectedEstate =
+                                                          estate;
+                                                      Navigator.of(context)
+                                                          .pushNamed(RouteWindows
+                                                              .estateInfoWindow);
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.home,
+                                                      size: 300,
+                                                    ),
                                                   ),
+                                          )),
+                                      InkWell(
+                                        splashColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        onTap: () {
+                                          RouteWindows.selectedEstate = estate;
+                                          Navigator.of(context).pushNamed(
+                                              RouteWindows.estateInfoWindow);
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              '€ ${estate.price}',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18),
+                                            ),
+                                            Text(
+                                              '${estate.mode} - ${estate.indirizzo?.citta} ${estate.indirizzo?.quartiere} - ${estate.indirizzo?.via} ${estate.indirizzo?.numeroCivico}',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Row(
+                                              spacing: 50,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.border_all_outlined,
+                                                      size: 40,
+                                                    ),
+                                                    Text('${estate.floor} m2')
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons
+                                                          .meeting_room_rounded,
+                                                      size: 40,
+                                                    ),
+                                                    Text('${estate.rooms}')
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.bathtub,
+                                                      size: 40,
+                                                    ),
+                                                    Text('${estate.wc}')
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.garage,
+                                                      size: 40,
+                                                    ),
+                                                    Text('${estate.garage}')
+                                                  ],
                                                 ),
                                               ],
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                ));
+                                ),
+                              ),
+                            );
                           },
                         ),
                       );

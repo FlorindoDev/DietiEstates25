@@ -15,6 +15,8 @@ import 'package:dietiestate25/Model/Appointment/AppointmentAccept.dart';
 import 'package:dietiestate25/Model/Appointment/AppointmentPending.dart'
     as Model;
 import 'package:dietiestate25/Model/Appointment/AppointmentReject.dart';
+import 'package:dietiestate25/Model/Agenzia/Agenzia.dart';
+import 'package:dietiestate25/Model/Estate/Indirizzo.dart';
 
 class AgentHomeController {
   //static final String urlEstates = 'http://127.0.0.1:7004/api/'; // Per Windows
@@ -354,5 +356,86 @@ class AgentHomeController {
     } else {
       manageResponse(response, context);
     }
+  }
+
+  static Future<void> createEstate({
+    // Estate
+    required String descrizione,
+    required double price,
+    required double space,
+    required int rooms,
+    required int wc,
+    required int floor,
+    required int garage,
+    required bool elevator,
+    required String stato,
+    required String mode,
+    required String classeEnergetica,
+
+    // Indirizzo
+    required String statoIndirizzo,
+    required String citta,
+    String? quartiere,
+    required String via,
+    required String numeroCivico,
+    required String cap,
+    required double latitudine,
+    required double logitudine,
+  }) async {
+    final AgenteImmobiliare agente = loggedUser;
+
+    final agenzia =
+        Agenzia.builder.setPartitaIVA(agente.partitaiva as String).build();
+
+    final indirizzo = Indirizzo(
+      idIndirizzo: 0,
+      stato: stato,
+      citta: citta,
+      quartiere: quartiere,
+      via: via,
+      numeroCivico: numeroCivico,
+      cap: int.parse(cap),
+      latitudine: latitudine,
+      logitudine: logitudine,
+    );
+
+    final estate = EstateBuilder(0)
+        .setAgenziaBuilder(agenzia)
+        .setAgenteBuilder(agente)
+        .setIndirizzoBuilder(indirizzo)
+        .setFotoBuilder(
+            ["https://example.com/foto1.jpg", "https://example.com/foto2.jpg"])
+        .setDescrizioneBuilder(descrizione)
+        .setPriceBuilder(price)
+        .setSpaceBuilder(space)
+        .setRoomsBuilder(rooms)
+        .setFloorBuilder(floor)
+        .setWcBuilder(wc)
+        .setGarageBuilder(garage)
+        .setElevatorBuilder(elevator)
+        .setClasseEnergeticaBuilder(classeEnergetica)
+        .setModeBuilder(mode)
+        .setStatoBuilder(stato)
+        .build();
+
+    final body = estate.toJson();
+    print(body);
+    /*
+    // Esegui la POST
+    final response = await http.post(
+      Uri.parse("https://tuo-backend/api/estates"),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print("Estate creata con successo.");
+    } else {
+      print("Errore nella creazione dell'estate: ${response.statusCode}");
+      print(response.body);
+    }
+    */
   }
 }

@@ -20,11 +20,9 @@ class _AgentHomeWindowState extends State<AgentHomeWindow> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    HomeScreen(),
+    const HomeScreen(),
     NotificationAgentWindow(),
     AgentAppointmentWindow(),
-    //ProfileAgentWindow(),
-    //ProfileWindow(),
     ProfileAgentWindow(),
   ];
 
@@ -32,8 +30,7 @@ class _AgentHomeWindowState extends State<AgentHomeWindow> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: widget.appbar,
-      body: _pages[
-          _selectedIndex], // il contenuto del body e determinato dalla classe correnete a schermo nella lista
+      body: _pages[_selectedIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: (index) =>
@@ -58,16 +55,14 @@ class _AgentHomeWindowState extends State<AgentHomeWindow> {
         ],
         indicatorColor: MyApp.celeste,
         backgroundColor: MyApp.blu,
-        overlayColor: WidgetStateProperty.all(
-            Colors.transparent), // Rimuove l'overlay al tap
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
         labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
           (Set<WidgetState> states) {
             if (states.contains(WidgetState.selected)) {
               return const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold);
             }
-            return const TextStyle(
-                color: Colors.white70); // Testo non selezionato
+            return const TextStyle(color: Colors.white70);
           },
         ),
       ),
@@ -82,12 +77,35 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreen();
 }
 
-// Pagine separate che verranno visualizzate
 class _HomeScreen extends State<HomeScreen> {
   late Future<List<Estate>> estates;
-  // Variabile per tenere traccia del filtro selezionato.
-  bool _errorShown = false;
-  bool _noDataShown = false;
+
+  final _formKey = GlobalKey<FormState>();
+
+  // Estate fields
+  String descrizione = '';
+  double price = 0.0;
+  double space = 0.0;
+  int rooms = 0;
+  int wc = 0;
+  int floor = 0;
+  int garage = 0;
+  bool elevator = false;
+  String agenzia = '';
+  String agente = '';
+  String stato = 'New';
+  String mode = 'Affitto';
+  String classeEnergetica = 'A';
+
+  // Indirizzo fields
+  String statoIndirizzo = '';
+  String citta = '';
+  String? quartiere;
+  String via = '';
+  String numeroCivico = '';
+  String cap = '';
+  double latitudine = 0.0;
+  double logitudine = 0.0;
 
   @override
   void initState() {
@@ -98,53 +116,157 @@ class _HomeScreen extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Expanded(
-        child: FutureBuilder<List<Estate>>(
-          future: estates,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(strokeWidth: 5),
-              );
-            }
-            if (snapshot.hasError && !_errorShown) {
-              //MyApp.mostraPopUpInformativo(context, 'Error', "Errore riprova più tardi");
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                MyApp.mostraPopUpWarining(
-                    context, 'Error', "Errore riprova più tardi");
-              });
-            }
-            if (!snapshot.hasData || snapshot.data!.isEmpty && !_noDataShown) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                MyApp.mostraPopUpWarining(
-                    context, 'Error', "Errore riprova più tardi");
-              });
-            }
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Card(
-                    elevation: 10.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                      side: BorderSide(color: MyApp.blu, width: 2),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          //qui vanno gli estate
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            );
-          },
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Descrizione'),
+                  onSaved: (value) => descrizione = value ?? '',
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Prezzo'),
+                  keyboardType: TextInputType.number,
+                  onSaved: (value) =>
+                      price = double.tryParse(value ?? '0') ?? 0,
+                ),
+                TextFormField(
+                  decoration:
+                      const InputDecoration(labelText: 'Dimensione (m2)'),
+                  keyboardType: TextInputType.number,
+                  onSaved: (value) =>
+                      space = double.tryParse(value ?? '0') ?? 0,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Locali'),
+                  keyboardType: TextInputType.number,
+                  onSaved: (value) => rooms = int.tryParse(value ?? '0') ?? 0,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Bagni'),
+                  keyboardType: TextInputType.number,
+                  onSaved: (value) => wc = int.tryParse(value ?? '0') ?? 0,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Piano'),
+                  keyboardType: TextInputType.number,
+                  onSaved: (value) => floor = int.tryParse(value ?? '0') ?? 0,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Garage'),
+                  keyboardType: TextInputType.number,
+                  onSaved: (value) => garage = int.tryParse(value ?? '0') ?? 0,
+                ),
+                SwitchListTile(
+                  title: const Text('Ascensore'),
+                  value: elevator,
+                  onChanged: (val) => setState(() => elevator = val),
+                ),
+                DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(labelText: 'Stato'),
+                  value: stato = "Nuovo",
+                  items: ["Nuovo", "Ottimo", "Buono", "Da ristrutturare"]
+                      .map((val) =>
+                          DropdownMenuItem(value: val, child: Text(val)))
+                      .toList(),
+                  onChanged: (val) => setState(() => stato = val!),
+                ),
+                DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(labelText: 'Contratto'),
+                  value: mode,
+                  items: ['Affitto', 'Vendita']
+                      .map((val) =>
+                          DropdownMenuItem(value: val, child: Text(val)))
+                      .toList(),
+                  onChanged: (val) => setState(() => mode = val!),
+                ),
+                DropdownButtonFormField<String>(
+                  decoration:
+                      const InputDecoration(labelText: 'Classe Energetica'),
+                  value: classeEnergetica,
+                  items: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+                      .map((val) =>
+                          DropdownMenuItem(value: val, child: Text(val)))
+                      .toList(),
+                  onChanged: (val) => setState(() => classeEnergetica = val!),
+                ),
+                const Divider(),
+                const Text("Indirizzo",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                TextFormField(
+                  decoration:
+                      const InputDecoration(labelText: 'Stato (Indirizzo)'),
+                  onSaved: (value) => statoIndirizzo = value ?? '',
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Città'),
+                  onSaved: (value) => citta = value ?? '',
+                ),
+                TextFormField(
+                  decoration:
+                      const InputDecoration(labelText: 'Quartiere (opzionale)'),
+                  onSaved: (value) => quartiere = value,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Via'),
+                  onSaved: (value) => via = value ?? '',
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Numero Civico'),
+                  onSaved: (value) => numeroCivico = value ?? '',
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'CAP'),
+                  onSaved: (value) => cap = value ?? '',
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Latitudine'),
+                  keyboardType: TextInputType.number,
+                  onSaved: (value) =>
+                      latitudine = double.tryParse(value ?? '0') ?? 0.0,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Longitudine'),
+                  keyboardType: TextInputType.number,
+                  onSaved: (value) =>
+                      logitudine = double.tryParse(value ?? '0') ?? 0.0,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      AgentHomeController.createEstate(
+                        descrizione: descrizione,
+                        price: price,
+                        space: space,
+                        rooms: rooms,
+                        wc: wc,
+                        floor: floor,
+                        garage: garage,
+                        elevator: elevator,
+                        stato: stato,
+                        mode: mode,
+                        classeEnergetica: classeEnergetica,
+                        statoIndirizzo: statoIndirizzo,
+                        citta: citta,
+                        quartiere: quartiere,
+                        via: via,
+                        numeroCivico: numeroCivico,
+                        cap: cap,
+                        latitudine: latitudine,
+                        logitudine: logitudine,
+                      );
+                    }
+                  },
+                  child: const Text('Salva'),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
