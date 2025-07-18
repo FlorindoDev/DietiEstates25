@@ -1,5 +1,7 @@
 package org.sch.API.Interfacce;
 
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 import org.md.Estate.Estate;
 import org.md.Geolocalizzazione.Indirizzo;
@@ -15,5 +17,5 @@ public interface SearchAPI {
 
     public Response estatesSerachFromCity(Indirizzo indirizzo);
 
-    public Response estates(EstateFilter filter);
+    public Response estates(EstateFilter filter, @Context HttpHeaders headers);
 }
