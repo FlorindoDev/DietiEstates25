@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:dietiestate25/AgentHome/NotificationAgentWindow.dart';
 import 'package:dietiestate25/AgentHome/AgentAppointmentWindow.dart';
 import 'package:dietiestate25/Booking/BookingWindow.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 
 class AgentHomeWindow extends StatefulWidget {
   const AgentHomeWindow({super.key, required this.appbar});
@@ -78,6 +81,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
+  Future<void> _pickImage() async {
+    final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
+    if (file == null) return;
+    final bytes = await file.readAsBytes();
+    final newBase64 = base64Encode(bytes);
+
+    setState(() {});
+  }
+
+  final ImagePicker _picker = ImagePicker();
+
   late Future<List<Estate>> estates;
 
   final _formKey = GlobalKey<FormState>();
@@ -123,6 +137,25 @@ class _HomeScreen extends State<HomeScreen> {
             key: _formKey,
             child: Column(
               children: [
+                GestureDetector(
+                  onTap: _pickImage,
+                  child: Container(
+                    width: 96,
+                    height: 96,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey.shade200, // sfondo leggero
+                      // border: Border.all(color: Colors.grey.shade400, width: 2),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.camera_alt, // icona desiderata
+                        size: 40,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ),
+                ),
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Descrizione'),
                   onSaved: (value) => descrizione = value ?? '',
