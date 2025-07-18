@@ -34,6 +34,12 @@ public class NotifySenders {
         try {
             EmailSender emailSender = new EmailSenderJakarta();
             Agent agent = getAgent(notification);
+
+            if(!agent.getNotifyAppointment()){
+                System.out.println("[!] Utente non vuole notifiche invio non fatto");
+                return;
+            }
+
             String emailUser = agent.getEmail();
 
             createNotifyOnDB(notification);
