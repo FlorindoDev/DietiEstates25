@@ -107,9 +107,7 @@ public class Search implements SearchService {
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        double distanzaKm = R * c;
-
-        return distanzaKm;
+        return R * c;
     }
 
 
@@ -145,40 +143,38 @@ public class Search implements SearchService {
     }
 
     private void addHistory(EstateFilter filter, String email) throws DietiEstateException {
-        String QueryParams = buildCmd(filter);
-        System.out.println(QueryParams);
-        System.out.println(email);
-        ricercheDAO.add(QueryParams,email);
+        String queryParams = buildCmd(filter);
+        ricercheDAO.add(queryParams,email);
 
 
 
     }
 
     private String buildCmd(EstateFilter filter) {
-        String QueryParams = "?page="+filter.getPage()+"?limit="+filter.getLimit()+"?sort="+filter.getSort();
+        String queryParams = "?page="+filter.getPage()+"?limit="+filter.getLimit()+"?sort="+filter.getSort();
 
-        if (filter.getDesc() != null) QueryParams += "&desc=" + filter.getDesc();
-        if (filter.getStato() != null && !filter.getStato().isEmpty()) QueryParams += "&stato=" + filter.getStato();
-        if (filter.getCitta() != null && !filter.getCitta().isEmpty()) QueryParams += "&citta=" + filter.getCitta();
-        if (filter.getQuartiere() != null && !filter.getQuartiere().isEmpty()) QueryParams += "&quartiere=" + filter.getQuartiere();
-        if (filter.getVia() != null && !filter.getVia().isEmpty()) QueryParams += "&via=" + filter.getVia();
-        if (filter.getMinPrice() != null) QueryParams += "&minPrice=" + filter.getMinPrice();
-        if (filter.getMaxPrice() != null) QueryParams += "&maxPrice=" + filter.getMaxPrice();
-        if (filter.getMinSpace() != null) QueryParams += "&minSpace=" + filter.getMinSpace();
-        if (filter.getMaxSpace() != null) QueryParams += "&maxSpace=" + filter.getMaxSpace();
-        if (filter.getMinRooms() != null) QueryParams += "&minRooms=" + filter.getMinRooms();
-        if (filter.getMaxRooms() != null) QueryParams += "&maxRooms=" + filter.getMaxRooms();
-        if (filter.getWc() != null) QueryParams += "&wc=" + filter.getWc();
-        if (filter.getElevator() != null) QueryParams += "&elevator=" + filter.getElevator();
-        if (filter.getState() != null && !filter.getState().isEmpty()) QueryParams += "&state=" + filter.getState();
-        if (filter.getGarage() != null) QueryParams += "&garage=" + filter.getGarage();
-        if (filter.getEnergeticClass() != null && !filter.getEnergeticClass().isEmpty()) QueryParams += "&energeticClass=" + filter.getEnergeticClass();
-        if (filter.getMode() != null && !filter.getMode().isEmpty()) QueryParams += "&mode=" + filter.getMode();
-        if (filter.getLongCentroCirconferenza() != null) QueryParams += "&longCentroCirconferenza=" + filter.getLongCentroCirconferenza();
-        if (filter.getLatCentroCirconferenza() != null) QueryParams += "&latCentroCirconferenza=" + filter.getLatCentroCirconferenza();
-        if (filter.getRaggio() != null) QueryParams += "&raggio=" + filter.getRaggio();
+        if (filter.getDesc() != null) queryParams += "&desc=" + filter.getDesc();
+        if (filter.getStato() != null && !filter.getStato().isEmpty()) queryParams += "&stato=" + filter.getStato();
+        if (filter.getCitta() != null && !filter.getCitta().isEmpty()) queryParams += "&citta=" + filter.getCitta();
+        if (filter.getQuartiere() != null && !filter.getQuartiere().isEmpty()) queryParams += "&quartiere=" + filter.getQuartiere();
+        if (filter.getVia() != null && !filter.getVia().isEmpty()) queryParams += "&via=" + filter.getVia();
+        if (filter.getMinPrice() != null) queryParams += "&minPrice=" + filter.getMinPrice();
+        if (filter.getMaxPrice() != null) queryParams += "&maxPrice=" + filter.getMaxPrice();
+        if (filter.getMinSpace() != null) queryParams += "&minSpace=" + filter.getMinSpace();
+        if (filter.getMaxSpace() != null) queryParams += "&maxSpace=" + filter.getMaxSpace();
+        if (filter.getMinRooms() != null) queryParams += "&minRooms=" + filter.getMinRooms();
+        if (filter.getMaxRooms() != null) queryParams += "&maxRooms=" + filter.getMaxRooms();
+        if (filter.getWc() != null) queryParams += "&wc=" + filter.getWc();
+        if (filter.getElevator() != null) queryParams += "&elevator=" + filter.getElevator();
+        if (filter.getState() != null && !filter.getState().isEmpty()) queryParams += "&state=" + filter.getState();
+        if (filter.getGarage() != null) queryParams += "&garage=" + filter.getGarage();
+        if (filter.getEnergeticClass() != null && !filter.getEnergeticClass().isEmpty()) queryParams += "&energeticClass=" + filter.getEnergeticClass();
+        if (filter.getMode() != null && !filter.getMode().isEmpty()) queryParams += "&mode=" + filter.getMode();
+        if (filter.getLongCentroCirconferenza() != null) queryParams += "&longCentroCirconferenza=" + filter.getLongCentroCirconferenza();
+        if (filter.getLatCentroCirconferenza() != null) queryParams += "&latCentroCirconferenza=" + filter.getLatCentroCirconferenza();
+        if (filter.getRaggio() != null) queryParams += "&raggio=" + filter.getRaggio();
 
-        return QueryParams;
+        return queryParams;
 
     }
 
