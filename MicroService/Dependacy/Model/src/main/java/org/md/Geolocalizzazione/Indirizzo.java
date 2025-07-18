@@ -36,8 +36,6 @@ public class Indirizzo extends Translate {
     @QueryParam("longitudine")
     private Double longitude = null;
 
-    @QueryParam("raggio")
-    private Double radius = null;
 
     public Double getLatitude() { return latitude; }
 
@@ -46,10 +44,6 @@ public class Indirizzo extends Translate {
     public Double getLongitude() { return longitude; }
 
     public void setLongitude(Double longitude) { this.longitude = longitude; }
-
-    public Double getRadius() { return radius; }
-
-    public void setRadius(Double radius) { this.radius = radius; }
 
     public int getIdIndirizzo() {
         return idIndirizzo;
@@ -119,7 +113,6 @@ public class Indirizzo extends Translate {
         this.via = builder.via;
         this.latitude = builder.latitude;
         this.longitude = builder.longitude;
-        this.radius = builder.radius;
 
     }
 
@@ -133,7 +126,6 @@ public class Indirizzo extends Translate {
         private int cap = 0;
         private Double latitude = null;
         private Double longitude = null;
-        private Double radius = null;
 
 
         public Builder(int idIndirizzo) {
@@ -181,11 +173,6 @@ public class Indirizzo extends Translate {
 
         public typeBuilder setCap(int cap) {
             this.cap = cap;
-            return self();
-        }
-
-        public typeBuilder setRadius(Double radius) {
-            this.radius = radius;
             return self();
         }
 

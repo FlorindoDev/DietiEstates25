@@ -15,14 +15,19 @@ import 'package:dietiestate25/Model/Notify/Notify.dart';
 import 'package:dietiestate25/main.dart';
 
 class HomeController {
-  // static final String urlNotify = 'http://10.0.2.2:7008/api/notifies/acquirente'; // Per Android
-  static final String urlNotify = 'http://127.0.0.1:7008/api/notifies/acquirente'; // Per Windows
+  static final String urlNotify =
+      'http://10.0.2.2:7008/api/notifies/acquirente'; // Per Android
+  //static final String urlNotify = 'http://127.0.0.1:7008/api/notifies/acquirente'; // Per Windows
 
-  // static final String urlAppointment = 'http://10.0.2.2:7006/api/appointments/acquirente'; // Per Android
-  static final String urlAppointment = 'http://127.0.0.1:7006/api/appointments/acquirente'; // Per Windows
+  static final String urlAppointment =
+      'http://10.0.2.2:7006/api/appointments/acquirente'; // Per Android
+  //static final String urlAppointment =
+  // 'http://127.0.0.1:7006/api/appointments/acquirente'; // Per Windows
 
-  // static final String urlAppointmentSpecific ='http://10.0.2.2:7006/api/appointments'; // Per Android
-  static final String urlAppointmentSpecific ='http://127.0.0.1:7006/api/appointments'; // Per Windows 
+  static final String urlAppointmentSpecific =
+      'http://10.0.2.2:7006/api/appointments'; // Per Android
+  //static final String urlAppointmentSpecific =
+  //'http://127.0.0.1:7006/api/appointments'; // Per Windows
 
   static final String urlSearch = "Search";
 
@@ -161,35 +166,31 @@ class HomeController {
     return Appointments;
   }
 
-  static Future<List<Estate>> getEstatesHome(BuildContext context, String quary) async{
-
-
-    http.Response? response = await Connection.makeGetRequest(urlSearch +  '/estates?sort=idimmobile&desc=true' + quary);
-
+  static Future<List<Estate>> getEstatesHome(
+      BuildContext context, String quary) async {
+    http.Response? response = await Connection.makeGetRequest(
+        urlSearch + '/estates?sort=idimmobile&desc=true' + quary);
 
     if (response == null) {
       return List<Estate>.empty();
     }
 
-
-
     dynamic ris;
     List<Estate> estates = [];
     try {
       // if (response != null) {
-      
-        
-        ris = json.decode(utf8.decode(response.bodyBytes));
-        if (ris['code'] == 0) {
-          for (int i = 0; i < ris['Estates'].length; i++) {  
-              //print('\n\nMsg ricevuto : \n${ris['Estates'][i]['foto']}\n\n');
-              estates.add(Estate.fromJson(ris['Estates'][i]));
-            
-            
-          }
-        } else {
-          MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
+
+      ris = json.decode(utf8.decode(response.bodyBytes));
+      if (ris['code'] == 0) {
+        for (int i = 0; i < ris['Estates'].length; i++) {
+          //print('\n\nMsg ricevuto : \n${ris['Estates'][i]['foto']}\n\n');
+          //print(ris['Estates'][i]['indirizzo']);
+          estates.add(Estate.fromJson(ris['Estates'][i]));
+          print(estates[estates.length - 1].indirizzo?.toJson());
         }
+      } else {
+        MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
+      }
       // }
     } catch (e) {
       return List<Estate>.empty();
@@ -198,9 +199,5 @@ class HomeController {
     //print(estates);
     //print("\n\n\n\nCiaooooo");
     return estates;
-
-
-
-
   }
 }

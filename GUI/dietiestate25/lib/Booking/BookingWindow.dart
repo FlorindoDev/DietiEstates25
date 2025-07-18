@@ -75,42 +75,6 @@ class _BookingWindowState extends State<BookingWindow> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Row(
-                        children: const [
-                          Icon(Icons.arrow_back),
-                          SizedBox(width: 8),
-                          Text('Indietro',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w500)),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    const Icon(Icons.home, color: MyApp.celeste),
-                    const SizedBox(width: 4),
-                    RichText(
-                      text: const TextSpan(
-                        text: 'DietiEstates',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                        children: [
-                          TextSpan(
-                              text: '25', style: TextStyle(color: MyApp.rosso))
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               const SizedBox(height: 16),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
@@ -215,13 +179,14 @@ class _BookingWindowState extends State<BookingWindow> {
                               onTap: () {
                                 setState(() {
                                   _selectedDate = date;
-                                  //TODO le cordinate devono essere quelle del immobile
                                   _weatherFuture =
                                       BookingController.fetchWeatherList(
                                     context,
                                     date,
-                                    "40.8762",
-                                    "14.5195",
+                                    widget.estate.indirizzo!.latitudine
+                                        .toString(),
+                                    widget.estate.indirizzo!.logitudine
+                                        .toString(),
                                   );
                                 });
                               },
