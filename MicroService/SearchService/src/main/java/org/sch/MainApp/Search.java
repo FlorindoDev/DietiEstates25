@@ -1,6 +1,8 @@
 package org.sch.MainApp;
 
+import org.dao.Interfacce.CronologiaRicercaDAO;
 import org.dao.Interfacce.EstateDAO;
+import org.dao.postgre.CronologiaRicercaPostgreDAO;
 import org.dao.postgre.EstatePostgreDAO;
 import org.exc.DietiEstateException;
 import org.json.JSONArray;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 public class Search implements SearchService {
 
     private EstateDAO estateDAO = new EstatePostgreDAO();
+    private CronologiaRicercaDAO ricercheDAO = new CronologiaRicercaPostgreDAO();
+
 
     @Override
     public String allCity() {
@@ -94,26 +98,29 @@ public class Search implements SearchService {
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
 
+        double radLat1 = Math.toRadians(lat1);
+        double radLat2 = Math.toRadians(lat2);
+
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                + Math.cos(radLat1) * Math.cos(radLat2)
                 * Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return R * c; // distanza in chilometri
+        return R * c;
     }
 
 
     @Override
-    public String search(EstateFilter filter) {
+    public String search(EstateFilter filter, String email) {
         List<Estate> estates;
 
         try {
             estates = estateDAO.search(filter);
             if (filter.getRaggio() != null && filter.getLongCentroCirconferenza() != null && filter.getLatCentroCirconferenza() != null) {
-                double latCentro = filter.getLatCentroCirconferenza();
-                double lonCentro = filter.getLongCentroCirconferenza();
-                double raggioKm = filter.getRaggio(); // raggio già in KM
+                final double latCentro = filter.getLatCentroCirconferenza();
+                final double lonCentro = filter.getLongCentroCirconferenza();
+                final double raggioKm = filter.getRaggio(); // raggio già in KM
 
                 estates = estates.stream()
                         .filter(e -> {
@@ -126,11 +133,49 @@ public class Search implements SearchService {
                         .toList();
 
             }
+
+            addHistory(filter,email);
         } catch (DietiEstateException e) {
             return "{\"code\": 10, \"message\": \"There aren't estets in this city\"}";
         }
 
         return buildJson(estates);
+    }
+
+    private void addHistory(EstateFilter filter, String email) throws DietiEstateException {
+        String queryParams = buildCmd(filter);
+        ricercheDAO.add(queryParams,email);
+
+
+
+    }
+
+    private String buildCmd(EstateFilter filter) {
+        String queryParams = "?page="+filter.getPage()+"?limit="+filter.getLimit()+"?sort="+filter.getSort();
+
+        if (filter.getDesc() != null) queryParams += "&desc=" + filter.getDesc();
+        if (filter.getStato() != null && !filter.getStato().isEmpty()) queryParams += "&stato=" + filter.getStato();
+        if (filter.getCitta() != null && !filter.getCitta().isEmpty()) queryParams += "&citta=" + filter.getCitta();
+        if (filter.getQuartiere() != null && !filter.getQuartiere().isEmpty()) queryParams += "&quartiere=" + filter.getQuartiere();
+        if (filter.getVia() != null && !filter.getVia().isEmpty()) queryParams += "&via=" + filter.getVia();
+        if (filter.getMinPrice() != null) queryParams += "&minPrice=" + filter.getMinPrice();
+        if (filter.getMaxPrice() != null) queryParams += "&maxPrice=" + filter.getMaxPrice();
+        if (filter.getMinSpace() != null) queryParams += "&minSpace=" + filter.getMinSpace();
+        if (filter.getMaxSpace() != null) queryParams += "&maxSpace=" + filter.getMaxSpace();
+        if (filter.getMinRooms() != null) queryParams += "&minRooms=" + filter.getMinRooms();
+        if (filter.getMaxRooms() != null) queryParams += "&maxRooms=" + filter.getMaxRooms();
+        if (filter.getWc() != null) queryParams += "&wc=" + filter.getWc();
+        if (filter.getElevator() != null) queryParams += "&elevator=" + filter.getElevator();
+        if (filter.getState() != null && !filter.getState().isEmpty()) queryParams += "&state=" + filter.getState();
+        if (filter.getGarage() != null) queryParams += "&garage=" + filter.getGarage();
+        if (filter.getEnergeticClass() != null && !filter.getEnergeticClass().isEmpty()) queryParams += "&energeticClass=" + filter.getEnergeticClass();
+        if (filter.getMode() != null && !filter.getMode().isEmpty()) queryParams += "&mode=" + filter.getMode();
+        if (filter.getLongCentroCirconferenza() != null) queryParams += "&longCentroCirconferenza=" + filter.getLongCentroCirconferenza();
+        if (filter.getLatCentroCirconferenza() != null) queryParams += "&latCentroCirconferenza=" + filter.getLatCentroCirconferenza();
+        if (filter.getRaggio() != null) queryParams += "&raggio=" + filter.getRaggio();
+
+        return queryParams;
+
     }
 
 

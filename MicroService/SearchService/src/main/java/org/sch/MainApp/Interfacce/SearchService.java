@@ -12,5 +12,5 @@ public interface SearchService {
 
     void close();
 
-    String search(EstateFilter filter);
+    String search(EstateFilter filter, String email);
 }
