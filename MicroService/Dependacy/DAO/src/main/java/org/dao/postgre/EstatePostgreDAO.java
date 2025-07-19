@@ -715,15 +715,15 @@ public class EstatePostgreDAO implements EstateDAO {
         }
 
         if(filter.getMinSpace() != null){
-            query += (numberParamsOfFilter == 1) ? " WHERE immobile.dimensione >= ? " : " AND immobile.dimensione >= ? ";
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.dimensioni >= ? " : " AND immobile.dimensioni >= ? ";
             presenzeDouble.put(numberParamsOfFilter, filter.getMinSpace());
             numberParamsOfFilter++;
 
         }
 
         if(filter.getMaxSpace() != null){
-            query += (numberParamsOfFilter == 1) ? " WHERE immobile.dimensione <= ? " : " AND immobile.dimensione <= ? ";
-            presenzeDouble.put(numberParamsOfFilter, filter.getMinSpace());
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.dimensioni <= ? " : " AND immobile.dimensioni <= ? ";
+            presenzeDouble.put(numberParamsOfFilter, filter.getMaxSpace());
             numberParamsOfFilter++;
         }
 
