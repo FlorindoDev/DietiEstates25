@@ -59,7 +59,7 @@ public class SearchRestFulAPI implements SearchAPI {
         }catch (DietiEstateException e){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-
+        searchService.close();
         return Response.ok(ricerche).build();
 
     }
