@@ -726,6 +726,16 @@ public class EstatePostgreDAO implements EstateDAO {
             presenzeDouble.put(numberParamsOfFilter, filter.getMinSpace());
             numberParamsOfFilter++;
         }
+
+        if (filter.getRaggio() != null && filter.getLatCentroCirconferenza() != null && filter.getLongCentroCirconferenza() != null){
+            query += (numberParamsOfFilter == 1) ? " WHERE (6371 * acos(cos(radians(?)) * cos(radians(latitudine)) *cos(radians(longitudine) - radians(?)) +sin(radians(?)) * sin(radians(latitudine)))) <= ? " : " AND (6371 * acos(cos(radians(?)) * cos(radians(latitudine)) *cos(radians(longitudine) - radians(?)) +sin(radians(?)) * sin(radians(latitudine)))) <= ? ";
+
+            presenzeDouble.put(numberParamsOfFilter++, filter.getLatCentroCirconferenza());
+            presenzeDouble.put(numberParamsOfFilter++, filter.getLongCentroCirconferenza());
+            presenzeDouble.put(numberParamsOfFilter++, filter.getLatCentroCirconferenza());
+            presenzeDouble.put(numberParamsOfFilter++, filter.getRaggio());
+        }
+
         return query;
     }
 
