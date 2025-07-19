@@ -256,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     validator: (v) {
                       if (v == null || v.isEmpty) return 'Campo obbligatorio';
                       final val = double.tryParse(v);
-                      if (val == null || val < 0)
+                      if (val == null || val <= 0)
                         return 'Inserisci un numero valido';
                       return null;
                     },
@@ -272,7 +272,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     validator: (v) {
                       if (v == null || v.isEmpty) return 'Campo obbligatorio';
                       final val = double.tryParse(v);
-                      if (val == null || val < 0)
+                      if (val == null || val <= 0)
                         return 'Inserisci un numero valido';
                       return null;
                     },
@@ -291,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     validator: (v) {
                       if (v == null || v.isEmpty) return 'Campo obbligatorio';
                       final val = int.tryParse(v);
-                      if (val == null || val < 0) return 'Numero non valido';
+                      if (val == null || val <= 0) return 'Numero non valido';
                       return null;
                     },
                     onSaved: (v) => rooms = int.tryParse(v ?? '0') ?? 0,
@@ -305,7 +305,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     validator: (v) {
                       if (v == null || v.isEmpty) return 'Campo obbligatorio';
                       final val = int.tryParse(v);
-                      if (val == null || val < 0) return 'Numero non valido';
+                      if (val == null || val <= 0) return 'Numero non valido';
                       return null;
                     },
                     onSaved: (v) => wc = int.tryParse(v ?? '0') ?? 0,
@@ -460,7 +460,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     validator: (v) {
                       if (v == null || v.isEmpty) return 'Campo obbligatorio';
                       final val = int.tryParse(v);
-                      if (val == null || val < 0) return 'Numero non valido';
+                      if (val == null || val <= 0) return 'Numero non valido';
                       return null;
                     },
                     onSaved: (v) => cap = v ?? '',
