@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'EditProfileAgentWidow.dart';
-import 'package:dietiestate25/ManagementAccount/EditPassword.dart';
+import 'package:dietiestate25/ManagementAccount/EditPasswordAgent.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
