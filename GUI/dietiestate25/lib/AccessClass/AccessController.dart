@@ -106,7 +106,7 @@ class AccessController {
 
     }
 
-    MyApp.mostraPopUpInformativo(context, "Complimenti", "Login Effettuato!");
+    MyApp.mostraPopUpSuccess(context, "Complimenti", "Login Effettuato!");
   }
 
   static Map payload(String jwt) {
