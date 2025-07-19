@@ -109,46 +109,12 @@ public class Search implements SearchService {
         estateDAO.close();
     }
 
-    private double haversineKm(double lat1, double lon1, double lat2, double lon2) {
-        final double R = 6371.0; // Raggio medio terrestre in km
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-
-        double radLat1 = Math.toRadians(lat1);
-        double radLat2 = Math.toRadians(lat2);
-
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(radLat1) * Math.cos(radLat2)
-                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return R * c;
-    }
-
-
     @Override
     public String search(EstateFilter filter, String email) {
         List<Estate> estates;
 
         try {
             estates = estateDAO.search(filter);
-            if (filter.getRaggio() != null && filter.getLongCentroCirconferenza() != null && filter.getLatCentroCirconferenza() != null) {
-                final double latCentro = filter.getLatCentroCirconferenza();
-                final double lonCentro = filter.getLongCentroCirconferenza();
-                final double raggioKm = filter.getRaggio(); // raggio già in KM
-
-                estates = estates.stream()
-                        .filter(e -> {
-                            Double lat = e.getIndirizzo().getLatitude();
-                            Double lon = e.getIndirizzo().getLongitude();
-
-                            double distanzaKm = haversineKm(latCentro, lonCentro, lat, lon);
-                            return distanzaKm <= raggioKm;
-                        })
-                        .toList();
-
-            }
 
             addHistory(filter,email);
         } catch (DietiEstateException e) {
