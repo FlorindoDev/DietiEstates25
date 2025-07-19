@@ -425,11 +425,14 @@ class AgentHomeController {
     http.Response? response =
         await Connection.makePostRequest(body, 'AdsEstate/createEstate');
 
+    var responseData = json.decode(utf8.decode(response!.bodyBytes));
+
     if (response!.statusCode == 200 || response.statusCode == 201) {
-      print("Estate creata con successo.");
-      print(response.body);
-      MyApp.mostraPopUpSuccess(
-          context, "Successo creazione", "successo aggiunta estate");
+      if (responseData['code'] == 0) {
+        MyApp.mostraPopUpSuccess(context, "Successo", responseData['message']);
+      } else {
+        MyApp.mostraPopUpWarining(context, "Errore", responseData['message']);
+      }
     } else {
       MyApp.mostraPopUpWarining(context, "Quanlcoda è andato storto", " ");
       print(response.body);
