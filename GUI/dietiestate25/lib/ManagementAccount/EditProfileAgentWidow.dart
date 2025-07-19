@@ -36,6 +36,8 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
   String? _partitaIVAError;
   late TextEditingController _biografiaController;
   String? _biografiaError;
+  late TextEditingController _passwordController;
+  String? _passwordError;
 
   late AgenteImmobiliare copyAgent;
 
@@ -54,7 +56,7 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
     _cognomeController = TextEditingController(text: copyAgent.cognome);
     _partitaIvaController = TextEditingController(text: copyAgent.partitaiva);
     _biografiaController = TextEditingController(text: copyAgent.biografia);
-
+    _passwordController = TextEditingController(text: copyAgent.password);
   }
 
   Future<void> _pickImage() async {
@@ -71,11 +73,9 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     String img = copyAgent.immagineprofile ?? '';
     Uint8List imgBytes = base64Decode(img);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Modifica Generalità'),
@@ -86,9 +86,7 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
           key: _formKey,
           child: ListView(
             children: [
-
               const SizedBox(height: 24),
-
               GestureDetector(
                 onTap: _pickImage,
                 child: Container(
@@ -105,9 +103,7 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 24),
-
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -133,6 +129,16 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
                 ),
                 validator: (value) => value == null || value.isEmpty
                     ? 'Inserisci il cognome'
+                    : null,
+              ),
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  errorText: _passwordError,
+                ),
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Inserisci il Password'
                     : null,
               ),
               TextFormField(
@@ -220,11 +226,24 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
         return;
       }
 
+      try {
+        // password
+        _passwordError = null;
+        validator.validatePassword(_passwordController.text);
+      } on Exception {
+        setState(() {
+          _passwordError = "password non valido";
+        });
+        setState(() => _isLoading = false);
+        return;
+      }
+
       copyAgent.email = _emailController.text;
       copyAgent.nome = _nomeController.text;
       copyAgent.cognome = _cognomeController.text;
       copyAgent.partitaiva = _partitaIvaController.text;
       copyAgent.biografia = _biografiaController.text;
+      copyAgent.password = _passwordController.text;
 
       // await Future.delayed(Duration(seconds: 5));
       bool exitState = await ProfileController.updateProfile(copyAgent);
@@ -233,11 +252,13 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
 
       setState(() => _isLoading = false);
       if (exitState) {
-        await MyApp.mostraPopUpSuccess(context, "Dati aggiornati con successo", null);
+        await MyApp.mostraPopUpSuccess(
+            context, "Dati aggiornati con successo", null);
         loggedUser = copyAgent;
         Navigator.pop(context, true);
       } else {
-        await MyApp.mostraPopUpWarining(context, "Dati non aggiornati", "Non è stto possibile aggiornare i dati del profilo");
+        await MyApp.mostraPopUpWarining(context, "Dati non aggiornati",
+            "Non è stto possibile aggiornare i dati del profilo");
         Navigator.pop(context, false);
       }
     }

@@ -24,6 +24,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String? _nameError;
   late TextEditingController _cognomeController;
   String? _surnameError;
+  late TextEditingController _passwordController;
+  String? _passwordError;
 
   late Utente copyAgent;
 
@@ -34,21 +36,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     super.initState();
-    
-    if (loggedUser is Amministratore) copyAgent = Amministratore.fromJson(loggedUser.toJson());
 
-    if (loggedUser is Acquirente) copyAgent = Acquirente.fromJson(loggedUser.toJson());
+    if (loggedUser is Amministratore)
+      copyAgent = Amministratore.fromJson(loggedUser.toJson());
+
+    if (loggedUser is Acquirente)
+      copyAgent = Acquirente.fromJson(loggedUser.toJson());
     // copyAgent = Acquirente.fromJson(loggedUser.toJson());
 
     _emailController = TextEditingController(text: copyAgent.email);
     _nomeController = TextEditingController(text: copyAgent.nome);
     _cognomeController = TextEditingController(text: copyAgent.cognome);
-
+    _passwordController = TextEditingController(text: "");
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text('Modifica Generalità'),
@@ -60,7 +63,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
           child: ListView(
             children: [
               const SizedBox(height: 24),
-
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -86,6 +88,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
                 validator: (value) => value == null || value.isEmpty
                     ? 'Inserisci il cognome'
+                    : null,
+              ),
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  errorText: _passwordError,
+                ),
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Inserisci il Password'
                     : null,
               ),
               SizedBox(height: 24),
@@ -121,7 +133,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         // nome
         _nameError = null;
         validator.validateName(_nomeController.text);
-      } on Exception{
+      } on Exception {
         setState(() {
           _nameError = "Nome non valido";
         });
@@ -141,9 +153,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
         return;
       }
 
+      try {
+        // password
+        _passwordError = null;
+        validator.validatePassword(_passwordController.text);
+      } on Exception {
+        setState(() {
+          _passwordError = "password non valido";
+        });
+        setState(() => _isLoading = false);
+        return;
+      }
+
       copyAgent.email = _emailController.text;
       copyAgent.nome = _nomeController.text;
       copyAgent.cognome = _cognomeController.text;
+      copyAgent.password = _passwordController.text;
 
       // await Future.delayed(Duration(seconds: 5));
 
@@ -153,11 +178,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
       setState(() => _isLoading = false);
       if (exitState) {
-        await MyApp.mostraPopUpSuccess(context, "Dati aggiornati con successo", null);
+        await MyApp.mostraPopUpSuccess(
+            context, "Dati aggiornati con successo", null);
         loggedUser = copyAgent;
         Navigator.pop(context, true);
       } else {
-        await MyApp.mostraPopUpWarining(context, "Dati non aggiornati", "Non è stto possibile aggiornare i dati del profilo");
+        await MyApp.mostraPopUpWarining(context, "Dati non aggiornati",
+            "Non è stto possibile aggiornare i dati del profilo");
         Navigator.pop(context, false);
       }
     }
