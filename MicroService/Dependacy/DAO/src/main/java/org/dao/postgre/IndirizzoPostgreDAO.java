@@ -36,7 +36,7 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
         try {
             stmt.setInt(1,idindirizzo);
         } catch (Exception e) {
-            logger.severe("Error executing query: " + e.getMessage());
+            logger.severe("Error executing query get from id: " + e.getMessage());
             throw new ErrorCreateStatment();
         }
 
@@ -54,7 +54,7 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
                     .build();
 
         }catch(SQLException e){
-            logger.severe("[-] Error executing query: " + e.getMessage());
+            logger.severe("[-] Error executing query get indirizzo from id: " + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 
@@ -73,7 +73,7 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
             if(!connection.hasNextRow()) throw new AddressNotExists();
             return true;
         } catch (SQLException e) {
-            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            logger.severe("Error executing query isAddressExistsByID "+ e.getMessage());
             throw new ErrorExecutingQuery();
         }finally {
             connection.close();
@@ -108,7 +108,7 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
             if(!connection.hasNextRow()) throw new AddressNotExists();
             return true;
         } catch (SQLException e) {
-            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            logger.severe("Error executing query isAddressExistsByALL " + e.getMessage());
             throw new ErrorExecutingQuery();
         }
     }
@@ -141,7 +141,7 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
             if(connection.hasNextRow()) throw new AddressAlreadyExists();
             return true;
         } catch (SQLException e) {
-            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            logger.severe("Error executing query isAddressNotExistsByALL "+ e.getMessage());
             throw new ErrorExecutingQuery();
         }
     }
@@ -150,7 +150,7 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
     @Override
     public boolean createAddress(Indirizzo indirizzo) throws DietiEstateException {
 
-        String query = "INSERT INTO "+TABLE+" (stato, citta, via, numerocivico, cap, quartiere) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO "+TABLE+" (stato, citta, via, numerocivico, cap, quartiere, latitudine, longitudine) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement stmt = connection.getStatment(query);
 
@@ -162,11 +162,13 @@ public class IndirizzoPostgreDAO implements IndirizzoDAO {
             stmt.setString(++idx, indirizzo.getNumeroCivico());
             stmt.setInt(++idx, indirizzo.getCap());
             stmt.setString(++idx, indirizzo.getQuartiere());
+            stmt.setDouble(++idx, indirizzo.getLatitude());
+            stmt.setDouble(++idx, indirizzo.getLongitude());
 
             connection.makeQueryUpdate(stmt);
             return true;
         }catch (SQLException e){
-            logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+            logger.severe("Error executing query createAddress: " + e.getMessage());
             throw new ErrorExecutingQuery();
         }
 

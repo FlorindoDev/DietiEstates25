@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dietiestate25/Search/SearchController.dart'
     as my_search_controller;
+import 'package:latlong2/latlong.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 class SearchFilterWindow extends StatefulWidget {
@@ -13,6 +14,8 @@ class SearchFilterWindow extends StatefulWidget {
       {super.key, required this.appbar, required this.citta});
   final AppBar appbar;
   final String citta;
+  static LatLng? currentPosition;
+  static double? searchRadius;
 
   @override
   State<SearchFilterWindow> createState() => _SearchFilterWindowState();
@@ -188,7 +191,11 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                       stato,
                       garage,
                       opzioni[_sliderIndex.round()],
-                      widget.citta);
+                      widget.citta,
+                      SearchFilterWindow.currentPosition?.latitude,
+                      SearchFilterWindow.currentPosition?.longitude,
+                      SearchFilterWindow.searchRadius
+                      );
                 },
                 style: ButtonStyle(
                   padding: WidgetStateProperty.all(
