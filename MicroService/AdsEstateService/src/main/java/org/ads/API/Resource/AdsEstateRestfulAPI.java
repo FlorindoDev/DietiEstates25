@@ -46,7 +46,6 @@ public class AdsEstateRestfulAPI implements AdsEstateAPI {
         AdsEstate ads = new AdsEstate(Main.rabbitMQ);
         String response;
         if (idImmobile == null) {
-            // nessun id: prendi tutti
             response = ads.loadEstate(null);
         } else {
             response = ads.loadEstate(idImmobile);

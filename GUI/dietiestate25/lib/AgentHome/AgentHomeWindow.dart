@@ -2,13 +2,15 @@ import 'package:dietiestate25/AgentHome/AgentHomeController.dart';
 import 'package:dietiestate25/ManagementAccount/ProfileAgentWindow.dart';
 import 'package:dietiestate25/Model/Estate/Estate.dart';
 import 'package:dietiestate25/main.dart';
-import 'package:flutter/material.dart';
 import 'package:dietiestate25/AgentHome/NotificationAgentWindow.dart';
 import 'package:dietiestate25/AgentHome/AgentAppointmentWindow.dart';
-import 'package:dietiestate25/Booking/BookingWindow.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
-import 'dart:typed_data';
+
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:geolocator/geolocator.dart';
 
 class AgentHomeWindow extends StatefulWidget {
   const AgentHomeWindow({super.key, required this.appbar});
@@ -36,8 +38,7 @@ class _AgentHomeWindowState extends State<AgentHomeWindow> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) =>
-            setState(() => _selectedIndex = index),
+        onDestinationSelected: (index) => setState(() => _selectedIndex = index),
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.house_rounded, color: Colors.white),
@@ -62,8 +63,7 @@ class _AgentHomeWindowState extends State<AgentHomeWindow> {
         labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
           (Set<WidgetState> states) {
             if (states.contains(WidgetState.selected)) {
-              return const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.bold);
+              return const TextStyle(color: Colors.white, fontWeight: FontWeight.bold);
             }
             return const TextStyle(color: Colors.white70);
           },
@@ -77,278 +77,367 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreen();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreen extends State<HomeScreen> {
-  List<String> _imagesBase64 = [];
-
-  Future<void> _pickImage() async {
-    final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
-    if (file == null) return;
-    final bytes = await file.readAsBytes();
-    final newBase64 = base64Encode(bytes);
-
-    setState(() {
-      _imagesBase64.add(newBase64);
-    });
-
-    print(_imagesBase64);
-  }
-
-  void _removeImage(int index) {
-    setState(() {
-      _imagesBase64.removeAt(index);
-    });
-  }
-
+class _HomeScreenState extends State<HomeScreen> {
   final ImagePicker _picker = ImagePicker();
-
-  late Future<List<Estate>> estates;
-
-  final _formKey = GlobalKey<FormState>();
+  List<String> _imagesBase64 = [];
+  bool _isLoadingLocation = true;
 
   // Estate fields
+  final _formKey = GlobalKey<FormState>();
   String descrizione = '';
-  double price = 0.0;
-  double space = 0.0;
+  double price = 0;
+  double space = 0;
   int rooms = 0;
   int wc = 0;
   int floor = 0;
   int garage = 0;
   bool elevator = false;
-  String agenzia = '';
-  String agente = '';
-  String stato = 'New';
+  String stato = 'Nuovo';
   String mode = 'Affitto';
   String classeEnergetica = 'A';
 
-  // Indirizzo fields
+  // Address fields
   String statoIndirizzo = '';
   String citta = '';
   String? quartiere;
   String via = '';
   String numeroCivico = '';
   String cap = '';
-  double latitudine = 0.0;
-  double logitudine = 0.0;
+  double latitudine = 40.88333000;
+  double logitudine = 14.41667000;
+
+  late Future<List<Estate>> estates;
+  final MapController _mapController = MapController();
 
   @override
   void initState() {
     super.initState();
     estates = AgentHomeController.getEstate(context);
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
+      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      setState(() {
+        latitudine = position.latitude;
+        logitudine = position.longitude;
+        _isLoadingLocation = false;
+      });
+    } else {
+      setState(() => _isLoadingLocation = false);
+    }
+  }
+
+  void _onMapTap(TapPosition _, LatLng point) {
+    setState(() {
+      latitudine = point.latitude;
+      logitudine = point.longitude;
+    });
+  }
+
+  Future<void> _pickImage() async {
+    final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
+    if (file == null) return;
+    final bytes = await file.readAsBytes();
+    setState(() => _imagesBase64.add(base64Encode(bytes)));
+  }
+
+  void _removeImage(int index) {
+    setState(() => _imagesBase64.removeAt(index));
+  }
+
+  void _onSavePressed() {
+    if (!_formKey.currentState!.validate()) return;
+    _formKey.currentState!.save();
+    AgentHomeController.createEstate(
+      descrizione: descrizione,
+      price: price,
+      space: space,
+      rooms: rooms,
+      wc: wc,
+      floor: floor,
+      garage: garage,
+      elevator: elevator,
+      stato: stato,
+      mode: mode,
+      classeEnergetica: classeEnergetica,
+      statoIndirizzo: statoIndirizzo,
+      citta: citta,
+      quartiere: quartiere,
+      via: via,
+      numeroCivico: numeroCivico,
+      cap: cap,
+      latitudine: latitudine,
+      logitudine: logitudine,
+      foto: _imagesBase64,
+      context: context,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: Container(
-                    width: 96,
-                    height: 96,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.grey.shade200, // sfondo leggero
-                      // border: Border.all(color: Colors.grey.shade400, width: 2),
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.camera_alt, // icona desiderata
-                        size: 40,
-                        color: Colors.grey.shade600,
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: GestureDetector(
+                onTap: _pickImage,
+                child: CircleAvatar(
+                  radius: 48,
+                  backgroundColor: Colors.grey.shade200,
+                  child: Icon(Icons.camera_alt, size: 40, color: Colors.grey.shade600),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: List.generate(_imagesBase64.length, (i) {
+                final bytes = base64Decode(_imagesBase64[i]);
+                return GestureDetector(
+                  onTap: () => _removeImage(i),
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.memory(bytes, width: 80, height: 80, fit: BoxFit.cover),
                       ),
-                    ),
+                      Positioned(
+                        right: 0,
+                        child: Container(
+                          decoration: BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
+                          child: const Icon(Icons.close, size: 20, color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Descrizione'),
+              onSaved: (v) => descrizione = v ?? '',
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(labelText: 'Prezzo'),
+                    keyboardType: TextInputType.number,
+                    onSaved: (v) => price = double.tryParse(v ?? '0') ?? 0,
                   ),
                 ),
-                const SizedBox(height: 16),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: List.generate(_imagesBase64.length, (index) {
-                    final imageBytes = base64Decode(_imagesBase64[index]);
-                    return GestureDetector(
-                      onTap: () => _removeImage(index),
-                      child: Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.memory(
-                              imageBytes,
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black54,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.close,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Descrizione'),
-                  onSaved: (value) => descrizione = value ?? '',
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Prezzo'),
-                  keyboardType: TextInputType.number,
-                  onSaved: (value) =>
-                      price = double.tryParse(value ?? '0') ?? 0,
-                ),
-                TextFormField(
-                  decoration:
-                      const InputDecoration(labelText: 'Dimensione (m2)'),
-                  keyboardType: TextInputType.number,
-                  onSaved: (value) =>
-                      space = double.tryParse(value ?? '0') ?? 0,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Locali'),
-                  keyboardType: TextInputType.number,
-                  onSaved: (value) => rooms = int.tryParse(value ?? '0') ?? 0,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Bagni'),
-                  keyboardType: TextInputType.number,
-                  onSaved: (value) => wc = int.tryParse(value ?? '0') ?? 0,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Piano'),
-                  keyboardType: TextInputType.number,
-                  onSaved: (value) => floor = int.tryParse(value ?? '0') ?? 0,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Garage'),
-                  keyboardType: TextInputType.number,
-                  onSaved: (value) => garage = int.tryParse(value ?? '0') ?? 0,
-                ),
-                SwitchListTile(
-                  title: const Text('Ascensore'),
-                  value: elevator,
-                  onChanged: (val) => setState(() => elevator = val),
-                ),
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(labelText: 'Stato'),
-                  value: stato = "Nuovo",
-                  items: ["Nuovo", "Ottimo", "Buono", "Da ristrutturare"]
-                      .map((val) =>
-                          DropdownMenuItem(value: val, child: Text(val)))
-                      .toList(),
-                  onChanged: (val) => setState(() => stato = val!),
-                ),
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(labelText: 'Contratto'),
-                  value: mode,
-                  items: ['Affitto', 'Vendita']
-                      .map((val) =>
-                          DropdownMenuItem(value: val, child: Text(val)))
-                      .toList(),
-                  onChanged: (val) => setState(() => mode = val!),
-                ),
-                DropdownButtonFormField<String>(
-                  decoration:
-                      const InputDecoration(labelText: 'Classe Energetica'),
-                  value: classeEnergetica,
-                  items: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
-                      .map((val) =>
-                          DropdownMenuItem(value: val, child: Text(val)))
-                      .toList(),
-                  onChanged: (val) => setState(() => classeEnergetica = val!),
-                ),
-                const Divider(),
-                const Text("Indirizzo",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextFormField(
-                  decoration:
-                      const InputDecoration(labelText: 'Stato (Indirizzo)'),
-                  onSaved: (value) => statoIndirizzo = value ?? '',
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Città'),
-                  onSaved: (value) => citta = value ?? '',
-                ),
-                TextFormField(
-                  decoration:
-                      const InputDecoration(labelText: 'Quartiere (opzionale)'),
-                  onSaved: (value) => quartiere = value,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Via'),
-                  onSaved: (value) => via = value ?? '',
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Numero Civico'),
-                  onSaved: (value) => numeroCivico = value ?? '',
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'CAP'),
-                  onSaved: (value) => cap = value ?? '',
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Latitudine'),
-                  keyboardType: TextInputType.number,
-                  onSaved: (value) =>
-                      latitudine = double.tryParse(value ?? '0') ?? 0.0,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Longitudine'),
-                  keyboardType: TextInputType.number,
-                  onSaved: (value) =>
-                      logitudine = double.tryParse(value ?? '0') ?? 0.0,
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      AgentHomeController.createEstate(
-                          descrizione: descrizione,
-                          price: price,
-                          space: space,
-                          rooms: rooms,
-                          wc: wc,
-                          floor: floor,
-                          garage: garage,
-                          elevator: elevator,
-                          stato: stato,
-                          mode: mode,
-                          classeEnergetica: classeEnergetica,
-                          statoIndirizzo: statoIndirizzo,
-                          citta: citta,
-                          quartiere: quartiere,
-                          via: via,
-                          numeroCivico: numeroCivico,
-                          cap: cap,
-                          latitudine: latitudine,
-                          logitudine: logitudine,
-                          foto: _imagesBase64,
-                          context: context);
-                    }
-                  },
-                  child: const Text('Salva'),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(labelText: 'Dimensione (m²)'),
+                    keyboardType: TextInputType.number,
+                    onSaved: (v) => space = double.tryParse(v ?? '0') ?? 0,
+                  ),
                 ),
               ],
             ),
-          ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(labelText: 'Locali'),
+                    keyboardType: TextInputType.number,
+                    onSaved: (v) => rooms = int.tryParse(v ?? '0') ?? 0,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(labelText: 'Bagni'),
+                    keyboardType: TextInputType.number,
+                    onSaved: (v) => wc = int.tryParse(v ?? '0') ?? 0,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: SwitchListTile(
+                    title: const Text('Ascensore'),
+                    value: elevator,
+                    onChanged: (v) => setState(() => elevator = v),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(labelText: 'Garage'),
+                    keyboardType: TextInputType.number,
+                    onSaved: (v) => garage = int.tryParse(v ?? '0') ?? 0,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            DropdownButtonFormField<String>(
+              decoration: const InputDecoration(labelText: 'Stato'),
+              value: stato,
+              items: ['Nuovo', 'Ottimo', 'Buono', 'Da ristrutturare']
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: (v) => stato = v!,
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(labelText: 'Contratto'),
+                    value: mode,
+                    items: ['Affitto', 'Vendita']
+                        .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                        .toList(),
+                    onChanged: (v) => mode = v!,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(labelText: 'Classe Energetica'),
+                    value: classeEnergetica,
+                    items: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+                        .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                        .toList(),
+                    onChanged: (v) => classeEnergetica = v!,
+                  ),
+                ),
+              ],
+            ),
+            const Divider(height: 32),
+            const Text('Indirizzo', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 12),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Piano'),
+              onSaved: (v) => floor = int.tryParse(v ?? '0') ?? 0,
+            ),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Stato (Indirizzo)'),
+              onSaved: (v) => statoIndirizzo = v ?? '',
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Città'),
+              onSaved: (v) => citta = v ?? '',
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Quartiere (opzionale)'),
+              onSaved: (v) => quartiere = v,
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(labelText: 'Via'),
+                    onSaved: (v) => via = v ?? '',
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(labelText: 'Numero Civico'),
+                    keyboardType: TextInputType.number,
+                    onSaved: (v) => numeroCivico = v ?? '',
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(labelText: 'CAP'),
+                    keyboardType: TextInputType.number,
+                    onSaved: (v) => cap = v ?? '',
+                  ),
+                ),
+                // const SizedBox(width: 12),
+                // Expanded(
+                //   child: TextFormField(
+                //     decoration: const InputDecoration(labelText: 'Latitudine'),
+                //     keyboardType: TextInputType.number,
+                //     onSaved: (v) => latitudine = double.tryParse(v ?? '0') ?? 0,
+                //   ),
+                // ),
+                // const SizedBox(width: 12),
+                // Expanded(
+                //   child: TextFormField(
+                //     decoration: const InputDecoration(labelText: 'Longitudine'),
+                //     keyboardType: TextInputType.number,
+                //     onSaved: (v) => logitudine = double.tryParse(v ?? '0') ?? 0,
+                //   ),
+                // ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            if (_isLoadingLocation)
+              const Center(child: CircularProgressIndicator())
+            else
+              Container(
+                height: 250,
+                margin: const EdgeInsets.only(bottom: 24),
+                child: FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(
+                    initialZoom: 5, 
+                    initialCenter: LatLng(latitudine, logitudine), 
+                    onTap: _onMapTap),
+                  children: [
+                    TileLayer(
+                      urlTemplate: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png',
+                      subdomains: ['a', 'b', 'c', 'd'],
+                      userAgentPackageName: 'com.example.dietiestate25',
+                    ),
+                            MarkerLayer(
+                              markers: [
+                                Marker(
+                                  point: LatLng(latitudine, logitudine),
+                                  width: 40,
+                                  height: 40,
+                                  child: Icon(
+                                    Icons.location_pin,
+                                    size: 40,
+                                    color: MyApp.rosso,
+                                  ),
+                                ),
+                              ],
+                            ),
+                  ],
+                ),
+              ),
+            Center(
+              child: ElevatedButton(
+                onPressed: _onSavePressed,
+                child: const Text('Salva'),
+              ),
+            ),
+          ],
         ),
       ),
     );

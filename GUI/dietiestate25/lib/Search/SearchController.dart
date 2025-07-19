@@ -44,6 +44,12 @@ class SearchController {
 
   static String mode = "Affitto";
 
+  static double? latitudine;
+
+  static double? longitudine;
+
+  static double? radius;
+
   static Future<List> searchCity(BuildContext context, String city) async {
     if (city.isEmpty) {
       MyApp.mostraPopUpWarining(context, "Errore", "Inserisci una città");
@@ -96,13 +102,22 @@ class SearchController {
       String stato,
       int garage,
       String opzioni,
-      String city) async {
+      String city,
+      double? latitudine,
+      double? longitudine,
+      double? radius
+      ) async {
     SearchController.citta = city;
     SearchController.page = page;
     String address =
-        'Search/estates?sort=idimmobile&desc=true&page=$page&citta=$city';
+        'Search/estates?sort=idimmobile&desc=true&page=$page';
 
     SearchController.minPrice = minPrice;
+    if (city.isNotEmpty) {
+      address += '&city=$city';
+    }
+
+    SearchController.citta = city;
     if (minPrice != 0) {
       address += '&minPrice=$minPrice';
     }
@@ -156,6 +171,22 @@ class SearchController {
     if (!opzioni.contains("Tutto")) {
       address += '&energeticClass=$opzioni';
     }
+
+    //
+    SearchController.latitudine = latitudine;
+    if (latitudine != null) {
+      address += '&latCentroCirconferenza=$latitudine';
+    }
+    SearchController.longitudine = longitudine;
+    if (longitudine != null) {
+      address += '&longCentroCirconferenza=$longitudine';
+    }
+    SearchController.radius = radius;
+    if (radius != null) { 
+      final km = radius / 1000.0; // Converti metri in chilometri
+      address += '&raggio=$km';
+    }
+    //
 
     SearchController.mode = mode;
     address += '&mode=$mode';
@@ -235,40 +266,40 @@ class SearchController {
     }
   }
 
-  static Future<List<Estate>> radiusSearch(double latitude, double longitude, double radius) async {
+  // static Future<List<Estate>> radiusSearch(double latitude, double longitude, double radius) async {
     
-    // http://127.0.0.1:8000/Search/estates?longCentroCirconferenza=14.7680961&latCentroCirconferenza=40.6824408&raggio=2
-    final km = radius / 1000.0;
-    String address = '/Search/estates?longCentroCirconferenza=$longitude&latCentroCirconferenza=$latitude&raggio=$km';
+  //   // http://127.0.0.1:8000/Search/estates?longCentroCirconferenza=14.7680961&latCentroCirconferenza=40.6824408&raggio=2
+  //   final km = radius / 1000.0;
+  //   String address = '/Search/estates?longCentroCirconferenza=$longitude&latCentroCirconferenza=$latitude&raggio=$km';
     
-    try{
-      http.Response? response = await Connection.makeGetRequest(address);
+  //   try{
+  //     http.Response? response = await Connection.makeGetRequest(address);
 
-      if (response != null) {
-        // MyApp.mostraPopUpWarining("Errore", "Impossibile contattare il server, riprova tra poco");
-        // return;
-        final body = utf8.decode(response.bodyBytes);
-        final ris = json.decode(body);
-        //logger.i("Risposta della ricerca per raggio: $ris['Estates']");
-        if (ris['code'] == 0) {
-          List<Estate> estates = [];
-          for (int i = 0; i < ris['Estates'].length; ++i) {
-            estates.add(Estate.fromJson(ris['Estates'][i]));
-          }
-          return estates;
-        } else {
-          return [];
-        }
-      }else{
-        return [];
-      }
+  //     if (response != null) {
+  //       // MyApp.mostraPopUpWarining("Errore", "Impossibile contattare il server, riprova tra poco");
+  //       // return;
+  //       final body = utf8.decode(response.bodyBytes);
+  //       final ris = json.decode(body);
+  //       //logger.i("Risposta della ricerca per raggio: $ris['Estates']");
+  //       if (ris['code'] == 0) {
+  //         List<Estate> estates = [];
+  //         for (int i = 0; i < ris['Estates'].length; ++i) {
+  //           estates.add(Estate.fromJson(ris['Estates'][i]));
+  //         }
+  //         return estates;
+  //       } else {
+  //         return [];
+  //       }
+  //     }else{
+  //       return [];
+  //     }
 
-    }catch (e) {
-      return [];
-      // print("Errore durante la ricerca per raggio: $e");
-      // MyApp.mostraPopUpWarining("Errore", "Errore durante la ricerca per raggio");
-    }
-  }
+  //   }catch (e) {
+  //     return [];
+  //     // print("Errore durante la ricerca per raggio: $e");
+  //     // MyApp.mostraPopUpWarining("Errore", "Errore durante la ricerca per raggio");
+  //   }
+  // }
 
 
   static Future<List<Ricerca>> getRicerche(BuildContext context) async {

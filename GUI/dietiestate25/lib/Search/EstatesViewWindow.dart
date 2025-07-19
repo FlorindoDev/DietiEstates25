@@ -250,7 +250,10 @@ class _EstatesViewWindowState extends State<EstatesViewWindow> {
                           my_search_controller.SearchController.stato,
                           my_search_controller.SearchController.garage,
                           my_search_controller.SearchController.opzioni,
-                          my_search_controller.SearchController.citta);
+                          my_search_controller.SearchController.citta,
+                          my_search_controller.SearchController.latitudine,
+                          my_search_controller.SearchController.longitudine,
+                          my_search_controller.SearchController.radius);
                     });
                   },
             style: my_search_controller.SearchController.page == 1
@@ -276,7 +279,10 @@ class _EstatesViewWindowState extends State<EstatesViewWindow> {
                     my_search_controller.SearchController.stato,
                     my_search_controller.SearchController.garage,
                     my_search_controller.SearchController.opzioni,
-                    my_search_controller.SearchController.citta);
+                    my_search_controller.SearchController.citta,
+                    my_search_controller.SearchController.latitudine,
+                    my_search_controller.SearchController.longitudine,
+                    my_search_controller.SearchController.radius);
               });
             },
             style: AccessController.clickable_style_button,

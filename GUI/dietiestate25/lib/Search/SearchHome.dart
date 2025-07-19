@@ -1,11 +1,11 @@
-import 'package:dietiestate25/Search/SearchController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
+import 'package:dietiestate25/Search/SearchFilterWindow.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:dietiestate25/Search/SearchController.dart' as MySearchController;
+
 
 class SearchHomeWindow extends StatefulWidget {
   const SearchHomeWindow({super.key, required this.appbar});
@@ -17,10 +17,10 @@ class SearchHomeWindow extends StatefulWidget {
 
 class _SearchHomeWindowState extends State<SearchHomeWindow> {
   final MapController _mapController = MapController();
-  LatLng _currentPosition = LatLng(40.88333000, 14.41667000);
+  LatLng _currentPosition = LatLng(40.88333000, 14.41667000); // Napoli
   double _searchRadius = 1000; // Raggio in metri
   bool _isLoadingLocation = true;
-  bool _isSearching = false;
+  // bool _isSearching = false;
 
   @override
   void initState() {
@@ -70,31 +70,37 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
   }
 
   Future<void> _performRadiusSearch() async {
-    setState(() {
-      _isSearching = true;
-    });
-    try {
-      final results = await MySearchController.SearchController.radiusSearch(
-        _currentPosition.latitude,
-        _currentPosition.longitude,
-        _searchRadius,
-      );
-      if (results.isEmpty) {
-        MyApp.mostraPopUpWarining(
-            context, "Nessun risultato", "Nessuna casa trovata in quest'area");
-      } else {
-        RouteWindows.estates = results;
-        Navigator.of(context).pushNamed(RouteWindows.estatesViewWindow);
-      }
-    } catch (e) {
-      MyApp.mostraPopUpWarining(context, "Errore", e.toString());
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isSearching = false;
-        });
-      }
-    }
+    // setState(() {
+    //   _isSearching = true;
+    // });
+    // try {
+    //   final results = await MySearchController.SearchController.radiusSearch(
+    //     _currentPosition.latitude,
+    //     _currentPosition.longitude,
+    //     _searchRadius,
+    //   );
+    //   if (results.isEmpty) {
+    //     MyApp.mostraPopUpWarining(
+    //         context, "Nessun risultato", "Nessuna casa trovata in quest'area");
+    //   } else {
+    //     RouteWindows.estates = results;
+    //     SearchFilterWindow.currentPosition = _currentPosition;
+    //     SearchFilterWindow.searchRadius = _searchRadius;
+    //     Navigator.of(context).pushNamed(RouteWindows.searchFilterWindow);
+    //   }
+    // } catch (e) {
+    //   MyApp.mostraPopUpWarining(context, "Errore", e.toString());
+    // } finally {
+    //   if (mounted) {
+    //     setState(() {
+    //       _isSearching = false;
+    //     });
+    //   }
+    // }
+    SearchFilterWindow.currentPosition = _currentPosition;
+    SearchFilterWindow.searchRadius = _searchRadius;
+    Navigator.of(context).pushNamed(RouteWindows.searchFilterWindow);
+
   }
 
   @override
@@ -169,7 +175,8 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
                         backgroundColor:
                             WidgetStateProperty.all(MyApp.blu),
                       ),
-                      onPressed: _isSearching ? null : _performRadiusSearch,
+                      // onPressed: _isSearching ? null : _performRadiusSearch,
+                      onPressed: _performRadiusSearch,
                       child: const Text(
                         'Cerca nell\'area selezionata',
                         style: TextStyle(color: Colors.white),
@@ -187,10 +194,9 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
                     : FlutterMap(
                         mapController: _mapController,
                         options: MapOptions(
-                          center: _currentPosition,
-                          zoom: 14,
+                          initialZoom: 4, 
                           onTap: _onMapTap,
-                          initialCenter: LatLng(40.8, 14.4),
+                          initialCenter: _currentPosition,
                           // initialCenter: LatLng(14.41667000, 40.88333000),
                         ),
                         children: [
@@ -202,7 +208,7 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
                                 'com.example.dietiestate25',
                             maxZoom: 19,
                           ),
-                          CircleLayer(
+                          CircleLayer( // area del raggio di ricerca
                             circles: [
                               CircleMarker(
                                 point: _currentPosition,
@@ -235,15 +241,15 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
           ),
 
           // Loading overlay
-          if (_isSearching)
-            Container(
-              color: Colors.black.withOpacity(0.5),
-              child: const Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              ),
-            ),
+          // if (_isSearching)
+          //   Container(
+          //     color: Colors.black.withOpacity(0.5),
+          //     child: const Center(
+          //       child: CircularProgressIndicator(
+          //         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          //       ),
+          //     ),
+          //   ),
         ],
       ),
     );
