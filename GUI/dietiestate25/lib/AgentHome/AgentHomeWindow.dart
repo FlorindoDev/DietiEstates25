@@ -81,13 +81,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
+  List<String> _imagesBase64 = [];
+
   Future<void> _pickImage() async {
     final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
     if (file == null) return;
     final bytes = await file.readAsBytes();
     final newBase64 = base64Encode(bytes);
 
-    setState(() {});
+    setState(() {
+      _imagesBase64.add(newBase64);
+    });
+
+    print(_imagesBase64);
+  }
+
+  void _removeImage(int index) {
+    setState(() {
+      _imagesBase64.removeAt(index);
+    });
   }
 
   final ImagePicker _picker = ImagePicker();
@@ -155,6 +167,42 @@ class _HomeScreen extends State<HomeScreen> {
                       ),
                     ),
                   ),
+                ),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: List.generate(_imagesBase64.length, (index) {
+                    final imageBytes = base64Decode(_imagesBase64[index]);
+                    return GestureDetector(
+                      onTap: () => _removeImage(index),
+                      child: Stack(
+                        alignment: Alignment.topRight,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.memory(
+                              imageBytes,
+                              width: 80,
+                              height: 80,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
                 ),
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Descrizione'),
@@ -273,26 +321,27 @@ class _HomeScreen extends State<HomeScreen> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       AgentHomeController.createEstate(
-                        descrizione: descrizione,
-                        price: price,
-                        space: space,
-                        rooms: rooms,
-                        wc: wc,
-                        floor: floor,
-                        garage: garage,
-                        elevator: elevator,
-                        stato: stato,
-                        mode: mode,
-                        classeEnergetica: classeEnergetica,
-                        statoIndirizzo: statoIndirizzo,
-                        citta: citta,
-                        quartiere: quartiere,
-                        via: via,
-                        numeroCivico: numeroCivico,
-                        cap: cap,
-                        latitudine: latitudine,
-                        logitudine: logitudine,
-                      );
+                          descrizione: descrizione,
+                          price: price,
+                          space: space,
+                          rooms: rooms,
+                          wc: wc,
+                          floor: floor,
+                          garage: garage,
+                          elevator: elevator,
+                          stato: stato,
+                          mode: mode,
+                          classeEnergetica: classeEnergetica,
+                          statoIndirizzo: statoIndirizzo,
+                          citta: citta,
+                          quartiere: quartiere,
+                          via: via,
+                          numeroCivico: numeroCivico,
+                          cap: cap,
+                          latitudine: latitudine,
+                          logitudine: logitudine,
+                          foto: _imagesBase64,
+                          context: context);
                     }
                   },
                   child: const Text('Salva'),

@@ -371,6 +371,8 @@ class AgentHomeController {
     required String stato,
     required String mode,
     required String classeEnergetica,
+    required List<String> foto,
+    required dynamic context,
 
     // Indirizzo
     required String statoIndirizzo,
@@ -403,8 +405,7 @@ class AgentHomeController {
         .setAgenziaBuilder(agenzia)
         .setAgenteBuilder(agente)
         .setIndirizzoBuilder(indirizzo)
-        .setFotoBuilder(
-            ["https://example.com/foto1.jpg", "https://example.com/foto2.jpg"])
+        .setFotoBuilder(foto)
         .setDescrizioneBuilder(descrizione)
         .setPriceBuilder(price)
         .setSpaceBuilder(space)
@@ -420,22 +421,18 @@ class AgentHomeController {
 
     final body = estate.toJson();
     print(body);
-    /*
-    // Esegui la POST
-    final response = await http.post(
-      Uri.parse("https://tuo-backend/api/estates"),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(body),
-    );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
+    http.Response? response =
+        await Connection.makePostRequest(body, 'AdsEstate/createEstate');
+
+    if (response!.statusCode == 200 || response.statusCode == 201) {
       print("Estate creata con successo.");
+      print(response.body);
+      MyApp.mostraPopUpSuccess(
+          context, "Successo creazione", "successo aggiunta estate");
     } else {
-      print("Errore nella creazione dell'estate: ${response.statusCode}");
+      MyApp.mostraPopUpWarining(context, "Quanlcoda è andato storto", " ");
       print(response.body);
     }
-    */
   }
 }
