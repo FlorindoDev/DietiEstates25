@@ -48,7 +48,7 @@ class ProfileController {
     }
   }
 
-  static void resetCache(){
+  static void resetCache() {
     _cached = false;
     _cacheExpired = true;
   }
@@ -137,7 +137,6 @@ class ProfileController {
   }
 
   static Future<bool> updateProfile(Utente user) async {
-
     final Map<String, dynamic> userMap = user.toJson();
 
     userMap.remove('password');
@@ -148,7 +147,31 @@ class ProfileController {
 
     if (response == null) return false;
 
-    Map<String, dynamic> jsonBody = jsonDecode(response.body) as Map<String, dynamic>;
+    Map<String, dynamic> jsonBody =
+        jsonDecode(response.body) as Map<String, dynamic>;
+
+    if (jsonBody.containsKey('code') && jsonBody["code"] != 0) {
+      logger.e(jsonBody["message"]);
+      return false;
+    }
+
+    _cacheExpired = true;
+
+    return true;
+  }
+
+  static Future<bool> updateProfilePassword(Utente user) async {
+    final Map<String, dynamic> userMap = user.toJson();
+
+    logger.i("${loggedUser.runtimeType} Update Profile ${userMap}");
+
+    http.Response? response = await Connection.makePostRequest(
+        userMap, Connection.updateAccountProfileUrl[loggedUser.runtimeType]);
+
+    if (response == null) return false;
+
+    Map<String, dynamic> jsonBody =
+        jsonDecode(response.body) as Map<String, dynamic>;
 
     if (jsonBody.containsKey('code') && jsonBody["code"] != 0) {
       logger.e(jsonBody["message"]);

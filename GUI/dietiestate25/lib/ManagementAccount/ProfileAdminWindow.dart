@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
+import 'package:dietiestate25/ManagementAccount/EditPassword.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/main.dart';
 
@@ -121,12 +122,31 @@ class _ProfileAdminWindowState extends State<ProfileAdminWindow> {
                             Text("Nome: ${loggedUser.nome}"),
                             Text("Cognome: ${loggedUser.cognome}"),
                             loggedUser.issupportoammi == true
-                                    ? Text("Tipologia amministratore: Supporto Amministratore")
-                                    : Text("Tipologia amministratore: Amministratore"),
+                                ? Text(
+                                    "Tipologia amministratore: Supporto Amministratore")
+                                : Text(
+                                    "Tipologia amministratore: Amministratore"),
                           ],
                         ),
                       ),
-
+                      Divider(),
+                      _buildTile(
+                        icon: Icons.edit,
+                        iconColor: Colors.blue,
+                        text: 'Modifica Password',
+                        onTap: () async {
+                          final didUpdate = await Navigator.push<bool>(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => EditPassword(),
+                            ),
+                          );
+                          if (didUpdate == true) {
+                            // se true, ricarico il profilo
+                            _refresh();
+                          }
+                        },
+                      ),
                       Divider(),
                       _buildTile(
                         icon: Icons.edit,
@@ -139,11 +159,12 @@ class _ProfileAdminWindowState extends State<ProfileAdminWindow> {
                               builder: (_) => EditProfilePage(),
                             ),
                           );
-                          if (didUpdate == true) { // se true, ricarico il profilo
+                          if (didUpdate == true) {
+                            // se true, ricarico il profilo
                             _refresh();
                           }
                         },
-                      ),               
+                      ),
                       Divider(),
                       _buildTile(
                           icon: Icons.update,
