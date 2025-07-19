@@ -715,25 +715,29 @@ public class EstatePostgreDAO implements EstateDAO {
         }
 
         if(filter.getMinSpace() != null){
-            query += (numberParamsOfFilter == 1) ? " WHERE immobile.dimensione >= ? " : " AND immobile.dimensione >= ? ";
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.dimensioni >= ? " : " AND immobile.dimensioni >= ? ";
             presenzeDouble.put(numberParamsOfFilter, filter.getMinSpace());
             numberParamsOfFilter++;
 
         }
 
         if(filter.getMaxSpace() != null){
-            query += (numberParamsOfFilter == 1) ? " WHERE immobile.dimensione <= ? " : " AND immobile.dimensione <= ? ";
-            presenzeDouble.put(numberParamsOfFilter, filter.getMinSpace());
+            query += (numberParamsOfFilter == 1) ? " WHERE immobile.dimensioni <= ? " : " AND immobile.dimensioni <= ? ";
+            presenzeDouble.put(numberParamsOfFilter, filter.getMaxSpace());
             numberParamsOfFilter++;
         }
 
-        if (filter.getRaggio() != null && filter.getLatCentroCirconferenza() != null && filter.getLongCentroCirconferenza() != null){
-            query += (numberParamsOfFilter == 1) ? " WHERE (6371 * acos(cos(radians(?)) * cos(radians(latitudine)) *cos(radians(longitudine) - radians(?)) +sin(radians(?)) * sin(radians(latitudine)))) <= ? " : " AND (6371 * acos(cos(radians(?)) * cos(radians(latitudine)) *cos(radians(longitudine) - radians(?)) +sin(radians(?)) * sin(radians(latitudine)))) <= ? ";
+        if (filter.getRaggio() != null && filter.getLatCentroCirconferenza() != null && filter.getLongCentroCirconferenza() != null) {
+            query += (numberParamsOfFilter == 1)
+                    ? " WHERE (6371 * acos(cos(radians(?)) * cos(radians(latitudine)) * cos(radians(longitudine) - radians(?)) + sin(radians(?)) * sin(radians(latitudine)))) <= ? "
+                    : " AND (6371 * acos(cos(radians(?)) * cos(radians(latitudine)) * cos(radians(longitudine) - radians(?)) + sin(radians(?)) * sin(radians(latitudine)))) <= ? ";
 
             presenzeDouble.put(numberParamsOfFilter++, filter.getLatCentroCirconferenza());
             presenzeDouble.put(numberParamsOfFilter++, filter.getLongCentroCirconferenza());
             presenzeDouble.put(numberParamsOfFilter++, filter.getLatCentroCirconferenza());
             presenzeDouble.put(numberParamsOfFilter++, filter.getRaggio());
+
+
         }
 
         return query;

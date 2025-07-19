@@ -117,7 +117,7 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
               _buildDualNumberPicker(
                   "Locali", "Min", "Max", minStanze, maxStanze,
                   min: 0,
-                  max: 5,
+                  max: 100,
                   step: 1,
                   onMinChanged: (v) => setState(() => minStanze = v),
                   onMaxChanged: (v) => setState(() => maxStanze = v)),
