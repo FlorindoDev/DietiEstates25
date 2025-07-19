@@ -139,7 +139,30 @@ class ProfileController {
   static Future<bool> updateProfile(Utente user) async {
     final Map<String, dynamic> userMap = user.toJson();
 
-    //userMap.remove('password');
+    userMap.remove('password');
+    logger.i("${loggedUser.runtimeType} Update Profile ${userMap}");
+
+    http.Response? response = await Connection.makePostRequest(
+        userMap, Connection.updateAccountProfileUrl[loggedUser.runtimeType]);
+
+    if (response == null) return false;
+
+    Map<String, dynamic> jsonBody =
+        jsonDecode(response.body) as Map<String, dynamic>;
+
+    if (jsonBody.containsKey('code') && jsonBody["code"] != 0) {
+      logger.e(jsonBody["message"]);
+      return false;
+    }
+
+    _cacheExpired = true;
+
+    return true;
+  }
+
+  static Future<bool> updateProfilePassword(Utente user) async {
+    final Map<String, dynamic> userMap = user.toJson();
+
     logger.i("${loggedUser.runtimeType} Update Profile ${userMap}");
 
     http.Response? response = await Connection.makePostRequest(

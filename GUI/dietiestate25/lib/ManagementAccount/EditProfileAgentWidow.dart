@@ -36,8 +36,6 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
   String? _partitaIVAError;
   late TextEditingController _biografiaController;
   String? _biografiaError;
-  late TextEditingController _passwordController;
-  String? _passwordError;
 
   late AgenteImmobiliare copyAgent;
 
@@ -56,7 +54,6 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
     _cognomeController = TextEditingController(text: copyAgent.cognome);
     _partitaIvaController = TextEditingController(text: copyAgent.partitaiva);
     _biografiaController = TextEditingController(text: copyAgent.biografia);
-    _passwordController = TextEditingController(text: copyAgent.password);
   }
 
   Future<void> _pickImage() async {
@@ -129,16 +126,6 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
                 ),
                 validator: (value) => value == null || value.isEmpty
                     ? 'Inserisci il cognome'
-                    : null,
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  errorText: _passwordError,
-                ),
-                validator: (value) => value == null || value.isEmpty
-                    ? 'Inserisci il Password'
                     : null,
               ),
               TextFormField(
@@ -226,24 +213,11 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
         return;
       }
 
-      try {
-        // password
-        _passwordError = null;
-        validator.validatePassword(_passwordController.text);
-      } on Exception {
-        setState(() {
-          _passwordError = "password non valido";
-        });
-        setState(() => _isLoading = false);
-        return;
-      }
-
       copyAgent.email = _emailController.text;
       copyAgent.nome = _nomeController.text;
       copyAgent.cognome = _cognomeController.text;
       copyAgent.partitaiva = _partitaIvaController.text;
       copyAgent.biografia = _biografiaController.text;
-      copyAgent.password = _passwordController.text;
 
       // await Future.delayed(Duration(seconds: 5));
       bool exitState = await ProfileController.updateProfile(copyAgent);

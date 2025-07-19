@@ -362,7 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         const SizedBox(
                                                             width: 5),
                                                         Text(
-                                                            '${estate.floor} m2'),
+                                                            '${estate.space} m2'),
                                                       ],
                                                     ),
                                                     const SizedBox(width: 20),

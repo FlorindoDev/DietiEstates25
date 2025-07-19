@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'EditProfileAgentWidow.dart';
-
+import 'package:dietiestate25/ManagementAccount/EditPassword.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -82,7 +82,7 @@ class _ProfileAgentWindowState extends State<ProfileAgentWindow> {
         );
 
       case LoadState.success:
-      Uint8List imgBytes = base64Decode(loggedUser.immagineprofile);
+        Uint8List imgBytes = base64Decode(loggedUser.immagineprofile);
         return Scaffold(
           backgroundColor: MyApp.panna,
           body: Container(
@@ -97,7 +97,8 @@ class _ProfileAgentWindowState extends State<ProfileAgentWindow> {
               children: [
                 const SizedBox(height: 24),
                 ClipOval(
-                child: Image.memory(imgBytes,
+                  child: Image.memory(
+                    imgBytes,
                     fit: BoxFit.cover,
                     width: 96,
                     height: 96,
@@ -163,6 +164,24 @@ class _ProfileAgentWindowState extends State<ProfileAgentWindow> {
                       _buildTile(
                         icon: Icons.edit,
                         iconColor: Colors.blue,
+                        text: 'Modifica Password',
+                        onTap: () async {
+                          final didUpdate = await Navigator.push<bool>(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => EditPassword(),
+                            ),
+                          );
+                          if (didUpdate == true) {
+                            // se true, ricarico il profilo
+                            _refresh();
+                          }
+                        },
+                      ),
+                      Divider(),
+                      _buildTile(
+                        icon: Icons.edit,
+                        iconColor: Colors.blue,
                         text: 'Modifica Account',
                         onTap: () async {
                           final didUpdate = await Navigator.push<bool>(
@@ -171,7 +190,8 @@ class _ProfileAgentWindowState extends State<ProfileAgentWindow> {
                               builder: (_) => EditProfileAgentPage(),
                             ),
                           );
-                          if (didUpdate == true) { // se true, ricarico il profilo
+                          if (didUpdate == true) {
+                            // se true, ricarico il profilo
                             _refresh();
                           }
                         },
@@ -190,23 +210,29 @@ class _ProfileAgentWindowState extends State<ProfileAgentWindow> {
                                   label: 'Notifiche Appuntamenti',
                                   value: loggedUser.notifyAppointment,
                                   onChanged: // (v) => setState(() => loggedUser.notifyAppointment = v),
-                                  (bool newValue) async {
-                                      final oldValue = loggedUser.notifyAppointment;
-                                      // 1) aggiorno subito la UI
-                                      setState(() => loggedUser.notifyAppointment = newValue);
+                                      (bool newValue) async {
+                                    final oldValue =
+                                        loggedUser.notifyAppointment;
+                                    // 1) aggiorno subito la UI
+                                    setState(() => loggedUser
+                                        .notifyAppointment = newValue);
 
-                                      // 2) persisto su server
-                                      final success = await ProfileController.updateProfile(loggedUser);
+                                    // 2) persisto su server
+                                    final success =
+                                        await ProfileController.updateProfile(
+                                            loggedUser);
 
-                                      if (!success) {
-                                        // 3a) mostro un messaggio di errore
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text('Impossibile aggiornare le notifiche'))
-                                        );
-                                        // 3b) ripristino lo stato precedente
-                                        setState(() => loggedUser.notifyAppointment = oldValue);
-                                      }
-                                    },
+                                    if (!success) {
+                                      // 3a) mostro un messaggio di errore
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Impossibile aggiornare le notifiche')));
+                                      // 3b) ripristino lo stato precedente
+                                      setState(() => loggedUser
+                                          .notifyAppointment = oldValue);
+                                    }
+                                  },
                                 ),
                               ]
                             : [],

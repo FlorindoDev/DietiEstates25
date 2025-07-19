@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/main.dart';
-
+import 'package:dietiestate25/ManagementAccount/EditPassword.dart';
 import 'EditProfileWidow.dart';
 
 class ProfileWindow extends StatefulWidget {
@@ -122,7 +122,24 @@ class _ProfileWindowState extends State<ProfileWindow> {
                           ],
                         ),
                       ),
-
+                      Divider(),
+                      _buildTile(
+                        icon: Icons.edit,
+                        iconColor: Colors.blue,
+                        text: 'Modifica Password',
+                        onTap: () async {
+                          final didUpdate = await Navigator.push<bool>(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => EditPassword(),
+                            ),
+                          );
+                          if (didUpdate == true) {
+                            // se true, ricarico il profilo
+                            _refresh();
+                          }
+                        },
+                      ),
                       Divider(),
                       _buildTile(
                         icon: Icons.edit,
@@ -135,7 +152,8 @@ class _ProfileWindowState extends State<ProfileWindow> {
                               builder: (_) => EditProfilePage(),
                             ),
                           );
-                          if (didUpdate == true) { // se true, ricarico il profilo
+                          if (didUpdate == true) {
+                            // se true, ricarico il profilo
                             _refresh();
                           }
                         },
@@ -150,67 +168,85 @@ class _ProfileWindowState extends State<ProfileWindow> {
                                   label: 'Notifiche Appuntamenti',
                                   value: loggedUser.notify_appointment,
                                   onChanged: // (v) => setState(() => loggedUser.notifyAppointment = v),
-                                  (bool newValue) async {
-                                      final oldValue = loggedUser.notify_appointment;
-                                      // 1) aggiorno subito la UI
-                                      setState(() => loggedUser.notify_appointment = newValue);
+                                      (bool newValue) async {
+                                    final oldValue =
+                                        loggedUser.notify_appointment;
+                                    // 1) aggiorno subito la UI
+                                    setState(() => loggedUser
+                                        .notify_appointment = newValue);
 
-                                      // 2) persisto su server
-                                      final success = await ProfileController.updateProfile(loggedUser);
+                                    // 2) persisto su server
+                                    final success =
+                                        await ProfileController.updateProfile(
+                                            loggedUser);
 
-                                      if (!success) {
-                                        // 3a) mostro un messaggio di errore
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text('Impossibile aggiornare le notifiche'))
-                                        );
-                                        // 3b) ripristino lo stato precedente
-                                        setState(() => loggedUser.notify_appointment = oldValue);
-                                      }
-                                    },
+                                    if (!success) {
+                                      // 3a) mostro un messaggio di errore
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Impossibile aggiornare le notifiche')));
+                                      // 3b) ripristino lo stato precedente
+                                      setState(() => loggedUser
+                                          .notify_appointment = oldValue);
+                                    }
+                                  },
                                 ),
                                 _buildSubSwitch(
                                   label: 'Notifiche Estate',
                                   value: loggedUser.notify_new_estate,
                                   onChanged: // (v) => setState(() => loggedUser.notifyAppointment = v),
-                                  (bool newValue) async {
-                                      final oldValue = loggedUser.notify_new_estate;
-                                      // 1) aggiorno subito la UI
-                                      setState(() => loggedUser.notify_new_estate = newValue);
+                                      (bool newValue) async {
+                                    final oldValue =
+                                        loggedUser.notify_new_estate;
+                                    // 1) aggiorno subito la UI
+                                    setState(() => loggedUser
+                                        .notify_new_estate = newValue);
 
-                                      // 2) persisto su server
-                                      final success = await ProfileController.updateProfile(loggedUser);
+                                    // 2) persisto su server
+                                    final success =
+                                        await ProfileController.updateProfile(
+                                            loggedUser);
 
-                                      if (!success) {
-                                        // 3a) mostro un messaggio di errore
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text('Impossibile aggiornare le notifiche'))
-                                        );
-                                        // 3b) ripristino lo stato precedente
-                                        setState(() => loggedUser.notify_new_estate = oldValue);
-                                      }
-                                    },
+                                    if (!success) {
+                                      // 3a) mostro un messaggio di errore
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Impossibile aggiornare le notifiche')));
+                                      // 3b) ripristino lo stato precedente
+                                      setState(() => loggedUser
+                                          .notify_new_estate = oldValue);
+                                    }
+                                  },
                                 ),
                                 _buildSubSwitch(
                                   label: 'Notifiche Cambaimento Prezzo',
                                   value: loggedUser.change_price_notify,
                                   onChanged: // (v) => setState(() => loggedUser.notifyAppointment = v),
-                                  (bool newValue) async {
-                                      final oldValue = loggedUser.change_price_notify;
-                                      // 1) aggiorno subito la UI
-                                      setState(() => loggedUser.change_price_notify = newValue);
+                                      (bool newValue) async {
+                                    final oldValue =
+                                        loggedUser.change_price_notify;
+                                    // 1) aggiorno subito la UI
+                                    setState(() => loggedUser
+                                        .change_price_notify = newValue);
 
-                                      // 2) persisto su server
-                                      final success = await ProfileController.updateProfile(loggedUser);
+                                    // 2) persisto su server
+                                    final success =
+                                        await ProfileController.updateProfile(
+                                            loggedUser);
 
-                                      if (!success) {
-                                        // 3a) mostro un messaggio di errore
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text('Impossibile aggiornare le notifiche'))
-                                        );
-                                        // 3b) ripristino lo stato precedente
-                                        setState(() => loggedUser.change_price_notify = oldValue);
-                                      }
-                                    },
+                                    if (!success) {
+                                      // 3a) mostro un messaggio di errore
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Impossibile aggiornare le notifiche')));
+                                      // 3b) ripristino lo stato precedente
+                                      setState(() => loggedUser
+                                          .change_price_notify = oldValue);
+                                    }
+                                  },
                                 ),
                               ]
                             : [],

@@ -10,20 +10,16 @@ import 'package:dietiestate25/Logger/logger.dart';
 
 final logger = MyLogger.getIstance();
 
-class EditProfilePage extends StatefulWidget {
+class EditPassword extends StatefulWidget {
   @override
-  _EditProfilePageState createState() => _EditProfilePageState();
+  _EditPasswordState createState() => _EditPasswordState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _EditPasswordState extends State<EditPassword> {
   final _formKey = GlobalKey<FormState>();
 
-  late TextEditingController _emailController;
-  String? _emailError;
-  late TextEditingController _nomeController;
-  String? _nameError;
-  late TextEditingController _cognomeController;
-  String? _surnameError;
+  late TextEditingController _passwordController;
+  String? _passwordError;
 
   late Utente copyAgent;
 
@@ -42,9 +38,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       copyAgent = Acquirente.fromJson(loggedUser.toJson());
     // copyAgent = Acquirente.fromJson(loggedUser.toJson());
 
-    _emailController = TextEditingController(text: copyAgent.email);
-    _nomeController = TextEditingController(text: copyAgent.nome);
-    _cognomeController = TextEditingController(text: copyAgent.cognome);
+    _passwordController = TextEditingController(text: "");
   }
 
   @override
@@ -61,30 +55,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
             children: [
               const SizedBox(height: 24),
               TextFormField(
-                controller: _emailController,
+                controller: _passwordController,
                 decoration: InputDecoration(
-                  labelText: 'Email',
-                  errorText: _emailError,
-                ),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              TextFormField(
-                controller: _nomeController,
-                decoration: InputDecoration(
-                  labelText: 'Nome',
-                  errorText: _nameError,
-                ),
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Inserisci il nome' : null,
-              ),
-              TextFormField(
-                controller: _cognomeController,
-                decoration: InputDecoration(
-                  labelText: 'Cognome',
-                  errorText: _surnameError,
+                  labelText: 'Password',
+                  errorText: _passwordError,
                 ),
                 validator: (value) => value == null || value.isEmpty
-                    ? 'Inserisci il cognome'
+                    ? 'Inserisci il Password'
                     : null,
               ),
               SizedBox(height: 24),
@@ -104,49 +81,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Future<void> _onSavePressed() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
+
       try {
-        // email
-        _emailError = null;
-        validator.validateEmail(_emailController.text);
+        // password
+        _passwordError = null;
+        validator.validatePassword(_passwordController.text);
       } on Exception {
         setState(() {
-          _emailError = "Email non valida";
+          _passwordError = "password non valido";
         });
         setState(() => _isLoading = false);
         return;
       }
 
-      try {
-        // nome
-        _nameError = null;
-        validator.validateName(_nomeController.text);
-      } on Exception {
-        setState(() {
-          _nameError = "Nome non valido";
-        });
-        setState(() => _isLoading = false);
-        return;
-      }
-
-      try {
-        // cognome
-        _surnameError = null;
-        validator.validateSurname(_cognomeController.text);
-      } on Exception {
-        setState(() {
-          _surnameError = "Cognome non valido";
-        });
-        setState(() => _isLoading = false);
-        return;
-      }
-
-      copyAgent.email = _emailController.text;
-      copyAgent.nome = _nomeController.text;
-      copyAgent.cognome = _cognomeController.text;
+      copyAgent.password = _passwordController.text;
 
       // await Future.delayed(Duration(seconds: 5));
 
-      bool exitState = await ProfileController.updateProfile(copyAgent);
+      bool exitState = await ProfileController.updateProfilePassword(copyAgent);
 
       logger.e(exitState);
 
