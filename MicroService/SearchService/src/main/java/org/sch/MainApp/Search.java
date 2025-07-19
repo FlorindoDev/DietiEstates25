@@ -8,8 +8,10 @@ import org.exc.DietiEstateException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.md.Estate.Estate;
+import org.md.Estate.Ricerca;
 import org.md.Geolocalizzazione.Indirizzo;
 import org.md.Estate.EstateFilter;
+import org.md.Utente.Utente;
 import org.sch.MainApp.Interfacce.SearchService;
 
 
@@ -88,6 +90,20 @@ public class Search implements SearchService {
         return json;
     }
 
+    private static String buildJsonRicerche(List<Ricerca> ricerche) {
+        String json = "{\"code\": 0, \"message\": \"success of action get estate\", \"HistorySearch\": [";
+
+        for (Ricerca elem : ricerche){
+            json = json.concat(elem.TranslateToJson());
+            if(!elem.equals(ricerche.getLast()))
+                json = json.concat(",");
+        }
+
+
+        json = json + "]}";
+        return json;
+    }
+
     @Override
     public void close() {
         estateDAO.close();
@@ -142,7 +158,14 @@ public class Search implements SearchService {
         return buildJson(estates);
     }
 
+    @Override
+    public String historySearch(Utente utente) throws DietiEstateException {
+        return buildJsonRicerche(ricercheDAO.get(utente));
+    }
+
     private void addHistory(EstateFilter filter, String email) throws DietiEstateException {
+        if(filter.getPage() != 1) return;
+        if (filter.getCitta() == null  && filter.getRaggio() == null ) return;
         String queryParams = buildCmd(filter);
         ricercheDAO.add(queryParams,email);
 
@@ -151,7 +174,7 @@ public class Search implements SearchService {
     }
 
     private String buildCmd(EstateFilter filter) {
-        String queryParams = "?page="+filter.getPage()+"?limit="+filter.getLimit()+"?sort="+filter.getSort();
+        String queryParams = "?page="+filter.getPage()+"&limit="+filter.getLimit()+"&sort="+filter.getSort();
 
         if (filter.getDesc() != null) queryParams += "&desc=" + filter.getDesc();
         if (filter.getStato() != null && !filter.getStato().isEmpty()) queryParams += "&stato=" + filter.getStato();

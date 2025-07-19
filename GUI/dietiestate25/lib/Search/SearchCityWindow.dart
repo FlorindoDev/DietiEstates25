@@ -1,3 +1,4 @@
+import 'package:dietiestate25/Model/Estate/Ricerca.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,32 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
   var city = "";
   List<dynamic> cities = [];
 
+  List<dynamic> ricerche = [];
+  
+  bool _initialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      _initialized = true;
+      _loadRicerche();
+    }
+  }
+
+  void _loadRicerche() async {
+    var result = await my_search_controller.SearchController.getRicerche(context);
+    setState(() {
+      ricerche = result;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +54,7 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
               TextField(
                 onChanged: (value) {
                   city = value;
-                  print("City: $city");
+                  
                 },
                 decoration: InputDecoration(
                   labelText: 'Cittá',
@@ -36,7 +63,7 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
                     icon: Icon(Icons.search),
                     onPressed: () async {
                       final res = await my_search_controller.SearchController.searchCity(context, city);
-                      print(res.length);
+                   
                       if (res.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
 
@@ -72,11 +99,54 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
                       }
                       setState(() {
                         cities = res;
+                        ricerche = List.empty();
                       });
                     },
                   ),
                 ),
               ),
+              SizedBox(height: 20),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: ricerche.length,
+                itemBuilder: (context, index) {
+                  final Ricerca itemRicerca = ricerche[index];
+                  
+      
+                  String info = "Ricerca : ";
+                  String temp = itemRicerca.comando.split("?")[1];
+        
+                  for (var i = 0; i < itemRicerca.comando.split("?")[1].split("&").length; i++) {
+                    String temp =itemRicerca.comando.split("?")[1].split("&")[i];
+                   
+                    if (temp.isNotEmpty && temp.split("=")[0] != "page" && temp.split("=")[0] != "limit" && temp.split("=")[0] != "sort" && temp.split("=")[0] != "desc") {
+                      if(temp.split("=")[0] == "latCentroCirconferenza") info += " lat(${ double.parse(temp.split("=")[1]).toStringAsFixed(2)})";
+                      else if(temp.split("=")[0] == "longCentroCirconferenza") info += " long(${double.parse(temp.split("=")[1]).toStringAsFixed(2)})";
+                      else if(temp.split("=")[0] == "raggio") info += " raggio(${double.parse(temp.split("=")[1]).toStringAsFixed(2)})";
+                      else info += "${temp.split("=")[1]} ";
+                    }
+                  }
+
+
+                  return Card(
+                    child: ListTile(
+                      leading: Icon(Icons.watch_later),
+                      title: Text(info),
+                    
+                      onTap: () {
+                        // Azione quando si clicca su una città
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Hai selezionato: $info')),                       
+                        );
+                        my_search_controller.SearchController.prevHistory(context, itemRicerca.comando);
+                        
+                      },
+                    ),
+                  );
+                },
+              ),
+              
               SizedBox(height: 20),
               // Lista cities
               ListView.builder(

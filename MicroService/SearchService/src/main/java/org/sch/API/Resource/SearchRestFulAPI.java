@@ -5,15 +5,16 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.exc.DietiEstateException;
 import org.json.JSONObject;
-import org.md.Estate.Estate;
 import org.md.Estate.EstateFilter;
 import org.md.Geolocalizzazione.Indirizzo;
+import org.md.Utente.Utente;
 import org.sch.API.Interfacce.SearchAPI;
 import org.sch.MainApp.Interfacce.SearchService;
 import org.sch.MainApp.Search;
-
 import java.util.Base64;
+
 
 @Path("Search")
 public class SearchRestFulAPI implements SearchAPI {
@@ -46,13 +47,20 @@ public class SearchRestFulAPI implements SearchAPI {
         return Response.ok(result).build();
     }
 
-    // todo GET
-    @Path("coordinatesEstates")
-    @POST
+    @Path("historySearch")
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public Response coordinatesEstates(Estate estate) {
-        return null;
+    public Response historySearch(@BeanParam Utente utente) {
+        if(utente.getEmail() == null) return Response.status(Response.Status.BAD_REQUEST).build();
+        String ricerche;
+        try {
+            ricerche = searchService.historySearch(utente);
+        }catch (DietiEstateException e){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        return Response.ok(ricerche).build();
 
     }
 
