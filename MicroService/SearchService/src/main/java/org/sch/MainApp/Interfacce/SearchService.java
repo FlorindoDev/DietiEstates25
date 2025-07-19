@@ -1,12 +1,10 @@
 package org.sch.MainApp.Interfacce;
 
 import org.exc.DietiEstateException;
-import org.md.Estate.Ricerca;
 import org.md.Geolocalizzazione.Indirizzo;
 import org.md.Estate.EstateFilter;
 import org.md.Utente.Utente;
 
-import java.util.List;
 
 public interface SearchService {
     String allCity();

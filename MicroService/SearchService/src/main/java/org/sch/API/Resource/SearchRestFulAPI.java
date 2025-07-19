@@ -7,7 +7,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.exc.DietiEstateException;
 import org.json.JSONObject;
-import org.md.Estate.Estate;
 import org.md.Estate.EstateFilter;
 import org.md.Geolocalizzazione.Indirizzo;
 import org.md.Utente.Utente;
@@ -46,16 +45,6 @@ public class SearchRestFulAPI implements SearchAPI {
         String result = searchService.suggestionCities(indirizzo);
         searchService.close();
         return Response.ok(result).build();
-    }
-
-    // todo GET
-    @Path("coordinatesEstates")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Override
-    public Response coordinatesEstates(Estate estate) {
-        return null;
-
     }
 
     @Path("historySearch")
