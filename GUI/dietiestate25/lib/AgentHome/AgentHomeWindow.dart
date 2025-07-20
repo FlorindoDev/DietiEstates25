@@ -114,6 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Estate>> estates;
   final MapController _mapController = MapController();
 
+  String? _imageError; // <-- aggiunta per controllo immagini
+
   @override
   void initState() {
     super.initState();
@@ -150,11 +152,19 @@ class _HomeScreenState extends State<HomeScreen> {
     final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
     if (file == null) return;
     final bytes = await file.readAsBytes();
-    setState(() => _imagesBase64.add(base64Encode(bytes)));
+    setState(() {
+      _imagesBase64.add(base64Encode(bytes));
+      _imageError = null; // reset errore se aggiungi almeno una immagine
+    });
   }
 
   void _removeImage(int index) {
-    setState(() => _imagesBase64.removeAt(index));
+    setState(() {
+      _imagesBase64.removeAt(index);
+      if (_imagesBase64.isEmpty) {
+        _imageError = "Devi caricare almeno una immagine";
+      }
+    });
   }
 
   bool _containsNumber(String value) {
@@ -162,6 +172,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onSavePressed() {
+    setState(() {
+      _imageError = null;
+    });
+    if (_imagesBase64.isEmpty) {
+      setState(() {
+        _imageError = "Devi caricare almeno una immagine";
+      });
+      return;
+    }
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
     AgentHomeController.createEstate(
@@ -209,6 +228,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+            if (_imageError != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Center(
+                  child: Text(
+                    _imageError!,
+                    style: const TextStyle(color: Colors.red, fontSize: 14),
+                  ),
+                ),
+              ),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8,
