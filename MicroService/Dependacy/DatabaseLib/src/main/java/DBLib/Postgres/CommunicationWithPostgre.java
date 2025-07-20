@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CommunicationWithPostgre implements CommunicationWithDataBase, AutoCloseable{
@@ -20,17 +21,12 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
     public CommunicationWithPostgre() {
         this.managerConnection = new ManagementConnectionPostgre();
         this.managerConnection.createConnection();
-        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-
-        /*
-         * stack[0] = java.lang.Thread.getStackTrace()
-         * stack[1] = questa classe e metodo (mioMetodo)
-         * stack[2] = chiamante di mioMetodo ← quello che ci interessa
-         */
-        if (stack.length > 2) {
-            String callerClassName  = stack[2].getClassName();
-            String callerMethodName = stack[2].getMethodName();
-            logger.info(String.format("Chiamato da: %s#%s", callerClassName, callerMethodName));
+        if (logger.isLoggable(Level.INFO)) {
+            // Qui è lecito chiamare il getStackTrace() perché sappiamo che almeno INFO è abilitato
+            StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+            if (stack.length > 2) {
+                logger.info("Chiamato da: {}#{}", stack[2].getClassName(), stack[2].getMethodName());
+            }
         }
     }
 
@@ -172,17 +168,12 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
         } finally {
             // Ora possiamo chiudere la connessione al database
             logger.info("Closing database connection");
-            StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-
-            /*
-             * stack[0] = java.lang.Thread.getStackTrace()
-             * stack[1] = questa classe e metodo (mioMetodo)
-             * stack[2] = chiamante di mioMetodo ← quello che ci interessa
-             */
-            if (stack.length > 2) {
-                String callerClassName  = stack[2].getClassName();
-                String callerMethodName = stack[2].getMethodName();
-                logger.info(String.format("Chiamato da: %s#%s", callerClassName, callerMethodName));
+            if (logger.isLoggable(Level.INFO)) {
+                // Qui è lecito chiamare il getStackTrace() perché sappiamo che almeno INFO è abilitato
+                StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+                if (stack.length > 2) {
+                    logger.info("Chiamato da: {}#{}", stack[2].getClassName(), stack[2].getMethodName());
+                }
             }
             this.managerConnection.closeConnection();
         }
