@@ -30,7 +30,7 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
         if (stack.length > 2) {
             String callerClassName  = stack[2].getClassName();
             String callerMethodName = stack[2].getMethodName();
-            logger.info("Chiamato da: " + callerClassName + "#" + callerMethodName);
+            logger.info(String.format("Chiamato da: %s#%s", callerClassName, callerMethodName));
         }
     }
 
@@ -182,7 +182,7 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
             if (stack.length > 2) {
                 String callerClassName  = stack[2].getClassName();
                 String callerMethodName = stack[2].getMethodName();
-                logger.info("Chiamato da: " + callerClassName + "#" + callerMethodName);
+                logger.info(String.format("Chiamato da: %s#%s", callerClassName, callerMethodName));
             }
             this.managerConnection.closeConnection();
         }
