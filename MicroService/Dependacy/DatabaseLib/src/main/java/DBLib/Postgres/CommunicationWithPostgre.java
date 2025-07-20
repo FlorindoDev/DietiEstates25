@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CommunicationWithPostgre implements CommunicationWithDataBase, AutoCloseable{
@@ -20,6 +21,17 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
     public CommunicationWithPostgre() {
         this.managerConnection = new ManagementConnectionPostgre();
         this.managerConnection.createConnection();
+        if (logger.isLoggable(Level.INFO)) {
+            // Qui è lecito chiamare il getStackTrace() perché sappiamo che almeno INFO è abilitato
+            StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+            if (stack.length > 2) {
+                logger.log(
+                        Level.INFO,
+                        "Chiamato da: {0}#{1}",
+                        new Object[]{stack[2].getClassName(), stack[2].getMethodName()}
+                );
+            }
+        }
     }
 
     public int countPlaceholders(String query) {
@@ -160,6 +172,17 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
         } finally {
             // Ora possiamo chiudere la connessione al database
             logger.info("Closing database connection");
+            if (logger.isLoggable(Level.INFO)) {
+                // Qui è lecito chiamare il getStackTrace() perché sappiamo che almeno INFO è abilitato
+                StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+                if (stack.length > 2) {
+                    logger.log(
+                            Level.INFO,
+                            "Chiamato da: {0}#{1}",
+                            new Object[]{stack[2].getClassName(), stack[2].getMethodName()}
+                    );
+                }
+            }
             this.managerConnection.closeConnection();
         }
     }

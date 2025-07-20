@@ -35,8 +35,7 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
         permission = await Geolocator.requestPermission();
       }
 
-      if (permission == LocationPermission.whileInUse ||
-          permission == LocationPermission.always) {
+      if (permission == LocationPermission.whileInUse) {
         Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
         );
@@ -157,14 +156,14 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
                         Text(
                           '${(_searchRadius / 1000).toStringAsFixed(1)} km',
                           style:
-                              TextStyle(fontSize: 16, color: MyApp.rosso),
+                              TextStyle(fontSize: 16, color: MyApp.blu),
                         ),
                       ],
                     ),
                     Slider(
                       value: _searchRadius,
                       min: 100,
-                      max: 50000,
+                      max: 100000,
                       divisions: 100,
                       activeColor: MyApp.celeste,
                       onChanged: _updateSearchRadius,
@@ -194,7 +193,7 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
                     : FlutterMap(
                         mapController: _mapController,
                         options: MapOptions(
-                          initialZoom: 4, 
+                          initialZoom: 8, 
                           onTap: _onMapTap,
                           initialCenter: _currentPosition,
                           // initialCenter: LatLng(14.41667000, 40.88333000),
@@ -214,13 +213,13 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
                                 point: _currentPosition,
                                 radius: _searchRadius,
                                 useRadiusInMeter: true,
-                                color: MyApp.rosso.withOpacity(0.2),
-                                borderColor: MyApp.rosso,
+                                color: MyApp.celesteSfumato.withOpacity(0.3),
+                                borderColor: MyApp.blu,
                                 borderStrokeWidth: 2,
                               ),
                             ],
                           ),
-                          MarkerLayer(
+                          MarkerLayer( // marker
                             markers: [
                               Marker(
                                 point: _currentPosition,
@@ -229,7 +228,7 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
                                 child: Icon(
                                   Icons.location_pin,
                                   size: 40,
-                                  color: MyApp.rosso,
+                                  color: MyApp.blu,
                                 ),
                               ),
                             ],

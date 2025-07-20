@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dietiestate25/AccessClass/AccessController.dart';
 import 'package:dietiestate25/Model/Estate/Estate.dart';
 import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
+import 'package:dietiestate25/Search/EstateInfoWindowMapView.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -205,10 +206,24 @@ class _InfoScreenState extends State<InfoScreen> {
                               'Indirizzo',
                               style: TextStyle(fontSize: 24, color: MyApp.blu),
                             ),
-                            Text(
-                                '${widget.estate.indirizzo?.stato} - ${widget.estate.indirizzo?.citta} ${widget.estate.indirizzo?.quartiere} - ${widget.estate.indirizzo?.via} ${widget.estate.indirizzo?.numeroCivico} ${widget.estate.indirizzo?.cap}'),
-                            ElevatedButton(
-                                onPressed: () {}, child: Text("Mappa")),
+                            Card(
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: ListTile(
+                                leading: Icon(Icons.location_pin, color: MyApp.celeste),
+                                title: Text(
+                                    '${widget.estate.indirizzo?.stato}, ${widget.estate.indirizzo?.citta}'),
+                                subtitle: Text(
+                                    '${widget.estate.indirizzo?.quartiere} ${widget.estate.indirizzo?.via} ${widget.estate.indirizzo?.numeroCivico} ${widget.estate.indirizzo?.cap}'),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.map, color: MyApp.blu),
+                                  onPressed: () => _openMap(
+                                      widget.estate.indirizzo!.latitudine,
+                                      widget.estate.indirizzo!.logitudine),
+                                ),
+                              ),
+                            ),
                           ]),
                       Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -416,6 +431,18 @@ class _InfoScreenState extends State<InfoScreen> {
                   )),
             ],
           ),
+        ),
+      ),
+    );
+  }
+  
+  
+  Future<void> _openMap(double latitude, double longitude) async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => EstateInfoWindowMapView(
+          latitude: latitude,
+          longitude: longitude,
         ),
       ),
     );

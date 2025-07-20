@@ -49,6 +49,7 @@ public class ManagementConnectionPostgre {
             this.connection = DriverManager.getConnection(url, user, password);
 
             logger.info("Connessione aperta con successo");
+
         } catch (ClassNotFoundException e) {
             logger.severe("DB driver not found: " + e.getMessage());
         } catch (SQLException e) {
