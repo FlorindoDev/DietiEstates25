@@ -30,8 +30,7 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
         if (stack.length > 2) {
             String callerClassName  = stack[2].getClassName();
             String callerMethodName = stack[2].getMethodName();
-            System.out.println("Chiamato da: "
-                    + callerClassName + "#" + callerMethodName);
+            logger.info("Chiamato da: " + callerClassName + "#" + callerMethodName);
         }
     }
 
