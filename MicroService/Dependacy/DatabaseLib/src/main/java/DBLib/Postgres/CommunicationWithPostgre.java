@@ -25,7 +25,11 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
             // Qui è lecito chiamare il getStackTrace() perché sappiamo che almeno INFO è abilitato
             StackTraceElement[] stack = Thread.currentThread().getStackTrace();
             if (stack.length > 2) {
-                logger.info("Chiamato da: {}#{}", stack[2].getClassName(), stack[2].getMethodName());
+                logger.log(
+                        Level.INFO,
+                        "Chiamato da: {0}#{1}",
+                        new Object[]{stack[2].getClassName(), stack[2].getMethodName()}
+                );
             }
         }
     }
@@ -172,7 +176,11 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
                 // Qui è lecito chiamare il getStackTrace() perché sappiamo che almeno INFO è abilitato
                 StackTraceElement[] stack = Thread.currentThread().getStackTrace();
                 if (stack.length > 2) {
-                    logger.info("Chiamato da: {}#{}", stack[2].getClassName(), stack[2].getMethodName());
+                    logger.log(
+                            Level.INFO,
+                            "Chiamato da: {0}#{1}",
+                            new Object[]{stack[2].getClassName(), stack[2].getMethodName()}
+                    );
                 }
             }
             this.managerConnection.closeConnection();
