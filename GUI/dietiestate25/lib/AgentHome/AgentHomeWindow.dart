@@ -126,8 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
     }
-    if (permission == LocationPermission.whileInUse ||
-        permission == LocationPermission.always) {
+    if (permission == LocationPermission.whileInUse) {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       setState(() {
@@ -478,7 +477,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: FlutterMap(
                   mapController: _mapController,
                   options: MapOptions(
-                      initialZoom: 5,
+                      initialZoom: 8,
                       initialCenter: LatLng(latitudine, logitudine),
                       onTap: _onMapTap),
                   children: [

@@ -20,6 +20,19 @@ public class CommunicationWithPostgre implements CommunicationWithDataBase, Auto
     public CommunicationWithPostgre() {
         this.managerConnection = new ManagementConnectionPostgre();
         this.managerConnection.createConnection();
+        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+
+        /*
+         * stack[0] = java.lang.Thread.getStackTrace()
+         * stack[1] = questa classe e metodo (mioMetodo)
+         * stack[2] = chiamante di mioMetodo ← quello che ci interessa
+         */
+        if (stack.length > 2) {
+            String callerClassName  = stack[2].getClassName();
+            String callerMethodName = stack[2].getMethodName();
+            System.out.println("Chiamato da: "
+                    + callerClassName + "#" + callerMethodName);
+        }
     }
 
     public int countPlaceholders(String query) {
