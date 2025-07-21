@@ -32,12 +32,17 @@ public class ManagementAccount implements ManagementAccountService {
         if (utente.getNome() != null) {
             validator.validateName(utente.getNome());
         }
+        if (utente.getEmail() != null) {
+            validator.validateEmail(utente.getEmail());
+        }
     }
 
     @Override
     public String applyChangeAcquirente(Acquirente utente) {
 
-        acquirenteDAO = new AcquirentePostgreDAO();
+        if (acquirenteDAO == null) {
+            acquirenteDAO = new AcquirentePostgreDAO();
+        }
 
         try {
             validateData(utente);
@@ -119,6 +124,10 @@ public class ManagementAccount implements ManagementAccountService {
         if (acquirenteDAO != null) {acquirenteDAO.close();}
         if (agentDAO != null) {agentDAO.close();}
         if (adminDAO != null) {adminDAO.close();}
+    }
+
+    private void setDao(AcquirentePostgreDAO dao){
+        this.acquirenteDAO = dao;
     }
 
 }
