@@ -2,8 +2,6 @@ package org.agm.updateEstateAgent;
 
 
 import org.agm.MainApp.ManagementAgent;
-import org.dao.Interfacce.AgentDAO;
-import org.dao.Interfacce.EstateDAO;
 import org.dao.postgre.AgentPostgreDAO;
 import org.dao.postgre.EstatePostgreDAO;
 import org.exc.DataBaseException.ErrorCreateStatment;
