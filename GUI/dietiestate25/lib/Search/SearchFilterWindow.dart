@@ -10,10 +10,10 @@ import 'package:latlong2/latlong.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 class SearchFilterWindow extends StatefulWidget {
-  const SearchFilterWindow(
+  SearchFilterWindow(
       {super.key, required this.appbar, required this.citta});
-  final AppBar appbar;
-  final String citta;
+  AppBar appbar;
+  String citta;
   static LatLng? currentPosition;
   static double? searchRadius;
 
@@ -22,6 +22,7 @@ class SearchFilterWindow extends StatefulWidget {
 }
 
 class _SearchFilterWindowState extends State<SearchFilterWindow> {
+  bool isLoading = false;
   String mode = "Affitto";
   int minPrice = 0;
   int maxPrice = 0;
@@ -47,6 +48,28 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
   ];
   double _sliderIndex = 0;
 
+    void azzera() {
+      minPrice = 0;
+      maxPrice = 0;
+      minDimensione = 0;
+      maxDimensione = 0;
+      minStanze = 0;
+      maxStanze = 0;
+      bagni = 0;
+      ascensore = "Tutto";
+      stato = "Tutto";
+      garage = 0;
+      _sliderIndex = 0;
+      widget.citta = "";
+      SearchFilterWindow.currentPosition = null;
+      SearchFilterWindow.searchRadius = null;
+
+  
+
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +79,69 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
+               if (isLoading)
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: CircularProgressIndicator(strokeWidth: 5),
+                      ),
+                    ),
+              /// Bottone Cerca
+              ElevatedButton(
+                
+                onPressed: () async{
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await my_search_controller.SearchController.filteredSearch(
+                      context,
+                      1,
+                      mode,
+                      minPrice,
+                      maxPrice,
+                      minDimensione,
+                      maxDimensione,
+                      minStanze,
+                      maxStanze,
+                      bagni,
+                      ascensore,
+                      stato,
+                      garage,
+                      opzioni[_sliderIndex.round()],
+                      widget.citta,
+                      SearchFilterWindow.currentPosition?.latitude,
+                      SearchFilterWindow.currentPosition?.longitude,
+                      SearchFilterWindow.searchRadius
+                    );
+                      azzera();
+                    setState(() {
+                      isLoading = false;
+                    });
+                },
+                style: ButtonStyle(
+                  padding: WidgetStateProperty.all(
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 30)),
+                  backgroundColor: WidgetStateProperty.all(MyApp.rosso),
+                  foregroundColor: WidgetStateProperty.all(Colors.white),
+                  shape: WidgetStateProperty.all(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32)),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Icon(Icons.search,
+                        color: Colors.white, size: 50),
+                    SizedBox(width: 10),
+                    Text("Cerca", style: TextStyle(fontSize: 25)),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
               /// Compra / Affitto
+              const Divider(color: Colors.grey, thickness: 1),
+              Text("Modalitá", style: const TextStyle(fontSize: 24)),
               Wrap(
                 spacing: 10,
                 alignment: WrapAlignment.center,
@@ -173,52 +258,9 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
 
               const SizedBox(height: 20),
 
-              /// Bottone Cerca
-              ElevatedButton(
-                onPressed: () {
-                  my_search_controller.SearchController.filteredSearch(
-                      context,
-                      1,
-                      mode,
-                      minPrice,
-                      maxPrice,
-                      minDimensione,
-                      maxDimensione,
-                      minStanze,
-                      maxStanze,
-                      bagni,
-                      ascensore,
-                      stato,
-                      garage,
-                      opzioni[_sliderIndex.round()],
-                      widget.citta,
-                      SearchFilterWindow.currentPosition?.latitude,
-                      SearchFilterWindow.currentPosition?.longitude,
-                      SearchFilterWindow.searchRadius
-                      );
-                },
-                style: ButtonStyle(
-                  padding: WidgetStateProperty.all(
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 10)),
-                  backgroundColor: WidgetStateProperty.all(MyApp.rosso),
-                  foregroundColor: WidgetStateProperty.all(Colors.white),
-                  shape: WidgetStateProperty.all(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32)),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(Icons.location_on_rounded,
-                        color: Colors.white, size: 50),
-                    SizedBox(width: 10),
-                    Text("Cerca", style: TextStyle(fontSize: 25)),
-                  ],
-                ),
-              ),
+              
 
-              const SizedBox(height: 20),
+              
             ],
           ),
         ),

@@ -19,10 +19,12 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
   List<dynamic> ricerche = [];
   
   bool _initialized = false;
+  bool isLoading = true;
 
   @override
   void initState() {
-    super.initState();
+    super.initState(); 
+
   }
 
   @override
@@ -35,9 +37,13 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
   }
 
   void _loadRicerche() async {
+    setState(() {
+      isLoading = true;
+    });
     var result = await my_search_controller.SearchController.getRicerche(context);
     setState(() {
       ricerche = result;
+      isLoading = false;
     });
   }
 
@@ -52,6 +58,7 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
           child: Column(
             children: [
               TextField(
+                style: TextStyle(fontSize: 20),
                 onChanged: (value) {
                   city = value;
                   
@@ -60,10 +67,18 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
                   labelText: 'Cittá',
                   border: OutlineInputBorder(),
                   suffixIcon: IconButton(
+                  
                     icon: Icon(Icons.search),
                     onPressed: () async {
+                    setState(() {
+                        isLoading = true;
+                    });
+               
                       final res = await my_search_controller.SearchController.searchCity(context, city);
-                   
+                      setState(() {
+                        isLoading = false;
+                      });
+               
                       if (res.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
 
@@ -106,15 +121,40 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
                 ),
               ),
               SizedBox(height: 20),
+              if (isLoading)
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: CircularProgressIndicator(strokeWidth: 5),
+                      ),
+                    ),
+              if(ricerche.length > 0)Container( 
+                width: double.infinity ,
+                margin: const EdgeInsets.all(5.0),
+                child : Text(
+                "Ricerche recenti : ",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, ),
+              ),),
+              if(cities.length > 0)Container( 
+                width: double.infinity ,
+                margin: const EdgeInsets.only(left: 5.0),
+                child : Text(
+                "Cittá Trovate : ",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, ),
+              ),),
+              
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: ricerche.length,
                 itemBuilder: (context, index) {
+
                   final Ricerca itemRicerca = ricerche[index];
                   
       
-                  String info = "Ricerca : ";
+                  String info = "Ricerca Recente : ";
                   String temp = itemRicerca.comando.split("?")[1];
         
                   for (var i = 0; i < itemRicerca.comando.split("?")[1].split("&").length; i++) {
@@ -128,18 +168,25 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
                     }
                   }
 
-
+                  
                   return Card(
                     child: ListTile(
                       leading: Icon(Icons.watch_later),
                       title: Text(info),
                     
-                      onTap: () {
-                        // Azione quando si clicca su una città
+                      onTap: () async {
+
+                        setState(() {
+                          isLoading = true;
+                        });
+                        
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Hai selezionato: $info')),                       
                         );
-                        my_search_controller.SearchController.prevHistory(context, itemRicerca.comando);
+                        await my_search_controller.SearchController.prevHistory(context, itemRicerca.comando);
+                        setState(() {
+                          isLoading = false;
+                        });
                         
                       },
                     ),
@@ -161,12 +208,20 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
                       title: Text(itemCity['name']),
                       subtitle: Text('${itemCity['admin1']}'),
                       onTap: () {
+                        setState(() {
+                          isLoading = true;
+                        });
+                  
                         // Azione quando si clicca su una città
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Hai selezionato: ${itemCity['name']}')),                       
                         );
                         RouteWindows.citta = itemCity['name'];
                         Navigator.of(context).pushNamed(RouteWindows.searchFilterWindow);
+
+                        setState(() {
+                          isLoading = false;
+                        });
                       },
                     ),
                   );

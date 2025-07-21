@@ -18,7 +18,7 @@ class SearchHomeWindow extends StatefulWidget {
 class _SearchHomeWindowState extends State<SearchHomeWindow> {
   final MapController _mapController = MapController();
   LatLng _currentPosition = LatLng(40.88333000, 14.41667000); // Napoli
-  double _searchRadius = 1000; // Raggio in metri
+  double _searchRadius = 10000; // Raggio in metri
   bool _isLoadingLocation = true;
   // bool _isSearching = false;
 
@@ -69,33 +69,7 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
   }
 
   Future<void> _performRadiusSearch() async {
-    // setState(() {
-    //   _isSearching = true;
-    // });
-    // try {
-    //   final results = await MySearchController.SearchController.radiusSearch(
-    //     _currentPosition.latitude,
-    //     _currentPosition.longitude,
-    //     _searchRadius,
-    //   );
-    //   if (results.isEmpty) {
-    //     MyApp.mostraPopUpWarining(
-    //         context, "Nessun risultato", "Nessuna casa trovata in quest'area");
-    //   } else {
-    //     RouteWindows.estates = results;
-    //     SearchFilterWindow.currentPosition = _currentPosition;
-    //     SearchFilterWindow.searchRadius = _searchRadius;
-    //     Navigator.of(context).pushNamed(RouteWindows.searchFilterWindow);
-    //   }
-    // } catch (e) {
-    //   MyApp.mostraPopUpWarining(context, "Errore", e.toString());
-    // } finally {
-    //   if (mounted) {
-    //     setState(() {
-    //       _isSearching = false;
-    //     });
-    //   }
-    // }
+    RouteWindows.citta  = ""; // Reset city search
     SearchFilterWindow.currentPosition = _currentPosition;
     SearchFilterWindow.searchRadius = _searchRadius;
     Navigator.of(context).pushNamed(RouteWindows.searchFilterWindow);
@@ -114,17 +88,16 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.grey[200],
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(15),
-                    bottomRight: Radius.circular(15),
-                  ),
+
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: ElevatedButton(
+                    
                     style: ButtonStyle(
                       backgroundColor:
                           WidgetStateProperty.all(MyApp.rosso),
+                          padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 14.0)),
                     ),
                     onPressed: () {
                       Navigator.of(context)
@@ -134,15 +107,32 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
                       "Cerca per città",
                       style: TextStyle(
                         color: Colors.white,
+                        fontSize: 18,
+                        
                       ),
+                    
                     ),
                   ),
                 ),
               ),
-
+              Container( 
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                 
+                  
+                  ),
+                child :
               // Controlli per il raggio di ricerca
               Container(
                 padding: const EdgeInsets.all(16.0),
+                margin: const EdgeInsets.only(left: 10.0, right: 10, top: 5.0, bottom: 5),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(15)
+                  
+                  ),
+                ),
+                
                 child: Column(
                   children: [
                     Row(
@@ -151,12 +141,12 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
                         const Text(
                           'Raggio di ricerca:',
                           style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           '${(_searchRadius / 1000).toStringAsFixed(1)} km',
                           style:
-                              TextStyle(fontSize: 16, color: MyApp.blu),
+                              TextStyle(fontSize: 20, color: MyApp.blu),
                         ),
                       ],
                     ),
@@ -178,14 +168,14 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
                       onPressed: _performRadiusSearch,
                       child: const Text(
                         'Cerca nell\'area selezionata',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white, fontSize: 18),
                         
                       ),
                     ),
                   ],
                 ),
               ),
-
+              ),
               // Mappa
               Expanded(
                 child: _isLoadingLocation
@@ -193,7 +183,7 @@ class _SearchHomeWindowState extends State<SearchHomeWindow> {
                     : FlutterMap(
                         mapController: _mapController,
                         options: MapOptions(
-                          initialZoom: 8, 
+                          initialZoom: 10, 
                           onTap: _onMapTap,
                           initialCenter: _currentPosition,
                           // initialCenter: LatLng(14.41667000, 40.88333000),
