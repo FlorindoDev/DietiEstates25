@@ -163,6 +163,29 @@ public class UtentePostgreDAO implements UtenteDAO {
         return user;
     }
 
+    private void checkEmailUnique(String email, String currentTable, String idField, int currentId) throws DietiEstateException {
+        String[] tables = {"acquirente", "amministratore", "agenteimmobiliare"};
+        for (String table : tables) {
+            StringBuilder sql = new StringBuilder("SELECT " + EMAIL_COLUMN + " FROM " + table + " WHERE email = ?");
+            if (table.equals(currentTable)) {
+                sql.append(" AND " + idField + " <> ?");
+            }
+            PreparedStatement stmt = connection.getStatment(sql.toString());
+            try {
+                stmt.setString(1, email);
+                if (table.equals(currentTable)) {
+                    stmt.setInt(2, currentId);
+                }
+                connection.makeQuery(stmt);
+                if (connection.hasNextRow()) {
+                    throw new UserAlreadyExists();
+                }
+            } catch (SQLException e) {
+                logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
+                throw new ErrorExecutingQuery();
+            }
+        }
+    }
 
     public void updateUser(Utente changes, String tabella, String idFiled) throws DietiEstateException {
 
@@ -177,6 +200,11 @@ public class UtentePostgreDAO implements UtenteDAO {
         );
 
         JSONObject jsonObject = new JSONObject(changes.TranslateToJson());
+
+        if (jsonObject.has(EMAIL_COLUMN)) {
+            String newEmail = jsonObject.getString(EMAIL_COLUMN);
+            checkEmailUnique(newEmail, tabella, idFiled, changes.getIdUser());
+        }
 
         if (!jsonObject.isEmpty()) { // per evitare di fare update a vuoto
             logger.info("JSON: " + jsonObject);
