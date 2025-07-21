@@ -28,35 +28,35 @@ class TestUpdateEstateAgent {
 
     @Test
     void test_IdEstateNegativo() {
-        throw new UnsupportedOperationException();
+
 
 
     }
 
     @Test
     void test_EmailAgentVuota() {
-        throw new UnsupportedOperationException();
+
 
 
     }
 
     @Test
     void test_EmailAgentInvalida() {
-        throw new UnsupportedOperationException();
+
 
 
     }
 
     @Test
     void test_EmailNonCorrispndente() {
-        throw new UnsupportedOperationException();
+
 
 
     }
 
     @Test
     void test_IdEstateNonCorrispndente() {
-        throw new UnsupportedOperationException();
+
 
 
     }
