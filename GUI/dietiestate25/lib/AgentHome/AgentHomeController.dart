@@ -19,16 +19,16 @@ import 'package:dietiestate25/Model/Agenzia/Agenzia.dart';
 import 'package:dietiestate25/Model/Estate/Indirizzo.dart';
 
 class AgentHomeController {
-  //static final String urlEstates = 'http://127.0.0.1:7004/api/'; // Per Windows
-  static final String urlEstates = 'http://10.0.2.2:7004/api/'; // Per Android
+  static final String urlEstates = 'http://127.0.0.1:7004/api/'; // Per Windows
+  // static final String urlEstates = 'http://10.0.2.2:7004/api/'; // Per Android
 
-  //static final String urlNotify = 'http://127.0.0.1:7008/api/notifies/agent'; // Per Windows
-  static final String urlNotify =
-      'http://10.0.2.2:7008/api/notifies/agent'; // Per Android
+  static final String urlNotify = 'http://127.0.0.1:7008/api/notifies/agent'; // Per Windows
+  // static final String urlNotify =
+      // 'http://10.0.2.2:7008/api/notifies/agent'; // Per Android
 
-  //static final String urlAppointment = 'http://127.0.0.1:7006/api/appointments/agent'; // Per Windows
-  static final String urlAppointment =
-      'http://10.0.2.2:7006/api/appointments/agent'; // Per Android
+  static final String urlAppointment = 'http://127.0.0.1:7006/api/appointments/agent'; // Per Windows
+  // static final String urlAppointment =
+      // 'http://10.0.2.2:7006/api/appointments/agent'; // Per Android
 
   static final String urlAppointmentSpecific = '/api/appointments';
 

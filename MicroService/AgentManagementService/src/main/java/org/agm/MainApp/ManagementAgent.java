@@ -55,6 +55,8 @@ public class ManagementAgent implements ManagmentAgentService {
     public String removeAgent(Agent agent) {
 
         try{
+            Validator validaitor = Validate.getInstance();
+            validaitor.validateEmail(agent.getEmail());
             agentDAO.removeAgent(agent);
             return "{\"code\": 0, \"message\": \"success of action admin remove\"}";
         }catch (DietiEstateException e){
@@ -66,6 +68,9 @@ public class ManagementAgent implements ManagmentAgentService {
     @Override
     public String getAgents(Agency agency) {
         try{
+            Validator validaitor = Validate.getInstance();
+            validaitor.validatePartitaIVA(agency.getCodicePartitaIVA());
+
             agencyDAO.isAgencyPresent(agency);
 
             List<Agent> agents = agencyDAO.getAgents(agency);
@@ -89,6 +94,9 @@ public class ManagementAgent implements ManagmentAgentService {
     @Override
     public String getEstates(Agency agency) {
         try{
+            Validator validaitor = Validate.getInstance();
+            validaitor.validatePartitaIVA(agency.getCodicePartitaIVA());
+
             agencyDAO.isAgencyPresent(agency);
 
             List<Estate> estates = agencyDAO.getEstates(agency);
@@ -112,6 +120,9 @@ public class ManagementAgent implements ManagmentAgentService {
     @Override
     public String updateEstateAgent(Estate estate, Agent agent) {
         try{
+            Validator validaitor = Validate.getInstance();
+            validaitor.validateEmail(agent.getEmail());
+
             estateDAO.isEstatePresent(estate);
             agentDAO.isUserPresent(agent);
             agent = agentDAO.estraiIdFromEmailAgent(agent);
