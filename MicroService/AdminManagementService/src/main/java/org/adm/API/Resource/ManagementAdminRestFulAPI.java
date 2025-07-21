@@ -20,7 +20,7 @@ public class ManagementAdminRestFulAPI implements ManagementAdminAPI {
     @Produces(MediaType.APPLICATION_JSON)
     @Override
     public Response addAdmin(Admin admin) {
-        String result = managementAdmin.addAdmin(admin,admin.getAgency());
+        String result = managementAdmin.addAdmin(admin);
         managementAdmin.close();
         return Response.ok(result).build();
     }

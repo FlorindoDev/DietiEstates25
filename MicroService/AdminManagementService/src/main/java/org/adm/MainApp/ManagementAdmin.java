@@ -21,7 +21,7 @@ public class ManagementAdmin implements ManagmentAdminService {
     private AgencyDAO agencyDAO = new AgencyPostgreDAO();
 
     @Override
-    public String addAdmin(Admin admin, Agency agency) {
+    public String addAdmin(Admin admin) {
 
         try{
             adminDAO.isUserAbsentOverAll(admin);
@@ -37,6 +37,8 @@ public class ManagementAdmin implements ManagmentAdminService {
             validaitor.validateCognome(admin.getCognome());
             validaitor.validateEmail(admin.getEmail());
             validaitor.validatePassword(admin.getPassword());
+            validaitor.validatePartitaIVA(admin.getAgency().getCodicePartitaIVA());
+
 
             adminDAO.createUser(admin);
 
@@ -126,4 +128,8 @@ public class ManagementAdmin implements ManagmentAdminService {
         agencyDAO.close();
     }
 
+    public void setAdminDAO(AdminDAO adminDAO) {
+        this.adminDAO.close();
+        this.adminDAO = adminDAO;
+    }
 }
