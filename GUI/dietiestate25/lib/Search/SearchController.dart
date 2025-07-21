@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:dietiestate25/Connection/Connection.dart';
 import 'package:dietiestate25/Model/Estate/Estate.dart';
@@ -76,6 +77,7 @@ class SearchController {
       if (response.statusCode != 200) {
         // Controlla se lo statusCode non è 200 (OK)
         MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
+
         return List.empty();
       }
 
@@ -83,11 +85,13 @@ class SearchController {
     } catch (e) {
       MyApp.mostraPopUpWarining(
           context, "Errore", "Controlla la tua connessione");
+
       return List.empty();
     }
-  }
 
-  static void filteredSearch(
+  }
+  
+  static Future<List<Estate>> filteredSearch (
       BuildContext context,
       int page,
       String mode,
@@ -110,7 +114,7 @@ class SearchController {
     SearchController.citta = city;
     SearchController.page = page;
     String address =
-        'Search/estates?sort=idimmobile&desc=true&page=$page';
+        'Search/estates?limit=3&sort=idimmobile&desc=true&page=$page';
 
     SearchController.minPrice = minPrice;
     if (city.isNotEmpty) {
@@ -193,11 +197,12 @@ class SearchController {
 
     http.Response? response = await Connection.makeGetRequest(address);
 
+
     if (response == null) {
       MyApp.mostraPopUpWarining(context, "Errore",
           "Impossibile contattare il server, riprova tra poco");
 
-      return;
+      return List.empty();
     }
 
     dynamic ris;
@@ -215,6 +220,7 @@ class SearchController {
           Navigator.pop(context);
         }
         Navigator.of(context).pushNamed(RouteWindows.estatesViewWindow);
+        return estates;
       } else {
         MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
       }
@@ -223,11 +229,12 @@ class SearchController {
       MyApp.mostraPopUpWarining(context, "Errore",
           "Impossibile contattare il server, riprova tra poco");
 
-      return;
+      return List.empty();
     }
+    return List.empty();
   }
 
-    static void prevHistory(dynamic context, String comando) async {
+    static Future<List> prevHistory(dynamic context, String comando) async {
     String address = '/Search/estates?comando=$comando';
 
     http.Response? response = await Connection.makeGetRequest(address);
@@ -236,7 +243,7 @@ class SearchController {
       MyApp.mostraPopUpWarining(context, "Errore",
           "Impossibile contattare il server, riprova tra poco");
 
-      return;
+      return List.empty();
     }
 
     dynamic ris;
@@ -254,58 +261,27 @@ class SearchController {
           Navigator.pop(context);
         }
         Navigator.of(context).pushNamed(RouteWindows.estatesViewWindow);
+        return estates;
       } else {
         MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
       }
+
       // }
     } catch (e) {
       MyApp.mostraPopUpWarining(context, "Errore",
           "Impossibile contattare il server, riprova tra poco");
 
-      return;
+      return List.empty();
     }
+    return List.empty();
   }
-
-  // static Future<List<Estate>> radiusSearch(double latitude, double longitude, double radius) async {
-    
-  //   // http://127.0.0.1:8000/Search/estates?longCentroCirconferenza=14.7680961&latCentroCirconferenza=40.6824408&raggio=2
-  //   final km = radius / 1000.0;
-  //   String address = '/Search/estates?longCentroCirconferenza=$longitude&latCentroCirconferenza=$latitude&raggio=$km';
-    
-  //   try{
-  //     http.Response? response = await Connection.makeGetRequest(address);
-
-  //     if (response != null) {
-  //       // MyApp.mostraPopUpWarining("Errore", "Impossibile contattare il server, riprova tra poco");
-  //       // return;
-  //       final body = utf8.decode(response.bodyBytes);
-  //       final ris = json.decode(body);
-  //       //logger.i("Risposta della ricerca per raggio: $ris['Estates']");
-  //       if (ris['code'] == 0) {
-  //         List<Estate> estates = [];
-  //         for (int i = 0; i < ris['Estates'].length; ++i) {
-  //           estates.add(Estate.fromJson(ris['Estates'][i]));
-  //         }
-  //         return estates;
-  //       } else {
-  //         return [];
-  //       }
-  //     }else{
-  //       return [];
-  //     }
-
-  //   }catch (e) {
-  //     return [];
-  //     // print("Errore durante la ricerca per raggio: $e");
-  //     // MyApp.mostraPopUpWarining("Errore", "Errore durante la ricerca per raggio");
-  //   }
-  // }
 
 
   static Future<List<Ricerca>> getRicerche(BuildContext context) async {
     String address = '/Search/historySearch?email=${loggedUser.email}';
 
     http.Response? response = await Connection.makeGetRequest(address);
+  
 
     if (response == null) {
       MyApp.mostraPopUpWarining(context, "Errore",
@@ -333,5 +309,7 @@ class SearchController {
 
     return ricerche;
   }
+  
+
     
 }

@@ -65,6 +65,7 @@ class HomeController {
         MyApp.mostraPopUpWarining(context, "Errore", ris['message']);
       }
     } catch (e) {
+      MyApp.mostraPopUpWarining(context, "Attenzione", "Nessuna notifica");
       return List<Notify>.empty();
     }
     return notifies;

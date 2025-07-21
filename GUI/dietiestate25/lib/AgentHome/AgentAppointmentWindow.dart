@@ -394,9 +394,9 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                     Navigator.pop(context);
                                   },
                                   icon: const Icon(Icons.check,
-                                      color: Colors.black),
+                                      color: Colors.white),
                                   label: const Text('Accetta',
-                                      style: TextStyle(color: Colors.black)),
+                                      style: TextStyle(color: Colors.white)),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: MyApp.celeste,
                                     padding: const EdgeInsets.symmetric(
@@ -413,9 +413,9 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                                     Navigator.pop(context);
                                   },
                                   icon: const Icon(Icons.delete,
-                                      color: Colors.black),
+                                      color: Colors.white),
                                   label: const Text('Rifiuta',
-                                      style: TextStyle(color: Colors.black)),
+                                      style: TextStyle(color: Colors.white)),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: MyApp.rosso,
                                     padding: const EdgeInsets.symmetric(
@@ -433,9 +433,9 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                               Navigator.of(context).pop();
                             },
                             icon: const Icon(Icons.arrow_back,
-                                color: Colors.black),
+                                color: Colors.white),
                             label: const Text('Torna indietro',
-                                style: TextStyle(color: Colors.black)),
+                                style: TextStyle(color: Colors.white)),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: MyApp.rosso,
                               padding: const EdgeInsets.symmetric(

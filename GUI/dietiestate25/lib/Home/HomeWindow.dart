@@ -41,7 +41,7 @@ class _HomeWindowState extends State<HomeWindow> {
             setState(() => _selectedIndex = index),
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.search, color: Colors.white),
+            icon: Icon(Icons.home, color: Colors.white),
             label: 'Home',
           ),
           NavigationDestination(
@@ -117,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
         spacing: 10,
         children: [
           ElevatedButton(
+            
             onPressed: () {
               Navigator.of(context).pushNamed(RouteWindows.searchHomeWindow);
             },
@@ -127,11 +128,16 @@ class _HomeScreenState extends State<HomeScreen> {
               foregroundColor: WidgetStateProperty.all(Colors.white),
               shape: WidgetStateProperty.all(
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+              
               ),
+              elevation: WidgetStateProperty.all(8),
             ),
-            child: Row(mainAxisSize: MainAxisSize.min, children: [
+            child: Row(
+              
+              mainAxisSize: MainAxisSize.min, 
+              children: [
               Icon(
-                Icons.location_on_rounded,
+                Icons.search_rounded,
                 color: Colors.white,
                 size: 50,
               ),
@@ -143,6 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Expanded(
             child: Container(
+              margin: const EdgeInsets.only(top : 10.0),
               //width: double.infinity,
               decoration: BoxDecoration(
                 color: MyApp.celesteSfumato,

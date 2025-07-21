@@ -21,6 +21,7 @@ class EstatesViewWindow extends StatefulWidget {
 
 class _EstatesViewWindowState extends State<EstatesViewWindow> {
   int page = 1;
+  bool isLoading = false;
 
   void prevFoto(Estate estate) {
     setState(() {
@@ -38,7 +39,12 @@ class _EstatesViewWindowState extends State<EstatesViewWindow> {
   }
 
   void initState() {
+    
     super.initState();
+        setState(() {
+   
+      isLoading = false;
+    });
     // Inizializza fotoLoded e indexFoto per ogni estate
     for (var estate in widget.estates) {
       if (estate.foto != null && estate.foto!.isNotEmpty) {
@@ -56,7 +62,28 @@ class _EstatesViewWindowState extends State<EstatesViewWindow> {
     return Scaffold(
       appBar: widget.appbar,
       body: SingleChildScrollView(
-        child: ListView.builder(
+        child: 
+        Column(
+          children: [
+            if (isLoading)
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: CircularProgressIndicator(strokeWidth: 5),
+                      ),
+                    ),
+            Container(
+              width: double.infinity,
+             
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  "Risultati della ricerca : ",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+              ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -225,6 +252,9 @@ class _EstatesViewWindowState extends State<EstatesViewWindow> {
             );
           },
         ),
+          ],
+        ),
+        
       ),
       bottomSheet: Row(
         spacing: 5,
@@ -233,11 +263,15 @@ class _EstatesViewWindowState extends State<EstatesViewWindow> {
           ElevatedButton(
             onPressed: my_search_controller.SearchController.page == 1
                 ? null
-                : () {
-                    setState(() {
-                      my_search_controller.SearchController.filteredSearch(
+                : () async{
+                  setState(() {
+                    isLoading = true;
+                  });
+                    my_search_controller.SearchController.page--;
+                    
+                      await my_search_controller.SearchController.filteredSearch(
                           context,
-                          my_search_controller.SearchController.page - 1,
+                          my_search_controller.SearchController.page,
                           my_search_controller.SearchController.mode,
                           my_search_controller.SearchController.minPrice,
                           my_search_controller.SearchController.maxPrice,
@@ -254,6 +288,9 @@ class _EstatesViewWindowState extends State<EstatesViewWindow> {
                           my_search_controller.SearchController.latitudine,
                           my_search_controller.SearchController.longitudine,
                           my_search_controller.SearchController.radius);
+                    
+                    setState(() {
+                      isLoading = false;
                     });
                   },
             style: my_search_controller.SearchController.page == 1
@@ -262,11 +299,16 @@ class _EstatesViewWindowState extends State<EstatesViewWindow> {
             child: const Text('Indietro'),
           ),
           ElevatedButton(
-            onPressed: () {
-              setState(() {
-                my_search_controller.SearchController.filteredSearch(
+            onPressed: () async{
+              
+                 setState(() {
+                    isLoading = true;
+                  });
+                  my_search_controller.SearchController.page++;
+                
+                  await my_search_controller.SearchController.filteredSearch(
                     context,
-                    my_search_controller.SearchController.page + 1,
+                    my_search_controller.SearchController.page,
                     my_search_controller.SearchController.mode,
                     my_search_controller.SearchController.minPrice,
                     my_search_controller.SearchController.maxPrice,
@@ -283,6 +325,12 @@ class _EstatesViewWindowState extends State<EstatesViewWindow> {
                     my_search_controller.SearchController.latitudine,
                     my_search_controller.SearchController.longitudine,
                     my_search_controller.SearchController.radius);
+          
+               
+                
+             
+              setState(() {
+                isLoading = false;
               });
             },
             style: AccessController.clickable_style_button,

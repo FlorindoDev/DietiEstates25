@@ -381,9 +381,9 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      icon: const Icon(Icons.arrow_back, color: Colors.black),
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
                       label: const Text('Torna indietro',
-                          style: TextStyle(color: Colors.black)),
+                          style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: MyApp.rosso,
                         padding: const EdgeInsets.symmetric(
