@@ -34,8 +34,6 @@ public class Utente extends Translate {
     @QueryParam("idPushNotify")
     protected String idPushNotify = "";
 
-
-
     public Utente() {}
 
     protected Utente(Builder builder){

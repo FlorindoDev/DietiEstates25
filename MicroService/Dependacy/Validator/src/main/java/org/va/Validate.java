@@ -43,7 +43,7 @@ public class Validate implements Validator{
     @Override
     public Boolean validatePassword(String password)throws DietiEstateException {
 
-        if(password == null) throw new UserEmailNotValid();
+        if(password == null) throw new UserPassowordNotValid();
 
         if(password.length() < 8){
             throw new UserPassowordNotValid();
@@ -70,12 +70,17 @@ public class Validate implements Validator{
     public boolean validateName(String name) throws UserGeneralityNotValid {
         if(name == null ) throw new UserGeneralityNotValid();
 
+        if (!Character.isUpperCase(name.charAt(0))) {
+            throw new UserGeneralityNotValid();
+        }
+
         Pattern pattern = Pattern.compile(NAME_REGEX);
         Matcher nome = pattern.matcher(name);
 
         if(!nome.matches()){
             throw new UserGeneralityNotValid();
         }
+
         return true;
     }
 
