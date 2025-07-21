@@ -5,7 +5,7 @@ import org.md.Utente.Admin;
 
 public interface ManagmentAdminService {
 
-    public String addAdmin(Admin admin, Agency agency);
+    public String addAdmin(Admin admin);
 
     public String removeAdmin(Admin admin);
 

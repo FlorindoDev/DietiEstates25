@@ -39,11 +39,12 @@ public class ManagementAgent implements ManagmentAgentService {
             validaitor.validateCognome(agent.getCognome());
             validaitor.validateEmail(agent.getEmail());
             validaitor.validatePassword(agent.getPassword());
+            validaitor.validatePartitaIVA(agent.getAgency().getCodicePartitaIVA());
 
             agentDAO.createUser(agent);
 
             //TODO FARE un oggetto per messaggio di buon fine
-            return "{\"code\": 0, \"message\": \"success of action admin create\"}";
+            return "{\"code\": 0, \"message\": \"success of action agent create\"}";
 
 
         }catch(DietiEstateException e){
@@ -140,5 +141,10 @@ public class ManagementAgent implements ManagmentAgentService {
         agencyDAO.close();
         agentDAO.close();
         estateDAO.close();
+    }
+
+    public void setAgentDAO(AgentDAO agentDAO) {
+        this.agentDAO.close();
+        this.agentDAO = agentDAO;
     }
 }

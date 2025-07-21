@@ -51,8 +51,6 @@ public class CreateAgency implements CreateAgencyService {
 
             sendEmail(admin);
 
-
-            // TODO  AGGIUSATRE RITORNO
             return "{\"code\": 0, \"message\": \"Success of action create agency\"}";
 
         }catch (DietiEstateException e){

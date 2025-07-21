@@ -165,9 +165,6 @@ public class UtentePostgreDAO implements UtenteDAO {
 
 
     public void updateUser(Utente changes, String tabella, String idFiled) throws DietiEstateException {
-        // Acquirente OK
-        // Agent OK
-        // Admin
 
         final String ID_USER_COLUMN = "idUser";
         String keycrypt = connection.getKeyCrypt();
