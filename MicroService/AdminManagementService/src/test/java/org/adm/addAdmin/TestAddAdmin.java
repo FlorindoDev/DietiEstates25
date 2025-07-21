@@ -71,7 +71,7 @@ class TestAddAdmin {
                 .thenReturn(true);
         managementAdmin.setAdminDAO(adminPostgreDAO);
 
-        assertEquals("{\"code\": 0, \"message\": \"success of action admin create\"}", managementAdmin.addAdmin(admin));
+        assertEquals("{\"code\": 103 , \"message\": \" User Generality not valid\"}", managementAdmin.addAdmin(admin));
     }
 
     // T04: Errore nome con numero
