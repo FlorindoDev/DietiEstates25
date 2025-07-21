@@ -67,6 +67,9 @@ public class ManagementAdmin implements ManagmentAdminService {
     @Override
     public String upgradeSupportAdmin(Admin admin) {
         try{
+            Validator validaitor = Validate.getInstance();
+            validaitor.validateEmail(admin.getEmail());
+
             adminDAO.isUserPresent(admin);
 
             adminDAO.upgradeSupportAdmin(admin);
@@ -79,6 +82,9 @@ public class ManagementAdmin implements ManagmentAdminService {
     @Override
     public String downgradeSupport(Admin admin) {
         try{
+            Validator validaitor = Validate.getInstance();
+            validaitor.validateEmail(admin.getEmail());
+
             adminDAO.isUserPresent(admin);
 
             adminDAO.downgradeSupport(admin);
@@ -91,6 +97,9 @@ public class ManagementAdmin implements ManagmentAdminService {
     @Override
     public String getAdmins(Agency agency) {
         try{
+            Validator validaitor = Validate.getInstance();
+            validaitor.validatePartitaIVA(agency.getCodicePartitaIVA());
+
             agencyDAO.isAgencyPresent(agency);
 
             List<Admin> admins = agencyDAO.getAdmins(agency);
