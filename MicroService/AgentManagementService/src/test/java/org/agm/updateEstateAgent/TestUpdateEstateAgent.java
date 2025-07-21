@@ -8,9 +8,9 @@ import org.md.Estate.Estate;
 import org.md.Utente.Agent;
 
 import static org.mockito.Mockito.*;
-import static org.mockito.ArgumentMatchers.eq;
 
-public class TestUpdateEstateAgent {
+
+class TestUpdateEstateAgent {
     AgentPostgreDAO agentPostgreDAO = null;
 
     // Valid data
@@ -18,7 +18,7 @@ public class TestUpdateEstateAgent {
     final Estate validEstate = new Estate.Builder(0).build();
     // Invalid data
     final Agent emptyAgente = new Agent.Builder(1,"").build();
-    
+
 
 
     @BeforeEach
@@ -28,31 +28,35 @@ public class TestUpdateEstateAgent {
 
     @Test
     void test_IdEstateNegativo() {
-
+        throw new UnsupportedOperationException();
 
 
     }
 
     @Test
     void test_EmailAgentVuota() {
+        throw new UnsupportedOperationException();
 
 
     }
 
     @Test
     void test_EmailAgentInvalida() {
+        throw new UnsupportedOperationException();
 
 
     }
 
     @Test
     void test_EmailNonCorrispndente() {
+        throw new UnsupportedOperationException();
 
 
     }
 
     @Test
     void test_IdEstateNonCorrispndente() {
+        throw new UnsupportedOperationException();
 
 
     }
