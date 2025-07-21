@@ -147,4 +147,9 @@ public class ManagementAgent implements ManagmentAgentService {
         this.agentDAO.close();
         this.agentDAO = agentDAO;
     }
+
+    public void setEstateDAO(EstateDAO estateDAO) {
+        this.estateDAO.close();
+        this.estateDAO = estateDAO;
+    }
 }
