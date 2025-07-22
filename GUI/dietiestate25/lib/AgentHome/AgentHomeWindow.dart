@@ -42,8 +42,8 @@ class _AgentHomeWindowState extends State<AgentHomeWindow> {
             setState(() => _selectedIndex = index),
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.house_rounded, color: Colors.white),
-            label: 'Home',
+            icon: Icon(Icons.add, color: Colors.white),
+            label: 'Crea',
           ),
           NavigationDestination(
             icon: Icon(Icons.notifications, color: Colors.white),
@@ -86,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ImagePicker _picker = ImagePicker();
   List<String> _imagesBase64 = [];
   bool _isLoadingLocation = true;
+  bool isLoading = false;
 
   // Estate fields
   final _formKey = GlobalKey<FormState>();
@@ -171,7 +172,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return RegExp(r'[0-9]').hasMatch(value);
   }
 
-  void _onSavePressed() {
+  void _onSavePressed() async {
+    setState(() {
+      isLoading = true;
+    });
     setState(() {
       _imageError = null;
     });
@@ -183,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
-    AgentHomeController.createEstate(
+    await AgentHomeController.createEstate(
       descrizione: descrizione,
       price: price,
       space: space,
@@ -206,6 +210,10 @@ class _HomeScreenState extends State<HomeScreen> {
       foto: _imagesBase64,
       context: context,
     );
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -531,6 +539,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ],
+                ),
+              ),
+            if (isLoading)
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: CircularProgressIndicator(strokeWidth: 5),
                 ),
               ),
             Center(
