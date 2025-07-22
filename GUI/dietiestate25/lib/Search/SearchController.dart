@@ -118,7 +118,7 @@ class SearchController {
 
     SearchController.minPrice = minPrice;
     if (city.isNotEmpty) {
-      address += '&city=$city';
+      address += '&citta=$city';
     }
 
     SearchController.citta = city;

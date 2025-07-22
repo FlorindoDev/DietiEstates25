@@ -51,11 +51,11 @@ class AccessController {
     return null;
   }
 
-  static bool toLogin(Utente utente, dynamic context) {
+  static Future<bool> toLogin(Utente utente, dynamic context) async {
     valida.validateEmail(utente.email);
     valida.validatePassword(utente.password);
 
-    richiestaLogin(utente).then((risultato) {
+    await richiestaLogin(utente).then((risultato) {
       //risultato = json.decode(risultato);
       if (risultato == null) {
         MyApp.mostraPopUpWarining(context, "Attenzione",
@@ -133,7 +133,7 @@ class AccessController {
     await file.writeAsString("{ \"JWT\":\"$jwt\" }");
   }
 
-  static void toSignUp(Utente utente, dynamic context) {
+  static Future<bool> toSignUp(Utente utente, dynamic context) async {
     valida.validateName(utente.nome);
     valida.validateSurname(utente.cognome);
     valida.validateEmail(utente.email);
@@ -148,7 +148,7 @@ class AccessController {
         .setNotifyAppointm(true)
         .build();
 
-    richiestaSignUp(acquirente).then((risultato) {
+    await richiestaSignUp(acquirente).then((risultato) {
       //risultato = json.decode(risultato);
       if (risultato == null) {
         MyApp.mostraPopUpWarining(context, "Attenzione",
@@ -166,6 +166,7 @@ class AccessController {
         return true;
       }
     });
+    return false;
   }
 
   static Future<dynamic> richiestaSignUp(Acquirente utente) async {

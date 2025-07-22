@@ -21,6 +21,7 @@ class _SingUpWindowState extends State<SingUpWindow> {
   AccessController accessController = new AccessController();
   bool _obscureText = true;
   bool isCampiCompilati = false;
+  bool isLoading = false;
   var coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
 
   void setIsCampiCompilati(bool b) {
@@ -166,17 +167,30 @@ class _SingUpWindowState extends State<SingUpWindow> {
                       ),
                       SizedBox(height: 20),
                       // Pulsante di registrazione tradizionale
+                      if (isLoading)
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: CircularProgressIndicator(strokeWidth: 5),
+                      ),
+                    ),
                       ElevatedButton(
                         onPressed: isCampiCompilati
-                            ? () {
+                            ? () async{
+                                setState(() {
+                                  isLoading = true;
+                                });
                                 try {
-                                  AccessController.toSignUp(utente,context);
+                                  await AccessController.toSignUp(utente,context);
                      
 
                                 } catch (e) {
                                   MyApp.mostraPopUpWarining(
                                       context, "Attenzione", e.toString());
                                 }
+                                setState(() {
+                                  isLoading = false;
+                                });
                               }
                             : null,
                         style: ButtonStyle(
