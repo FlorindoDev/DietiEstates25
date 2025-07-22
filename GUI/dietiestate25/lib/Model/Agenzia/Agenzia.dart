@@ -10,7 +10,9 @@ class Agenzia {
       'codicePartitaIVA': _partitaIVA,
       'nome': _nome_agenzia,
       'sede': _sede,
-
+      'admins': [
+        {"email": "${_email}"}
+      ]
     };
   }
 
@@ -19,13 +21,12 @@ class Agenzia {
     agenzia._partitaIVA = json['codicePartitaIVA'];
     agenzia._nome_agenzia = json['nome'];
     agenzia._sede = json['sede'];
-    
+
     return agenzia;
   }
 
+  Agenzia();
 
-  Agenzia(); 
-  
   Agenzia._builder(AgenziaBuilder builder)
       : _id_agency = builder._id_agency,
         _nome_agenzia = builder._nome_agenzia ?? '',
@@ -40,19 +41,19 @@ class Agenzia {
   set nome_agenzia(String value) {
     _nome_agenzia = value;
   }
-  
+
   String get partitaIVA => _partitaIVA;
 
   set partitaIVA(String value) {
     _partitaIVA = value;
   }
-  
+
   String get sede => _sede;
 
   set sede(String value) {
     _sede = value;
   }
-  
+
   String get email => _email;
 
   set email(String value) {
@@ -64,11 +65,9 @@ class Agenzia {
   set id_agency(String value) {
     _id_agency = value;
   }
-
-
 }
-class AgenziaBuilder{
 
+class AgenziaBuilder {
   String _id_agency = "";
   String _nome_agenzia = "";
   String _partitaIVA = "";
@@ -103,5 +102,4 @@ class AgenziaBuilder{
   Agenzia build() {
     return Agenzia._builder(this);
   }
-
 }

@@ -44,7 +44,7 @@ class AccessController {
 
     http.Response? response = await Connection.makeLogin(utente.toJson());
     // response: JWT
-    
+
     if (response != null) {
       return json.decode(response.body);
     }
@@ -54,8 +54,6 @@ class AccessController {
   static bool toLogin(Utente utente, dynamic context) {
     valida.validateEmail(utente.email);
     valida.validatePassword(utente.password);
-    
-    
 
     richiestaLogin(utente).then((risultato) {
       //risultato = json.decode(risultato);
@@ -79,9 +77,8 @@ class AccessController {
   static Future<void> screenShooser(risultato, Utente utente, context) async {
     final jwtPlayload = payload(risultato['message'].split('.')[1]);
     String email = jwtPlayload["sub"];
-    
+
     scriviJWTInFile(risultato['message']);
-    
 
     logger.d("Email: $email\nTipo di Utente Loggato è ${jwtPlayload["kid"]}");
 
@@ -92,7 +89,6 @@ class AccessController {
       await ProfileController.getProfile(email, Acquirente);
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.homeWindow);
-
     } else if (jwtPlayload["kid"] == "agent") {
       ProfileController.resetCache(); // don't touch
       await ProfileController.getProfile(email, AgenteImmobiliare);
@@ -103,7 +99,6 @@ class AccessController {
       await ProfileController.getProfile(email, Amministratore);
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(RouteWindows.adminHomeWindow);
-
     }
 
     MyApp.mostraPopUpSuccess(context, "Complimenti", "Login Effettuato!");
@@ -143,16 +138,15 @@ class AccessController {
     valida.validateSurname(utente.cognome);
     valida.validateEmail(utente.email);
     valida.validatePassword(utente.password);
-    
 
-    Acquirente acquirente= new AcquirenteBuilder()
-      .setEmail(utente.email)
-      .setName(utente.nome)
-      .setCognome(utente.cognome)
-      .setPassword(utente.password)
-      .setNotifyNewEsta(true)
-      .setNotifyAppointm(true)
-      .build();
+    Acquirente acquirente = new AcquirenteBuilder()
+        .setEmail(utente.email)
+        .setName(utente.nome)
+        .setCognome(utente.cognome)
+        .setPassword(utente.password)
+        .setNotifyNewEsta(true)
+        .setNotifyAppointm(true)
+        .build();
 
     richiestaSignUp(acquirente).then((risultato) {
       //risultato = json.decode(risultato);
@@ -166,12 +160,12 @@ class AccessController {
       } else if (risultato['code'] == 0) {
         Navigator.pop(context);
         Navigator.of(context).pushNamed(RouteWindows.loginWindow);
-        MyApp.mostraPopUpSuccess(context, "Successo", "Registrazione fatta con successo");
+        MyApp.mostraPopUpSuccess(
+            context, "Successo", "Registrazione fatta con successo");
 
         return true;
       }
     });
-  
   }
 
   static Future<dynamic> richiestaSignUp(Acquirente utente) async {
@@ -188,10 +182,27 @@ class AccessController {
     return null;
   }
 
-  static void toCreateAgency(Agenzia agenzia) {
+  static void toCreateAgency(Agenzia agenzia, dynamic context) async {
     valida.validateEmail(agenzia.email);
     valida.validateSede(agenzia.sede);
     valida.validatePartitalVA(agenzia.partitaIVA);
+
+    http.Response? response = await Connection.makePostRequest(
+        agenzia.toJson(), "create/createAgency");
+
+    var risultato = json.decode(utf8.decode(response!.bodyBytes));
+
+    if (risultato == null) {
+      MyApp.mostraPopUpWarining(context, "Attenzione",
+          "Servizio non attualmente disponibile, prova tra qualche minuto");
+    } else if (risultato['code'] != 0) {
+      MyApp.mostraPopUpWarining(context, "Attenzione", risultato['message']);
+    } else if (risultato['code'] == 0) {
+      Navigator.pop(context);
+      Navigator.of(context).pushNamed(RouteWindows.loginWindow);
+      MyApp.mostraPopUpSuccess(
+          context, "Successo", "Registrazione fatta con successo");
+    }
   }
 
   static MaterialPageRoute<dynamic> goToSignUpWindow() {
@@ -235,19 +246,18 @@ class AccessController {
 
         String email = payloadMap["sub"];
 
-        logger.d("Email: $email\nTipo di Utente Loggato è ${payloadMap["kid"]}");
+        logger
+            .d("Email: $email\nTipo di Utente Loggato è ${payloadMap["kid"]}");
 
         ProfileController.resetCache();
         if (payloadMap["kid"] == "acquirente") {
           ProfileController.resetCache(); // don't touch
           await ProfileController.getProfile(email, Acquirente);
           return "HomeWindow";
-
         } else if (payloadMap["kid"] == "agent") {
           ProfileController.resetCache(); // don't touch
           await ProfileController.getProfile(email, AgenteImmobiliare);
           return "AgentHomeWindow";
-
         } else if (payloadMap["kid"] == "admin") {
           ProfileController.resetCache(); // don't touch
           await ProfileController.getProfile(email, Amministratore);
