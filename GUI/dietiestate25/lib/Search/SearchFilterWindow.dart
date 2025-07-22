@@ -151,6 +151,8 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                         ? null
                         : () {
                             setState(() {
+                              minPrice = 0;
+                              maxPrice = 0;
                               mode = "Compra";
                             });
                           },
@@ -164,6 +166,8 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                         ? null
                         : () {
                             setState(() {
+                              minPrice = 0;
+                              maxPrice = 0;
                               mode = "Affitto";
                             });
                           },
