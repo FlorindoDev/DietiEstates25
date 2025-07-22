@@ -1,6 +1,7 @@
 package org.ads.MainApp;
 
 import java.net.URI;
+import java.util.logging.Logger;
 
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -15,6 +16,8 @@ public class Main {
     private static final String BASE_URI = "http://0.0.0.0:7004/";
     private static final String RESOURCE = "org.ads.API.Resource";
 
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
+
     public static final ApplicationContext rabbitMQ = SpringApplication.run(MainSenderNotify.class);
 
     public static void startServer() {
@@ -26,8 +29,8 @@ public class Main {
     }
 
     public static void main(String[] args){
-        startServer();
 
-        System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
+        startServer();
+        logger.info(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
     }
 }

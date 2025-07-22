@@ -13,12 +13,15 @@ import org.springframework.context.ApplicationContext;
 
 
 import java.net.URI;
+import java.util.logging.Logger;
 
 
 public class   Main {
     // Base URI the Grizzly HTTP server will listen on
     private static final String BASE_URI = "http://0.0.0.0:7006/";
     private static final String RESOURCE = "org.ap.API.Resource";
+
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
 
     //Avvio springBoot per poter creare gli oggetti
     public static final ApplicationContext rabbitMQ = SpringApplication.run(MainSenderNotify.class);
@@ -33,18 +36,9 @@ public class   Main {
 
 
     public static void main(String[] args){
+
         startServer();
-        //TODO serve per la prova dopo eliminare
-        Acquirente acquirente = new Acquirente.Builder(0,"utente1@email.com").build();
-        Estate estate = new Estate.Builder<>(3).build();
+        logger.info(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
 
-        Appointment appointment= new Appointment.Builder<>(0)
-                .setAcquirente(acquirente)
-                .setData("2025-11-11")
-                .setEstate(estate)
-                .build();
-
-        System.out.println(appointment.TranslateToJson());
-        System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
     }
 }
