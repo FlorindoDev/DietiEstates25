@@ -33,6 +33,7 @@ class RouteWindows {
   static const estateInfoWindow = '/EstateInfoWindow';
 
   static String citta = "";
+  static bool reset = false;
 
   static List<Estate> estates = List.empty();
 

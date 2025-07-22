@@ -69,6 +69,15 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
 
 
   }
+  @override
+  void dispose() {
+    
+ 
+      azzera(); 
+   
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +122,7 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                       SearchFilterWindow.currentPosition?.longitude,
                       SearchFilterWindow.searchRadius
                     );
-                      azzera();
+                     
                     setState(() {
                       isLoading = false;
                     });

@@ -29,8 +29,8 @@ class _EstateInfoWindowMapViewState extends State<EstateInfoWindowMapView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Posizione Immobile'),
-        backgroundColor: MyApp.blu,
+        title: Text('Posizione Immobile', style: TextStyle(),),
+        backgroundColor: MyApp.celesteSfumato,
       ),
       body: Column(
         children:[

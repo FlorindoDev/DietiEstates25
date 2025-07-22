@@ -20,6 +20,7 @@ class _LoginWindowState extends State<LoginWindow> {
   AccessController accessController = new AccessController();
 
   bool _obscureText = true;
+  bool isLoading = false;
 
   bool isCampiCompilati = false;
   var coloreBottoneAccedi = WidgetStateProperty.all<Color>(Colors.grey);
@@ -156,8 +157,14 @@ class _LoginWindowState extends State<LoginWindow> {
                               height: 18,
                             ),
                             label: Text('Login con Google'),
-                            onPressed: () {
-                              accessController.handleGoogleLogIn(context);
+                            onPressed: () async{
+                              setState(() {
+                                isLoading = true;
+                              });
+                              await accessController.handleGoogleLogIn(context);
+                              setState(() {
+                                isLoading = false;
+                              });
                             },
                             style: ButtonStyle(
                               backgroundColor:
@@ -183,19 +190,32 @@ class _LoginWindowState extends State<LoginWindow> {
                         ],
                       )),
                 ),
+                 if (isLoading)
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: CircularProgressIndicator(strokeWidth: 5, color: Colors.black,),
+                      ),
+                    ),
                 ElevatedButton(
                   onPressed: isCampiCompilati
-                      ? () {
+                      ? () async{
+                          setState(() {
+                              isLoading = true;
+                            });
                           try {
-                            print("Prima");
-                            AccessController.toLogin(utente, context);
-                            print("Dopo");
+                            
+                            await AccessController.toLogin(utente, context);
+                           
                           } catch (e) {
-                            print("Entro");
+                           
                             MyApp.mostraPopUpInformativo(
                                 context, "Attenzione", e.toString());
-                            print("Esco");
+                          
                           }
+                          setState(() {
+                          isLoading = false;
+                        });
                         }
                       : null,
                   style: ButtonStyle(

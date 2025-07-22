@@ -217,6 +217,7 @@ class _SearchCityWindowState extends State<SearchCityWindow> {
                           SnackBar(content: Text('Hai selezionato: ${itemCity['name']}')),                       
                         );
                         RouteWindows.citta = itemCity['name'];
+                        RouteWindows.reset = true;
                         Navigator.of(context).pushNamed(RouteWindows.searchFilterWindow);
 
                         setState(() {
