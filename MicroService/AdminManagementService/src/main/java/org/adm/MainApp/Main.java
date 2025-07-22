@@ -2,6 +2,7 @@ package org.adm.MainApp;
 
 
 import java.net.URI;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -31,7 +32,8 @@ public class Main {
     public static void main(String[] args){
 
         startServer();
-        logger.info(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
+        if (logger.isLoggable(Level.INFO))
+            logger.info(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
 
     }
 }
