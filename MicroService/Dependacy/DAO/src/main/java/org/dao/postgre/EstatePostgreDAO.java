@@ -253,10 +253,7 @@ public class EstatePostgreDAO implements EstateDAO {
         List<Estate> estates = new ArrayList<Estate>();
         try{
             connection.makeQuery(stmt);
-//            ResultSetMetaData md = connection.getResult().getMetaData();
-//            for (int i = 1; i <= md.getColumnCount(); i++) {
-//                System.out.println("COLUMN " + i + " -> label: " + md.getColumnLabel(i) +" value: " + connection.extractString(md.getColumnLabel(i)));
-//            }
+            
             return mapResultSetToEstates();
         }catch (SQLException e){
             logger.severe(ERROR_EXECUTING_QUERY + e.getMessage());
@@ -281,10 +278,6 @@ public class EstatePostgreDAO implements EstateDAO {
         try {
             ps.setInt(1, idImmobile);
             connection.makeQuery(ps);
-            ResultSetMetaData md = connection.getResult().getMetaData();
-            for (int i = 1; i <= md.getColumnCount(); i++) {
-                System.out.println("COLUMN " + i + " -> label: " + md.getColumnLabel(i));
-            }
 
             if (!connection.hasNextRow()) throw new EstateNotExists();
 
@@ -313,7 +306,6 @@ public class EstatePostgreDAO implements EstateDAO {
                 .setNome(connection.extractString("ag_nome"))
                 .setSede(connection.extractString("ag_sede"))
                 .build();
-        System.out.println("Agency Success");
 
         Agent agente = new Agent.Builder(
                 connection.extractInt("a_idagente"),
@@ -326,7 +318,6 @@ public class EstatePostgreDAO implements EstateDAO {
                 .setNotifyAppointment(connection.extractBoolean("a_notify_appointment"))
                 .setAgency(fullAgency)
                 .build();
-        System.out.println("Agent Success");
 
 
         int idImmobile    = connection.extractInt("i_idimmobile");
@@ -343,17 +334,12 @@ public class EstatePostgreDAO implements EstateDAO {
         String statusStr  = connection.extractString("i_stato");
         int idIndirizzo   = connection.extractInt("i_idindirizzo");
 
-        System.out.println("Fetch Estate Success: " + classeStr + modeStr + statusStr);
 
         // 4. Converto stringhe di enum
         EnergeticClass classe = ConverterEnergeticClass.traslateFromString(classeStr);
-        System.out.println("Extract Energetic Class Success");
         Mode mode             = ConverterMode.traslateFromString(modeStr);
-        System.out.println("Extract Mode Success");
         Status status         = ConverterStatus.traslateFromString(statusStr);
-        System.out.println("Extract Status Success");
 
-        System.out.println("Fetch Enum Success");
 
         // 5. Carico l'indirizzo associato
         Indirizzo indirizzo   = new IndirizzoPostgreDAO().getIndirizzoFromId(idIndirizzo);
