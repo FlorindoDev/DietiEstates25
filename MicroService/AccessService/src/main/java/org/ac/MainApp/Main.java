@@ -3,8 +3,6 @@ package org.ac.MainApp;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
-import org.md.Utente.Acquirente;
-import org.md.Utente.Utente;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
 import java.net.URI;

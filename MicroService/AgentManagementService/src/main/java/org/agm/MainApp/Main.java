@@ -4,8 +4,6 @@ package org.agm.MainApp;
 import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.dao.postgre.AdminPostgreDAO;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;

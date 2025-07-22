@@ -1,6 +1,5 @@
 package org.adm.MainApp;
 
-
 import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,9 +8,6 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
-import org.md.Agency.Agency;
-import org.md.Utente.Admin;
-
 
 public class Main {
     // Base URI the Grizzly HTTP server will listen on

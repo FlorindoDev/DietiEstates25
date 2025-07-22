@@ -1,12 +1,9 @@
 package org.ag.MainApp;
 
-
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
-import org.md.Agency.Agency;
-
 
 import java.net.URI;
 import java.util.logging.Level;
