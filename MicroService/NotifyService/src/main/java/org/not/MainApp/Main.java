@@ -10,11 +10,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 
 import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
     private static final String BASE_URI = "http://0.0.0.0:7008/";
     private static final String RESOURCE = "org.not.API.Resource";
+
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
 
     //avvio app che si occuperda di inviare le notifiche
     public static final ApplicationContext rabbitMQ = SpringApplication.run(MainReceiverNotify.class);
@@ -28,9 +32,10 @@ public class Main {
     }
 
     public static void main(String[] args){
-        startServer();
 
-        System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
+        startServer();
+        if (logger.isLoggable(Level.INFO))
+            logger.info(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
 
     }
 }

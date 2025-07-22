@@ -1,19 +1,20 @@
 package org.adm.MainApp;
 
-
 import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
-import org.md.Agency.Agency;
-import org.md.Utente.Admin;
-
 
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
     private static final String BASE_URI = "http://0.0.0.0:7003/";
     private static final String RESOURCE = "org.adm.API.Resource";
+
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
 
     public static void startServer() {
 
@@ -25,23 +26,10 @@ public class Main {
 
 
     public static void main(String[] args){
+
         startServer();
-        //TODO serve per la prova dopo eliminare
-
-        Agency agency = new Agency.Builder("11111111111")
-                .setNome("Pico Pallina")
-                .build();
-
-        Admin acquirente = new Admin.Builder(1,"astrubalearabi@email.com")
-                .setPassword("ciaociao")
-                .setName("Mimmo")
-                .setCognome("Mimmetto")
-                .setIsSupport(true)
-                .setAgency(agency)
-                .build();
-
-        System.out.println(acquirente.TranslateToJson());
-        System.out.println(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
+        if (logger.isLoggable(Level.INFO))
+            logger.info(String.format("Jersey app started with endpoints available at " + "%s%nHit Ctrl-C to stop it...", BASE_URI));
 
     }
 }
