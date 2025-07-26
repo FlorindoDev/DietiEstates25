@@ -388,7 +388,7 @@ class AgentHomeController {
 
     final indirizzo = Indirizzo(
       idIndirizzo: 0,
-      stato: stato,
+      stato: statoIndirizzo,
       citta: citta,
       quartiere: quartiere,
       via: via,
