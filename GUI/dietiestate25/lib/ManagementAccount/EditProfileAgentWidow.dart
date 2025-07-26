@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:dietiestate25/AccessClass/AccessController.dart';
 import 'package:dietiestate25/ManagementAccount/ProfileController.dart';
+import 'package:dietiestate25/RouteWindows/RouteWindows.dart';
 import 'package:dietiestate25/Validation/Validate.dart';
 import 'package:dietiestate25/main.dart';
 import 'package:flutter/material.dart';
@@ -222,14 +224,18 @@ class _EditProfileAgentPageState extends State<EditProfileAgentPage> {
       // await Future.delayed(Duration(seconds: 5));
       bool exitState = await ProfileController.updateProfile(copyAgent);
 
-      logger.e(exitState);
-
       setState(() => _isLoading = false);
       if (exitState) {
-        await MyApp.mostraPopUpSuccess(
-            context, "Dati aggiornati con successo", null);
-        loggedUser = copyAgent;
-        Navigator.pop(context, true);
+        if (loggedUser.email != copyAgent.email) {
+          loggedUser = copyAgent;
+          await ProfileController.resetJWT();
+          await MyApp.mostraPopUpSuccess(context, "Email modificata, si prega di riefettuare  il login", null);
+          Navigator.pushNamed(context, RouteWindows.loginWindow);
+        }else{
+            loggedUser = copyAgent;
+            await MyApp.mostraPopUpSuccess(context, "Dati aggiornati con successo", null);
+            Navigator.pop(context, true);
+        }
       } else {
         await MyApp.mostraPopUpWarining(context, "Dati non aggiornati",
             "Non è stto possibile aggiornare i dati del profilo");

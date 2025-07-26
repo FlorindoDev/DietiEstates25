@@ -148,7 +148,7 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                 ),
               ),
               const SizedBox(height: 20),
-              /// Compra / Affitto
+              /// Vendita / Affitto
               const Divider(color: Colors.grey, thickness: 1),
               Text("Modalitá", style: const TextStyle(fontSize: 24)),
               Wrap(
@@ -156,19 +156,19 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
                 alignment: WrapAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: mode == "Compra"
+                    onPressed: mode == "Vendita"
                         ? null
                         : () {
                             setState(() {
                               minPrice = 0;
                               maxPrice = 0;
-                              mode = "Compra";
+                              mode = "Vendita";
                             });
                           },
-                    style: mode == "Compra"
+                    style: mode == "Vendita"
                         ? AccessController.not_clickable_style_button
                         : AccessController.clickable_style_button,
-                    child: const Text('Compra'),
+                    child: const Text('Vendita'),
                   ),
                   ElevatedButton(
                     onPressed: mode == "Affitto"
@@ -193,8 +193,8 @@ class _SearchFilterWindowState extends State<SearchFilterWindow> {
               //Prezzo
               _buildDualNumberPicker("Prezzo", "Min", "Max", minPrice, maxPrice,
                   min: 0,
-                  max: mode == "Compra" ? 5000000 : 8000,
-                  step: mode == "Compra" ? 10000 : 50,
+                  max: mode == "Vendita" ? 5000000 : 8000,
+                  step: mode == "Vendita" ? 10000 : 50,
                   onMinChanged: (v) => setState(() => minPrice = v),
                   onMaxChanged: (v) => setState(() => maxPrice = v)),
 
